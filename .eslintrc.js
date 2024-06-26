@@ -75,5 +75,7 @@ module.exports = {
 				trailingComma: 'all',
 			},
 		],
+		'@typescript-eslint/no-use-before-define': ['error', { variables: false }],
+		'react/function-component-definition': [0],
 	},
 };

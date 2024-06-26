@@ -45,7 +45,7 @@ type Props = PropsWithChildren<{
 function ThemeProvider({ children = false, storage }: Props) {
 	// Current theme variant
 	const [variant, setVariant] = useState(
-		(storage.getString('theme') as Variant) || 'default',
+		(storage.getString('theme') as Variant) || 'dark',
 	);
 
 	// Initialize theme at default if not defined
