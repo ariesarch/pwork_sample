@@ -25,6 +25,7 @@ const TextInput = ({
 		<View style={[styles.inputStyle, style]}>
 			<RNTextInput
 				selectionColor={colors.white100}
+				testID="text-input"
 				placeholderTextColor={colors.white100}
 				style={{ color: colors.white100 }}
 				autoCorrect
@@ -35,7 +36,7 @@ const TextInput = ({
 			/>
 
 			{endIcon && (
-				<View style={styles.rightIcon}>
+				<View testID="end-icon-wrapper" style={styles.rightIcon}>
 					<Text>E</Text>
 				</View>
 			)}

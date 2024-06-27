@@ -22,23 +22,8 @@ const TabItem = ({ tab, onTabPress, currentTab }: TabItemProps) => {
 				borders.rounded_8,
 				layout.itemsCenter,
 				gutters.padding_12,
-				// styles.activeTab,
-				// {
-				// 	backgroundColor: isCurrentRegisterType
-				// 		? colors.backgroundPrimary
-				// 		: undefined,
-				// 	...(isCurrentRegisterType && {
-				// 		shadowColor: 'rgba(0, 0, 0, 0.4)',
-				// 		shadowOffset: {
-				// 			width: 0,
-				// 			height: moderateScale(1),
-				// 		},
-				// 		shadowOpacity: moderateScale(0.17),
-				// 		shadowRadius: moderateScale(3.05),
-				// 		elevation: moderateScale(1),
-				// 	}),
-				// },
 			]}
+			testID="tabItem-wrapper"
 		>
 			<Text
 				style={[
@@ -47,16 +32,12 @@ const TabItem = ({ tab, onTabPress, currentTab }: TabItemProps) => {
 						color: isActiveTab ? colors.gray100 : colors.white100,
 					},
 				]}
+				testID="tabItem-text"
 			>
 				{tab?.label}
 			</Text>
 		</Pressable>
 	);
 };
-
-const styles = StyleSheet.create({
-	// tabItemWrapper: {
-	// },
-});
 
 export default TabItem;

@@ -13,7 +13,12 @@ const meta = {
 	decorators: [
 		Story => (
 			<ThemeProvider storage={storage}>
-				<View style={{}}>
+				<View
+					style={{
+						backgroundColor: '#2e363b',
+						padding: 15,
+					}}
+				>
 					<Story />
 				</View>
 			</ThemeProvider>
