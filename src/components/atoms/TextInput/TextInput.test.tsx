@@ -4,7 +4,7 @@ import { MMKV } from 'react-native-mmkv';
 
 import { ThemeProvider } from '@/theme';
 
-import { Pressable, TextStyle, ViewStyle } from 'react-native';
+import { Pressable } from 'react-native';
 import TextInput from './TextInput';
 
 describe('TextInput component should render correctly', () => {

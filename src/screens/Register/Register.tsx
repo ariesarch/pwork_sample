@@ -5,10 +5,14 @@ import TabSwitch from '@/components/molecules/TabSwitch/TabSwitch';
 import EmailRegisterForm from '@/components/molecules/EmailRegisterForm/EmailRegisterForm';
 import { SafeScreen } from '@/components/template';
 import PhoneRegisterForm from '@/components/molecules/PhoneRegisterForm/PhoneRegisterForm';
+import { useGetUser } from '@/hooks/queries/auth.queries';
 
 function Register() {
 	const [activeTab, setActiveTab] = useState('1');
 	const { gutters } = useTheme();
+	const { data: user } = useGetUser({ id: '1' });
+	// eslint-disable-next-line no-console
+	console.log('user::', user);
 
 	return (
 		<SafeScreen>

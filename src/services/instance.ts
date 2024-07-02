@@ -1,10 +1,15 @@
-import ky from 'ky';
+import axios from 'axios';
 
-const prefixUrl = `${process.env.API_URL ? process.env.API_URL : ''}/`;
+const baseURL = `${
+	process.env.API_URL ?? 'https://jsonplaceholder.typicode.com'
+}/`;
 
-export const instance = ky.extend({
-	prefixUrl,
-	headers: {
-		Accept: 'application/json',
-	},
+const instance = axios.create({
+	baseURL,
 });
+
+instance.interceptors.request.use(config => {
+	return config;
+});
+
+export default instance;
