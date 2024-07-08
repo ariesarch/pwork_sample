@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import { render, screen } from '@testing-library/react-native';
 import { MMKV } from 'react-native-mmkv';
 

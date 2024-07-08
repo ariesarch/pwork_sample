@@ -1,33 +1,33 @@
-import { useTheme } from '@/theme';
-import { styleConstant } from '@/theme/_config';
 import React from 'react';
 import {
 	View,
-	StyleSheet,
 	TextInputProps,
 	TextInput as RNTextInput,
 	Text,
 } from 'react-native';
+import colors from 'tailwindcss/colors';
+import styles from './TextInput.style';
 
 type InputProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
+	styleNW?: string;
 } & TextInputProps;
 
 const TextInput = ({
 	placeholder,
 	endIcon = undefined,
 	style,
+	styleNW = '',
 	...textInputProps
 }: InputProps) => {
-	const { colors } = useTheme();
 	return (
-		<View style={[styles.inputStyle, style]}>
+		<View className={`${styles.textInputWrapper} ${styleNW}`}>
 			<RNTextInput
-				selectionColor={colors.white100}
+				selectionColor={colors.white}
 				testID="text-input"
-				placeholderTextColor={colors.white100}
-				style={{ color: colors.white100 }}
+				placeholderTextColor={colors.white}
+				style={{ color: colors.white }}
 				autoCorrect
 				spellCheck
 				editable
@@ -36,28 +36,12 @@ const TextInput = ({
 			/>
 
 			{endIcon && (
-				<View testID="end-icon-wrapper" style={styles.rightIcon}>
+				<View testID="end-icon-wrapper" className={styles.endIcon}>
 					<Text>E</Text>
 				</View>
 			)}
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	inputStyle: {
-		backgroundColor: styleConstant.Color.gray600,
-		paddingLeft: styleConstant.Spacing.M + 2,
-		height: 50,
-		borderRadius: styleConstant.Spacing.XS,
-		color: styleConstant.Color.white100,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	rightIcon: {
-		paddingHorizontal: styleConstant.Spacing.S,
-	},
-});
 
 export default TextInput;

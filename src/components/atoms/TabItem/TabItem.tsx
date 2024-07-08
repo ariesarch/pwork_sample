@@ -1,5 +1,5 @@
-import { useTheme } from '@/theme';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
+import styles from './TabItem.style';
 
 export type TabItemProps = {
 	tab: { value: string; label: string };
@@ -9,31 +9,14 @@ export type TabItemProps = {
 
 const TabItem = ({ tab, onTabPress, currentTab }: TabItemProps) => {
 	const isActiveTab = tab?.value === currentTab;
-	const { fonts, colors, layout, gutters, borders } = useTheme();
 
 	return (
 		<Pressable
 			onPress={() => onTabPress(tab?.value)}
-			style={[
-				{
-					backgroundColor: isActiveTab ? colors.white100 : colors.gray600,
-				},
-				layout.flex_1,
-				borders.rounded_8,
-				layout.itemsCenter,
-				gutters.padding_12,
-			]}
+			className={styles.tabItem(isActiveTab)}
 			testID="tabItem-wrapper"
 		>
-			<Text
-				style={[
-					fonts.size_14,
-					{
-						color: isActiveTab ? colors.gray100 : colors.white100,
-					},
-				]}
-				testID="tabItem-text"
-			>
+			<Text className={styles.tabItemText(isActiveTab)} testID="tabItem-text">
 				{tab?.label}
 			</Text>
 		</Pressable>

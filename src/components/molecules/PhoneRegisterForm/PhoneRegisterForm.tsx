@@ -18,7 +18,7 @@ const PhoneRegisterForm = () => {
 				placeholder="Phone Number"
 				onChangeText={phone => setFormData(prev => ({ ...prev, phone }))}
 				value={formData.phone}
-				style={[gutters.marginBottom_24, gutters.marginTop_32]}
+				styleNW="mb-6 mt-8"
 			/>
 			<TextInput
 				placeholder="User Name"
@@ -26,13 +26,13 @@ const PhoneRegisterForm = () => {
 					setFormData(prev => ({ ...prev, user_name }))
 				}
 				value={formData.user_name}
-				style={gutters.marginBottom_24}
+				styleNW="mb-6"
 			/>
 			<TextInput
 				placeholder="Password"
 				onChangeText={password => setFormData(prev => ({ ...prev, password }))}
 				value={formData.password}
-				style={gutters.marginBottom_24}
+				styleNW="mb-6"
 			/>
 			<TextInput
 				placeholder="Confirm Password"
@@ -40,7 +40,7 @@ const PhoneRegisterForm = () => {
 					setFormData(prev => ({ ...prev, confirm_password }))
 				}
 				value={formData.confirm_password}
-				style={gutters.marginBottom_24}
+				styleNW="mb-6"
 			/>
 		</View>
 	);

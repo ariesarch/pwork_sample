@@ -1,7 +1,6 @@
-import { useTheme } from '@/theme';
-import { View, StyleSheet } from 'react-native';
-import { styleConstant } from '@/theme/_config';
+import { View } from 'react-native';
 import TabItem from '../../atoms/TabItem/TabItem';
+import styles from './TabSwith.style';
 
 type TabItemProp = {
 	value: string;
@@ -15,18 +14,9 @@ type Props = {
 };
 
 const TabSwitch = ({ tabs, onTabPress, currentTab }: Props) => {
-	const { colors, gutters, layout } = useTheme();
-
 	return (
 		<View>
-			<View
-				style={[
-					gutters.marginVertical_16,
-					layout.row,
-					{ backgroundColor: colors.gray600 },
-					style.tabBarWrapper,
-				]}
-			>
+			<View className={styles.tabWrapper}>
 				{Array.isArray(tabs) &&
 					tabs.length >= 1 &&
 					tabs.map((tab, index) => (
@@ -38,9 +28,3 @@ const TabSwitch = ({ tabs, onTabPress, currentTab }: Props) => {
 };
 
 export default TabSwitch;
-
-const style = StyleSheet.create({
-	tabBarWrapper: {
-		borderRadius: styleConstant.Spacing.S,
-	},
-});
