@@ -77,5 +77,6 @@ module.exports = {
 		],
 		'@typescript-eslint/no-use-before-define': ['error', { variables: false }],
 		'react/function-component-definition': [0],
+		'newline-per-chained-call': 'off',
 	},
 };

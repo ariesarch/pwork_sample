@@ -1,11 +1,7 @@
 import React from 'react';
-import {
-	View,
-	TextInputProps,
-	TextInput as RNTextInput,
-	Text,
-} from 'react-native';
-import colors from 'tailwindcss/colors';
+import { View, TextInputProps, TextInput as RNTextInput } from 'react-native';
+import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
+// import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import styles from './TextInput.style';
 
 type InputProps = {
@@ -21,23 +17,25 @@ const TextInput = ({
 	styleNW = '',
 	...textInputProps
 }: InputProps) => {
+	const inputColor = useAppropiateColorHash('patchwork-light-900');
 	return (
 		<View className={`${styles.textInputWrapper} ${styleNW}`}>
 			<RNTextInput
-				selectionColor={colors.white}
+				selectionColor={inputColor}
 				testID="text-input"
-				placeholderTextColor={colors.white}
-				style={{ color: colors.white }}
+				placeholderTextColor={inputColor}
+				style={{ color: inputColor }}
 				autoCorrect
 				spellCheck
 				editable
 				placeholder={placeholder}
 				{...textInputProps}
+				className="w-full"
 			/>
 
 			{endIcon && (
 				<View testID="end-icon-wrapper" className={styles.endIcon}>
-					<Text>E</Text>
+					{endIcon}
 				</View>
 			)}
 		</View>

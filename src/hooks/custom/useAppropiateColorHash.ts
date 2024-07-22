@@ -1,0 +1,41 @@
+import customColor, { CustomColorType } from '@/util/constant/color';
+import { useColorScheme } from 'nativewind';
+import colors from 'tailwindcss/colors';
+import { DefaultColors } from 'tailwindcss/types/generated/colors';
+
+const darkToLightColorMappings: Record<string, ColorKeys> = {
+	'patchwork-dark-50': 'patchwork-light-50',
+	'patchwork-dark-100': 'patchwork-light-900',
+	'patchwork-light-900': 'patchwork-dark-100',
+};
+
+const colorNameToHash: Record<string, string> = {
+	'patchwork-dark-50': customColor['patchwork-dark-50'],
+	'patchwork-dark-100': customColor['patchwork-dark-100'],
+	'patchwork-light-50': customColor['patchwork-light-50'],
+	'patchwork-light-900': customColor['patchwork-light-900'],
+	'slate-100': colors.slate[100],
+};
+
+type NestedKeys<T> = {
+	[K in keyof T]: T[K] extends object
+		? `${string & K}-${NestedKeys<T[K]>}`
+		: string & K;
+}[keyof T];
+
+type ColorKeys = NestedKeys<DefaultColors> | keyof CustomColorType;
+
+const useAppropiateColorHash = (
+	darkmodeColor: ColorKeys,
+	lightmodeColor?: ColorKeys,
+) => {
+	const { colorScheme } = useColorScheme();
+
+	const chosenLightModeColor =
+		lightmodeColor || (darkToLightColorMappings[darkmodeColor] ?? 'white');
+
+	const str = colorScheme === 'dark' ? darkmodeColor : chosenLightModeColor;
+	return colorNameToHash[str] ?? 'white';
+};
+
+export default useAppropiateColorHash;
