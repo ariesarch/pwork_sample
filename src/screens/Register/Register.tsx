@@ -1,17 +1,26 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import TabSwitch from '@/components/molecules/TabSwitch/TabSwitch';
 import EmailRegisterForm from '@/components/molecules/EmailRegisterForm/EmailRegisterForm';
 import { SafeScreen } from '@/components/template';
 import PhoneRegisterForm from '@/components/molecules/PhoneRegisterForm/PhoneRegisterForm';
-import { useGetUser } from '@/hooks/queries/auth.queries';
+import Header from '@/components/atoms/header/header';
+import { BackIcon } from '@/util/svg/icon.common';
+import AlreadyHaveAcc from '@/components/molecules/AlreadyHaveAcc/AlreadyHaveAcc';
 
 function Register() {
 	const [activeTab, setActiveTab] = useState('1');
-	const { data: user } = useGetUser({ id: '1' });
 
 	return (
 		<SafeScreen>
+			<Header
+				title="Create an account"
+				leftCustomComponent={
+					<Pressable onPress={() => {}}>
+						<BackIcon />
+					</Pressable>
+				}
+			/>
 			<View className="mx-8">
 				<TabSwitch
 					tabs={[
@@ -21,9 +30,9 @@ function Register() {
 					onTabPress={setActiveTab}
 					currentTab={activeTab}
 				/>
-				{activeTab === '1' && <EmailRegisterForm />}
-				{activeTab === '2' && <PhoneRegisterForm />}
+				{activeTab === '1' ? <EmailRegisterForm /> : <PhoneRegisterForm />}
 			</View>
+			<AlreadyHaveAcc className="absolute bottom-10 mx-auto w-full" />
 		</SafeScreen>
 	);
 }

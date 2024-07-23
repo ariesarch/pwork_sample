@@ -9,8 +9,8 @@ const buttonVariants = cva(
 		variants: {
 			variant: {
 				default: 'bg-patchwork-red-50 active:opacity-90',
-				outline_primary:
-					/* tw */ 'border border-input border-patchwork-red-50 bg-background active:bg-red-500',
+				outline:
+					/* tw */ 'border border-input border-slate-400 bg-background active:opacity-80',
 				secondary: /* tw */ 'bg-green-400 active:opacity-80',
 			},
 			size: {
