@@ -54,6 +54,7 @@ module.exports = {
 		'react/default-props-match-prop-types': ['error'],
 		'react/sort-prop-types': ['error'],
 		'react/no-array-index-key': 'off',
+		'react/prop-types': 'off',
 		'no-tabs': 'off',
 		'no-void': 'off',
 		'react/jsx-props-no-spreading': 'off',
