@@ -3658,6 +3658,38 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rn-primitives/slot@npm:~1.0.3":
+  version: 1.0.3
+  resolution: "@rn-primitives/slot@npm:1.0.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native:
+      optional: true
+    react-native-web:
+      optional: true
+  checksum: 8cb8d6fd16d7a099457dbbdc8f24dc501585d826ada815440ed8eba184805b050be0292bea45753ee342a2330d1877ad8bdc918ee98e8c31ec8bb0866934909a
+  languageName: node
+  linkType: hard
+
+"@rn-primitives/types@npm:~1.0.3":
+  version: 1.0.3
+  resolution: "@rn-primitives/types@npm:1.0.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-web: "*"
+  peerDependenciesMeta:
+    react-native:
+      optional: true
+    react-native-web:
+      optional: true
+  checksum: 98ea678e22f77e50b049ac8ffe77963f6b2ddf2d5da707eabfbac05a3af93f764511e212d5386ea492b8bbacb54a8b0eea7886590ec94d65f1e67a6ee34b284d
+  languageName: node
+  linkType: hard
+
 "@rnx-kit/chromium-edge-launcher@npm:^1.0.0":
   version: 1.0.0
   resolution: "@rnx-kit/chromium-edge-launcher@npm:1.0.0"
@@ -5692,6 +5724,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"class-variance-authority@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "class-variance-authority@npm:0.7.0"
+  dependencies:
+    clsx: 2.0.0
+  checksum: e7fd1fab433ef06f52a1b7b241b70b4a185864deef199d3b0a2c3412f1cc179517288264c383f3b971a00d76811625fc8f7ffe709e6170219e88cd7368f08a20
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -5752,6 +5793,20 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: d06418b7335897209e77bdd430d04f882189582e67bd1f75a04565f3f07f5b3f119a9d670c943b6697d0afb100f03b866b3b8a1f91d4d02d72c4ecf2bb64b5dd
+  languageName: node
+  linkType: hard
+
+"clsx@npm:2.0.0":
+  version: 2.0.0
+  resolution: "clsx@npm:2.0.0"
+  checksum: a2cfb2351b254611acf92faa0daf15220f4cd648bdf96ce369d729813b85336993871a4bf6978ddea2b81b5a130478339c20d9d0b5c6fc287e5147f0c059276e
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: acd3e1ab9d8a433ecb3cc2f6a05ab95fe50b4a3cfc5ba47abb6cbf3754585fcb87b84e90c822a1f256c4198e3b41c7f6c391577ffc8678ad587fc0976b24fd57
   languageName: node
   linkType: hard
 
@@ -10665,6 +10720,8 @@ __metadata:
     "@react-native/typescript-config": 0.74.83
     "@react-navigation/native": ^6.1.17
     "@react-navigation/stack": ^6.3.29
+    "@rn-primitives/slot": ~1.0.3
+    "@rn-primitives/types": ~1.0.3
     "@storybook/addon-ondevice-actions": ^7.6.20
     "@storybook/addon-ondevice-controls": ^7.6.20
     "@storybook/react-native": ^7.6.20
@@ -10682,6 +10739,8 @@ __metadata:
     babel-plugin-inline-dotenv: ^1.7.0
     babel-plugin-module-resolver: ^5.0.0
     babel-plugin-root-import: ^6.6.0
+    class-variance-authority: ^0.7.0
+    clsx: ^2.1.1
     dotenv: ^16.3.1
     eslint: ^8.19.0
     eslint-config-airbnb: ^19.0.4
@@ -10708,6 +10767,7 @@ __metadata:
     reactotron-react-native: ^5.1.6
     reactotron-react-native-mmkv: ^0.2.6
     reactotron-react-query: ^1.0.4
+    tailwind-merge: ^2.4.0
     tailwindcss: ^3.3.2
     typescript: 5.1.3
     zod: ^3.23.0
@@ -12635,6 +12695,13 @@ __metadata:
   version: 2.0.17
   resolution: "synchronous-promise@npm:2.0.17"
   checksum: 7b1342c93741f3f92ebde1edf5d6ce8dde2278de948d84e9bd85e232c16c0d77c90c4940f9975be3effcb20f047cfb0f16fa311c3b4e092c22f3bf2889fb0fb4
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "tailwind-merge@npm:2.4.0"
+  checksum: 442ab18af754eb90a1c730289b10a5df89ec8f197b4783bd31651fffc06ac06dbe7a8f491c2e133c906d6ab466170a5fc1f45aa2d22874e47706acf9d8b0cfe5
   languageName: node
   linkType: hard
 

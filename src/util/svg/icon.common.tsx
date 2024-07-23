@@ -88,3 +88,27 @@ export const PatchworkLogo = () => (
 		</Defs>
 	</Svg>
 );
+
+export const CheckboxSolid = (props: SvgProps) => (
+	<Svg width={22} height={22} viewBox="0 0 22 22" fill="none" {...props}>
+		<Rect width={22} height={22} rx={6} fill="#D24A34" />
+		<Path
+			d="M16.025 7.4c-.3-.3-.75-.3-1.05 0L9.35 13.025 7.025 10.7c-.3-.3-.75-.3-1.05 0-.3.3-.3.75 0 1.05l2.85 2.85c.15.15.3.225.525.225a.68.68 0 0 0 .525-.225l6.15-6.15c.3-.3.3-.75 0-1.05Z"
+			fill="#fff"
+		/>
+	</Svg>
+);
+
+export const CheckboxOutlined = (props: SvgProps) => (
+	<Svg width={22} height={22} viewBox="0 0 22 22" fill="none" {...props}>
+		<Rect
+			x={0.75}
+			y={0.75}
+			width={20.5}
+			height={20.5}
+			rx={5.25}
+			stroke="#96A6C2"
+			strokeWidth={1.5}
+		/>
+	</Svg>
+);

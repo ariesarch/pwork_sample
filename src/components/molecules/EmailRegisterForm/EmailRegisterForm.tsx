@@ -1,8 +1,11 @@
-import { Button, View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { useState } from 'react';
 import TextInput from '@/components/atoms/TextInput/TextInput';
 import { useColorScheme } from 'nativewind';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
+import Checkbox from '@/components/atoms/Checkbox/Checkbox.style';
+import { Button } from '@/components/ui/Button/Button';
+import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 
 const EmailRegisterForm = () => {
 	const [formData, setFormData] = useState({
@@ -96,7 +99,28 @@ const EmailRegisterForm = () => {
 					)
 				}
 			/>
-			<Button title="Test" onPress={() => toggleColorScheme()} />
+			<View className="mb-6">
+				<Checkbox>
+					<View className="mx-1 flex flex-row">
+						<ThemeText variant="textGrey" className="ml-1">
+							I agree to the{' '}
+						</ThemeText>
+						<Pressable onPress={() => {}}>
+							<ThemeText className="font-semibold">
+								Terms & Conditions
+							</ThemeText>
+						</Pressable>
+					</View>
+				</Checkbox>
+			</View>
+			<Button
+				onPress={() => {
+					toggleColorScheme();
+				}}
+				className="my-3"
+			>
+				<ThemeText className="text-white">Next</ThemeText>
+			</Button>
 		</View>
 	);
 };

@@ -9,8 +9,6 @@ import { useGetUser } from '@/hooks/queries/auth.queries';
 function Register() {
 	const [activeTab, setActiveTab] = useState('1');
 	const { data: user } = useGetUser({ id: '1' });
-	// eslint-disable-next-line no-console
-	console.log('user::', user);
 
 	return (
 		<SafeScreen>
