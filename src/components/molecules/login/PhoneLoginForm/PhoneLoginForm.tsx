@@ -1,9 +1,8 @@
 import { View, Pressable } from 'react-native';
 import { useState } from 'react';
-import TextInput from '@/components/atoms/TextInput/TextInput';
+import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { useColorScheme } from 'nativewind';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
-import Checkbox from '@/components/atoms/Checkbox/Checkbox.style';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 
@@ -26,7 +25,7 @@ const PhoneLoginForm = () => {
 				maxLength={40}
 				styleNW="mb-6 mt-8"
 			/>
-			
+
 			<TextInput
 				placeholder="Password"
 				onChangeText={password => setFormData(prev => ({ ...prev, password }))}
@@ -57,13 +56,11 @@ const PhoneLoginForm = () => {
 				}
 				styleNW="mb-6"
 			/>
-			
+
 			<View className="flex flex-row justify-end mb-6">
-                <Pressable onPress={() => {}}>
-							<ThemeText className="font-semibold">
-								Forget your password?
-							</ThemeText>
-						</Pressable>
+				<Pressable onPress={() => {}}>
+					<ThemeText className="font-semibold">Forget your password?</ThemeText>
+				</Pressable>
 			</View>
 			<Button
 				onPress={() => {

@@ -1,6 +1,6 @@
 import OrSeparator from '@/components/atoms/common/OrSeparator/OrSeparator';
-import AlreadyHaveAcc from '@/components/molecules/AlreadyHaveAcc/AlreadyHaveAcc';
-import { SafeScreen } from '@/components/template';
+import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyHaveAcc';
+import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';

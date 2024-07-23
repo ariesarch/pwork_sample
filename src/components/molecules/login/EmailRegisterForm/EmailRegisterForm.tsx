@@ -1,15 +1,15 @@
-import Checkbox from '@/components/atoms/Checkbox/Checkbox.style';
-import TextInput from '@/components/atoms/TextInput/TextInput';
+import { View, Pressable } from 'react-native';
+import { useState } from 'react';
+import TextInput from '@/components/atoms/common/TextInput/TextInput';
+import { useColorScheme } from 'nativewind';
+import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
+import Checkbox from '@/components/atoms/common/Checkbox/Checkbox.style';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
-import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
-import { useColorScheme } from 'nativewind';
-import { useState } from 'react';
-import { Pressable, View } from 'react-native';
 
-const PhoneRegisterForm = () => {
+const EmailRegisterForm = () => {
 	const [formData, setFormData] = useState({
-		phone: '',
+		email: '',
 		password: '',
 		confirm_password: '',
 		user_name: '',
@@ -23,9 +23,10 @@ const PhoneRegisterForm = () => {
 	return (
 		<View>
 			<TextInput
-				placeholder="Phone Number"
-				onChangeText={phone => setFormData(prev => ({ ...prev, phone }))}
-				value={formData.phone}
+				placeholder="Email Address"
+				onChangeText={email => setFormData(prev => ({ ...prev, email }))}
+				value={formData.email}
+				maxLength={40}
 				styleNW="mb-6 mt-8"
 			/>
 			<TextInput
@@ -40,7 +41,6 @@ const PhoneRegisterForm = () => {
 				placeholder="Password"
 				onChangeText={password => setFormData(prev => ({ ...prev, password }))}
 				value={formData.password}
-				styleNW="mb-6"
 				secureTextEntry={!pwVisibility.password}
 				endIcon={
 					pwVisibility.password ? (
@@ -65,14 +65,15 @@ const PhoneRegisterForm = () => {
 						/>
 					)
 				}
+				styleNW="mb-6"
 			/>
 			<TextInput
 				placeholder="Confirm Password"
 				onChangeText={confirm_password =>
 					setFormData(prev => ({ ...prev, confirm_password }))
 				}
-				value={formData.confirm_password}
 				secureTextEntry={!pwVisibility.confirmPassword}
+				value={formData.confirm_password}
 				styleNW="mb-6"
 				endIcon={
 					pwVisibility.confirmPassword ? (
@@ -124,4 +125,4 @@ const PhoneRegisterForm = () => {
 	);
 };
 
-export default PhoneRegisterForm;
+export default EmailRegisterForm;
