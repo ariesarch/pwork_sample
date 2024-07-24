@@ -1,4 +1,5 @@
 /// <reference types="nativewind/types" />
+
 declare namespace Pathchwork {
 	type User = {
 		name: string;
@@ -24,5 +25,26 @@ declare namespace Pathchwork {
 		updated_at: string;
 		image_url: string;
 		is_virtual: boolean;
+	};
+	type Status = {
+		id: number;
+		account: Account;
+		content: string;
+		created_at: string;
+		favourite_count: number;
+		reblogs_count: number;
+		replies_count: number;
+		image?: string;
+		statusType: 'reblog' | 'reply' | 'feed';
+		reblogedStatus?: Status;
+		replyedStatus?: Status;
+	};
+
+	type Account = {
+		id: string;
+		account_id: string;
+		username: string;
+		acct: string;
+		avatar: string;
 	};
 }

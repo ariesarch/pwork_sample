@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Image } from '@/components/atoms';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
-import { ChevronRight } from '@/util/svg/icon.common';
+import { ChevronRightIcon } from '@/util/svg/icon.common';
 import styles from './Card.style';
 
 interface CardProps {
@@ -25,7 +25,7 @@ const Card = ({ imageSource, activeNow, title, onPress }: CardProps) => {
 			</TouchableOpacity>
 			<View className={styles.cardFooter}>
 				<ThemeText>{title}</ThemeText>
-				<ChevronRight />
+				<ChevronRightIcon />
 			</View>
 		</View>
 	);
