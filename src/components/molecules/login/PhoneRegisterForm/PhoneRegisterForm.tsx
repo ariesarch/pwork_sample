@@ -2,7 +2,10 @@ import Checkbox from '@/components/atoms/common/Checkbox/Checkbox.style';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { RootStackParamList } from '@/types/navigation';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useColorScheme } from 'nativewind';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -18,7 +21,8 @@ const PhoneRegisterForm = () => {
 		password: false,
 		confirmPassword: false,
 	});
-	const { colorScheme, toggleColorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
+	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
 	return (
 		<View>
@@ -114,7 +118,7 @@ const PhoneRegisterForm = () => {
 			</View>
 			<Button
 				onPress={() => {
-					toggleColorScheme();
+					navigation.navigate('AboutYou');
 				}}
 				className="my-3"
 			>

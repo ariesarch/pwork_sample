@@ -1,4 +1,12 @@
-import Svg, { ClipPath, Defs, G, Path, Rect, SvgProps } from 'react-native-svg';
+import Svg, {
+	Circle,
+	ClipPath,
+	Defs,
+	G,
+	Path,
+	Rect,
+	SvgProps,
+} from 'react-native-svg';
 
 export const PasswordEyeIcon = ({ ...props }: SvgProps) => (
 	<Svg
@@ -162,5 +170,79 @@ export const MastodonIcon = (props: SvgProps) => (
 				/>
 			</ClipPath>
 		</Defs>
+	</Svg>
+);
+
+export const DownIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => {
+	return (
+		<Svg width="13" height="7" viewBox="0 0 13 7" fill="none" {...props}>
+			<Path
+				d="M6.44141 6.71484L1.19141 1.46484C0.917969 1.21875 0.917969 0.808594 1.19141 0.535156C1.4375 0.289062 1.84766 0.289062 2.12109 0.535156L6.90625 5.34766L11.6914 0.5625C11.9375 0.289062 12.3477 0.289062 12.6211 0.5625C12.8672 0.808594 12.8672 1.21875 12.6211 1.46484L7.34375 6.71484C7.09766 6.98828 6.6875 6.98828 6.44141 6.71484Z"
+				fill={colorScheme === 'dark' ? 'white' : 'grey'}
+				fill-opacity="0.8"
+			/>
+		</Svg>
+	);
+};
+
+export const SearchIcon = () => {
+	return (
+		<Svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+			<Path
+				d="M12.5 12.5L17.5 17.5M8.33333 14.1667C5.11167 14.1667 2.5 11.555 2.5 8.33333C2.5 5.11167 5.11167 2.5 8.33333 2.5C11.555 2.5 14.1667 5.11167 14.1667 8.33333C14.1667 11.555 11.555 14.1667 8.33333 14.1667Z"
+				stroke="#96A6C2"
+				stroke-width="2"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			/>
+		</Svg>
+	);
+};
+
+export const RadioCheckedIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+		<Circle
+			cx={12}
+			cy={12}
+			r={12}
+			fill={colorScheme === 'dark' ? '#585e62' : '#000'}
+		/>
+		<Path
+			d="m16.616 10.495-4.75 4.75a.86.86 0 0 1-.62.25c-.22 0-.44-.08-.61-.25l-2.38-2.37a.881.881 0 0 1 0-1.24c.34-.34.9-.34 1.24 0l1.75 1.75 4.13-4.13c.34-.34.9-.34 1.24 0 .34.35.34.9 0 1.24Z"
+			fill="#fff"
+			stroke={colorScheme === 'dark' ? '#585e62' : '#000'}
+		/>
+	</Svg>
+);
+
+export const RadioOutlined = (props: SvgProps) => (
+	<Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+		<Circle
+			cx={12}
+			cy={12}
+			r={11.038}
+			fill="#fff"
+			stroke="#DCE0EB"
+			strokeWidth={1.925}
+		/>
+		<Path
+			d="m16.616 10.495-4.75 4.75a.86.86 0 0 1-.62.25c-.22 0-.44-.08-.61-.25l-2.38-2.37a.881.881 0 0 1 0-1.24c.34-.34.9-.34 1.24 0l1.75 1.75 4.13-4.13c.34-.34.9-.34 1.24 0 .34.35.34.9 0 1.24Z"
+			fill="#fff"
+		/>
+	</Svg>
+);
+
+export const Check = (props: SvgProps) => (
+	<Svg width="10" height="8" viewBox="0 0 10 8" fill="none" {...props}>
+		<Path
+			d="M9.64062 1.08789C9.85547 1.30273 9.85547 1.625 9.64062 1.81836L3.96875 7.49023C3.77539 7.70508 3.45312 7.70508 3.25977 7.49023L0.337891 4.56836C0.123047 4.375 0.123047 4.05273 0.337891 3.83789C0.53125 3.64453 0.853516 3.64453 1.04688 3.83789L3.625 6.41602L8.93164 1.08789C9.125 0.894531 9.44727 0.894531 9.64062 1.08789Z"
+			fill="white"
+		/>
 	</Svg>
 );

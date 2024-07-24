@@ -13,13 +13,23 @@ type InputProps = {
 const TextInput = ({
 	placeholder,
 	endIcon = undefined,
+	startIcon = undefined,
 	style,
 	styleNW = '',
 	...textInputProps
 }: InputProps) => {
 	const inputColor = useAppropiateColorHash('patchwork-light-900');
 	return (
-		<View className={`${styles.textInputWrapper} ${styleNW}`}>
+		<View
+			className={`${styles.textInputWrapper} ${styleNW} ${
+				startIcon ? 'pl-9' : 'pl-5'
+			}`}
+		>
+			{startIcon && (
+				<View testID="start-icon-wrapper" className={styles.startIcon}>
+					{startIcon}
+				</View>
+			)}
 			<RNTextInput
 				selectionColor={inputColor}
 				testID="text-input"
