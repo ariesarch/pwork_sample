@@ -37,7 +37,7 @@ const AboutYou: React.FC<RootScreenProps<'AboutYou'>> = ({ navigation }) => {
 					<Button
 						onPress={() => {
 							if (activeStep < 3) return setActiveStep(prev => prev + 1);
-							return navigation.navigate('Welcome');
+							return navigation.navigate('HomeFeed');
 						}}
 					>
 						<ThemeText className="text-white">Next</ThemeText>

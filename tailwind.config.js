@@ -11,6 +11,7 @@ module.exports = {
 			colors: {
 				'patchwork-dark-50': '#585e62',
 				'patchwork-dark-100': '#2E363B',
+				'patchwork-grey-50': '#828689',
 				'patchwork-dark-900': '#000',
 				'patchwork-light-50': '#f1f4f8',
 				'patchwork-light-100': '#f2f7fc',
