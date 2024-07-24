@@ -246,3 +246,12 @@ export const Check = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+export const ChevronRight = (props: SvgProps) => (
+	<Svg fill="none" width="9" height="13" viewBox="0 0 9 13" {...props}>
+		<Path
+			fill="#fff"
+			d="M6.541 5.693c.229.254.229.635 0 .864l-4.875 4.875c-.254.253-.635.253-.863 0a.556.556 0 0 1 0-.838L5.246 6.15.803 1.682a.556.556 0 0 1 0-.838.556.556 0 0 1 .838 0l4.9 4.85Z"
+		/>
+	</Svg>
+);

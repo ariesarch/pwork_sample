@@ -18,11 +18,8 @@ const Login: React.FC<RootScreenProps<'Login'>> = ({ navigation }) => {
 			<Header
 				title="Log in"
 				leftCustomComponent={
-					<Pressable onPress={() => {}}>
-						<BackIcon
-							colorScheme={colorScheme}
-							onPress={() => navigation.goBack()}
-						/>
+					<Pressable onPress={() => navigation.goBack()}>
+						<BackIcon colorScheme={colorScheme} />
 					</Pressable>
 				}
 			/>

@@ -5,6 +5,7 @@ export type RootStackParamList = {
 	Register: undefined;
 	Welcome: undefined;
 	AboutYou: undefined;
+	Profile: undefined;
 };
 
 export type RootScreenProps<
