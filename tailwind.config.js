@@ -16,6 +16,7 @@ module.exports = {
 				'patchwork-light-100': '#f2f7fc',
 				'patchwork-light-900': '#fff',
 				'patchwork-red-50': '#FF3C26',
+				'patchwork-red-600': '#ED1800',
 			},
 		},
 	},

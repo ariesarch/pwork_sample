@@ -8,24 +8,26 @@ import styles from './Card.style';
 interface CardProps {
 	imageSource: string | number | undefined;
 	title: string;
+	activeNow?: boolean;
 	onPress: () => void;
 }
 
-const Card = ({ imageSource, title, onPress }: CardProps) => {
+const Card = ({ imageSource, activeNow, title, onPress }: CardProps) => {
 	return (
-		<>
+		<View className="my-1">
+			{activeNow && <View className={styles.activeNow} />}
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={onPress}
 				className="rounded-[4px] overflow-hidden shadow-lg mr-3"
 			>
-				<Image uri={imageSource} styleNW="w-36 h-36" />
+				<Image uri={imageSource} />
 			</TouchableOpacity>
 			<View className={styles.cardFooter}>
 				<ThemeText>{title}</ThemeText>
 				<ChevronRight />
 			</View>
-		</>
+		</View>
 	);
 };
 

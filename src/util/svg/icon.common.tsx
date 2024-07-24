@@ -130,17 +130,34 @@ export const CheckboxOutlined = (props: SvgProps) => (
 
 type BackIconType = {
 	colorScheme: 'dark' | 'light';
+	isFromProfile?: boolean;
 } & SvgProps;
 
-export const BackIcon = ({ colorScheme, ...props }: BackIconType) => (
-	<Svg width="40" height="40" viewBox="0 0 40 40" fill="none" {...props}>
+export const BackIcon = ({
+	colorScheme,
+	isFromProfile,
+	...props
+}: BackIconType) => (
+	<Svg
+		width="40"
+		height="40"
+		viewBox="0 0 40 40"
+		fill={isFromProfile ? 'rgba(46, 54, 59, 0.5)' : 'none'}
+		{...props}
+	>
 		<Rect
 			x="0.5"
 			y="0.5"
 			width="39"
 			height="39"
 			rx="19.5"
-			stroke={colorScheme === 'dark' ? 'white' : '#dce0eb'}
+			stroke={
+				isFromProfile
+					? 'transparent'
+					: colorScheme === 'dark'
+					? 'white'
+					: '#dce0eb'
+			}
 			stroke-opacity="0.4"
 		/>
 		<Path
@@ -255,3 +272,24 @@ export const ChevronRight = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+const CaretRightIcon = (props: SvgProps) => (
+	<Svg fill="none" width="6" height="6" viewBox="0 0 6 6" {...props}>
+		<Path
+			fill="#fff"
+			fillOpacity={0.5}
+			d="M.504 4.564V.406l4.158 2.086L.504 4.564Z"
+		/>
+	</Svg>
+);
+
+const ChevronLeftIcon = (props: SvgProps) => (
+  <Svg fill="none" width="6" height="9" viewBox="0 0 6 9" {...props}>
+    <Path
+      fill="#fff"
+      d="m1.012 3.918 3.75-3.73c.176-.196.468-.196.664 0a.46.46 0 0 1 0 .644L1.988 4.25l3.418 3.438a.428.428 0 0 1 0 .644.428.428 0 0 1-.644 0l-3.75-3.75c-.196-.176-.196-.469 0-.664Z"
+    />
+  </Svg>
+)
+
+export { ChevronLeftIcon, CaretRightIcon }
