@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import TabItem from '../../atoms/TabItem/TabItem';
+import TabItem from '../../../atoms/common/TabItem/TabItem';
 import styles from './TabSwith.style';
 
 type TabItemProp = {

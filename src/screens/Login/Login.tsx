@@ -1,24 +1,28 @@
 import { useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
-import TabSwitch from '@/components/molecules/TabSwitch/TabSwitch';
-import EmailRegisterForm from '@/components/molecules/EmailRegisterForm/EmailRegisterForm';
-import { useGetUser } from '@/hooks/queries/auth.queries';
-import { SafeScreen } from '@/components/template';import Header from '@/components/atoms/header/header';
+import { View, Pressable } from 'react-native';
+import TabSwitch from '@/components/molecules/common/TabSwitch/TabSwitch';
+import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import Header from '@/components/atoms/common/header/header';
 import { BackIcon } from '@/util/svg/icon.common';
-import EmailLoginForm from '@/components/molecules/EmailLoginForm/EmailLoginForm';
-import PhoneLoginForm from '@/components/molecules/PhoneLoginForm/PhoneLoginForm';
+import PhoneLoginForm from '@/components/molecules/login/PhoneLoginForm/PhoneLoginForm';
+import { useColorScheme } from 'nativewind';
+import { RootScreenProps } from '@/types/navigation';
+import EmailLoginForm from '@/components/molecules/login/EmailLoginForm/EmailLoginForm';
 
-function Login() {
+const Login: React.FC<RootScreenProps<'Login'>> = ({ navigation }) => {
 	const [activeTab, setActiveTab] = useState('1');
-	const { data: user } = useGetUser({ id: '1' });
+	const { colorScheme } = useColorScheme();
 
 	return (
-	<SafeScreen>
+		<SafeScreen>
 			<Header
 				title="Log in"
 				leftCustomComponent={
 					<Pressable onPress={() => {}}>
-						<BackIcon />
+						<BackIcon
+							colorScheme={colorScheme}
+							onPress={() => navigation.goBack()}
+						/>
 					</Pressable>
 				}
 			/>
@@ -31,12 +35,10 @@ function Login() {
 					onTabPress={setActiveTab}
 					currentTab={activeTab}
 				/>
-				{/* {activeTab === '1' && <EmailLoginForm />}
-				{activeTab === '2' && <PhoneLoginForm />} */}
 				{activeTab === '1' ? <EmailLoginForm /> : <PhoneLoginForm />}
 			</View>
 		</SafeScreen>
 	);
-}
+};
 
 export default Login;

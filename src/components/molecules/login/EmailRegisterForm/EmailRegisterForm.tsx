@@ -1,11 +1,14 @@
 import { View, Pressable } from 'react-native';
 import { useState } from 'react';
-import TextInput from '@/components/atoms/TextInput/TextInput';
+import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { useColorScheme } from 'nativewind';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
-import Checkbox from '@/components/atoms/Checkbox/Checkbox.style';
+import Checkbox from '@/components/atoms/common/Checkbox/Checkbox.style';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/types/navigation';
 
 const EmailRegisterForm = () => {
 	const [formData, setFormData] = useState({
@@ -18,7 +21,8 @@ const EmailRegisterForm = () => {
 		password: false,
 		confirmPassword: false,
 	});
-	const { colorScheme, toggleColorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
+	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
 	return (
 		<View>
@@ -115,7 +119,7 @@ const EmailRegisterForm = () => {
 			</View>
 			<Button
 				onPress={() => {
-					toggleColorScheme();
+					navigation.navigate('AboutYou');
 				}}
 				className="my-3"
 			>

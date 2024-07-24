@@ -11,6 +11,8 @@ const textVariants = cva('group flex items-center justify-center rounded-md', {
 		},
 		size: {
 			default: /* tw */ 'text-sm',
+			xs_12: 'text-xs',
+			md_16: 'text-base',
 			lg_18: 'text-lg',
 			xl_20: 'text-xl',
 		},
