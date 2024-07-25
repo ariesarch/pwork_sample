@@ -7,7 +7,7 @@ const StatusReply = (props: ViewProps) => {
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
-			className="flex flex-row items-center"
+			className="flex flex-row items-center gap-1"
 			{...props}
 		>
 			<Reply />

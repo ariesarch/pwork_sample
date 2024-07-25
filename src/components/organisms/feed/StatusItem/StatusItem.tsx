@@ -1,23 +1,30 @@
+import { ComponentSeparator } from '@/components/atoms';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
-import { View, Image, ViewProps, ImageProps } from 'react-native';
+import { RootStackParamList } from '@/types/navigation';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { View, Image, ViewProps, ImageProps, Pressable } from 'react-native';
 
 type Props = {
 	status: Pathchwork.Status;
 } & ViewProps;
 
-const StatusFeed = ({ status, ...props }: Props) => {
+const StatusItem = ({ status, ...props }: Props) => {
+	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	return (
 		<View>
 			<View className="flex flex-row mx-4 my-4" {...props}>
 				{status.replyedStatus && (
 					<View className="absolute border-l-2  border-slate-200 left-[15] top-[30] h-full" />
 				)}
-				<Image
-					source={status.account.avatar as ImageProps}
-					className="w-[33] h-[33] rounded-full bg-slate-300"
-				/>
+				<Pressable onPress={() => navigation.navigate('Profile')}>
+					<Image
+						source={status.account.avatar as ImageProps}
+						className="w-[33] h-[33] rounded-full bg-slate-300"
+					/>
+				</Pressable>
 				<View className="ml-2 flex-1" {...props}>
 					<StatusHeader status={status} />
 					<View>
@@ -79,9 +86,9 @@ const StatusFeed = ({ status, ...props }: Props) => {
 					</View>
 				</View>
 			)}
-			<View className="border-b-2 border-slate-200" />
+			<ComponentSeparator />
 		</View>
 	);
 };
 
-export default StatusFeed;
+export default StatusItem;

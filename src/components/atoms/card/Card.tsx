@@ -24,7 +24,7 @@ const Card = ({ imageSource, activeNow, title, onPress }: CardProps) => {
 				<Image uri={imageSource} />
 			</TouchableOpacity>
 			<View className={styles.cardFooter}>
-				<ThemeText>{title}</ThemeText>
+				<ThemeText className="text-white">{title}</ThemeText>
 				<ChevronRightIcon />
 			</View>
 		</View>
