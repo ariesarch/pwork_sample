@@ -1,23 +1,34 @@
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { cva, VariantProps } from 'class-variance-authority';
-import { View, Text, Pressable } from 'react-native';
+import { View, Pressable } from 'react-native';
 
-const chipVairants = cva('flex flex-row justify-center items-center', {
-	variants: {
-		variant: {
-			default: /* tw */ 'bg-patchwork-dark-50',
-			outline:
-				/* tw */ 'border border-input border-slate-400 active:opacity-80',
+const chipVairants = cva(
+	'flex flex-row active:opacity-80 py-2 px-3 rounded-2xl',
+	{
+		variants: {
+			variant: {
+				default:
+					/* tw */ ' bg-slate-200 dark:bg-patchwork-grey-70  active:opacity-90',
+				outline: /* tw */ 'border border-slate-300',
+				white: /* tw */ ' bg-slate-200 dark:bg-white active:opacity-90',
+			},
+		},
+		defaultVariants: {
+			variant: 'default',
 		},
 	},
-	defaultVariants: {
-		variant: 'default',
-	},
-});
+);
+
+const textVariants = {
+	default: /* tw */ 'text-black dark:text-gray-400',
+	white: /* tw */ 'text-black',
+	outline: '',
+};
 
 type ExtraProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
+	dotAlert?: boolean;
 	title: string;
 };
 
@@ -25,15 +36,37 @@ type ChipProps = React.ComponentPropsWithoutRef<typeof Pressable> &
 	ExtraProps &
 	VariantProps<typeof chipVairants>;
 
-const Chip = (props: ChipProps) => {
+const Chip = ({
+	title,
+	startIcon = undefined,
+	endIcon = undefined,
+	dotAlert = false,
+	className,
+	variant,
+	...props
+}: ChipProps) => {
 	return (
-		<Pressable onPress={() => {}}>
-			<View className="flex flex-row justify-center items-center">
-				<ThemeText size="xs_12" className="text-white">
-					Test Text
-				</ThemeText>
-			</View>
-		</Pressable>
+		<View className="flex flex-row">
+			<Pressable
+				onPress={() => {}}
+				className={chipVairants({ variant, className })}
+				{...props}
+			>
+				<View className="flex flex-row items-center">
+					{startIcon && <View className="mr-2">{startIcon}</View>}
+					<ThemeText
+						size="xs_12"
+						className={`${textVariants[variant || 'default']}`}
+					>
+						{title}
+					</ThemeText>
+					{endIcon && <View className="ml-2">{endIcon}</View>}
+					{dotAlert && (
+						<View className="absolute bg-patchwork-red-50 bottom-[18] right-[-8] w-[10] h-[10] rounded-full" />
+					)}
+				</View>
+			</Pressable>
+		</View>
 	);
 };
 

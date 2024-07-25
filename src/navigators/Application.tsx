@@ -2,7 +2,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Login, Register, Welcome, AboutYou, HomeFeed } from '@/screens';
+import {
+	Login,
+	Register,
+	Welcome,
+	AboutYou,
+	HomeFeed,
+	Channel,
+} from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
 
@@ -18,6 +25,7 @@ function ApplicationNavigator() {
 					<Stack.Screen name="Login" component={Login} />
 					<Stack.Screen name="AboutYou" component={AboutYou} />
 					<Stack.Screen name="HomeFeed" component={HomeFeed} />
+					<Stack.Screen name="Channel" component={Channel} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

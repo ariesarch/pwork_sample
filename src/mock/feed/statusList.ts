@@ -87,3 +87,13 @@ export const mockStatusList: Pathchwork.Status[] = [
 		},
 	},
 ];
+
+export const mockUserList: Pathchwork.Account[] = [
+	{
+		id: '1',
+		account_id: '1',
+		username: 'Test User 2',
+		acct: 'beta@patchwork',
+		avatar: require('../../../assets/images/mock/user2.jpeg'),
+	},
+];
