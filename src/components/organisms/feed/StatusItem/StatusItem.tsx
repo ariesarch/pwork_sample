@@ -1,4 +1,4 @@
-import { ComponentSeparator } from '@/components/atoms';
+import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
@@ -15,9 +15,9 @@ const StatusItem = ({ status, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	return (
 		<View>
-			<View className="flex flex-row mx-4 my-4" {...props}>
+			<View className="flex flex-row m-4" {...props}>
 				{status.replyedStatus && (
-					<View className="absolute border-l-2  border-slate-200 left-[15] top-[30] h-full" />
+					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
 				)}
 				<Pressable onPress={() => navigation.navigate('Profile')}>
 					<Image
@@ -41,7 +41,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 						</View>
 					)}
 					{status.reblogedStatus && (
-						<View className="border-2 border-slate-200 my-2 p-3 rounded-xl ">
+						<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl ">
 							<StatusHeader status={status.reblogedStatus} showAvatarIcon />
 							<View>
 								<ThemeText textBreakStrategy="balanced" className="flex-wrap">
@@ -86,7 +86,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 					</View>
 				</View>
 			)}
-			<ComponentSeparator />
+			<Underline className='my-2' />
 		</View>
 	);
 };

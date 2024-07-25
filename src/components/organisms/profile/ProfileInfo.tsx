@@ -8,7 +8,6 @@ import {
 	ActionButtons,
 	ActiveChannels,
 } from '@/components/molecules';
-import { ComponentSeparator } from '@/components/atoms';
 import Header from '@/components/atoms/common/header/header';
 import { ChevronLeftIcon } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
@@ -16,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/types/navigation';
 import { mockStatusList } from '@/mock/feed/statusList';
 import StatusItem from '../feed/StatusItem/StatusItem';
+import Underline from '@/components/atoms/common/Underline/Underline';
 
 const ProfileInfo = () => {
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -47,7 +47,7 @@ const ProfileInfo = () => {
 					<ActionButtons hasIcon />
 				</View>
 				<SocialSection posts={24} following={'2.2k'} followers={'7.3k'} />
-				<ComponentSeparator />
+				<Underline className='my-2'/>
 				<ActiveChannels />
 			</View>
 		);
