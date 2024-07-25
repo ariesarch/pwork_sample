@@ -8,10 +8,10 @@ type Props = {
 	status: Pathchwork.Status;
 } & ViewProps;
 
-const StatusFeed = ({ status, ...props }: Props) => {
+const StatusItem = ({ status, ...props }: Props) => {
 	return (
 		<View>
-			<View className="flex flex-row mx-4 my-4" {...props}>
+			<View className="flex flex-row my-4" {...props}>
 				{status.replyedStatus && (
 					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
 				)}
@@ -85,4 +85,4 @@ const StatusFeed = ({ status, ...props }: Props) => {
 	);
 };
 
-export default StatusFeed;
+export default StatusItem;
