@@ -8,6 +8,7 @@ export type RootStackParamList = {
 	Profile: undefined;
 	HomeFeed: undefined;
 	Channel: undefined;
+	EmailVerification: undefined;
 };
 
 export type RootScreenProps<

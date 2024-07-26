@@ -1,12 +1,12 @@
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { View } from 'react-native';
 
-const ContributorProgress = () => {
+const EmailVerificationProgress = () => {
 	return (
 		<View>
-			<ThemeText>Contributor Progress</ThemeText>
+			<ThemeText>Email Progress</ThemeText>
 		</View>
 	);
 };
 
-export default ContributorProgress;
+export default EmailVerificationProgress;
