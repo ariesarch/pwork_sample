@@ -3,6 +3,7 @@ import {
 	useWindowDimensions,
 	StyleSheet,
 	TouchableOpacity,
+	ImageSourcePropType,
 } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -23,7 +24,20 @@ import Banner from '@/components/atoms/common/Banner/Banner';
 import CommonHeaderRight from '../CommonHeaderRight/CommonHeaderRight';
 import Avatar from '@/components/atoms/profile/Avatar';
 
-const CommonHeader = ({ showNavBar, scrollY }: ScrollHeaderProps) => {
+type CommonHeaderProps = {
+	bannerSrc?: any;
+	imageSrc?: any;
+	avatarStyle?: string | undefined;
+	fadingName?: string;
+};
+const CommonHeader = ({
+	showNavBar,
+	scrollY,
+	bannerSrc,
+	imageSrc,
+	avatarStyle,
+	fadingName,
+}: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
 	const { height } = useWindowDimensions();
@@ -100,7 +114,7 @@ const CommonHeader = ({ showNavBar, scrollY }: ScrollHeaderProps) => {
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={require('@/assets/images/profile/banner_img.jpeg')}
+				source={bannerSrc ?? require('@/assets/images/profile/banner_img.jpeg')}
 				{...{
 					bannerHeight,
 					bannerTranslationStyle,
@@ -111,9 +125,12 @@ const CommonHeader = ({ showNavBar, scrollY }: ScrollHeaderProps) => {
 			{/* Banner */}
 
 			<Header
-				showNavBar={showNavBar}
+				showNavBar={showNavBar!}
 				headerCenterFadesIn={false}
-				headerStyle={{ backgroundColor: 'transparent', paddingBottom: scale(20) }}
+				headerStyle={{
+					backgroundColor: 'transparent',
+					paddingBottom: scale(20),
+				}}
 				noBottomBorder
 				headerRight={<CommonHeaderRight />}
 				headerLeft={
@@ -125,7 +142,7 @@ const CommonHeader = ({ showNavBar, scrollY }: ScrollHeaderProps) => {
 							<ChevronLeftIcon />
 						</TouchableOpacity>
 						<FadingView opacity={showNavBar}>
-							<AccountName name={'Account name'} className='ml-1'/>
+							<AccountName name={fadingName ?? 'Account name'} hasRedMark={fadingName ? false : true } className="ml-1" />
 						</FadingView>
 					</View>
 				}
@@ -144,8 +161,13 @@ const CommonHeader = ({ showNavBar, scrollY }: ScrollHeaderProps) => {
 				>
 					<Animated.View style={profileImageScaleStyle}>
 						<Avatar
-							src={require('@/assets/images/profile/profile_img.jpeg')}
-							className="rounded-full -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
+							src={
+								imageSrc ?? require('@/assets/images/profile/profile_img.jpeg')
+							}
+							className={`${
+								avatarStyle ??
+								'rounded-full -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
+							}`}
 						/>
 					</Animated.View>
 				</Animated.View>

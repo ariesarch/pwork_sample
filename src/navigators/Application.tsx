@@ -9,6 +9,7 @@ import {
 	HomeFeed,
 	Profile,
 	Channel,
+	ChannelDetail,
 } from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
@@ -27,6 +28,7 @@ function ApplicationNavigator() {
 					<Stack.Screen name="Profile" component={Profile} />
 					<Stack.Screen name="HomeFeed" component={HomeFeed} />
 					<Stack.Screen name="Channel" component={Channel} />
+					<Stack.Screen name="ChannelDetail" component={ChannelDetail} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

@@ -276,8 +276,7 @@ export const ChevronRightIcon = (props: SvgProps) => (
 export const CaretRightIcon = (props: SvgProps) => (
 	<Svg fill="none" width="6" height="6" viewBox="0 0 6 6" {...props}>
 		<Path
-			fill="#fff"
-			fillOpacity={0.5}
+			fill="#828689"
 			d="M.504 4.564V.406l4.158 2.086L.504 4.564Z"
 		/>
 	</Svg>
@@ -408,3 +407,15 @@ export const SettingIcon = ({
 		/>
 	</Svg>
 );
+
+export const CalendarIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+  <Svg width="12" height="14" viewBox="0 0 12 14" fill="none" {...props}>
+    <Path
+      fill="#969A9D"
+      d="M3.86.734V1.75h3.656V.734c0-.33.254-.609.609-.609.33 0 .61.28.61.61V1.75H9.75c.889 0 1.625.736 1.625 1.625V11.5a1.62 1.62 0 0 1-1.625 1.625H1.625C.711 13.125 0 12.415 0 11.5V3.375C0 2.486.71 1.75 1.625 1.75h1.016V.734c0-.33.254-.609.609-.609.33 0 .61.28.61.61ZM1.218 5v6.5c0 .229.177.406.406.406H9.75a.417.417 0 0 0 .406-.406V5H1.22Z"
+    />
+  </Svg>
+)

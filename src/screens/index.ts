@@ -5,3 +5,4 @@ export { default as AboutYou } from './AboutYou/AboutYou';
 export { default as Profile } from './Profile/Profile';
 export { default as HomeFeed } from './HomeFeed/HomeFeed';
 export { default as Channel } from './Channel/Channel';
+export { default as ChannelDetail } from './ChannelDetail/ChannelDetail';

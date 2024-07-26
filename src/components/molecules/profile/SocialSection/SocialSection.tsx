@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, ScrollView, View, ViewProps } from 'react-native';
+import { ScrollView, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import {
@@ -13,18 +13,7 @@ import { useColorScheme } from 'nativewind';
 import { socialLinks } from '@/mock/profile/socialLinks';
 import { scale } from '@/util/helper/helper';
 
-type SocialSectionProps = {
-	posts: string | number;
-	following: string | number;
-	followers: string | number;
-};
-
-const SocialSection = ({
-	posts,
-	following,
-	followers,
-	...props
-}: SocialSectionProps & ViewProps) => {
+const SocialSection = ({ ...props }: ViewProps) => {
 	const { colorScheme, toggleColorScheme } = useColorScheme();
 
 	const renderAccountSocialLink = () => {
@@ -78,9 +67,6 @@ const SocialSection = ({
 						{'(5)'}
 					</ThemeText>
 				</ThemeText>
-				<Pressable onPress={() => toggleColorScheme()}>
-					<ThemeText> Change Theme</ThemeText>
-				</Pressable>
 			</View>
 			<View className="flex-row pt-2" {...props}>
 				{renderAccountSocialLink()}

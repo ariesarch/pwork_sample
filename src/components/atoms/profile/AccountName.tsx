@@ -5,13 +5,18 @@ import { ProfileNameRedMark } from '@/util/svg/icon.profile';
 
 type AccountNameProps = {
 	name: string;
+	hasRedMark?: boolean;
 };
 
-const AccountName = ({ name, ...props }: AccountNameProps & ViewProps) => {
+const AccountName = ({
+	name,
+	hasRedMark,
+	...props
+}: AccountNameProps & ViewProps) => {
 	return (
-		<View className='flex-row items-center' {...props}>
+		<View className="flex-row items-center" {...props}>
 			<ThemeText className="font-bold text-[17px] mr-2">{name}</ThemeText>
-			<ProfileNameRedMark />
+			{hasRedMark && <ProfileNameRedMark />}
 		</View>
 	);
 };

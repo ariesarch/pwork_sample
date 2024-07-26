@@ -23,7 +23,7 @@ const UserStats = ({
 				{following} <ThemeText className="opacity-50 font-normal">Following</ThemeText>
 			</ThemeText>
 			<ThemeText className='font-semibold'>
-				{following} <ThemeText className="opacity-50 font-normal">Followers</ThemeText>
+				{followers} <ThemeText className="opacity-50 font-normal">Followers</ThemeText>
 			</ThemeText>
 		</View>
 	);
