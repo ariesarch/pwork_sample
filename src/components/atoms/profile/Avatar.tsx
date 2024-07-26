@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image } from '@/components/atoms';
 import { FastImageProps } from 'react-native-fast-image';
+import Image from '../common/Image/Image';
 
 type AvatarProps = {
 	src: string;

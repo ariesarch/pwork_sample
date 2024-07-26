@@ -24,7 +24,7 @@ const Image = ({ uri = '', resizeMode, ...props }: ImageProps & FastImageProps) 
 				priority: FastImage.priority.high,
 				cache: FastImage.cacheControl.immutable,
 			}}
-			resizeMode={resizeMode}
+			resizeMode={resizeMode ?? 'cover'}
 			onLoadStart={onLoadStart}
 			onLoadEnd={onLoadEnd}
 			fallback={Platform.OS === 'android'}

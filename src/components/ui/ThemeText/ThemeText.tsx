@@ -7,14 +7,15 @@ const textVariants = cva('group flex items-center justify-center rounded-md', {
 	variants: {
 		variant: {
 			default: /* tw */ 'font-sans text-sm text-black dark:text-white',
-			textGrey: /* tw */ 'font-sans text-sm text-patchwork-grey-50 dark:text-patchwork-grey-50',
+			textGrey: /* tw */ 'font-sans text-sm text-patchwork-grey-100 dark:text-patchwork-grey-400',
 		},
 		size: {
 			default: /* tw */ 'text-sm',
-			xs_12: 'text-xs',
-			md_16: 'text-base',
-			lg_18: 'text-lg',
-			xl_20: 'text-xl',
+			fs_13: /* tw */ 'text-[13px]',
+			xs_12: /* tw */ 'text-xs',
+			md_16: /* tw */ 'text-base',
+			lg_18: /* tw */ 'text-lg',
+			xl_20: /* tw */ 'text-xl',
 		},
 	},
 	defaultVariants: {

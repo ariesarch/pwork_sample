@@ -6,16 +6,14 @@ import { Check } from '@/util/svg/icon.common';
 
 type Props = {
 	community: Pathchwork.Collection;
-	key: number;
 	// onPress?: (item: Pathchwork.Collection) => void;
 };
 
-const CommunityItem = ({ community, key }: Props) => {
+const CommunityItem = ({ community }: Props) => {
 	const [isSelected, setIsSelected] = useState(false);
 
 	return (
 		<Pressable
-			key={key}
 			onPress={() => {
 				setIsSelected(prev => !prev);
 			}}

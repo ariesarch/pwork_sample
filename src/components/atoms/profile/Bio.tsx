@@ -1,14 +1,14 @@
 import React from 'react';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 
-type ProfileInformationProps = {
+type BioProps = {
   info: string;
 };
 
-const ProfileInformation = ({ info }: ProfileInformationProps) => {
+const Bio = ({ info }: BioProps) => {
   return (
     <ThemeText className="mt-2 leading-[18px]">{info}</ThemeText>
   );
 };
 
-export default ProfileInformation;
+export default Bio;

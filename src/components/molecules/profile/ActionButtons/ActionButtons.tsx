@@ -8,11 +8,11 @@ type ActionButtonsProps = {
 	hasIcon?: boolean;
 };
 
-const ActionButtons = ({ hasIcon }: ActionButtonsProps & ViewProps) => {
+const ActionButtons = ({ hasIcon, ...props }: ActionButtonsProps & ViewProps) => {
 	const { colorScheme } = useColorScheme();
 
 	return (
-		<View className="flex-row items-center justify-center absolute right-3 top-3">
+		<View className="flex-row items-center justify-center" {...props}>
 			{hasIcon && (
 				<Pressable className="w-8 h-8 rounded-full items-center justify-center border-[1px] border-gray-600 mr-2">
 					<MessageDotsIcon {...{ colorScheme }} />
