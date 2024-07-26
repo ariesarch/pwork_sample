@@ -13,6 +13,7 @@ export type RootStackParamList = {
 	AboutYou: undefined;
 	Profile: undefined;
 	Index: undefined;
+	ChannelDetail: undefined;
 };
 
 export type BottomStackParamList = {

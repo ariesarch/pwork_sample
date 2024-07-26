@@ -1,4 +1,4 @@
-import { Card } from '@/components/atoms';
+import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';

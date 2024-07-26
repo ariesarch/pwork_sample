@@ -6,9 +6,7 @@ import {
 	Register,
 	Welcome,
 	AboutYou,
-	HomeFeed,
 	Profile,
-	Channel,
 	ChannelDetail,
 } from '@/screens';
 

@@ -1,4 +1,4 @@
-import { Image } from '@/components/atoms';
+import Image from '@/components/atoms/common/Image/Image';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { RootStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
