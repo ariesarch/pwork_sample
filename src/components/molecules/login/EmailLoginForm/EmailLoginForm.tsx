@@ -5,6 +5,7 @@ import { useColorScheme } from 'nativewind';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import { Button } from '@/components/ui/Button/Button';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { useNavigation } from '@react-navigation/native';
 
 const EmailLoginForm = () => {
 	const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const EmailLoginForm = () => {
 		password: false,
 	});
 	const { colorScheme, toggleColorScheme } = useColorScheme();
+
+	const navigation = useNavigation();
 
 	return (
 		<View>
@@ -63,9 +66,7 @@ const EmailLoginForm = () => {
 				</Pressable>
 			</View>
 			<Button
-				onPress={() => {
-					toggleColorScheme();
-				}}
+				onPress={() => navigation.navigate('Index')}
 				className="my-3"
 			>
 				<ThemeText className="text-white">Login</ThemeText>

@@ -13,6 +13,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useColorScheme } from 'nativewind';
 import { View } from 'react-native';
 import HomeStack from './HomeStackNavigator';
+import { scale } from '@/util/helper/helper';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
@@ -27,7 +28,7 @@ export default function BottomTabs() {
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
 					backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#fff',
-					height: 65,
+					height: scale(4),
 					// borderTopWidth: 1,
 					// borderTopColor: colorScheme === 'dark' ? '#585e62' : '#fefefe',
 				},

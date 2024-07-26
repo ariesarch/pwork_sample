@@ -8,7 +8,7 @@ const textVariants = cva('group flex items-center justify-center rounded-md', {
 		variant: {
 			default: /* tw */ 'font-sans text-sm text-black dark:text-white',
 			textGrey:
-				/* tw */ 'font-sans text-sm text-patchwork-slate-200 dark:text-patchwork-grey-50',
+				/* tw */ 'font-sans text-sm text-patchwork-slate-200 dark:text-patchwork-grey-400',
 		},
 		size: {
 			default: /* tw */ 'text-sm',

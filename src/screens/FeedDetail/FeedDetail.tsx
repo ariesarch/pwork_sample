@@ -10,8 +10,9 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { mockCommandStatusList, mockStatusList } from '@/mock/feed/statusList';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 	const renderHeader = () => {
@@ -42,29 +43,36 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 
 	return (
 		<SafeScreen>
-			<Header
-				title="Post"
-				leftCustomComponent={
-					<BackButton
-						customOnPress={() => {
-							navigation.goBack();
-						}}
-					/>
-				}
-			/>
-			<Underline className="mb-3" />
-			<FlatList
-				data={mockCommandStatusList}
-				ListHeaderComponent={renderHeader}
-				ListHeaderComponentStyle={{ margin: 0, padding: 0 }}
-				// ListFooterComponent={renderFooter}
-				showsVerticalScrollIndicator={false}
-				keyExtractor={(_, index) => index.toString()}
-				renderItem={({ item }) => <StatusItem status={item} />}
-			/>
-			<View className="mx-3 p-3">
-				<TextInput placeholder="Reply To Account Name" />
-			</View>
+			<KeyboardAwareScrollView
+				className=" bg-patchwork-light-900 dark:bg-patchwork-dark-100"
+				style={{ flex: 1 }}
+			>
+				<Header
+					title="Post"
+					leftCustomComponent={
+						<BackButton
+							customOnPress={() => {
+								navigation.goBack();
+							}}
+						/>
+					}
+				/>
+				<Underline className="mb-3" />
+				<FlatList
+					data={mockCommandStatusList}
+					ListHeaderComponent={renderHeader}
+					ListHeaderComponentStyle={{ margin: 0, padding: 0 }}
+					// ListFooterComponent={renderFooter}
+					showsVerticalScrollIndicator={false}
+					keyExtractor={(_, index) => index.toString()}
+					renderItem={({ item }) => <StatusItem status={item} />}
+					contentContainerStyle={{ flexGrow: 1 }}
+					style={{ flex: 1 }}
+				/>
+				<View className="mx-6 my-3">
+					<TextInput placeholder="Reply To Account Name" />
+				</View>
+			</KeyboardAwareScrollView>
 		</SafeScreen>
 	);
 };

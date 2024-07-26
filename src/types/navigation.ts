@@ -31,6 +31,7 @@ export type HomeStackParamList = {
 		statusId: number | undefined;
 	};
 	ChannelDetail: undefined;
+	Profile: undefined;
 };
 
 export type RootScreenProps<

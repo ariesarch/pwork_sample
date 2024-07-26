@@ -39,7 +39,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => {}}
+									onPress={() => navigation.navigate('ChannelDetail')}
 								/>
 							</View>
 						))}

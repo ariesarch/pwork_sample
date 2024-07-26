@@ -27,9 +27,10 @@ const DOBPRogress = () => {
 		event: DateTimePickerEvent,
 		selectedDate: Date | undefined,
 	) => {
-		if (Platform.OS === 'android') {
-			setOpenDatePicker(false);
-		}
+		setOpenDatePicker(false);
+		// if (Platform.OS === 'android') {
+		// 	setOpenDatePicker(false);
+		// }
 		setCurrentDob(selectedDate ?? currentDob);
 	};
 
