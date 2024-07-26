@@ -11,6 +11,7 @@ type VerticalInfoProps = {
 	joinedDate: string;
 	profileInfo: string;
 	hasRedMark?: boolean;
+	showChannel?: boolean;
 };
 
 const VerticalInfo = ({
@@ -18,14 +19,17 @@ const VerticalInfo = ({
 	username,
 	joinedDate,
 	profileInfo,
-	hasRedMark,
+	hasRedMark = false,
+	showChannel = true,
 }: VerticalInfoProps) => {
 	return (
 		<View className="flex-col px-4 pt-4">
 			<AccountName name={accountName} {...{ hasRedMark }} />
 			<UserName username={username} joinedDate={joinedDate} />
-			<ChannelFollowers followers={'7.3k'} />
-			<Bio info={profileInfo} />
+			{showChannel && <ChannelFollowers followers="7.3k" />}
+			<View className="flex-row">
+				<Bio info={profileInfo} />
+			</View>
 		</View>
 	);
 };

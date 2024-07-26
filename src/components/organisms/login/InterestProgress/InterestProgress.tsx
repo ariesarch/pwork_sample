@@ -9,7 +9,7 @@ import { ScrollView, View } from 'react-native';
 const InterestProgress = () => {
 	return (
 		<ScrollView showsVerticalScrollIndicator={false} className="mb-10">
-			<ThemeText variant="textGrey">
+			<ThemeText variant="textGrey" >
 				Pick Things you'd like to see in your home feed.
 			</ThemeText>
 			<View className="mt-5">

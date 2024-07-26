@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useState } from 'react';
 import { View, TextInputProps, TextInput as RNTextInput } from 'react-native';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 // import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
@@ -8,21 +8,26 @@ type InputProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
 	styleNW?: string;
+	showUnderLine?: boolean;
 } & TextInputProps;
 
 const TextInput = ({
-	placeholder,
 	endIcon = undefined,
 	startIcon = undefined,
-	style,
+	placeholder,
 	styleNW = '',
+	showUnderLine = false,
 	...textInputProps
 }: InputProps) => {
 	const inputColor = useAppropiateColorHash('patchwork-light-900');
+	const [isFocused, setIsFocused] = useState(false);
+
 	return (
 		<View
 			className={`${styles.textInputWrapper} ${styleNW} ${
 				startIcon ? 'pl-9' : 'pl-5'
+			} ${
+				isFocused && showUnderLine ? 'border-b border-b-patchwork-red-50' : ''
 			}`}
 		>
 			{startIcon && (
@@ -34,11 +39,13 @@ const TextInput = ({
 				selectionColor={inputColor}
 				testID="text-input"
 				placeholderTextColor={inputColor}
-				style={{ color: inputColor }}
+				style={[{ color: inputColor }]}
 				autoCorrect
 				spellCheck
 				editable
 				placeholder={placeholder}
+				onFocus={() => setIsFocused(true)}
+				onBlur={() => setIsFocused(false)}
 				{...textInputProps}
 				className="w-full"
 			/>

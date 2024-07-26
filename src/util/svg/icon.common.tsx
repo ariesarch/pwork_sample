@@ -498,3 +498,15 @@ export const CalendarIcon = ({
 		/>
 	</Svg>
 );
+
+export const CheckIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg fill="none" width="13" height="9" viewBox="0 0 13 9" {...props}>
+		<Path
+			fill={colorScheme === 'dark' ? '#FFF' : '#969A9D'}
+			d="M12.172.24c.254.254.254.635 0 .864L5.469 7.807a.556.556 0 0 1-.838 0L1.178 4.354c-.254-.229-.254-.61 0-.864a.598.598 0 0 1 .838 0l3.046 3.047L11.335.24a.598.598 0 0 1 .838 0Z"
+		/>
+	</Svg>
+);
