@@ -21,7 +21,7 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 				<View className="mx-4">
 					<StatusHeader
 						status={mockStatusList[0]}
-						avatarSize={33}
+						imageSize="w-8 h-8"
 						showAvatarIcon
 						showFollowIcon
 					/>

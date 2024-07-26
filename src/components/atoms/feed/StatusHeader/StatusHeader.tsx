@@ -6,14 +6,14 @@ type Props = {
 	status: Pathchwork.Status;
 	showAvatarIcon?: boolean;
 	showFollowIcon?: boolean;
-	avatarSize?: number;
+	imageSize?: string;
 } & ViewProps;
 
 const StatusHeader = ({
 	status,
 	showAvatarIcon = false,
 	showFollowIcon = false,
-	avatarSize = 18,
+	imageSize = '',
 	...props
 }: Props) => {
 	return (
@@ -21,7 +21,7 @@ const StatusHeader = ({
 			{showAvatarIcon === true && (
 				<Image
 					source={status.account.avatar as ImageProps}
-					className={`w-[${avatarSize}] h-[${avatarSize}] rounded-full bg-slate-300 mr-2`}
+					className={`w-5 h-5 rounded-full bg-slate-300 mr-2 ${imageSize}`}
 				/>
 			)}
 			<ThemeText className="font-bold">{status.account.username}</ThemeText>
