@@ -8,7 +8,7 @@ import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 const EmailVerification: React.FC<RootScreenProps<'EmailVerification'>> = ({
