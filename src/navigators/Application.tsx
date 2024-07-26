@@ -8,6 +8,7 @@ import {
 	AboutYou,
 	Profile,
 	ChannelDetail,
+	EmailVerification,
 } from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
@@ -27,6 +28,10 @@ function ApplicationNavigator() {
 					<Stack.Screen name="Profile" component={Profile} />
 					<Stack.Screen name="Index" component={BottomTabs} />
 					<Stack.Screen name="ChannelDetail" component={ChannelDetail} />
+					<Stack.Screen
+						name="EmailVerification"
+						component={EmailVerification}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

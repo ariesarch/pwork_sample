@@ -14,6 +14,7 @@ export type RootStackParamList = {
 	Profile: undefined;
 	Index: undefined;
 	ChannelDetail: undefined;
+	EmailVerification: undefined;
 };
 
 export type BottomStackParamList = {
