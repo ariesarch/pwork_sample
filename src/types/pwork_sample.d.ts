@@ -46,5 +46,18 @@ declare namespace Pathchwork {
 		username: string;
 		acct: string;
 		avatar: string;
+		hasNoti?: boolean;
+	};
+
+	type Channel = {
+		id: string;
+		title: string;
+		image: string;
+	};
+
+	type HashTag = {
+		id: string;
+		name: string;
+		hasNoti?: boolean;
 	};
 }

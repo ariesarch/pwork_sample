@@ -25,7 +25,7 @@ const TabBar = (props: Props) => {
 	return (
 		<RNTabBar
 			{...props}
-			style={{ backgroundColor: color, elevation: 0 }}
+			style={{ backgroundColor: color, elevation: 0, marginHorizontal: 16 }}
 			renderIndicator={indicatorProps => {
 				return (
 					<TabBarIndicator

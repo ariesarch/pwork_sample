@@ -33,11 +33,11 @@ const AboutYou: React.FC<RootScreenProps<'AboutYou'>> = ({ navigation }) => {
 				{activeStep === 1 && <DOBPRogress />}
 				{activeStep === 2 && <InterestProgress />}
 				{activeStep === 3 && <ContributorProgress />}
-				<View className="absolute bottom-0 w-full mb-8">
+				<View className="absolute bottom-0 w-full mb-8 bg-white dark:bg-patchwork-dark-100">
 					<Button
 						onPress={() => {
 							if (activeStep < 3) return setActiveStep(prev => prev + 1);
-							return navigation.navigate('Channel');
+							return navigation.navigate('Index');
 						}}
 					>
 						<ThemeText className="text-white">Next</ThemeText>

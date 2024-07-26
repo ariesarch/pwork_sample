@@ -6,9 +6,10 @@ import { View, ImageProps, Image, Pressable } from 'react-native';
 
 type Props = {
 	account: Pathchwork.Account;
+	showUnderLine?: boolean;
 };
 
-const ChannelHeader = ({ account }: Props) => {
+const ChannelHeader = ({ account, showUnderLine = true }: Props) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<View>
@@ -32,7 +33,7 @@ const ChannelHeader = ({ account }: Props) => {
 					<SettingIcon colorScheme={colorScheme} />
 				</Pressable>
 			</View>
-			<Underline className="mt-2" />
+			{showUnderLine && <Underline className="mt-2" />}
 		</View>
 	);
 };

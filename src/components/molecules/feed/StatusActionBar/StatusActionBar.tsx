@@ -6,7 +6,7 @@ import { MoreBtn, ShareTo, Tranlsate } from '@/util/svg/icon.common';
 
 const StatusActionBar = () => {
 	return (
-		<View className="flex flex-row justify-between my-3 items-center">
+		<View className="flex flex-row justify-between mt-3 items-center">
 			<View className="flex flex-row ">
 				<StatusReply className="mr-3" />
 				<StatusReblog className="mr-3" />

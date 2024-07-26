@@ -1,21 +1,18 @@
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import styles from './CommunityItem.style';
 import { Check } from '@/util/svg/icon.common';
+import styles from './CommunityItem.style';
 
 type Props = {
 	community: Pathchwork.Collection;
-	key: number;
-	// onPress?: (item: Pathchwork.Collection) => void;
 };
 
-const CommunityItem = ({ community, key }: Props) => {
+const CommunityItem = ({ community }: Props) => {
 	const [isSelected, setIsSelected] = useState(false);
 
 	return (
 		<Pressable
-			key={key}
 			onPress={() => {
 				setIsSelected(prev => !prev);
 			}}

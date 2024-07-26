@@ -5,3 +5,8 @@ export { default as AboutYou } from './AboutYou/AboutYou';
 export { default as Profile } from './Profile/Profile';
 export { default as HomeFeed } from './HomeFeed/HomeFeed';
 export { default as Channel } from './Channel/Channel';
+export { default as Notification } from './Notification/Notification';
+export { default as Message } from './Message/Message';
+export { default as Compose } from './Compose/Compose';
+export { default as Search } from './Search/Search';
+export { default as FeedDetail } from './FeedDetail/FeedDetail';
