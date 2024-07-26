@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import {
 	CompositeScreenProps,
 	NavigatorScreenParams,
@@ -28,6 +29,7 @@ export type HomeStackParamList = {
 	FeedDetail: {
 		statusId: number | undefined;
 	};
+	ChannelDetail: undefined;
 };
 
 export type RootScreenProps<
@@ -43,3 +45,8 @@ export type TabBarScreenProps<
 	BottomTabScreenProps<BottomStackParamList, S>,
 	RootScreenProps<keyof RootStackParamList>
 >;
+declare global {
+	namespace ReactNavigation {
+		interface RootParamList extends RootStackParamList {}
+	}
+}

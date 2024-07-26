@@ -17,4 +17,6 @@ const scale = (size: number) => {
 	return Dimensions.get('window').width / size;
 };
 
-export { scale };
+const keyExtractor = (_: any, index: number) => index.toString();
+
+export { scale, keyExtractor };

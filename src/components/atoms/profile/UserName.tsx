@@ -8,12 +8,12 @@ type UserNameProps = {
 	joinedDate: string;
 };
 
-const UsernameName = ({ username, joinedDate, ...props }: UserNameProps & ViewProps) => {
+const UserName = ({ username, joinedDate, ...props }: UserNameProps & ViewProps) => {
 	return (
-		<ThemeText className="opacity-50 text-xs" {...props}>
-			@{username} <CaretRightIcon /> Joined on {joinedDate}
+		<ThemeText size={'xs_12'} variant={'textGrey'}>
+			@{username} <CaretRightIcon /> {joinedDate}
 		</ThemeText>
 	);
 };
 
-export default UsernameName;
+export default UserName;
