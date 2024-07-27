@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.patchworksimple"
+    namespace "online.patchwork.app"
     defaultConfig {
-        applicationId "com.patchworksimple"
+        applicationId "online.patchwork.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
