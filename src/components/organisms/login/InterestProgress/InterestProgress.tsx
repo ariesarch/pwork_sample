@@ -1,5 +1,5 @@
 import CommunityItem from '@/components/atoms/login/CommunityItem/CommunityItem';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
 	mockCommunityCollection,
 	MockCommunityList,
@@ -19,8 +19,10 @@ const InterestProgress = () => {
 							{item}
 						</ThemeText>
 						<View className="flex flex-row flex-wrap mt-3">
-							{MockCommunityList.map((item, idx) => {
-								return <CommunityItem community={item} key={idx} />;
+							{MockCommunityList.map((communityItem, commIdx) => {
+								return (
+									<CommunityItem community={communityItem} key={commIdx} />
+								);
 							})}
 						</View>
 					</View>

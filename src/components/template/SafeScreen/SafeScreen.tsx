@@ -16,7 +16,7 @@ function SafeScreen({ children }: PropsWithChildren) {
 			style={[
 				{
 					paddingTop: insets.top,
-					paddingBottom: insets.bottom,
+					// paddingBottom: insets.bottom,
 					paddingLeft: insets.left,
 					paddingRight: insets.right,
 				},

@@ -1,8 +1,8 @@
 import OrSeparator from '@/components/atoms/common/OrSeparator/OrSeparator';
 import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyHaveAcc';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Button } from '@/components/ui/Button/Button';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { Button } from '@/components/atoms/common/Button/Button';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';
 import { MastodonIcon, PatchworkLogo } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';

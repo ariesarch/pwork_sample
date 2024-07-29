@@ -1,43 +1,37 @@
-import {
-	Avatar,
-	AccountName,
-	UserName,
-	ProfileInformation,
-} from '@/components/atoms';
-import Underline from '@/components/atoms/common/Underline/Underline';
-import React from 'react';
+import Avatar from '@/components/atoms/profile/Avatar';
 import { View } from 'react-native';
+import VerticalInfo from '@/components/molecules/profile/VerticalInfo/VerticalInfo';
+import Chip from '@/components/atoms/common/Chip/Chip';
+import { CheckIcon } from '@/util/svg/icon.common';
+import { useColorScheme } from 'nativewind';
 
-type HorizontalInfoProps = {
-	avatarSrc: string;
-	accountName: string;
-	username: string;
-	joinedDate: string;
-	profileInfo: string;
-};
+const HorizontalInfo = () => {
+	const { colorScheme } = useColorScheme();
 
-const HorizontalInfo = ({
-	avatarSrc,
-	accountName,
-	username,
-	joinedDate,
-	profileInfo,
-}: HorizontalInfoProps) => {
 	return (
-        <View>
-		<View className="flex flex-row mb-2 mt-2">
-			<Avatar
-				src={avatarSrc}
-				className="-mt-1  rounded-full w-20 h-20 border-patchwork-dark-100 border-[2.56px] "
-			/>
-			<View className="flex-col px-4">
-				<AccountName name={accountName} />
-				<UserName username={username} joinedDate={joinedDate} />
-				<ProfileInformation info={profileInfo} />
+		<View className="flex-row items-center">
+			<View className="flex-row items-center flex-1">
+				<View className="">
+					<Avatar
+						src={require('@/assets/images/profile/profile_img.jpeg')}
+						className="rounded-full w-[60] h-[60] border-patchwork-dark-100 border-[2.56px]"
+					/>
+				</View>
+				<View className="-ml-1">
+					<VerticalInfo
+						accountName="Account name"
+						username="iwashere"
+						profileInfo="Some description subtitle goes here if any added"
+					/>
+				</View>
 			</View>
+			<Chip
+				title="Following"
+				variant="outline"
+				endIcon={<CheckIcon {...{ colorScheme }} />}
+				className="mb-9"
+			/>
 		</View>
-        <Underline className='mt-2'/>
-        </View>
 	);
 };
 

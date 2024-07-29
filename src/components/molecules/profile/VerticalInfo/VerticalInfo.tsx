@@ -1,36 +1,30 @@
-import {
-	Avatar,
-	AccountName,
-	UserName,
-	ProfileInformation,
-} from '@/components/atoms';
-import React from 'react';
 import { View } from 'react-native';
+import AccountName from '@/components/atoms/profile/AccountName';
+import Bio from '@/components/atoms/profile/Bio';
+import UserName from '@/components/atoms/profile/UserName';
 
 type VerticalInfoProps = {
-	avatarSrc: string;
 	accountName: string;
 	username: string;
-	joinedDate: string;
+	joinedDate?: string;
 	profileInfo: string;
 };
 
 const VerticalInfo = ({
-	avatarSrc,
 	accountName,
 	username,
-	joinedDate,
+	joinedDate = '',
 	profileInfo,
 }: VerticalInfoProps) => {
 	return (
-		<View className="flex-col px-4">
-			<Avatar
-				src={avatarSrc}
-				className="-mt-10 rounded-full w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-			/>
+		<View className="flex-col px-4 pt-4">
+			{/* <Avatar
+                src={avatarSrc}
+                className="-mt-10 rounded-full w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
+            /> */}
 			<AccountName name={accountName} />
 			<UserName username={username} joinedDate={joinedDate} />
-			<ProfileInformation info={profileInfo} />
+			<Bio info={profileInfo} />
 		</View>
 	);
 };

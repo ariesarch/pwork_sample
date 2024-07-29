@@ -5,8 +5,8 @@ import ContributorProgress from '@/components/organisms/login/ContributorProgres
 import DOBPRogress from '@/components/organisms/login/DOBProgress/DOBProgress';
 import InterestProgress from '@/components/organisms/login/InterestProgress/InterestProgress';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Button } from '@/components/ui/Button/Button';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { Button } from '@/components/atoms/common/Button/Button';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';
 import { useState } from 'react';
 import { View } from 'react-native';
@@ -32,8 +32,8 @@ const AboutYou: React.FC<RootScreenProps<'AboutYou'>> = ({ navigation }) => {
 				<ProgressBar stepCounts={3} activeStep={activeStep} />
 				{activeStep === 1 && <DOBPRogress />}
 				{activeStep === 2 && <InterestProgress />}
-				{activeStep === 3 && <ContributorProgress/>}
-				<View className="absolute bottom-0 w-full mb-8">
+				{activeStep === 3 && <ContributorProgress />}
+				<View className="absolute bottom-0 w-full mb-8 bg-white dark:bg-patchwork-dark-100">
 					<Button
 						onPress={() => {
 							if (activeStep < 3) return setActiveStep(prev => prev + 1);

@@ -42,7 +42,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 3,
+		id: 4,
 		name: 'Ukarine',
 		slug: 'ukarine',
 		image_file_name: '',
@@ -56,7 +56,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 4,
+		id: 5,
 		name: 'Weather',
 		slug: 'weather',
 		image_file_name: '',
@@ -70,7 +70,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 5,
+		id: 6,
 		name: 'Breaking news - UK',
 		slug: 'uk_news',
 		image_file_name: '',
@@ -84,7 +84,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 6,
+		id: 7,
 		name: 'NHS',
 		slug: 'nhs',
 		image_file_name: '',
@@ -98,7 +98,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 7,
+		id: 8,
 		name: 'Isarel-Gazza War',
 		slug: 'isrel',
 		image_file_name: '',
@@ -112,7 +112,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 8,
+		id: 9,
 		name: 'Coast of Living',
 		slug: 'living',
 		image_file_name: '',
@@ -126,7 +126,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 9,
+		id: 10,
 		name: 'Climate',
 		slug: 'climate',
 		image_file_name: '',
@@ -140,7 +140,7 @@ export const MockCommunityList: Pathchwork.Collection[] = [
 		is_virtual: false,
 	},
 	{
-		id: 10,
+		id: 11,
 		name: 'World',
 		slug: 'world',
 		image_file_name: '',

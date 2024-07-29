@@ -6,13 +6,13 @@ import {
 	Register,
 	Welcome,
 	AboutYou,
-	HomeFeed,
 	Profile,
-	Channel,
+	ChannelDetail,
 	EmailVerification,
 } from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
+import BottomTabs from './BottomTabStackNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -26,9 +26,12 @@ function ApplicationNavigator() {
 					<Stack.Screen name="Login" component={Login} />
 					<Stack.Screen name="AboutYou" component={AboutYou} />
 					<Stack.Screen name="Profile" component={Profile} />
-					<Stack.Screen name="HomeFeed" component={HomeFeed} />
-					<Stack.Screen name="Channel" component={Channel} />
-					<Stack.Screen name="EmailVerification" component={EmailVerification} />
+					<Stack.Screen name="Index" component={BottomTabs} />
+					<Stack.Screen name="ChannelDetail" component={ChannelDetail} />
+					<Stack.Screen
+						name="EmailVerification"
+						component={EmailVerification}
+					/>
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

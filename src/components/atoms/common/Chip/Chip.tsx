@@ -1,4 +1,4 @@
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { cva, VariantProps } from 'class-variance-authority';
 import { View, Pressable } from 'react-native';
 
@@ -8,7 +8,7 @@ const chipVairants = cva(
 		variants: {
 			variant: {
 				default:
-					/* tw */ ' bg-slate-200 dark:bg-patchwork-grey-70  active:opacity-90',
+					/* tw */ ' bg-slate-200 dark:bg-patchwork-grey-70 active:opacity-90',
 				outline: /* tw */ 'border border-slate-300',
 				white: /* tw */ ' bg-slate-200 dark:bg-white active:opacity-90',
 			},
@@ -53,7 +53,7 @@ const Chip = ({
 				{...props}
 			>
 				<View className="flex flex-row items-center">
-					{startIcon && <View className="mr-2">{startIcon}</View>}
+					{startIcon && <View className="mr-1">{startIcon}</View>}
 					<ThemeText
 						size="xs_12"
 						className={`${textVariants[variant || 'default']}`}

@@ -1,8 +1,9 @@
 import Underline from '@/components/atoms/common/Underline/Underline';
+import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
-import { RootStackParamList } from '@/types/navigation';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { View, Image, ViewProps, ImageProps, Pressable } from 'react-native';
@@ -12,7 +13,7 @@ type Props = {
 } & ViewProps;
 
 const StatusItem = ({ status, ...props }: Props) => {
-	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	return (
 		<View>
 			<View className="flex flex-row m-4" {...props}>
@@ -25,23 +26,24 @@ const StatusItem = ({ status, ...props }: Props) => {
 						className="w-[33] h-[33] rounded-full bg-slate-300"
 					/>
 				</Pressable>
-				<View className="ml-2 flex-1" {...props}>
+				<Pressable
+					className="ml-2 flex-1"
+					{...props}
+					onPress={() => {
+						navigation.navigate('FeedDetail', { statusId: status.id });
+					}}
+				>
 					<StatusHeader status={status} />
-					<View>
-						<ThemeText textBreakStrategy="balanced" className="flex-wrap">
-							{status.content}
-						</ThemeText>
-					</View>
-					{status.image && (
-						<View className="mt-3 h-[200]">
-							<Image
-								source={status.image as ImageProps}
-								className="rounded-md w-full h-[200]"
-							/>
-						</View>
-					)}
+					<StatusContent status={status} />
 					{status.reblogedStatus && (
-						<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl ">
+						<Pressable
+							className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl"
+							onPress={() => {
+								navigation.navigate('FeedDetail', {
+									statusId: status.reblogedStatus?.id,
+								});
+							}}
+						>
 							<StatusHeader status={status.reblogedStatus} showAvatarIcon />
 							<View>
 								<ThemeText textBreakStrategy="balanced" className="flex-wrap">
@@ -56,13 +58,20 @@ const StatusItem = ({ status, ...props }: Props) => {
 									/>
 								</View>
 							)}
-						</View>
+						</Pressable>
 					)}
 					<StatusActionBar />
-				</View>
+				</Pressable>
 			</View>
 			{status.replyedStatus && (
-				<View className="flex flex-row mx-4 my-4">
+				<Pressable
+					className="flex flex-row mx-4 my-4"
+					onPress={() => {
+						navigation.navigate('FeedDetail', {
+							statusId: status.replyedStatus?.id,
+						});
+					}}
+				>
 					<Image
 						source={status.replyedStatus.account.avatar as ImageProps}
 						className="w-[33] h-[33] rounded-full bg-slate-300"
@@ -84,9 +93,9 @@ const StatusItem = ({ status, ...props }: Props) => {
 						)}
 						<StatusActionBar />
 					</View>
-				</View>
+				</Pressable>
 			)}
-			<Underline className='my-2' />
+			<Underline />
 		</View>
 	);
 };
