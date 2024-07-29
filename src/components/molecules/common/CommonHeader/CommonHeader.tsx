@@ -28,7 +28,7 @@ type CommonHeaderProps = {
 	bannerSrc?: any;
 	imageSrc?: any;
 	avatarStyle?: string | undefined;
-	fadingName?: string;
+	channelName?: string;
 };
 const CommonHeader = ({
 	showNavBar,
@@ -36,7 +36,7 @@ const CommonHeader = ({
 	bannerSrc,
 	imageSrc,
 	avatarStyle,
-	fadingName,
+	channelName,
 }: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
@@ -142,7 +142,7 @@ const CommonHeader = ({
 							<ChevronLeftIcon />
 						</TouchableOpacity>
 						<FadingView opacity={showNavBar}>
-							<AccountName name={fadingName ?? 'Account name'} hasRedMark={fadingName ? false : true } className="ml-1" />
+							<AccountName accountName={channelName ?? 'Account name'} hasRedMark={channelName ? false : true } className="ml-1" />
 						</FadingView>
 					</View>
 				}

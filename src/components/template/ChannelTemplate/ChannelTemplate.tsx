@@ -28,7 +28,7 @@ const ChannelTemplate = () => {
 						bannerSrc={require('../../../../assets/images/mock/channel/channel_banner.png')}
 						imageSrc={require('../../../../assets/images/mock/channel/channel_banner.png')}
             avatarStyle='rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
-            fadingName='Channel name'
+            channelName='Channel name'
 					/>
 				)}
 				LargeHeaderComponent={ChannelHeaderInfo}
@@ -47,6 +47,7 @@ const ChannelTemplate = () => {
 					activeTab == 0 ? <StatusItem status={item} /> : <></>
 				}
 				stickySectionHeadersEnabled
+				showsVerticalScrollIndicator={false}
 				renderSectionHeader={() => (
 					<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 						<View

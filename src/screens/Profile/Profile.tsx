@@ -32,6 +32,7 @@ const Profile = () => {
 				}}
 				renderItem={({ item }) => <StatusItem status={item} />}
 				stickySectionHeadersEnabled
+				showsVerticalScrollIndicator={false}
 				renderSectionHeader={() => (
 					<View
 						className={`flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100`}

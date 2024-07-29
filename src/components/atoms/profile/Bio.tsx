@@ -2,13 +2,14 @@ import React from 'react';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 
 type BioProps = {
-	info: string;
+	userBio: string;
+	userBioTextStyle?: string
 };
 
-const Bio = ({ info }: BioProps) => {
+const Bio = ({ userBio, userBioTextStyle }: BioProps) => {
 	return (
-		<ThemeText className="mt-2 leading-[18px]" textBreakStrategy="balanced">
-			{info}
+		<ThemeText className={`mt-2 leading-[18px] ${userBioTextStyle}`} textBreakStrategy="balanced">
+			{userBio}
 		</ThemeText>
 	);
 };

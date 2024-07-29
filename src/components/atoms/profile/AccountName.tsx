@@ -1,21 +1,26 @@
 import React from 'react';
-import { View, ViewProps } from 'react-native';
+import { TextProps, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
 import { ProfileNameRedMark } from '@/util/svg/icon.profile';
 
 type AccountNameProps = {
-	name: string;
+	accountName: string;
+	acctNameTextStyle?: string;
 	hasRedMark?: boolean;
+	test?: TextProps
 };
 
 const AccountName = ({
-	name,
+	accountName,
+	acctNameTextStyle,
 	hasRedMark,
 	...props
 }: AccountNameProps & ViewProps) => {
 	return (
-		<View className="flex-row items-center" {...props}>
-			<ThemeText className="font-bold text-[17px] mr-2">{name}</ThemeText>
+		<View className="flex-row items-start" {...props}>
+			<ThemeText className={`font-bold text-[17px] mr-2 mb-1 ${acctNameTextStyle}`}>
+				{accountName}
+			</ThemeText>
 			{hasRedMark && <ProfileNameRedMark />}
 		</View>
 	);

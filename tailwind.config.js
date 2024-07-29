@@ -22,6 +22,9 @@ module.exports = {
 				'patchwork-red-50': '#FF3C26',
 				'patchwork-red-600': '#ED1800',
 			},
+			spacing: {
+				'34': '8.125rem',
+			}
 		},
 	},
 	plugins: [],
