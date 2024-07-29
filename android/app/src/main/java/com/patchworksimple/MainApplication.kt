@@ -1,4 +1,4 @@
-package com.patchworksimple
+package online.patchwork.app
 
 import android.app.Application
 import com.facebook.react.PackageList
