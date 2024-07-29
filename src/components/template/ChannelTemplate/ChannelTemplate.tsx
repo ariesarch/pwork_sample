@@ -25,8 +25,8 @@ const ChannelTemplate = () => {
 					<CommonHeader
 						scrollY={scrollY}
 						showNavBar={showNavBar}
-						bannerSrc={require('@/assets/images/channel/channel_banner.png')}
-						imageSrc={require('@/assets/images/channel/channel_banner.png')}
+						bannerSrc={require('../../../../assets/images/mock/channel/channel_banner.png')}
+						imageSrc={require('../../../../assets/images/mock/channel/channel_banner.png')}
             avatarStyle='rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
             fadingName='Channel name'
 					/>

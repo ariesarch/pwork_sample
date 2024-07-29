@@ -114,7 +114,7 @@ const CommonHeader = ({
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={bannerSrc ?? require('@/assets/images/profile/banner_img.jpeg')}
+				source={bannerSrc ?? require('../../../../../assets/images/mock/profile/banner_img.jpeg')}
 				{...{
 					bannerHeight,
 					bannerTranslationStyle,
@@ -162,7 +162,7 @@ const CommonHeader = ({
 					<Animated.View style={profileImageScaleStyle}>
 						<Avatar
 							src={
-								imageSrc ?? require('@/assets/images/profile/profile_img.jpeg')
+								imageSrc ?? require('../../../../../assets/images/mock/profile/profile_img.jpeg')
 							}
 							className={`${
 								avatarStyle ??

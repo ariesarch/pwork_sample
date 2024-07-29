@@ -28,7 +28,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							My Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey" className="dark:opacity-50">
+							<ThemeText variant="textGrey">
 								View All
 							</ThemeText>
 						</Pressable>
@@ -51,7 +51,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							Server Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey" className="dark:opacity-50">
+							<ThemeText variant="textGrey">
 								View All
 							</ThemeText>
 						</Pressable>
@@ -62,7 +62,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => {}}
+									onPress={() => navigation.navigate('ChannelDetail')}
 								/>
 							</View>
 						))}
@@ -77,7 +77,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							onPress={() => navigation.navigate('Channel')}
 							className="mr-4"
 						>
-							<ThemeText variant="textGrey" className="dark:opacity-50">
+							<ThemeText variant="textGrey">
 								View All
 							</ThemeText>
 						</Pressable>
@@ -105,7 +105,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => {}}
+									onPress={() => navigation.navigate('ChannelDetail')}
 								/>
 							</View>
 						))}

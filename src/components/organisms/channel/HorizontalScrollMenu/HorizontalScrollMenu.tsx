@@ -9,25 +9,25 @@ const profiles = [
 		id: 1,
 		name: 'Account name',
 		count: 101,
-		image: require('@/assets/images/profile/image-1.png'),
+		image: require('../../../../../assets/images/mock/profile/image-1.png'),
 	},
 	{
 		id: 2,
 		name: 'Account name',
 		count: 58,
-		image: require('@/assets/images/profile/image-2.png'),
+		image: require('../../../../../assets/images/mock/profile/image-2.png'),
 	},
 	{
 		id: 3,
 		name: 'Account name',
 		count: 31,
-		image: require('@/assets/images/profile/image-3.png'),
+		image: require('../../../../../assets/images/mock/profile/image-3.png'),
 	},
 	{
 		id: 4,
 		name: 'Account name',
 		count: 10,
-		image: require('@/assets/images/profile/image-4.png'),
+		image: require('../../../../../assets/images/mock/profile/image-4.png'),
 	},
 ];
 
@@ -43,7 +43,7 @@ const HorizontalScrollMenu = () => {
 				<QuickVerticalInfo
 					name="All"
 					count={329}
-					image={require('@/assets/images/profile/all.png')}
+					image={require('../../../../../assets/images/mock/profile/all.png')}
           className='bg-patchwork-red-50 text-patchwork-red-50 border-patchwork-red-50 -right-4'
           countColor={'text-white'}
 				/>

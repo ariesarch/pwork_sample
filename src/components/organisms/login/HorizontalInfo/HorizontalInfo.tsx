@@ -13,7 +13,7 @@ const HorizontalInfo = () => {
 			<View className="flex-row items-center flex-1">
 				<View className="">
 					<Avatar
-						src={require('@/assets/images/profile/profile_img.jpeg')}
+						src={require('../../../../../assets/images/mock/profile/profile_img.jpeg')}
 						className="rounded-full w-[60] h-[60] border-patchwork-dark-100 border-[2.56px]"
 					/>
 				</View>
