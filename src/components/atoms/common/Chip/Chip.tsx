@@ -1,4 +1,4 @@
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { cva, VariantProps } from 'class-variance-authority';
 import { View, Pressable } from 'react-native';
 

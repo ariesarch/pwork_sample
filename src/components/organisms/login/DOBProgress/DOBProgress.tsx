@@ -4,7 +4,7 @@
 
 /* eslint-disable react/no-unescaped-entities */
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { MockCountryList } from '@/mock/login/countryList';
 import { DownIcon } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';

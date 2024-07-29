@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Pressable, ViewProps } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { MessageDotsIcon } from '@/util/svg/icon.profile';
 import { useColorScheme } from 'nativewind';
 

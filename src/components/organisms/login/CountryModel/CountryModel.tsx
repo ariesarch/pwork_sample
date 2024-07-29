@@ -1,6 +1,6 @@
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { MockCountryList } from '@/mock/login/countryList';
 import {
 	RadioCheckedIcon,

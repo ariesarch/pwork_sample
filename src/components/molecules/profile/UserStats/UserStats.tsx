@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ViewProps } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type UserStatsProps = {
 	posts: string | number;

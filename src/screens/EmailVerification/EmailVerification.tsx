@@ -3,7 +3,7 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/header/header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useState } from 'react';

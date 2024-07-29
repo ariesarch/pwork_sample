@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 // import Avatar from '@/components/atoms/profile/Avatar';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ScrollView } from 'react-native';
 import HorizontalInfo from '../HorizontalInfo/HorizontalInfo';
 import { scale } from '@/util/helper/helper';

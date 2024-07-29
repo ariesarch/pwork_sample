@@ -5,8 +5,8 @@ import ContributorProgress from '@/components/organisms/login/ContributorProgres
 import DOBPRogress from '@/components/organisms/login/DOBProgress/DOBProgress';
 import InterestProgress from '@/components/organisms/login/InterestProgress/InterestProgress';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Button } from '@/components/ui/Button/Button';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { Button } from '@/components/atoms/common/Button/Button';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';
 import { useState } from 'react';
 import { View } from 'react-native';

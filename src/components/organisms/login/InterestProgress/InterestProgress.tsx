@@ -1,5 +1,5 @@
 import CommunityItem from '@/components/atoms/login/CommunityItem/CommunityItem';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
 	mockCommunityCollection,
 	MockCommunityList,
