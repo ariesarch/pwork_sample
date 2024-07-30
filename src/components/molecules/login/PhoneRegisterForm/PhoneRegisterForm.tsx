@@ -1,7 +1,7 @@
 import Checkbox from '@/components/atoms/common/Checkbox/Checkbox.style';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
-import { Button } from '@/components/ui/Button/Button';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { Button } from '@/components/atoms/common/Button/Button';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootStackParamList } from '@/types/navigation';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';

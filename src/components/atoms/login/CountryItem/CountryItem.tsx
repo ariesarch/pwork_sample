@@ -1,5 +1,5 @@
 /* eslint-disable react/destructuring-assignment */
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Pressable } from 'react-native';
 
 const CountryItem = (country: Pathchwork.Country) => {

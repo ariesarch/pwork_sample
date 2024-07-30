@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type BioProps = {
 	userBio: string;

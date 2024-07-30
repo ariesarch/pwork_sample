@@ -3,7 +3,7 @@ import Chip from '@/components/atoms/common/Chip/Chip';
 import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
 	mockHashTag,
 	mockLocalChannelList,

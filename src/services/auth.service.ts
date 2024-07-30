@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { QueryFunctionContext } from '@tanstack/react-query';
 import { GetUserQueryKey } from '@/types/queries/auth.type';
 import instance from '@/services/instance';

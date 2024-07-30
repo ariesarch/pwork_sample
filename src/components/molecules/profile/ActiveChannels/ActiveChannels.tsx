@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, FlatList } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { activeChannelData } from '@/mock/profile/activeChannels';
 import { scale } from '@/util/helper/helper';
 import Card from '@/components/atoms/card/Card';

@@ -1,6 +1,6 @@
 import { Image, ImageProps, View, ViewProps } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
-import { Button } from '@/components/ui/Button/Button';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { Button } from '@/components/atoms/common/Button/Button';
 
 type Props = {
 	status: Pathchwork.Status;

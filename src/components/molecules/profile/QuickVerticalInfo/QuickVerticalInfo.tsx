@@ -1,5 +1,5 @@
 import Avatar from '@/components/atoms/profile/Avatar';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import React from 'react';
 import { View, StyleSheet, ViewProps, TextProps } from 'react-native';
 import styles from './QuickVerticalInfo.style';

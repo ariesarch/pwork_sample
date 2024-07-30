@@ -2,7 +2,7 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';

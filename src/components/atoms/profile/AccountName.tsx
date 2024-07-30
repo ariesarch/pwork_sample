@@ -1,13 +1,12 @@
 import React from 'react';
-import { TextProps, View, ViewProps } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { View, ViewProps } from 'react-native';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ProfileNameRedMark } from '@/util/svg/icon.profile';
 
 type AccountNameProps = {
 	accountName: string;
 	acctNameTextStyle?: string;
 	hasRedMark?: boolean;
-	test?: TextProps
 };
 
 const AccountName = ({

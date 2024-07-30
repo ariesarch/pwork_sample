@@ -1,4 +1,4 @@
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Heart } from '@/util/svg/icon.common';
 import { useState } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';

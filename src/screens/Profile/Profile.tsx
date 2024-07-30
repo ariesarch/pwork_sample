@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { SectionListWithHeaders } from '@codeherence/react-native-header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { statusListData } from '@/mock/feed/statusList';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import { useColorScheme } from 'nativewind';

@@ -7,7 +7,7 @@ import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { mockCommandStatusList, mockStatusList } from '@/mock/feed/statusList';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { KeyboardAvoidingView, View } from 'react-native';

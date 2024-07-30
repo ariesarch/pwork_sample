@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, View, ViewProps } from 'react-native';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import {
 	PenIcon,

@@ -1,4 +1,4 @@
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { View } from 'react-native';
 
 const EmailVerificationProgress = () => {

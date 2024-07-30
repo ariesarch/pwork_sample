@@ -1,4 +1,4 @@
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Reply } from '@/util/svg/icon.common';
 import { TouchableOpacity } from 'react-native';
 import { ViewProps } from 'react-native';

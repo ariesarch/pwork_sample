@@ -1,5 +1,5 @@
 import Underline from '@/components/atoms/common/Underline/Underline';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { AddCommunityIcon, SettingIcon } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { View, ImageProps, Image, Pressable } from 'react-native';

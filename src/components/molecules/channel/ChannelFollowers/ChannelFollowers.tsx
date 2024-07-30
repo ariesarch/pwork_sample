@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { ThemeText } from '@/components/ui/ThemeText/ThemeText';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Avatar from '@/components/atoms/profile/Avatar';
 
 const ChannelFollowers = ({ followers }: { followers: string | number }) => {
