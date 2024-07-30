@@ -1,5 +1,5 @@
-import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
+import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import ChannelActivity from '@/components/template/channel/ChannelActivity/ChannelActivity';
 import ChannelPeople from '@/components/template/channel/ChannelPeople/ChannelPeople';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
@@ -23,7 +23,7 @@ const Channel = () => {
 
 	return (
 		<SafeScreen>
-			<ChannelHeader account={mockUserList[0]} />
+			<HomeFeedHeader account={mockUserList[0]} />
 			<TabView
 				navigationState={{ index, routes }}
 				renderScene={renderScene}

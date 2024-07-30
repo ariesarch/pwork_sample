@@ -17,7 +17,7 @@ const ActiveChannels = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelDetail')}
+						onPress={() => navigation.navigate('ChannelProfile')}
 					/>
 				)}
 				keyExtractor={item => item.id}

@@ -1,7 +1,7 @@
 import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
+import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
@@ -20,7 +20,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<SafeScreen>
-			<ChannelHeader account={mockUserList[0]} showUnderLine={false} />
+			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View className="ml-6 my-2">
 					<View className="flex flex-row items-center">
@@ -39,7 +39,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelDetail')}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}
@@ -62,7 +62,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelDetail')}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}
@@ -105,7 +105,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelDetail')}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}

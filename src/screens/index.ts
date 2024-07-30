@@ -10,5 +10,5 @@ export { default as Message } from './Message/Message';
 export { default as Compose } from './Compose/Compose';
 export { default as Search } from './Search/Search';
 export { default as FeedDetail } from './FeedDetail/FeedDetail';
-export { default as ChannelDetail } from './ChannelDetail/ChannelDetail';
+export { default as ChannelProfile } from './ChannelProfile/ChannelProfile';
 export { default as EmailVerification } from './EmailVerification/EmailVerification';

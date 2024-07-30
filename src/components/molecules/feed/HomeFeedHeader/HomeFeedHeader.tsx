@@ -9,7 +9,7 @@ type Props = {
 	showUnderLine?: boolean;
 };
 
-const ChannelHeader = ({ account, showUnderLine = true }: Props) => {
+const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<View>
@@ -38,4 +38,4 @@ const ChannelHeader = ({ account, showUnderLine = true }: Props) => {
 	);
 };
 
-export default ChannelHeader;
+export default HomeFeedHeader;

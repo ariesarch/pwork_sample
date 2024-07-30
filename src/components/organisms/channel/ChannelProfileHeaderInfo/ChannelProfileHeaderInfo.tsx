@@ -3,9 +3,8 @@ import { View } from 'react-native';
 import Underline from '@/components/atoms/common/Underline/Underline';
 import VerticalInfo from '@/components/molecules/common/VerticalInfo/VerticalInfo';
 import ActionButtons from '@/components/molecules/profile/ActionButtons/ActionButtons';
-import Chip from '@/components/atoms/common/Chip/Chip';
 
-const ChannelHeaderInfo = () => {
+const ChannelProfileHeaderInfo = () => {
 	return (
 		<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100 mt-[70]">
 			<View className="flex-row mt-3">
@@ -25,4 +24,4 @@ const ChannelHeaderInfo = () => {
 	);
 };
 
-export default ChannelHeaderInfo;
+export default ChannelProfileHeaderInfo;
