@@ -17,13 +17,13 @@ const Header = ({
 	return (
 		<View className={styles.headerContainer} {...props}>
 			{leftCustomComponent && (
-				<View className="">{leftCustomComponent}</View>
+				<View className="absolute left-0 z-10">{leftCustomComponent}</View>
 			)}
 			<View className="flex-1 items-center justify-center">
 				<ThemeText>{title}</ThemeText>
 			</View>
 			{rightCustomComponent && (
-				<View className="">{rightCustomComponent}</View>
+				<View className="absolute right-0 z-10">{rightCustomComponent}</View>
 			)}
 			<View />
 		</View>

@@ -130,41 +130,13 @@ export const CheckboxOutlined = (props: SvgProps) => (
 
 type BackIconType = {
 	colorScheme: 'dark' | 'light';
-	isFromProfile?: boolean;
 } & SvgProps;
 
-export const BackIcon = ({
-	colorScheme,
-	isFromProfile,
-	...props
-}: BackIconType) => (
-	<Svg
-		width="40"
-		height="40"
-		viewBox="0 0 40 40"
-		fill={isFromProfile ? 'rgba(46, 54, 59, 0.5)' : 'none'}
-		{...props}
-	>
-		<Rect
-			x="0.5"
-			y="0.5"
-			width="39"
-			height="39"
-			rx="19.5"
-			stroke={
-				isFromProfile
-					? 'transparent'
-					: colorScheme === 'dark'
-					? 'white'
-					: '#dce0eb'
-			}
-			stroke-opacity="0.4"
-		/>
+export const BackIcon = ({ colorScheme, ...props }: BackIconType) => (
+	<Svg width="8" height="13" viewBox="0 0 8 13" fill="none" {...props}>
 		<Path
-			d="M15.8164 19.2852L21.0664 14.0625C21.3125 13.7891 21.7227 13.7891 21.9961 14.0625C22.2422 14.3086 22.2422 14.7188 21.9961 14.9648L17.1836 19.75L21.9688 24.5625C22.2422 24.8086 22.2422 25.2188 21.9688 25.4648C21.7227 25.7383 21.3125 25.7383 21.0664 25.4648L15.8164 20.2148C15.543 19.9688 15.543 19.5586 15.8164 19.2852Z"
-			// fill={props?.stroke || 'white'}
-			stroke={colorScheme === 'dark' ? 'white' : '#000'}
-			strokeWidth={1}
+			fill={colorScheme === 'dark' ? '#fff' : '#000'}
+			d="m.816 6.285 5.25-5.223c.247-.273.657-.273.93 0a.644.644 0 0 1 0 .903L2.184 6.75l4.785 4.813a.599.599 0 0 1 0 .902.599.599 0 0 1-.903 0l-5.25-5.25c-.273-.246-.273-.656 0-.93Z"
 		/>
 	</Svg>
 );
@@ -279,15 +251,6 @@ export const CaretRightIcon = (props: SvgProps) => (
 	</Svg>
 );
 
-export const ChevronLeftIcon = (props: SvgProps) => (
-	<Svg fill="none" width="6" height="9" viewBox="0 0 6 9" {...props}>
-		<Path
-			fill="#fff"
-			d="m1.012 3.918 3.75-3.73c.176-.196.468-.196.664 0a.46.46 0 0 1 0 .644L1.988 4.25l3.418 3.438a.428.428 0 0 1 0 .644.428.428 0 0 1-.644 0l-3.75-3.75c-.196-.176-.196-.469 0-.664Z"
-		/>
-	</Svg>
-);
-
 export const Reply = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
@@ -312,7 +275,7 @@ export const RePost = (props: SvgProps) => (
 	</Svg>
 );
 
-export const Heart = (props: SvgProps) => (
+export const HeartOutlineIcon = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
 			stroke="#828689"

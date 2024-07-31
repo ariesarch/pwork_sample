@@ -1,3 +1,4 @@
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import ChannelActivity from '@/components/template/channel/ChannelActivity/ChannelActivity';
@@ -29,7 +30,23 @@ const Channel = () => {
 				renderScene={renderScene}
 				onIndexChange={setIndex}
 				initialLayout={{ width: layout.width }}
-				renderTabBar={props => <TabBar {...props} />}
+				renderTabBar={props => (
+					<TabBar
+						{...props}
+						renderLabel={({ route, focused }) => (
+							<ThemeText
+								size="md_16"
+								className={`font-bold ${
+									focused
+										? 'text-black dark:text-white'
+										: 'text-slate-400 dark:text-patchwork-grey-100'
+								}`}
+							>
+								{route.title}
+							</ThemeText>
+						)}
+					/>
+				)}
 			/>
 		</SafeScreen>
 	);
