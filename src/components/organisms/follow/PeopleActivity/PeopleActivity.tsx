@@ -2,7 +2,7 @@ import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import { mockStatusList } from '@/mock/feed/statusList';
 import { View, FlatList } from 'react-native';
 
-const ChannelActivity = () => {
+const PeopleActivity = () => {
 	return (
 		<View>
 			<FlatList
@@ -15,4 +15,4 @@ const ChannelActivity = () => {
 	);
 };
 
-export default ChannelActivity;
+export default PeopleActivity;

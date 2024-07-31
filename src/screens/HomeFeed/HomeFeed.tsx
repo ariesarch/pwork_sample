@@ -74,7 +74,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							People Following
 						</ThemeText>
 						<Pressable
-							onPress={() => navigation.navigate('Channel')}
+							onPress={() => navigation.navigate('PeopleFollowing')}
 							className="mr-4"
 						>
 							<ThemeText variant="textGrey" className="dark:opacity-50">

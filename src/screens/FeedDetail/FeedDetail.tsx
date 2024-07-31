@@ -1,5 +1,5 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';

@@ -26,7 +26,7 @@ export type BottomStackParamList = {
 };
 
 export type HomeStackParamList = {
-	Channel: undefined;
+	PeopleFollowing: undefined;
 	HomeFeed: undefined;
 	FeedDetail: {
 		statusId: number | undefined;

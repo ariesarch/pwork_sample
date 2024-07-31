@@ -5,7 +5,7 @@ import TabSwitch from '@/components/molecules/common/TabSwitch/TabSwitch';
 import EmailRegisterForm from '@/components/molecules/login/EmailRegisterForm/EmailRegisterForm';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import PhoneRegisterForm from '@/components/molecules/login/PhoneRegisterForm/PhoneRegisterForm';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import { BackIcon } from '@/util/svg/icon.common';
 import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyHaveAcc';
 import { useColorScheme } from 'nativewind';
