@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, Pressable } from 'react-native';
 import TabSwitch from '@/components/molecules/common/TabSwitch/TabSwitch';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import { BackIcon } from '@/util/svg/icon.common';
 import PhoneLoginForm from '@/components/molecules/login/PhoneLoginForm/PhoneLoginForm';
 import { useColorScheme } from 'nativewind';

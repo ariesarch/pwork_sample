@@ -1,6 +1,6 @@
 import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
+import ChannelHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -74,7 +74,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							People Following
 						</ThemeText>
 						<Pressable
-							onPress={() => navigation.navigate('Channel')}
+							onPress={() => navigation.navigate('PeopleFollowing')}
 							className="mr-4"
 						>
 							<ThemeText variant="textGrey" className="dark:opacity-50">

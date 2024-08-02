@@ -3,7 +3,7 @@ import { mockUserList } from '@/mock/feed/statusList';
 import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
-const ChannelPeople = () => {
+const FollowedPeople = () => {
 	return (
 		<View className="my-4">
 			<FlatList
@@ -24,4 +24,4 @@ const ChannelPeople = () => {
 	);
 };
 
-export default ChannelPeople;
+export default FollowedPeople;

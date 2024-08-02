@@ -15,6 +15,7 @@ export type RootStackParamList = {
 	Index: undefined;
 	ChannelDetail: undefined;
 	EmailVerification: undefined;
+	ChannelCreate: undefined;
 };
 
 export type BottomStackParamList = {
@@ -26,7 +27,7 @@ export type BottomStackParamList = {
 };
 
 export type HomeStackParamList = {
-	Channel: undefined;
+	PeopleFollowing: undefined;
 	HomeFeed: undefined;
 	FeedDetail: {
 		statusId: number | undefined;

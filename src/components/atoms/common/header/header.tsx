@@ -1,7 +1,6 @@
-/* eslint-disable react/require-default-props */
 import { View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import styles from './header.style';
+import styles from './Header.style';
 
 type Props = {
 	title?: string;
