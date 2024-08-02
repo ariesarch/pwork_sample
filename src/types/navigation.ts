@@ -15,6 +15,7 @@ export type RootStackParamList = {
 	Index: undefined;
 	ChannelDetail: undefined;
 	EmailVerification: undefined;
+	ChannelCreate: undefined;
 };
 
 export type BottomStackParamList = {

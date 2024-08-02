@@ -1,4 +1,4 @@
-import ChannelHeader from '@/components/molecules/channel/ChannelHeader/ChannelHeader';
+import ChannelHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import PeopleActivity from '@/components/organisms/follow/PeopleActivity/PeopleActivity';
 import FollowedPeople from '@/components/organisms/follow/FollowedPeople/FollowedPeople';

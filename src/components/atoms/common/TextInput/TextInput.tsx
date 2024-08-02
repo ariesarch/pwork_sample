@@ -3,12 +3,14 @@ import { View, TextInputProps, TextInput as RNTextInput } from 'react-native';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 // import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import styles from './TextInput.style';
+import { cn } from '@/util/helper/twutil';
 
 type InputProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
 	styleNW?: string;
 	showUnderLine?: boolean;
+	textArea?: boolean;
 } & TextInputProps;
 
 const TextInput = ({
@@ -17,6 +19,7 @@ const TextInput = ({
 	placeholder,
 	styleNW = '',
 	showUnderLine = false,
+	textArea = false,
 	...textInputProps
 }: InputProps) => {
 	const inputColor = useAppropiateColorHash('patchwork-light-900');
@@ -24,11 +27,18 @@ const TextInput = ({
 
 	return (
 		<View
-			className={`${styles.textInputWrapper} ${styleNW} ${
-				startIcon ? 'pl-9' : 'pl-5'
-			} ${
-				isFocused && showUnderLine ? 'border-b border-b-patchwork-red-50' : ''
-			}`}
+			// className={`${styles.textInputWrapper} ${styleNW} ${
+			// 	startIcon ? 'pl-9' : 'pl-5'
+			// } ${showUnderLine ? 'border-b border-b-patchwork-red-50' : ''} ${
+			// 	textArea ? 'h-32' : 'h-12'
+			// }`}
+			className={cn(
+				styles.textInputWrapper,
+				styleNW,
+				startIcon ? 'pl-9' : 'pl-5',
+				showUnderLine ? 'border-b border-b-patchwork-red-50' : '',
+				textArea ? 'h-32' : 'h-12',
+			)}
 		>
 			{startIcon && (
 				<View testID="start-icon-wrapper" className={styles.startIcon}>
@@ -46,8 +56,10 @@ const TextInput = ({
 				placeholder={placeholder}
 				onFocus={() => setIsFocused(true)}
 				onBlur={() => setIsFocused(false)}
+				multiline={textArea}
+				textAlignVertical={textArea ? 'top' : 'bottom'}
 				{...textInputProps}
-				className="w-full"
+				className={`${textArea ? 'w-full h-32' : 'w-full h-10'}`}
 			/>
 
 			{endIcon && (
