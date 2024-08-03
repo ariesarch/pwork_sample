@@ -6,7 +6,7 @@ import { useColorScheme } from 'nativewind';
 import ThemeModal from '../../../atoms/common/Modal/Modal';
 import AudienceList from '@/components/organisms/compose/AudienceList/AudienceList';
 import { ChevronDownIcon } from '@/util/svg/icon.common';
-import { CommunityIcon } from '@/util/svg/icon.compose';
+import { ComposeCommunityIcon } from '@/util/svg/icon.compose';
 const Audience = () => {
 	const { colorScheme } = useColorScheme();
 	const [selectedCommunities, setSelectedCommunities] = useState<string[]>([]);
@@ -40,7 +40,7 @@ const Audience = () => {
 					className={styles.audienceButtonContainer}
 					onPress={() => setModalVisible(true)}
 				>
-					<CommunityIcon {...{ colorScheme }} />
+					<ComposeCommunityIcon {...{ colorScheme }} />
 					<ThemeText className="px-2">{displayText}</ThemeText>
 					<ChevronDownIcon {...{ colorScheme }} />
 				</Pressable>
