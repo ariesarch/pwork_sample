@@ -245,6 +245,21 @@ export const ChevronRightIcon = (props: SvgProps) => (
 	</Svg>
 );
 
+export const ChevronDownIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="17" height="18" viewBox="0 0 17 18" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={1.5}
+			d="m12.75 6.875-4.25 4.25-4.25-4.25"
+		/>
+	</Svg>
+);
+
 export const CaretRightIcon = (props: SvgProps) => (
 	<Svg fill="none" width="6" height="6" viewBox="0 0 6 6" {...props}>
 		<Path fill="#828689" d="M.504 4.564V.406l4.158 2.086L.504 4.564Z" />
@@ -470,6 +485,17 @@ export const CheckIcon = ({
 		<Path
 			fill={colorScheme === 'dark' ? '#FFF' : '#969A9D'}
 			d="M12.172.24c.254.254.254.635 0 .864L5.469 7.807a.556.556 0 0 1-.838 0L1.178 4.354c-.254-.229-.254-.61 0-.864a.598.598 0 0 1 .838 0l3.046 3.047L11.335.24a.598.598 0 0 1 .838 0Z"
+		/>
+	</Svg>
+);
+
+export const CloseIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			stroke="#9299A3"
+			strokeLinecap="round"
+			strokeWidth={2}
+			d="m7.757 16.242 8.486-8.485M16.171 16.314 7.685 7.829"
 		/>
 	</Svg>
 );

@@ -57,7 +57,6 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 						/>
 					}
 				/>
-				<Underline className="mb-3" />
 				<FlatList
 					data={mockCommandStatusList}
 					ListHeaderComponent={renderHeader}
