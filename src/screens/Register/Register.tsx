@@ -1,16 +1,16 @@
 /* eslint-disable react-native/no-inline-styles */
 import { useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import TabSwitch from '@/components/molecules/common/TabSwitch/TabSwitch';
 import EmailRegisterForm from '@/components/molecules/login/EmailRegisterForm/EmailRegisterForm';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import PhoneRegisterForm from '@/components/molecules/login/PhoneRegisterForm/PhoneRegisterForm';
 import Header from '@/components/atoms/common/header/header';
-import { BackIcon } from '@/util/svg/icon.common';
 import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyHaveAcc';
 import { useColorScheme } from 'nativewind';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { RootScreenProps } from '@/types/navigation';
+import BackButton from '@/components/atoms/common/BackButton/BackButton';
 
 const Register: React.FC<RootScreenProps<'Register'>> = ({ navigation }) => {
 	const [activeTab, setActiveTab] = useState('1');
@@ -18,14 +18,7 @@ const Register: React.FC<RootScreenProps<'Register'>> = ({ navigation }) => {
 
 	return (
 		<SafeScreen>
-			<Header
-				title="Create an account"
-				leftCustomComponent={
-					<Pressable onPress={() => navigation.goBack()}>
-						<BackIcon colorScheme={colorScheme} />
-					</Pressable>
-				}
-			/>
+			<Header title="Create an account" leftCustomComponent={<BackButton />} />
 			<KeyboardAwareScrollView
 				contentContainerStyle={{ flex: 1 }}
 				showsVerticalScrollIndicator={false}
