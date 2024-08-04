@@ -3,7 +3,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { View, Pressable } from 'react-native';
 
 const chipVairants = cva(
-	'flex flex-row active:opacity-80 py-2 px-3 rounded-2xl',
+	'flex flex-row active:opacity-80 py-2 px-3 rounded-full',
 	{
 		variants: {
 			variant: {
@@ -46,27 +46,25 @@ const Chip = ({
 	...props
 }: ChipProps) => {
 	return (
-		<View className="flex flex-row">
-			<Pressable
-				onPress={() => {}}
-				className={chipVairants({ variant, className })}
-				{...props}
-			>
-				<View className="flex flex-row items-center">
-					{startIcon && <View className="mr-1">{startIcon}</View>}
-					<ThemeText
-						size="xs_12"
-						className={`${textVariants[variant || 'default']}`}
-					>
-						{title}
-					</ThemeText>
-					{endIcon && <View className="ml-2">{endIcon}</View>}
-					{dotAlert && (
-						<View className="absolute bg-patchwork-red-50 bottom-[18] right-[-8] w-[10] h-[10] rounded-full" />
-					)}
-				</View>
-			</Pressable>
-		</View>
+		<Pressable
+			onPress={() => {}}
+			className={chipVairants({ variant, className })}
+			{...props}
+		>
+			<View className="flex-row items-center">
+				{startIcon && <View className="mr-1">{startIcon}</View>}
+				<ThemeText
+					size="xs_12"
+					className={`${textVariants[variant || 'default']}`}
+				>
+					{title}
+				</ThemeText>
+				{endIcon && <View className="ml-2">{endIcon}</View>}
+				{dotAlert && (
+					<View className="absolute bg-patchwork-red-50 bottom-[18] right-[-8] w-[10] h-[10] rounded-full" />
+				)}
+			</View>
+		</Pressable>
 	);
 };
 

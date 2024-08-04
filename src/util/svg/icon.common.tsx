@@ -130,41 +130,13 @@ export const CheckboxOutlined = (props: SvgProps) => (
 
 type BackIconType = {
 	colorScheme: 'dark' | 'light';
-	isFromProfile?: boolean;
 } & SvgProps;
 
-export const BackIcon = ({
-	colorScheme,
-	isFromProfile,
-	...props
-}: BackIconType) => (
-	<Svg
-		width="40"
-		height="40"
-		viewBox="0 0 40 40"
-		fill={isFromProfile ? 'rgba(46, 54, 59, 0.5)' : 'none'}
-		{...props}
-	>
-		<Rect
-			x="0.5"
-			y="0.5"
-			width="39"
-			height="39"
-			rx="19.5"
-			stroke={
-				isFromProfile
-					? 'transparent'
-					: colorScheme === 'dark'
-					? 'white'
-					: '#dce0eb'
-			}
-			stroke-opacity="0.4"
-		/>
+export const BackIcon = ({ colorScheme, ...props }: BackIconType) => (
+	<Svg width="8" height="13" viewBox="0 0 8 13" fill="none" {...props}>
 		<Path
-			d="M15.8164 19.2852L21.0664 14.0625C21.3125 13.7891 21.7227 13.7891 21.9961 14.0625C22.2422 14.3086 22.2422 14.7188 21.9961 14.9648L17.1836 19.75L21.9688 24.5625C22.2422 24.8086 22.2422 25.2188 21.9688 25.4648C21.7227 25.7383 21.3125 25.7383 21.0664 25.4648L15.8164 20.2148C15.543 19.9688 15.543 19.5586 15.8164 19.2852Z"
-			// fill={props?.stroke || 'white'}
-			stroke={colorScheme === 'dark' ? 'white' : '#000'}
-			strokeWidth={1}
+			fill={colorScheme === 'dark' ? '#fff' : '#000'}
+			d="m.816 6.285 5.25-5.223c.247-.273.657-.273.93 0a.644.644 0 0 1 0 .903L2.184 6.75l4.785 4.813a.599.599 0 0 1 0 .902.599.599 0 0 1-.903 0l-5.25-5.25c-.273-.246-.273-.656 0-.93Z"
 		/>
 	</Svg>
 );
@@ -273,18 +245,24 @@ export const ChevronRightIcon = (props: SvgProps) => (
 	</Svg>
 );
 
-export const CaretRightIcon = (props: SvgProps) => (
-	<Svg fill="none" width="6" height="6" viewBox="0 0 6 6" {...props}>
-		<Path fill="#828689" d="M.504 4.564V.406l4.158 2.086L.504 4.564Z" />
+export const ChevronDownIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="17" height="18" viewBox="0 0 17 18" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={1.5}
+			d="m12.75 6.875-4.25 4.25-4.25-4.25"
+		/>
 	</Svg>
 );
 
-export const ChevronLeftIcon = (props: SvgProps) => (
-	<Svg fill="none" width="6" height="9" viewBox="0 0 6 9" {...props}>
-		<Path
-			fill="#fff"
-			d="m1.012 3.918 3.75-3.73c.176-.196.468-.196.664 0a.46.46 0 0 1 0 .644L1.988 4.25l3.418 3.438a.428.428 0 0 1 0 .644.428.428 0 0 1-.644 0l-3.75-3.75c-.196-.176-.196-.469 0-.664Z"
-		/>
+export const CaretRightIcon = (props: SvgProps) => (
+	<Svg fill="none" width="6" height="6" viewBox="0 0 6 6" {...props}>
+		<Path fill="#828689" d="M.504 4.564V.406l4.158 2.086L.504 4.564Z" />
 	</Svg>
 );
 
@@ -312,7 +290,7 @@ export const RePost = (props: SvgProps) => (
 	</Svg>
 );
 
-export const Heart = (props: SvgProps) => (
+export const HeartOutlineIcon = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
 			stroke="#828689"
@@ -530,6 +508,17 @@ export const DeleteIcon = ({ ...props }: SvgProps) => (
 		<Path
 			d="M4.98047 2.39844L4.42383 3.21875H8.67188L8.11523 2.39844C8.08594 2.33984 7.99805 2.28125 7.91016 2.28125H5.18555C5.09766 2.28125 5.00977 2.33984 4.98047 2.39844ZM9.28711 1.60742L10.3711 3.21875H10.7812H12.1875H12.4219C12.8027 3.21875 13.125 3.54102 13.125 3.92188C13.125 4.33203 12.8027 4.625 12.4219 4.625H12.1875V13.5312C12.1875 14.8496 11.1328 15.875 9.84375 15.875H3.28125C1.96289 15.875 0.9375 14.8496 0.9375 13.5312V4.625H0.703125C0.292969 4.625 0 4.33203 0 3.92188C0 3.54102 0.292969 3.21875 0.703125 3.21875H0.9375H2.34375H2.72461L3.80859 1.60742C4.10156 1.16797 4.62891 0.875 5.18555 0.875H7.91016C8.4668 0.875 8.99414 1.16797 9.28711 1.60742ZM2.34375 4.625V13.5312C2.34375 14.0586 2.75391 14.4688 3.28125 14.4688H9.84375C10.3418 14.4688 10.7812 14.0586 10.7812 13.5312V4.625H2.34375ZM4.6875 6.5V12.5938C4.6875 12.8574 4.45312 13.0625 4.21875 13.0625C3.95508 13.0625 3.75 12.8574 3.75 12.5938V6.5C3.75 6.26562 3.95508 6.03125 4.21875 6.03125C4.45312 6.03125 4.6875 6.26562 4.6875 6.5ZM7.03125 6.5V12.5938C7.03125 12.8574 6.79688 13.0625 6.5625 13.0625C6.29883 13.0625 6.09375 12.8574 6.09375 12.5938V6.5C6.09375 6.26562 6.29883 6.03125 6.5625 6.03125C6.79688 6.03125 7.03125 6.26562 7.03125 6.5ZM9.375 6.5V12.5938C9.375 12.8574 9.14062 13.0625 8.90625 13.0625C8.64258 13.0625 8.4375 12.8574 8.4375 12.5938V6.5C8.4375 6.26562 8.64258 6.03125 8.90625 6.03125C9.14062 6.03125 9.375 6.26562 9.375 6.5Z"
 			fill="#FF3C26"
+		/>
+	</Svg>
+);
+
+export const CloseIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			stroke="#9299A3"
+			strokeLinecap="round"
+			strokeWidth={2}
+			d="m7.757 16.242 8.486-8.485M16.171 16.314 7.685 7.829"
 		/>
 	</Svg>
 );

@@ -1,4 +1,4 @@
-import ChannelHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
+import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import PeopleActivity from '@/components/organisms/follow/PeopleActivity/PeopleActivity';
 import FollowedPeople from '@/components/organisms/follow/FollowedPeople/FollowedPeople';
@@ -7,6 +7,7 @@ import { mockUserList } from '@/mock/feed/statusList';
 import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 const renderScene = SceneMap({
 	first: FollowedPeople,
@@ -23,13 +24,29 @@ const PeopleFolllowing = () => {
 
 	return (
 		<SafeScreen>
-			<ChannelHeader account={mockUserList[0]} />
+			<HomeFeedHeader account={mockUserList[0]} />
 			<TabView
 				navigationState={{ index, routes }}
 				renderScene={renderScene}
 				onIndexChange={setIndex}
 				initialLayout={{ width: layout.width }}
-				renderTabBar={props => <TabBar {...props} />}
+				renderTabBar={props => (
+					<TabBar
+						{...props}
+						renderLabel={({ route, focused }) => (
+							<ThemeText
+								size="md_16"
+								className={`font-bold ${
+									focused
+										? 'text-black dark:text-white'
+										: 'text-slate-400 dark:text-patchwork-grey-100'
+								}`}
+							>
+								{route.title}
+							</ThemeText>
+						)}
+					/>
+				)}
 			/>
 		</SafeScreen>
 	);

@@ -15,7 +15,8 @@ const BackButton = ({ customOnPress = undefined }: Props) => {
 	return (
 		<Pressable
 			onPress={() => (customOnPress ? customOnPress() : navigation.goBack())}
-		>
+			className="w-10 h-10 items-center justify-center rounded-full border-[1px] border-patchwork-grey-100"
+			>
 			<BackIcon colorScheme={colorScheme} />
 		</Pressable>
 	);

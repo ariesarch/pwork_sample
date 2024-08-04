@@ -17,7 +17,7 @@ import Animated, {
 	useSharedValue,
 } from 'react-native-reanimated';
 import { FadingView, Header } from '@codeherence/react-native-header';
-import { ChevronLeftIcon } from '@/util/svg/icon.common';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import AccountName from '@/components/atoms/profile/AccountName';
 import { scale } from '@/util/helper/helper';
 import Banner from '@/components/atoms/common/Banner/Banner';
@@ -28,7 +28,7 @@ type CommonHeaderProps = {
 	bannerSrc?: any;
 	imageSrc?: any;
 	avatarStyle?: string | undefined;
-	fadingName?: string;
+	channelName?: string;
 };
 const CommonHeader = ({
 	showNavBar,
@@ -36,7 +36,7 @@ const CommonHeader = ({
 	bannerSrc,
 	imageSrc,
 	avatarStyle,
-	fadingName,
+	channelName,
 }: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
@@ -114,7 +114,7 @@ const CommonHeader = ({
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={bannerSrc ?? require('@/assets/images/profile/banner_img.jpeg')}
+				source={bannerSrc ?? require('../../../../../assets/images/mock/profile/banner_img.jpeg')}
 				{...{
 					bannerHeight,
 					bannerTranslationStyle,
@@ -139,10 +139,10 @@ const CommonHeader = ({
 							onPress={() => navigation.canGoBack() && navigation.goBack()}
 							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50"
 						>
-							<ChevronLeftIcon />
+							<ProfileBackIcon />
 						</TouchableOpacity>
 						<FadingView opacity={showNavBar}>
-							<AccountName name={fadingName ?? 'Account name'} hasRedMark={fadingName ? false : true } className="ml-1" />
+							<AccountName accountName={channelName ?? 'Account name'} hasRedMark={channelName ? false : true } className="ml-1" />
 						</FadingView>
 					</View>
 				}
@@ -162,7 +162,7 @@ const CommonHeader = ({
 					<Animated.View style={profileImageScaleStyle}>
 						<Avatar
 							src={
-								imageSrc ?? require('@/assets/images/profile/profile_img.jpeg')
+								imageSrc ?? require('../../../../../assets/images/mock/profile/profile_img.jpeg')
 							}
 							className={`${
 								avatarStyle ??

@@ -13,7 +13,7 @@ export type RootStackParamList = {
 	AboutYou: undefined;
 	Profile: undefined;
 	Index: undefined;
-	ChannelDetail: undefined;
+	ChannelProfile: undefined;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
 };
@@ -32,7 +32,7 @@ export type HomeStackParamList = {
 	FeedDetail: {
 		statusId: number | undefined;
 	};
-	ChannelDetail: undefined;
+	ChannelProfile: undefined;
 	Profile: undefined;
 };
 

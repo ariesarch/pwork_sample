@@ -4,18 +4,22 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ProfileNameRedMark } from '@/util/svg/icon.profile';
 
 type AccountNameProps = {
-	name: string;
+	accountName: string;
+	acctNameTextStyle?: string;
 	hasRedMark?: boolean;
 };
 
 const AccountName = ({
-	name,
+	accountName,
+	acctNameTextStyle,
 	hasRedMark,
 	...props
 }: AccountNameProps & ViewProps) => {
 	return (
-		<View className="flex-row items-center" {...props}>
-			<ThemeText className="font-bold text-[17px] mr-2">{name}</ThemeText>
+		<View className="flex-row items-start" {...props}>
+			<ThemeText className={`font-bold text-[17px] mr-2 mb-1 ${acctNameTextStyle}`}>
+				{accountName}
+			</ThemeText>
 			{hasRedMark && <ProfileNameRedMark />}
 		</View>
 	);

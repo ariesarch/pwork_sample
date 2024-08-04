@@ -7,7 +7,7 @@ const ChannelFollowers = ({ followers }: { followers: string | number }) => {
 	return (
 		<View className="flex-row items-center mt-2">
 			<Avatar
-				src={require('@/assets/images/channel/followers_img_1.png')}
+				src={require('../../../../../assets/images/mock/channel/followers_img_1.png')}
 				className="h-8 w-20 mr-2"
 			/>
 			<ThemeText className="font-semibold">

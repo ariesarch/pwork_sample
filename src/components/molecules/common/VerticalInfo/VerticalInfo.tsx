@@ -8,28 +8,30 @@ import ChannelFollowers from '../../channel/ChannelFollowers/ChannelFollowers';
 type VerticalInfoProps = {
 	accountName: string;
 	username: string;
-	joinedDate: string;
-	profileInfo: string;
+	joinedDate?: string;
+	userBio: string;
+	userBioTextStyle?: string;
 	hasRedMark?: boolean;
-	showChannel?: boolean;
+	showChannelFollowers?: boolean;
+	acctNameTextStyle?: string;
 };
 
 const VerticalInfo = ({
 	accountName,
 	username,
 	joinedDate,
-	profileInfo,
-	hasRedMark = false,
-	showChannel = true,
+	userBio,
+	userBioTextStyle,
+	hasRedMark,
+	acctNameTextStyle,
+	showChannelFollowers,
 }: VerticalInfoProps) => {
 	return (
-		<View className="flex-col px-4 pt-4">
-			<AccountName name={accountName} {...{ hasRedMark }} />
-			<UserName username={username} joinedDate={joinedDate} />
-			{showChannel && <ChannelFollowers followers="7.3k" />}
-			<View className="flex-row">
-				<Bio info={profileInfo} />
-			</View>
+		<View className="flex-col px-4">
+			<AccountName {...{ accountName, acctNameTextStyle, hasRedMark }} />
+			<UserName {...{ username, joinedDate }} />
+			{showChannelFollowers && <ChannelFollowers followers="7.3k" />}
+			<Bio {...{ userBio, userBioTextStyle }} />
 		</View>
 	);
 };

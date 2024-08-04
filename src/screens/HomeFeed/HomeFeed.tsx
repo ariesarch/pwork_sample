@@ -1,7 +1,7 @@
 import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import ChannelHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
+import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
@@ -20,7 +20,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<SafeScreen>
-			<ChannelHeader account={mockUserList[0]} showUnderLine={false} />
+			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View className="ml-6 my-2">
 					<View className="flex flex-row items-center">
@@ -28,9 +28,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							My Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey" className="dark:opacity-50">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -39,7 +37,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelDetail')}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}
@@ -51,9 +49,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							Server Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey" className="dark:opacity-50">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -62,7 +58,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => {}}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}
@@ -77,9 +73,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							onPress={() => navigation.navigate('PeopleFollowing')}
 							className="mr-4"
 						>
-							<ThemeText variant="textGrey" className="dark:opacity-50">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -105,7 +99,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => {}}
+									onPress={() => navigation.navigate('ChannelProfile')}
 								/>
 							</View>
 						))}

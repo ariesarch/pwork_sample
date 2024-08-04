@@ -10,16 +10,16 @@ import VerticalInfo from '@/components/molecules/common/VerticalInfo/VerticalInf
 const ProfileInfo = () => {
 	return (
 		<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100 mt-[70]">
-			<View className="flex-row">
+			<View className="flex-row mt-3">
 				<VerticalInfo
 					hasRedMark
-					accountName="Account name"
+					accountName="Account Name"
 					username="iwashere"
 					joinedDate="Joined on Dec 2022"
-					profileInfo="Phasellus nunc leo ullamcorper non. Eget eu ut nunc ut convallis malesuada. Accumsan venenatis at fermentum."
+					userBio="Phasellus nunc leo ullamcorper non. Eget eu ut nunc ut convallis malesuada. Accumsan venenatis at fermentum."
 				/>
-				<ActionButtons className="right-[135] bottom-14" hasIcon name='Follow'/>
-			</View>
+				<ActionButtons name={'Follow'} hasIcon />
+			</View> 
 			<SocialSection />
 			<UserStats posts={24} following={'2.2k'} followers={'7.3k'} />
 			<Underline className="my-2" />

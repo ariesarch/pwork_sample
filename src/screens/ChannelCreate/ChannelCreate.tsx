@@ -49,7 +49,7 @@ const ChannelCreate = () => {
 				<Button
 					onPress={() => {
 						if (activeStep < 5) return setActiveStep(prev => prev + 1);
-						return navigation.navigate('ChannelDetail');
+						return navigation.navigate('ChannelProfile');
 					}}
 					className="mx-4 mt-2 mb-10"
 				>

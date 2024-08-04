@@ -10,10 +10,9 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
-import ChannelHeaderInfo from '@/components/organisms/channel/ChannelHeaderInfo/ChannelHeaderInfo';
-import TabBar from '@/components/molecules/common/TabBar/TabBar';
+import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 
-const ChannelTemplate = () => {
+const ChannelProfile = () => {
 	const { colorScheme } = useColorScheme();
 	const { bottom } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
@@ -25,13 +24,13 @@ const ChannelTemplate = () => {
 					<CommonHeader
 						scrollY={scrollY}
 						showNavBar={showNavBar}
-						bannerSrc={require('@/assets/images/channel/channel_banner.png')}
-						imageSrc={require('@/assets/images/channel/channel_banner.png')}
+						bannerSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
+						imageSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
             avatarStyle='rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
-            fadingName='Channel name'
+            channelName='Channel name'
 					/>
 				)}
-				LargeHeaderComponent={ChannelHeaderInfo}
+				LargeHeaderComponent={ChannelProfileHeaderInfo}
 				sections={statusListData}
 				disableAutoFixScroll
 				ignoreLeftSafeArea
@@ -47,6 +46,7 @@ const ChannelTemplate = () => {
 					activeTab == 0 ? <StatusItem status={item} /> : <></>
 				}
 				stickySectionHeadersEnabled
+				showsVerticalScrollIndicator={false}
 				renderSectionHeader={() => (
 					<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 						<View
@@ -84,4 +84,4 @@ const ChannelTemplate = () => {
 	);
 };
 
-export default ChannelTemplate;
+export default ChannelProfile;

@@ -1,6 +1,6 @@
 import {
 	PeopleFollowing,
-	ChannelDetail,
+	ChannelProfile,
 	FeedDetail,
 	HomeFeed,
 	Profile,
@@ -15,7 +15,7 @@ const HomeStack = () => {
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="HomeFeed" component={HomeFeed} />
 			<Stack.Screen name="PeopleFollowing" component={PeopleFollowing} />
-			<Stack.Screen name="ChannelDetail" component={ChannelDetail} />
+			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
 			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
 		</Stack.Navigator>

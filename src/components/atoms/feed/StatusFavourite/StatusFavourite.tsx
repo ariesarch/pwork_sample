@@ -1,5 +1,5 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { Heart } from '@/util/svg/icon.common';
+import { HeartOutlineIcon } from '@/util/svg/icon.common';
 import { useState } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
@@ -12,7 +12,7 @@ const StatusFavourtie = (props: ViewProps) => {
 			{...props}
 			onPress={() => setIsFavoruite(prev => !prev)}
 		>
-			<Heart fill={isFavourite ? 'red' : 'none'} />
+			<HeartOutlineIcon fill={isFavourite ? 'red' : 'none'} />
 			<ThemeText variant="textGrey">2</ThemeText>
 		</TouchableOpacity>
 	);
