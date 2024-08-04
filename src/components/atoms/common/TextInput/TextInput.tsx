@@ -1,14 +1,16 @@
-import React, { forwardRef, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TextInputProps, TextInput as RNTextInput } from 'react-native';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 // import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
-import styles from './TextInput.style';
 import { cn } from '@/util/helper/twutil';
+import { type ClassValue } from 'clsx';
+import styles from './TextInput.style';
 
 type InputProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
-	styleNW?: string;
+	styleNW?: ClassValue;
+	extraInputStyle?: ClassValue;
 	showUnderLine?: boolean;
 	textArea?: boolean;
 } & TextInputProps;
@@ -18,6 +20,7 @@ const TextInput = ({
 	startIcon = undefined,
 	placeholder,
 	styleNW = '',
+	extraInputStyle = '',
 	showUnderLine = false,
 	textArea = false,
 	...textInputProps
@@ -59,7 +62,7 @@ const TextInput = ({
 				multiline={textArea}
 				textAlignVertical={textArea ? 'top' : 'bottom'}
 				{...textInputProps}
-				className={`${textArea ? 'w-full h-32' : 'w-full h-10'}`}
+				className={cn('w-full', textArea ? 'h-32' : 'h-10', extraInputStyle)}
 			/>
 
 			{endIcon && (

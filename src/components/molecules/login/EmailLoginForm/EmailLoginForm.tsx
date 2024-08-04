@@ -15,7 +15,7 @@ const EmailLoginForm = () => {
 	const [pwVisibility, setPwVissibility] = useState({
 		password: false,
 	});
-	const { colorScheme, toggleColorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
 
 	const navigation = useNavigation();
 
@@ -65,10 +65,7 @@ const EmailLoginForm = () => {
 					<ThemeText className="font-semibold">Forget your password?</ThemeText>
 				</Pressable>
 			</View>
-			<Button
-				onPress={() => navigation.navigate('Index')}
-				className="my-3"
-			>
+			<Button onPress={() => navigation.navigate('Index')} className="my-3">
 				<ThemeText className="text-white">Login</ThemeText>
 			</Button>
 		</View>

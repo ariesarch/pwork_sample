@@ -447,6 +447,8 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-patchworkSimple-patchworkSimpleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				DEVELOPMENT_TEAM = VA45Q6RWV3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -474,7 +476,9 @@
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-patchworkSimple-patchworkSimpleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = VA45Q6RWV3;
 				INFOPLIST_FILE = patchworkSimpleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
