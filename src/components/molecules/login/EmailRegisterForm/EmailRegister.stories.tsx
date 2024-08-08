@@ -1,9 +1,9 @@
 /* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@/theme';
 import { MMKV } from 'react-native-mmkv';
 import { View } from 'react-native';
 import EmailRegisterForm from './EmailRegisterForm';
+import StroyNavigator from '../../../../../.storybook/stories/Navigator/Navigator';
 
 const storage = new MMKV();
 
@@ -13,11 +13,11 @@ const meta = {
 	decorators: [
 		Story => {
 			return (
-				<ThemeProvider storage={storage}>
+				<StroyNavigator>
 					<View style={{ backgroundColor: '#2e363b', padding: 8 }}>
 						<Story />
 					</View>
-				</ThemeProvider>
+				</StroyNavigator>
 			);
 		},
 	],

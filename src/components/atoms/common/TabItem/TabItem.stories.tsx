@@ -1,22 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@/theme';
 import { MMKV } from 'react-native-mmkv';
 import { View } from 'react-native';
 import TabItem from './TabItem';
+import StroyNavigator from '../../../../../.storybook/stories/Navigator/Navigator';
 
 const storage = new MMKV();
 
 const meta = {
 	title: 'Tab Item',
+	tags: ['autodocs'],
 	component: TabItem,
 	decorators: [
 		Story => (
-			<ThemeProvider storage={storage}>
+			<StroyNavigator>
 				<View style={{ height: 60, backgroundColor: '#2e363b', padding: 5 }}>
 					<Story />
 				</View>
-			</ThemeProvider>
+			</StroyNavigator>
 		),
 	],
 } satisfies Meta<typeof TabItem>;

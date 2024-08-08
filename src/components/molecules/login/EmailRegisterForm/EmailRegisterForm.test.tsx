@@ -1,8 +1,6 @@
 import { render } from '@testing-library/react-native';
 import { MMKV } from 'react-native-mmkv';
 
-import { ThemeProvider } from '@/theme';
-
 import EmailRegisterForm from './EmailRegisterForm';
 
 describe('Email Form should validate correctly and work as expected', () => {
@@ -13,11 +11,7 @@ describe('Email Form should validate correctly and work as expected', () => {
 	});
 
 	test('password should be crypted text when eye icon is off', () => {
-		const component = (
-			<ThemeProvider storage={storage}>
-				<EmailRegisterForm />
-			</ThemeProvider>
-		);
+		const component = <EmailRegisterForm />;
 
 		render(component);
 
@@ -25,11 +19,7 @@ describe('Email Form should validate correctly and work as expected', () => {
 	});
 
 	test('password should be at least 6 and at most 8', () => {
-		const component = (
-			<ThemeProvider storage={storage}>
-				<EmailRegisterForm />
-			</ThemeProvider>
-		);
+		const component = <EmailRegisterForm />;
 
 		render(component);
 
@@ -37,11 +27,7 @@ describe('Email Form should validate correctly and work as expected', () => {
 	});
 
 	test('email should end with @gmail.com, if not, should show error message', () => {
-		const component = (
-			<ThemeProvider storage={storage}>
-				<EmailRegisterForm />
-			</ThemeProvider>
-		);
+		const component = <EmailRegisterForm />;
 
 		render(component);
 
@@ -49,11 +35,7 @@ describe('Email Form should validate correctly and work as expected', () => {
 	});
 
 	test('confirm password and password should be same, if not, should show error message', () => {
-		const component = (
-			<ThemeProvider storage={storage}>
-				<EmailRegisterForm />
-			</ThemeProvider>
-		);
+		const component = <EmailRegisterForm />;
 
 		render(component);
 

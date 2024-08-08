@@ -2,8 +2,6 @@
 import { render, screen } from '@testing-library/react-native';
 import { MMKV } from 'react-native-mmkv';
 
-import { ThemeProvider } from '@/theme';
-
 import { TextStyle, ViewStyle } from 'react-native';
 import TabItem from './TabItem';
 
@@ -16,13 +14,11 @@ describe('TabItem component should render correctly', () => {
 
 	test("when current tab index value is equal to tab's index value, should display white background and black text", () => {
 		const component = (
-			<ThemeProvider storage={storage}>
-				<TabItem
-					tab={{ value: '2', label: 'Phone' }}
-					onTabPress={() => {}}
-					currentTab="2"
-				/>
-			</ThemeProvider>
+			<TabItem
+				tab={{ value: '2', label: 'Phone' }}
+				onTabPress={() => {}}
+				currentTab="2"
+			/>
 		);
 
 		render(component);
@@ -38,13 +34,11 @@ describe('TabItem component should render correctly', () => {
 
 	test("when current tab index value is not equal to tab's index value, should display black background and white text", () => {
 		const component = (
-			<ThemeProvider storage={storage}>
-				<TabItem
-					tab={{ value: '1', label: 'Email' }}
-					onTabPress={() => {}}
-					currentTab="2"
-				/>
-			</ThemeProvider>
+			<TabItem
+				tab={{ value: '1', label: 'Email' }}
+				onTabPress={() => {}}
+				currentTab="2"
+			/>
 		);
 
 		render(component);

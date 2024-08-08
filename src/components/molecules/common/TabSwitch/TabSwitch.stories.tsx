@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@/theme';
 import { MMKV } from 'react-native-mmkv';
 import { View } from 'react-native';
 import { useState } from 'react';
@@ -23,11 +22,9 @@ const meta = {
 				setCurrentTab(tabValue);
 			};
 			return (
-				<ThemeProvider storage={storage}>
-					<View style={{ backgroundColor: '#2e363b', padding: 8 }}>
-						<Story args={{ tabs, currentTab, onTabPress: handleTabPress }} />
-					</View>
-				</ThemeProvider>
+				<View style={{ backgroundColor: '#2e363b', padding: 8 }}>
+					<Story args={{ tabs, currentTab, onTabPress: handleTabPress }} />
+				</View>
 			);
 		},
 	],

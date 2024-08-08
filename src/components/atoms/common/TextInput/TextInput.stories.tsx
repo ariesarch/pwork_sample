@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeProvider } from '@/theme';
 import { MMKV } from 'react-native-mmkv';
 import { View } from 'react-native';
 import TextInput from './TextInput';
@@ -12,16 +11,14 @@ const meta = {
 	component: TextInput,
 	decorators: [
 		Story => (
-			<ThemeProvider storage={storage}>
-				<View
-					style={{
-						backgroundColor: '#2e363b',
-						padding: 15,
-					}}
-				>
-					<Story />
-				</View>
-			</ThemeProvider>
+			<View
+				style={{
+					backgroundColor: '#2e363b',
+					padding: 15,
+				}}
+			>
+				<Story />
+			</View>
 		),
 	],
 } satisfies Meta<typeof TextInput>;
