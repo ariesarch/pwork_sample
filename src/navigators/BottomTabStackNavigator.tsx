@@ -56,6 +56,7 @@ export default function BottomTabs() {
 				name="Compose"
 				component={Compose}
 				options={{
+					tabBarStyle: { display: 'none' },
 					tabBarIcon: ({ focused }) => (
 						<View
 							style={{

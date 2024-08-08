@@ -1,4 +1,12 @@
-import { Channel, ChannelProfile, FeedDetail, HomeFeed, Profile } from '@/screens';
+import {
+	PeopleFollowing,
+	ChannelProfile,
+	FeedDetail,
+	HomeFeed,
+	Profile,
+	EmptySearch,
+	SearchResults,
+} from '@/screens';
 import { HomeStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -8,10 +16,12 @@ const HomeStack = () => {
 	return (
 		<Stack.Navigator screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="HomeFeed" component={HomeFeed} />
-			<Stack.Screen name="Channel" component={Channel} />
-			<Stack.Screen name='ChannelProfile' component={ChannelProfile} />
-			<Stack.Screen name='Profile' component={Profile} />
+			<Stack.Screen name="PeopleFollowing" component={PeopleFollowing} />
+			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
+			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
+			<Stack.Screen name="EmptySearch" component={EmptySearch}/>
+			<Stack.Screen name="SearchResults" component={SearchResults} />
 		</Stack.Navigator>
 	);
 };

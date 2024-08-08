@@ -25,32 +25,18 @@ const TabBar = (props: Props) => {
 	return (
 		<RNTabBar
 			{...props}
-			style={{ backgroundColor: color, elevation: 0, marginHorizontal: 16 }}
+			style={[{ backgroundColor: color, elevation: 0, marginHorizontal: 16 }, props.style]}
 			renderIndicator={indicatorProps => {
 				return (
 					<TabBarIndicator
 						{...indicatorProps}
-						style={{
-							backgroundColor: indicator,
-						}}
-						width="50%"
+						style={[{ backgroundColor: indicator }, props.indicatorStyle]}
 					/>
 				);
 			}}
 			pressOpacity={1}
 			pressColor="#82868922"
-			renderLabel={({ route, focused }) => (
-				<ThemeText
-					size="md_16"
-					className={`font-bold ${
-						focused
-							? 'text-black dark:text-white'
-							: 'text-slate-400 dark:text-patchwork-grey-100'
-					}`}
-				>
-					{route.title}
-				</ThemeText>
-			)}
+			renderLabel={props.renderLabel}
 		/>
 	);
 };

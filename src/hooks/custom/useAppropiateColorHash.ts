@@ -14,6 +14,7 @@ const colorNameToHash: Record<string, string> = {
 	'patchwork-dark-100': customColor['patchwork-dark-100'],
 	'patchwork-light-50': customColor['patchwork-light-50'],
 	'patchwork-light-900': customColor['patchwork-light-900'],
+	'patchwork-red-50': customColor['patchwork-red-50'],
 	'slate-400': colors.slate[400],
 	'slate-100': colors.slate[100],
 };

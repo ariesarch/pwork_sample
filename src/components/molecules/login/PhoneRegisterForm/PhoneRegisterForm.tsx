@@ -1,4 +1,4 @@
-import Checkbox from '@/components/atoms/common/Checkbox/Checkbox.style';
+import Checkbox from '@/components/atoms/common/Checkbox/Checkbox';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';

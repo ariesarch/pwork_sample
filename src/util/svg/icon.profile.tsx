@@ -4,6 +4,21 @@ type ColorSchemeType = {
 	colorScheme: 'dark' | 'light';
 };
 
+export const ProfileBackIcon = (props: SvgProps) => (
+	<Svg
+		fill="none"
+		width="6"
+		height="9"
+		viewBox="0 0 6 9"
+		{...props}
+	>
+		<Path
+			fill={'#fff'}
+			d="m1.012 3.918 3.75-3.73c.176-.196.468-.196.664 0a.46.46 0 0 1 0 .644L1.988 4.25l3.418 3.438a.428.428 0 0 1 0 .644.428.428 0 0 1-.644 0l-3.75-3.75c-.196-.176-.196-.469 0-.664Z"
+		/>
+	</Svg>
+);
+
 const ProfileNameRedMark = (props: SvgProps) => (
 	<Svg fill="none" width="16" height="16" viewBox="0 0 16 16" {...props}>
 		<Path

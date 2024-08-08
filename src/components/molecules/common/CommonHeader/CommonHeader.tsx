@@ -17,7 +17,7 @@ import Animated, {
 	useSharedValue,
 } from 'react-native-reanimated';
 import { FadingView, Header } from '@codeherence/react-native-header';
-import { ChevronLeftIcon } from '@/util/svg/icon.common';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import AccountName from '@/components/atoms/profile/AccountName';
 import { scale } from '@/util/helper/helper';
 import Banner from '@/components/atoms/common/Banner/Banner';
@@ -139,7 +139,7 @@ const CommonHeader = ({
 							onPress={() => navigation.canGoBack() && navigation.goBack()}
 							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50"
 						>
-							<ChevronLeftIcon />
+							<ProfileBackIcon />
 						</TouchableOpacity>
 						<FadingView opacity={showNavBar}>
 							<AccountName accountName={channelName ?? 'Account name'} hasRedMark={channelName ? false : true } className="ml-1" />

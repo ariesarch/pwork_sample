@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RootScreenProps } from '@/types/navigation';

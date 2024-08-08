@@ -6,11 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import { mockUserList } from '@/mock/feed/statusList';
 import SeggestedPeopleList from '@/components/molecules/search/SuggestedPeople/SuggestedPeopleList';
 import Browsing from '@/components/molecules/search/Browsing/Browsing';
+import Trending from '@/components/molecules/search/Trending/Trending';
 
 const SearchEverything = () => {
 	return (
 		<View>
-				<Browsing />
+			<Trending />
+			<Browsing />
 			<SeggestedPeopleList />
 		</View>
 	);

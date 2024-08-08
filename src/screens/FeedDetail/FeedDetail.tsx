@@ -1,5 +1,5 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
@@ -10,7 +10,7 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { mockCommandStatusList, mockStatusList } from '@/mock/feed/statusList';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { KeyboardAvoidingView, View } from 'react-native';
+import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -47,17 +47,7 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 				className=" bg-patchwork-light-900 dark:bg-patchwork-dark-100"
 				style={{ flex: 1 }}
 			>
-				<Header
-					title="Post"
-					leftCustomComponent={
-						<BackButton
-							customOnPress={() => {
-								navigation.goBack();
-							}}
-						/>
-					}
-				/>
-				<Underline className="mb-3" />
+				<Header title="Post" leftCustomComponent={<BackButton />} />
 				<FlatList
 					data={mockCommandStatusList}
 					ListHeaderComponent={renderHeader}

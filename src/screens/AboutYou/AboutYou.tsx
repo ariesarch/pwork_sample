@@ -1,5 +1,5 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import Header from '@/components/atoms/common/header/header';
+import Header from '@/components/atoms/common/Header/Header';
 import ProgressBar from '@/components/atoms/common/ProgressBar/ProgressBar';
 import ContributorProgress from '@/components/organisms/login/ContributorProgress/ContributorProgress';
 import DOBPRogress from '@/components/organisms/login/DOBProgress/DOBProgress';

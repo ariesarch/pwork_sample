@@ -4,6 +4,7 @@ import { AddCommunityIcon, SearchIcon, SettingIcon } from '@/util/svg/icon.commo
 import { useColorScheme } from 'nativewind';
 import { View, ImageProps, Image, Pressable } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
+	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
 	return (
 		<View>
@@ -30,8 +32,9 @@ const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
 			</View>
 			<TextInput
 					placeholder="Search ..."
-					styleNW="h-11 mt-5 mb-2 mx-6"
+					styleNW="h-11 w-100 mt-5 mb-2 mx-6"
 					startIcon={<SearchIcon />}
+					onPress={() => navigation.navigate('EmptySearch')}
 				/>
 			{showUnderLine && <Underline className="mt-2" />}
 		</View>

@@ -39,6 +39,7 @@ const searchChannelData = [
 		title: 'Environment (12)',
 		image: require('../../../assets/images/mock/mockUser18.jpeg'),
 	},
+	
 ];
 
 export { searchChannelData };

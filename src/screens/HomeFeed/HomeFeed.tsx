@@ -28,9 +28,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							My Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -51,9 +49,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							Server Channels
 						</ThemeText>
 						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -74,12 +70,10 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							People Following
 						</ThemeText>
 						<Pressable
-							onPress={() => navigation.navigate('Channel')}
+							onPress={() => navigation.navigate('PeopleFollowing')}
 							className="mr-4"
 						>
-							<ThemeText variant="textGrey">
-								View All
-							</ThemeText>
+							<ThemeText variant="textGrey">View All</ThemeText>
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>

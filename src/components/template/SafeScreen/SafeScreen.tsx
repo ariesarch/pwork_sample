@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useColorScheme } from 'nativewind';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
-import styles from './safeScreen.style';
+import styles from './SafeScreen.style';
 
 function SafeScreen({ children }: PropsWithChildren) {
 	const insets = useSafeAreaInsets();

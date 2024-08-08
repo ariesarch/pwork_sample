@@ -9,9 +9,25 @@ import { searchChannelData } from '@/mock/search/Channel';
 
 const SearchChannels = () => {
 	const navigation = useNavigation();
+	
 	return (
 		<View>
-			
+			<FlatList
+				data={searchChannelData}
+				renderItem={({ item }) => (
+					<Card
+						imageSource={item.image}
+						title={item.title}
+						onPress={() => navigation.navigate('ChannelProfile')}
+						className=' w-[180] h-[149]'
+					/>
+				)}
+				keyExtractor={item => item.id}
+				// horizontal
+				showsHorizontalScrollIndicator={false}
+				contentContainerStyle={{ paddingLeft: scale(24) }}
+				numColumns={2}
+			/>
 		</View>
 	);
 };

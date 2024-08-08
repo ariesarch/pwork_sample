@@ -15,7 +15,7 @@ const PhoneLoginForm = () => {
 	const [pwVisibility, setPwVissibility] = useState({
 		password: false,
 	});
-	const { colorScheme, toggleColorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
 	const navigation = useNavigation();
 
 	return (

@@ -15,6 +15,8 @@ export type RootStackParamList = {
 	Index: undefined;
 	ChannelProfile: undefined;
 	EmailVerification: undefined;
+	ChannelCreate: undefined;
+	EmptySearch: undefined;
 };
 
 export type BottomStackParamList = {
@@ -26,13 +28,17 @@ export type BottomStackParamList = {
 };
 
 export type HomeStackParamList = {
-	Channel: undefined;
+	PeopleFollowing: undefined;
 	HomeFeed: undefined;
 	FeedDetail: {
 		statusId: number | undefined;
 	};
 	ChannelProfile: undefined;
 	Profile: undefined;
+	EmptySearch: undefined;
+	SearchResults: {
+		query: string | undefined;
+	};
 };
 
 export type RootScreenProps<
