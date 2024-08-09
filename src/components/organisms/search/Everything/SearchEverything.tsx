@@ -10,11 +10,11 @@ import Trending from '@/components/molecules/search/Trending/Trending';
 
 const SearchEverything = () => {
 	return (
-		<View>
+		<ScrollView>
 			<Trending />
 			<Browsing />
 			<SeggestedPeopleList />
-		</View>
+		</ScrollView>
 	);
 };
 

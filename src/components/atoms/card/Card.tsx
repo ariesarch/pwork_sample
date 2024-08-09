@@ -1,32 +1,72 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Pressable } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ChevronRightIcon } from '@/util/svg/icon.common';
 import styles from './Card.style';
 import Image from '../common/Image/Image';
-import { ViewProps } from 'react-native';
+import { VariantProps, cva } from 'class-variance-authority';
 
-interface CardProps {
+const cardVariant = cva('rounded-[4px] overflow-hidden shadow-lg', {
+	variants: {
+		variants: {
+			default: /* tw */ 'bg-white',
+		},
+		gutters: {
+			default: /* tw */ 'mr-2',
+			mx3: /* tw */ 'mx-3' 
+		}
+	},
+	defaultVariants: {
+		variants: 'default',
+		gutters: 'default',
+	},
+});
+
+const imageVariant = cva('w-36 h-36', {
+	variants: {
+		imageVariants: {
+			default: '',
+			browsing: /* tw */ 'w-40 h-20',
+			searchChannels: /* tw */ 'w-[163.5] h-[149]',
+		},
+	},
+	defaultVariants: {
+		imageVariants: 'default',
+	},
+});
+
+type ExtraProps = {
 	imageSource: string | number | undefined;
 	title: string;
 	activeNow?: boolean;
 	onPress: () => void;
-}
+};
+type CardProps = React.ComponentPropsWithoutRef<typeof View> &
+	ExtraProps &
+	VariantProps<typeof cardVariant> &
+	VariantProps<typeof imageVariant>;
 
-const Card = ({ imageSource, activeNow, title, onPress, ...props }: CardProps & ViewProps) => {
+const Card = ({
+	imageSource,
+	activeNow,
+	title,
+	onPress,
+	imageVariants,
+	variants,
+	gutters,
+	...props
+}: CardProps) => {
 	return (
-		<View className="my-1" >
+		<View className="my-1" {...props}>
 			{activeNow && <View className={styles.activeNow} />}
-			<TouchableOpacity
-			{...props}
-				activeOpacity={0.8}
+			<Pressable
 				onPress={onPress}
-				className="rounded-[4px] overflow-hidden shadow-lg bg-white mr-3"
+				className={cardVariant({ variants, gutters })}
 			>
-				<Image uri={imageSource} />
-			</TouchableOpacity>
+				<Image uri={imageSource} className={imageVariant({ imageVariants })} />
+			</Pressable>
 			<View className={styles.cardFooter}>
-				<ThemeText className="text-white">{title}</ThemeText>
+				<ThemeText>{title}</ThemeText>
 				<ChevronRightIcon />
 			</View>
 		</View>

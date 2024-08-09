@@ -17,23 +17,42 @@ const Browsing = ({ ...props }: ViewProps) => {
 						Start browsing
 					</ThemeText>
 				</View>
-
 			</View>
-					<FlatList
-						data={searchChannelData}
-						renderItem={({ item }) => (
-							<Card
-								imageSource={item.image}
-								title={item.title}
-								onPress={() => navigation.navigate('ChannelProfile')}
-							/>
-						)}
-						keyExtractor={item => item.id}
-						horizontal
-						showsHorizontalScrollIndicator={false}
-						contentContainerStyle={{ paddingLeft: scale(24) }}
-				// numColumns={numColumns}
+			<ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+				<View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+						flexWrap: 'wrap',
+					}}
+				>
+					{searchChannelData.map((item, idx) => (
+						<Card
+							key={idx}
+							imageSource={item.image}
+							title={item.title}
+							onPress={() => navigation.navigate('ChannelProfile')}
+							imageVariants={'browsing'}
+						/>
+					))}
+				</View>
+			</ScrollView>
+			{/* <FlatList
+				data={searchChannelData}
+				renderItem={({ item }) => (
+					<Card
+						imageSource={item.image}
+						title={item.title}
+						onPress={() => navigation.navigate('ChannelProfile')}
+						className="w-[149] h-20"
 					/>
+				)}
+				keyExtractor={item => item.id}
+				// horizontal
+				// showsHorizontalScrollIndicator={false}
+				contentContainerStyle={{ paddingLeft: scale(24) }}
+				numColumns={2}
+			/> */}
 		</View>
 	);
 };
