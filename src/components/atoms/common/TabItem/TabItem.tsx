@@ -8,8 +8,6 @@ export type TabItemProps = {
 };
 
 const TabItem = ({ tab, onTabPress, currentTab }: TabItemProps) => {
-	console.log('Test::');
-
 	const isActiveTab = tab?.value === currentTab;
 
 	return (

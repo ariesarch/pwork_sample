@@ -10,20 +10,20 @@ export const queryClient = new QueryClient();
 
 export const storage = new MMKV();
 
-// function App() {
-// 	const { setColorScheme } = useColorScheme();
+function App() {
+	const { setColorScheme } = useColorScheme();
 
-// 	useEffect(() => {
-// 		setColorScheme('dark');
-// 	}, []);
+	useEffect(() => {
+		setColorScheme('dark');
+	}, []);
 
-// 	return (
-// 		<QueryClientProvider client={queryClient}>
-// 			<ApplicationNavigator />
-// 		</QueryClientProvider>
-// 	);
-// }
+	return (
+		<QueryClientProvider client={queryClient}>
+			<ApplicationNavigator />
+		</QueryClientProvider>
+	);
+}
 
-// export default App;
+export default App;
 
-export { default } from '../.storybook';
+// export { default } from '../.storybook';

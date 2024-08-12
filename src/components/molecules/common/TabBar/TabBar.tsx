@@ -1,6 +1,4 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import {
 	TabBar as RNTabBar,
@@ -25,7 +23,10 @@ const TabBar = (props: Props) => {
 	return (
 		<RNTabBar
 			{...props}
-			style={[{ backgroundColor: color, elevation: 0, marginHorizontal: 16 }, props.style]}
+			style={[
+				{ backgroundColor: color, elevation: 0, marginHorizontal: 16 },
+				props.style,
+			]}
 			renderIndicator={indicatorProps => {
 				return (
 					<TabBarIndicator

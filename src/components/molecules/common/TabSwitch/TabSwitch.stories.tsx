@@ -1,40 +1,46 @@
-/* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { MMKV } from 'react-native-mmkv';
-import { View } from 'react-native';
 import { useState } from 'react';
 import TabSwitch from './TabSwitch';
+import {
+	StoryNavigator,
+	Theme,
+	themeArgsType,
+	ThemeProvider,
+} from '../../../../../.storybook/decorators';
 
-const storage = new MMKV();
+type ComponentWithCustomArgs = React.ComponentProps<typeof TabSwitch> & Theme;
 
 const meta = {
-	title: 'Tab Bar',
+	title: 'Tab Switch',
 	component: TabSwitch,
 	decorators: [
-		Story => {
+		(Story, props) => {
 			const [currentTab, setCurrentTab] = useState('1');
 			const tabs = [
-				{ value: '1', label: 'Test Item' },
-				{ value: '2', label: 'Test Item 2' },
+				{ value: '1', label: 'Email' },
+				{ value: '2', label: 'Phone' },
 			];
 
 			const handleTabPress = (tabValue: string) => {
 				setCurrentTab(tabValue);
 			};
 			return (
-				<View style={{ backgroundColor: '#2e363b', padding: 8 }}>
-					<Story args={{ tabs, currentTab, onTabPress: handleTabPress }} />
-				</View>
+				<StoryNavigator>
+					<ThemeProvider theme={props.args.theme}>
+						<Story args={{ tabs, currentTab, onTabPress: handleTabPress }} />
+					</ThemeProvider>
+				</StoryNavigator>
 			);
 		},
 	],
-} satisfies Meta<typeof TabSwitch>;
+} satisfies Meta<ComponentWithCustomArgs>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+	argTypes: themeArgsType,
 	args: {
 		tabs: [
 			{ value: '1', label: 'Test Item' },
@@ -42,5 +48,6 @@ export const Basic: Story = {
 		],
 		onTabPress: () => {},
 		currentTab: '1',
+		theme: 'dark',
 	},
 };

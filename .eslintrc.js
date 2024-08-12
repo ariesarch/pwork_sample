@@ -45,7 +45,6 @@ module.exports = {
 		quotes: ['error', 'single'],
 		'object-curly-spacing': ['error', 'always'],
 		'array-bracket-spacing': ['error', 'never'],
-		'react/require-default-props': ['error', 'never'],
 		'react/default-props-match-prop-types': ['error'],
 		'react/sort-prop-types': ['error'],
 		'react/no-array-index-key': 'off',
@@ -74,5 +73,6 @@ module.exports = {
 		'@typescript-eslint/no-use-before-define': ['error', { variables: false }],
 		'react/function-component-definition': [0],
 		'newline-per-chained-call': 'off',
+		'react/require-default-props': 'off',
 	},
 };
