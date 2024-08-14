@@ -41,6 +41,11 @@ export type HomeStackParamList = {
 	};
 };
 
+export type SearchStackParamList = {
+	SearchResults: undefined;
+	Search: undefined;
+};
+
 export type RootScreenProps<
 	S extends keyof RootStackParamList = keyof RootStackParamList,
 > = StackScreenProps<RootStackParamList, S>;

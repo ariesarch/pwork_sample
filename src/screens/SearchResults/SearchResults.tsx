@@ -1,6 +1,12 @@
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import React, { useState } from 'react';
-import { Pressable, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import {
+	Pressable,
+	Text,
+	TouchableOpacity,
+	useWindowDimensions,
+	View,
+} from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { useNavigation } from '@react-navigation/native';
 import { SearchIcon } from '@/util/svg/icon.common';
@@ -31,10 +37,13 @@ const renderScene = SceneMap({
 	follows: NotiAll,
 });
 
-const SearchResults = ({ navigation }: HomeStackScreenProps<'SearchResults'>) => {
+const SearchResults = ({
+	navigation,
+}: HomeStackScreenProps<'SearchResults'>) => {
 	const { colorScheme } = useColorScheme();
 	const layout = useWindowDimensions();
 	const [index, setIndex] = useState(0);
+	const [searchKeyword, setSearchKeyword] = useState('');
 
 	const [routes] = useState([
 		{ key: 'all', title: 'Top' },
@@ -46,37 +55,60 @@ const SearchResults = ({ navigation }: HomeStackScreenProps<'SearchResults'>) =>
 
 	return (
 		<SafeScreen>
-			<View className="flex-row items-center">
-				{/* <Header title="None" leftCustomComponent={<BackButton/>}/> */}
-				<TextInput
-					placeholder="Search ..."
-					styleNW="h-[80] w-[350] mt-5 mb-2 mx-6"
-					startIcon={<SearchIcon />}
-					// onPress={() => navigation.navigate('')}
-				/>
-			</View>
-			{/* {showUnderLine && <Underline className="mt-2" />} */}
-			<TabView
-				navigationState={{ index, routes }}
-				renderScene={renderScene}
-				onIndexChange={setIndex}
-				initialLayout={{ width: layout.width }}
-				renderTabBar={props => (
-					<TabBar
-						{...props}
-						scrollEnabled
-						indicatorStyle={{ backgroundColor: '#FF3C26' }}
-						style={{
-							borderBottomWidth: 1,
-							borderBottomColor: colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
-						}}
-						tabStyle={{ width: 'auto' }}
-						renderLabel={({ route, focused }) => (
-							<NotiTabBarItemLabel {...{ route, focused }} />
-						)}
+			<View className="flex-row items-center mx-4 mt-4">
+				{searchKeyword.length > 0 && <BackButton />}
+				<View className="flex-1 ml-4">
+					<TextInput
+						placeholder="Search"
+						value={searchKeyword}
+						onChangeText={str => setSearchKeyword(str)}
+						startIcon={<SearchIcon className="mt-[2]" />}
 					/>
+				</View>
+				{searchKeyword.length == 0 && <BackButton /> && (
+					<TouchableOpacity
+						activeOpacity={0.8}
+						onPress={() => {
+							navigation.goBack();
+						}}
+						className="ml-2"
+					>
+						<ThemeText>Cancel</ThemeText>
+					</TouchableOpacity>
 				)}
-			/>
+			</View>
+			{searchKeyword.length > 0 ? (
+				<TabView
+					navigationState={{ index, routes }}
+					renderScene={renderScene}
+					onIndexChange={setIndex}
+					initialLayout={{ width: layout.width }}
+					renderTabBar={props => (
+						<TabBar
+							{...props}
+							scrollEnabled
+							indicatorStyle={{ backgroundColor: '#FF3C26' }}
+							style={{
+								borderBottomWidth: 1,
+								borderBottomColor:
+									colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
+							}}
+							tabStyle={{ width: 'auto' }}
+							renderLabel={({ route, focused }) => (
+								<NotiTabBarItemLabel {...{ route, focused }} />
+							)}
+						/>
+					)}
+				/>
+			) : (
+				<View className="flex-row items-center justify-center flex-1">
+					<ThemeText variant="textGrey" className="text-center ">
+						{
+							'Search for people, posts, hashtags, local \n channels, global channels or hubs.'
+						}
+					</ThemeText>
+				</View>
+			)}
 		</SafeScreen>
 	);
 };
