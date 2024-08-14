@@ -3,7 +3,7 @@ import { View, ScrollView, ViewProps, FlatList } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { useNavigation } from '@react-navigation/native';
 import { scale } from '@/util/helper/helper';
-import { searchChannelData } from '@/mock/search/Channel';
+import { searchChannelData } from '@/mock/search/channel';
 import Card from '@/components/atoms/card/Card';
 
 const Browsing = ({ ...props }: ViewProps) => {

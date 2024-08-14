@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
-import { searchChannelData } from '@/mock/search/Channel';
+import { searchChannelData } from '@/mock/search/channel';
 
 const SearchChannels = () => {
 	const navigation = useNavigation();

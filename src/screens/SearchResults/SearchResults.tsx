@@ -1,40 +1,24 @@
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import React, { useState } from 'react';
-import {
-	Pressable,
-	Text,
-	TouchableOpacity,
-	useWindowDimensions,
-	View,
-} from 'react-native';
+import { TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
-import { useNavigation } from '@react-navigation/native';
 import { SearchIcon } from '@/util/svg/icon.common';
-import Underline from '@/components/atoms/common/Underline/Underline';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-
-import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import Header from '@/components/atoms/common/Header/Header';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import NotiTabBarItemLabel from '@/components/atoms/notifications/NotiTabBarItemLabel/NotiTabBarItemLabel';
 import NotiAll from '@/components/organisms/notifications/NotiAll/NotiAll';
 import { useColorScheme } from 'nativewind';
-import PeopleFolllowing from '../PeopleFollowing/PeopleFollowing';
-
-type Props = {
-	account: Pathchwork.Account;
-	showUnderLine?: boolean;
-	customOnPress?: () => void;
-};
+import SearchResultsTabBarItemLabel from '@/components/atoms/search/SearchResultsTabBarItemLabel/SearchResultsTabBarItemLabel';
+import SearchResultsList from '@/components/organisms/search/SearchResultsList/SearchResultsList';
+import BackButton from '@/components/atoms/common/BackButton/BackButton';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 const renderScene = SceneMap({
-	all: NotiAll,
-	likes: NotiAll,
-	comments: NotiAll,
-	shares: NotiAll,
-	follows: NotiAll,
+	top: SearchResultsList,
+	people: SearchResultsList,
+	hashtags: SearchResultsList,
+	postsandhub: SearchResultsList,
 });
 
 const SearchResults = ({
@@ -46,11 +30,10 @@ const SearchResults = ({
 	const [searchKeyword, setSearchKeyword] = useState('');
 
 	const [routes] = useState([
-		{ key: 'all', title: 'Top' },
-		{ key: 'likes', title: 'People' },
-		{ key: 'comments', title: 'Hashtags' },
-		{ key: 'shares', title: 'Posts & Hubs' },
-		{ key: 'follows', title: 'Follows' },
+		{ key: 'top', title: 'Top' },
+		{ key: 'people', title: 'People' },
+		{ key: 'hashtags', title: 'Hashtags' },
+		{ key: 'postsandhub', title: 'Posts & Hubs' },
 	]);
 
 	return (
@@ -94,6 +77,10 @@ const SearchResults = ({
 									colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
 							}}
 							tabStyle={{ width: 'auto' }}
+							labelStyle={{
+								width: layout.width / routes.length,
+								textAlign: 'center',
+							}}
 							renderLabel={({ route, focused }) => (
 								<NotiTabBarItemLabel {...{ route, focused }} />
 							)}
