@@ -10,12 +10,13 @@ import NotiTabBarItemLabel from '@/components/atoms/notifications/NotiTabBarItem
 import NotiAll from '@/components/organisms/notifications/NotiAll/NotiAll';
 import { useColorScheme } from 'nativewind';
 import SearchResultsTabBarItemLabel from '@/components/atoms/search/SearchResultsTabBarItemLabel/SearchResultsTabBarItemLabel';
+import SearchResultsList from '@/components/organisms/search/SearchResultsList/SearchResultsList';
 
 const renderScene = SceneMap({
-	all: NotiAll,
-	likes: NotiAll,
-	comments: NotiAll,
-	shares: NotiAll,
+	top: SearchResultsList,
+	people: SearchResultsList,
+	hashtags: SearchResultsList,
+	postsandhub: SearchResultsList,
 });
 
 const SearchResults = ({ navigation }: HomeStackScreenProps<'SearchResults'>) => {
@@ -24,10 +25,10 @@ const SearchResults = ({ navigation }: HomeStackScreenProps<'SearchResults'>) =>
 	const [index, setIndex] = useState(0);
 
 	const [routes] = useState([
-		{ key: 'all', title: 'Top' },
-		{ key: 'likes', title: 'People' },
-		{ key: 'comments', title: 'Hashtags' },
-		{ key: 'shares', title: 'Posts & Hubs' },
+		{ key: 'top', title: 'Top' },
+		{ key: 'people', title: 'People' },
+		{ key: 'hashtags', title: 'Hashtags' },
+		{ key: 'postsandhub', title: 'Posts & Hubs' },
 	]);
 
 	return (
