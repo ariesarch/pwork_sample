@@ -69,8 +69,8 @@ const SearchResults = ({
 					renderTabBar={props => (
 						<TabBar
 							{...props}
-							scrollEnabled={false} // Disable scrolling if you want fixed tabs
-							indicatorStyle={{ backgroundColor: '#FF3C26' }}
+							scrollEnabled={true} // Disable scrolling if you want fixed tabs
+							indicatorStyle={{ backgroundColor: '#FF3C26'}}
 							style={{
 								borderBottomWidth: 1,
 								borderBottomColor:
@@ -78,13 +78,15 @@ const SearchResults = ({
 							}}
 							tabStyle={{
 								width: layout.width / routes.length,
+								alignItems: 'center',
+
 							}} // Set each tab's width to divide evenly across the screen
 							labelStyle={{
 								width: layout.width / routes.length, // Match label width to tab width
 								textAlign: 'center', // Center the label text
 							}}
 							renderLabel={({ route, focused }) => (
-								<NotiTabBarItemLabel {...{ route, focused }} />
+								<SearchResultsTabBarItemLabel {...{ route, focused }} />
 							)}
 						/>
 					)}

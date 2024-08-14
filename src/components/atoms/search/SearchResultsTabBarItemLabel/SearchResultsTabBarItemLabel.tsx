@@ -6,14 +6,16 @@ type SearchResultsTabBarItemLabelProps = {
 	route: Route;
 	focused: boolean;
 };
+
 const SearchResultsTabBarItemLabel = ({ route, focused }: SearchResultsTabBarItemLabelProps) => {
 	return (
 		<ThemeText
-			className={`mx-1 px-1 tracking-wide font-bold ${
+			className={`text-center tracking-wide font-bold ${
 				focused
 					? 'text-patchwork-red-50'
 					: 'text-slate-400 dark:text-patchwork-grey-100'
 			}`}
+			// style={{ width: '100%',paddingLeft:0 }} // Ensure the text takes up the full width of the container
 		>
 			{route.title}
 		</ThemeText>
