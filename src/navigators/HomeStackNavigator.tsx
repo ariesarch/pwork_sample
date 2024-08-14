@@ -20,7 +20,6 @@ const HomeStack = () => {
 			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
 			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
-			<Stack.Screen name="EmptySearch" component={EmptySearch}/>
 			<Stack.Screen name="SearchResults" component={SearchResults} />
 		</Stack.Navigator>
 	);

@@ -14,6 +14,7 @@ import { useColorScheme } from 'nativewind';
 import { View } from 'react-native';
 import HomeStack from './HomeStackNavigator';
 import { scale } from '@/util/helper/helper';
+import SearchStack from './SearchStackNavigator';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
@@ -45,7 +46,7 @@ export default function BottomTabs() {
 			/>
 			<Tab.Screen
 				name="Search"
-				component={Search}
+				component={SearchStack}
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<SearchTabIcon colorScheme={colorScheme} focused={focused} />

@@ -16,13 +16,12 @@ export type RootStackParamList = {
 	ChannelProfile: undefined;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
-	EmptySearch: undefined;
 };
 
 export type BottomStackParamList = {
 	Home: NavigatorScreenParams<HomeStackParamList>;
 	Notification: undefined;
-	Search: undefined;
+	Search: NavigatorScreenParams<SearchStackParamList>;
 	Message: undefined;
 	Compose: undefined;
 };
@@ -35,15 +34,13 @@ export type HomeStackParamList = {
 	};
 	ChannelProfile: undefined;
 	Profile: undefined;
-	EmptySearch: undefined;
-	SearchResults: {
-		query: string | undefined;
-	};
 };
 
 export type SearchStackParamList = {
-	SearchResults: undefined;
-	Search: undefined;
+	SearchResults: {
+		query: string | undefined;
+	};
+	SearchFeed: undefined;
 };
 
 export type RootScreenProps<
@@ -52,6 +49,9 @@ export type RootScreenProps<
 
 export type HomeStackScreenProps<S extends keyof HomeStackParamList> =
 	StackScreenProps<HomeStackParamList, S>;
+
+export type SearchStackScreenProps<S extends keyof SearchStackParamList> =
+	StackScreenProps<SearchStackParamList, S>;
 
 export type TabBarScreenProps<
 	S extends keyof BottomStackParamList = keyof BottomStackParamList,
