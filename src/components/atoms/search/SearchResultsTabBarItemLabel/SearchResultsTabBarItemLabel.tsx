@@ -15,7 +15,7 @@ const SearchResultsTabBarItemLabel = ({ route, focused }: SearchResultsTabBarIte
 					? 'text-patchwork-red-50'
 					: 'text-slate-400 dark:text-patchwork-grey-100'
 			}`}
-			style={{ width: '100%' }} // Ensure the text takes up the full width of the container
+			style={{ flex:1 }} // Ensure the text takes up the full width of the container
 		>
 			{route.title}
 		</ThemeText>
