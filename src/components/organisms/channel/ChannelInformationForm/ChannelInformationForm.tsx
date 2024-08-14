@@ -41,7 +41,7 @@ const ChannelInformationForm = () => {
 			</View>
 			<View className="my-5">
 				<InputFieldName title="Username" isRequired />
-				<TextInput startIcon={<ThemeText>/</ThemeText>} value="Test" />
+				<TextInput startIcon={<ThemeText>/</ThemeText>} styleNW="pl-6" />
 			</View>
 			<View className="mb-5">
 				<InputFieldName title="Collection" isRequired />
