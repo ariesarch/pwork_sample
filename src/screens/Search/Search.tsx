@@ -2,9 +2,9 @@ import SearchChannelHeader from '@/components/molecules/search/SearchChannel/Sea
 import SearchFeedHeader from '@/components/molecules/search/SearchFeedHeader/SearchFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { mockUserList } from '@/mock/feed/statusList';
-import { TabBarScreenProps } from '@/types/navigation';
+import { SearchStackScreenProps } from '@/types/navigation';
 import { useColorScheme } from 'nativewind';
-const Search = ({ navigation }: TabBarScreenProps<'Search'>) => {
+const Search = ({ navigation }: SearchStackScreenProps<'SearchFeed'>) => {
 	const { colorScheme } = useColorScheme();
 
 	return (
