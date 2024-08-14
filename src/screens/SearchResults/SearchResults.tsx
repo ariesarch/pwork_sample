@@ -72,6 +72,7 @@ const SearchResults = ({
 							scrollEnabled={true} // Disable scrolling if you want fixed tabs
 							indicatorStyle={{ backgroundColor: '#FF3C26'}}
 							style={{
+								flex:1,
 								borderBottomWidth: 1,
 								borderBottomColor:
 									colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
@@ -79,6 +80,7 @@ const SearchResults = ({
 							tabStyle={{
 								width: layout.width / routes.length,
 								alignItems: 'center',
+								flex:1,
 
 							}} // Set each tab's width to divide evenly across the screen
 							labelStyle={{
