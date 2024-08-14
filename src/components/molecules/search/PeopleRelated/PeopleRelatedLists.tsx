@@ -5,7 +5,7 @@ import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvat
 import { useNavigation } from '@react-navigation/native';
 import { mockUserList } from '@/mock/feed/statusList';
 
-const SeggestedPeopleList = ({ ...props }: ViewProps)  => {
+const PeopleRelatedLists = ({ ...props }: ViewProps)  => {
 	const navigation = useNavigation();
 	return (
 		<View>
@@ -32,4 +32,4 @@ const SeggestedPeopleList = ({ ...props }: ViewProps)  => {
 	);
 };
 
-export default SeggestedPeopleList;
+export default PeopleRelatedLists;
