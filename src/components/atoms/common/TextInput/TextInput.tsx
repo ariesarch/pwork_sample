@@ -37,10 +37,10 @@ const TextInput = ({
 			// }`}
 			className={cn(
 				styles.textInputWrapper,
-				styleNW,
 				startIcon ? 'pl-9' : 'pl-5',
 				showUnderLine ? 'border-b border-b-patchwork-red-50' : '',
 				textArea ? 'h-32' : 'h-12',
+				styleNW,
 			)}
 		>
 			{startIcon && (

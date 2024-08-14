@@ -81,7 +81,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							<View key={idx}>
 								<AccountAvatar
 									account={item}
-									size={20}
+									size="lg"
 									dotAlert={item.hasNoti}
 									className="mr-3"
 								/>

@@ -19,9 +19,9 @@ const ChannelShareContentForm = () => {
 					Add up to three hashtags which will be added to posts made from this channel.
 				</ThemeText>
 				<InputFieldName title="Hashtag" isRequired className="mt-2" />
-				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3" />
-				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3" />
-				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3" />
+				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3 pl-6" />
+				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3 pl-6" />
+				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3 pl-6" />
 			</View>
 		</View>
 	);

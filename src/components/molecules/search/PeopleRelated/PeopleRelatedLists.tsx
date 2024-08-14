@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, ScrollView ,ViewProps} from 'react-native';
+import { View, ScrollView, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
 import { useNavigation } from '@react-navigation/native';
 import { mockUserList } from '@/mock/feed/statusList';
 
-const PeopleRelatedLists = ({ ...props }: ViewProps)  => {
+const PeopleRelatedLists = ({ ...props }: ViewProps) => {
 	const navigation = useNavigation();
 	return (
 		<View>
@@ -15,12 +15,16 @@ const PeopleRelatedLists = ({ ...props }: ViewProps)  => {
 						People related to "movies"
 					</ThemeText>
 				</View>
-				<ScrollView horizontal showsHorizontalScrollIndicator={false}  {...props}>
-					{mockUserList.map((item, idx) => (
+				<ScrollView
+					horizontal
+					showsHorizontalScrollIndicator={false}
+					{...props}
+				>
+					{mockUserList.slice(3, 10).map((item, idx) => (
 						<View key={idx}>
 							<AccountAvatar
 								account={item}
-								size={40}  
+								size="lg"
 								dotAlert={item.hasNoti}
 								className="mr-3"
 							/>

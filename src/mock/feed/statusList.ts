@@ -190,13 +190,6 @@ export const mockUserList: Pathchwork.Account[] = [
 		avatar: require('../../../assets/images/mock/mockUser10.jpeg'),
 	},
 	{
-		id: '10',
-		account_id: '10',
-		username: 'Test User 10',
-		acct: 'beta@patchwork',
-		avatar: require('../../../assets/images/mock/mockUser10.jpeg'),
-	},
-	{
 		id: '11',
 		account_id: '11',
 		username: 'Test User 11',
