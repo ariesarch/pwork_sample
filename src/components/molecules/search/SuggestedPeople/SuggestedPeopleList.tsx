@@ -9,7 +9,7 @@ const SeggestedPeopleList = ({ ...props }: ViewProps) => {
 	const navigation = useNavigation();
 	return (
 		<View>
-			<View className="ml-6 my-2">
+			<View className="my-2">
 				<View className="flex flex-row items-center">
 					<ThemeText className="font-bold my-2 flex-1" size="lg_18">
 						Suggested people

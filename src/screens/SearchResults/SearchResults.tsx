@@ -38,7 +38,7 @@ const SearchResults = ({
 
 	return (
 		<SafeScreen>
-			<View className="flex-row items-center mx-4 mt-4">
+			<View className="flex-row items-center mx-4 my-4">
 				{searchKeyword.length > 0 && <BackButton />}
 				<View className="flex-1 ml-4">
 					<TextInput
@@ -69,25 +69,14 @@ const SearchResults = ({
 					renderTabBar={props => (
 						<TabBar
 							{...props}
-							scrollEnabled={true} // Disable scrolling if you want fixed tabs
+							scrollEnabled
 							indicatorStyle={{ backgroundColor: '#FF3C26'}}
-							style={{
-								backgroundColor:'blue',
-						
+						style={{
 								borderBottomWidth: 1,
 								borderBottomColor:
 									colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
 							}}
-							tabStyle={{
-								width: layout.width / routes.length,
-								alignItems: 'center',
-								flex:1,
-
-							}} // Set each tab's width to divide evenly across the screen
-							labelStyle={{
-								width: layout.width / routes.length, // Match label width to tab width
-								textAlign: 'center', // Center the label text
-							}}
+							tabStyle={{ width: 'auto' }}
 							renderLabel={({ route, focused }) => (
 								<SearchResultsTabBarItemLabel {...{ route, focused }} />
 							)}

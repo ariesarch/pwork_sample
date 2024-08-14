@@ -6,14 +6,16 @@ import styles from './Card.style';
 import Image from '../common/Image/Image';
 import { VariantProps, cva } from 'class-variance-authority';
 
-const cardVariant = cva('rounded-[4px] overflow-hidden shadow-lg', {
+const cardVariant = cva('rounded-[4px] overflow-hidden shadow-lg bg-white', {
 	variants: {
 		variants: {
-			default: /* tw */ 'bg-white',
+			default: /* tw */ '',
+			browsing: /* tw */ 'w-40 h-20'
 		},
 		gutters: {
 			default: /* tw */ 'mr-2',
-			mx3: /* tw */ 'mx-3' 
+			mx3: /* tw */ 'mx-3' ,
+			mr4: /* tw */ 'mr-4' 
 		}
 	},
 	defaultVariants: {

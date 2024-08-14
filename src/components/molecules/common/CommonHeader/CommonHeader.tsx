@@ -141,9 +141,9 @@ const CommonHeader = ({
 						>
 							<ProfileBackIcon />
 						</TouchableOpacity>
-						<FadingView opacity={showNavBar}>
+						{/* <FadingView opacity={showNavBar}>
 							<AccountName accountName={channelName ?? 'Account name'} hasRedMark={channelName ? false : true } className="ml-1" />
-						</FadingView>
+						</FadingView> */}
 					</View>
 				}
 			/>
