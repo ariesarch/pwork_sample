@@ -9,7 +9,7 @@ import {
 } from '../../../../../.storybook/decorators/index';
 
 const meta = {
-	title: 'Login Form (Email)',
+	title: 'UI/Login/Login Form (Email)',
 	component: EmailLoginForm,
 	decorators: [
 		(Story, property) => {

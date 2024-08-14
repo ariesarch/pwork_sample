@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { Pressable, View } from 'react-native';
-import { SearchIcon, SettingIcon } from '@/util/svg/icon.common';
+import { Pressable } from 'react-native';
+import { SettingIcon } from '@/util/svg/icon.common';
 import Header from './Header';
 import {
 	StoryNavigator,
@@ -15,7 +15,7 @@ import { ThemeText } from '../ThemeText/ThemeText';
 type ComponentWithCustomArgs = React.ComponentProps<typeof Header> & Theme;
 
 const meta = {
-	title: 'Header',
+	title: 'Atom/Common/Header',
 	component: Header,
 	decorators: [
 		(Story, props) => {
@@ -47,6 +47,22 @@ export const Basic: Story = {
 	},
 };
 
+const optionMapping = {
+	text: (
+		<Pressable
+			onPress={() => {}}
+			className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full"
+		>
+			<ThemeText>Post</ThemeText>
+		</Pressable>
+	),
+	icon: (
+		<Pressable className="p-3 border border-patchwork-grey-100 rounded-full active:opacity-80">
+			<SettingIcon />
+		</Pressable>
+	),
+};
+
 export const WithRightComponent: Story = {
 	argTypes: {
 		...themeArgsType,
@@ -54,24 +70,11 @@ export const WithRightComponent: Story = {
 			control: 'radio',
 			options: ['text', 'icon'],
 			description: 'Right Component',
-			mapping: {
-				text: (
-					<Pressable
-						onPress={() => {}}
-						className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full"
-					>
-						<ThemeText>Post</ThemeText>
-					</Pressable>
-				),
-				icon: (
-					<Pressable className="p-3 border border-patchwork-grey-100 rounded-full active:opacity-80">
-						<SettingIcon />
-					</Pressable>
-				),
-			},
+			mapping: optionMapping,
 		},
 	},
 	args: {
 		...Basic.args,
+		rightCustomComponent: optionMapping.icon,
 	},
 };

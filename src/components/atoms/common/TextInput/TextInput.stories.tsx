@@ -1,41 +1,49 @@
-/* eslint-disable react-native/no-inline-styles */
 import type { Meta, StoryObj } from '@storybook/react';
-import { MMKV } from 'react-native-mmkv';
-import { View } from 'react-native';
 import TextInput from './TextInput';
+import {
+	StoryNavigator,
+	Theme,
+	themeArgsType,
+	ThemeProvider,
+} from '../../../../../.storybook/decorators';
 
-const storage = new MMKV();
+type ComponentWithCustomArgs = React.ComponentProps<typeof TextInput> & Theme;
 
 const meta = {
-	title: 'TextInput',
+	title: 'Atom/Common/TextInput',
 	component: TextInput,
 	decorators: [
-		Story => (
-			<View
-				style={{
-					backgroundColor: '#2e363b',
-					padding: 15,
-				}}
-			>
-				<Story />
-			</View>
+		(Story, props) => (
+			<StoryNavigator>
+				<ThemeProvider theme={props.args.theme}>
+					<Story />
+				</ThemeProvider>
+			</StoryNavigator>
 		),
 	],
-} satisfies Meta<typeof TextInput>;
+} satisfies Meta<ComponentWithCustomArgs>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const InputEmpty: Story = {
+	argTypes: {
+		...themeArgsType,
+	},
 	args: {
 		placeholder: 'Email',
+		theme: 'dark',
 	},
 };
 
 export const InputFill: Story = {
+	argTypes: {
+		...themeArgsType,
+	},
 	args: {
 		placeholder: 'Email',
 		value: 'mgmg@gmail.com',
+		theme: 'dark',
 	},
 };

@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import { TextInput, TextInputProps } from 'react-native';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 
@@ -14,10 +13,10 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 			placeholderTextColor={inputColor}
 			scrollEnabled={false}
 			selectionColor={selectionColor}
-			autoCorrect={true}
-			autoComplete={'off'}
+			autoCorrect
+			autoComplete="off"
 			autoFocus
-			spellCheck={true}
+			spellCheck
 			{...textInputProps}
 			className="text-white"
 		/>

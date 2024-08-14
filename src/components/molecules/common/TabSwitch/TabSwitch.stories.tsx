@@ -11,7 +11,7 @@ import {
 type ComponentWithCustomArgs = React.ComponentProps<typeof TabSwitch> & Theme;
 
 const meta = {
-	title: 'Tab Switch',
+	title: 'Atom/Common/Tab Switch',
 	component: TabSwitch,
 	decorators: [
 		(Story, props) => {

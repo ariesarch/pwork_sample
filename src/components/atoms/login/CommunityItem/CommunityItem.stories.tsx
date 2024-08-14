@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { View } from 'react-native';
-import { CheckIcon } from '@/util/svg/icon.common';
-import { TwitterIcon } from '@/util/svg/icon.profile';
-import Chip from './Chip';
+import CommunityItem from './CommunityItem';
 import {
 	StoryNavigator,
 	Theme,
@@ -10,11 +8,12 @@ import {
 	ThemeProvider,
 } from '../../../../../.storybook/decorators';
 
-type ComponentWithCustomArgs = React.ComponentProps<typeof Chip> & Theme;
+type ComponentWithCustomArgs = React.ComponentProps<typeof CommunityItem> &
+	Theme;
 
 const meta = {
-	title: 'Atom/Common/Chip',
-	component: Chip,
+	title: 'Atom/Register/CommunityItem',
+	component: CommunityItem,
 	decorators: [
 		(Story, props) => {
 			return (
@@ -53,21 +52,6 @@ export const Basic: Story = {
 export const ChipWithEndIcon: Story = {
 	argTypes: Basic.argTypes,
 	args: {
-		title: 'Following',
-		variant: 'outline',
 		theme: 'dark',
-		endIcon: <CheckIcon colorScheme={this?.args?.theme} />,
-		dotAlert: true,
-	},
-};
-
-export const ChipWithFrontIcon: Story = {
-	argTypes: Basic.argTypes,
-	args: {
-		title: 'Following',
-		variant: 'outline',
-		theme: 'dark',
-		startIcon: <TwitterIcon />,
-		dotAlert: true,
 	},
 };

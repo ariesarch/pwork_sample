@@ -10,7 +10,7 @@ import {
 } from '../../../../../.storybook/decorators/index';
 
 const meta = {
-	title: 'Register Form (Phone)',
+	title: 'UI/Login/Register Form (Phone)',
 	component: PhoneRegisterForm,
 	decorators: [
 		(Story, prop) => {

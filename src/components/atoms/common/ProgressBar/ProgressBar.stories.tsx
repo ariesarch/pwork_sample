@@ -1,18 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './Button';
+import ProgressBar from './ProgressBar';
 import {
 	StoryNavigator,
 	Theme,
 	themeArgsType,
 	ThemeProvider,
 } from '../../../../../.storybook/decorators';
-import { ThemeText } from '../ThemeText/ThemeText';
 
-type ComponentWithCustomArgs = React.ComponentProps<typeof Button> & Theme;
+type ComponentWithCustomArgs = React.ComponentProps<typeof ProgressBar> & Theme;
 
 const meta = {
-	title: 'Atom/Common/Button',
-	component: Button,
+	title: 'Atom/Common/ProgressBar',
+	component: ProgressBar,
 	decorators: [
 		(Story, props) => {
 			return (
@@ -33,19 +32,12 @@ type Story = StoryObj<typeof meta>;
 export const Basic: Story = {
 	argTypes: {
 		...themeArgsType,
-		variant: {
-			control: 'radio',
-			options: ['default', 'outline', 'secondary'],
-		},
-		size: {
-			control: 'select',
-			options: ['default', 'sm', 'lg', 'xl', 'icon'],
-		},
+		stepCounts: { range: true, min: 3, max: 10, step: 1 },
+		activeStep: { range: true, min: 1, max: 10, step: 1 },
 	},
 	args: {
 		theme: 'dark',
-		size: 'default',
-		variant: 'default',
-		children: <ThemeText>Login</ThemeText>,
+		stepCounts: 5,
+		activeStep: 1,
 	},
 };
