@@ -72,7 +72,8 @@ const SearchResults = ({
 							scrollEnabled={true} // Disable scrolling if you want fixed tabs
 							indicatorStyle={{ backgroundColor: '#FF3C26'}}
 							style={{
-								flex:1,
+								backgroundColor:'blue',
+						
 								borderBottomWidth: 1,
 								borderBottomColor:
 									colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
