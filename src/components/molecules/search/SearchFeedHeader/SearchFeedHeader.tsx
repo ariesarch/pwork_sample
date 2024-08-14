@@ -1,6 +1,10 @@
 import Underline from '@/components/atoms/common/Underline/Underline';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { AddCommunityIcon, SearchIcon, SettingIcon } from '@/util/svg/icon.common';
+import {
+	AddCommunityIcon,
+	SearchIcon,
+	SettingIcon,
+} from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { View, ImageProps, Image, Pressable } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
@@ -25,17 +29,15 @@ const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
 					<ThemeText className="font-bold" size="lg_18">
 						Search
 					</ThemeText>
-					
 				</View>
-                {/* SearchInput */}
-				
+				{/* SearchInput */}
 			</View>
 			<TextInput
-					placeholder="Search ..."
-					styleNW="h-11 w-100 mt-5 mb-2 mx-6"
-					startIcon={<SearchIcon />}
-					onPress={() => navigation.navigate('EmptySearch')}
-				/>
+				placeholder="Search ..."
+				styleNW="h-11 w-100 mt-5 mb-2 mx-6"
+				startIcon={<SearchIcon />}
+				onPress={() => navigation.navigate('SearchResults')}
+			/>
 			{showUnderLine && <Underline className="mt-2" />}
 		</View>
 	);
