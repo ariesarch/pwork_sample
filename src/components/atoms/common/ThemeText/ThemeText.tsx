@@ -37,7 +37,7 @@ const ThemeText = React.forwardRef<React.ElementRef<typeof Text>, TextProps>(
 		return (
 			<Text
 				className={cn(
-					props.disabled && 'opacity-50 web:pointer-events-none',
+					props.disabled && 'opacity-50',
 					textVariants({ variant, size, className }),
 				)}
 				ref={ref}

@@ -11,7 +11,7 @@ const ChannelRuleCircle = ({ count, ...props }: Props) => {
 			className="rounded-full bg-red-600 w-[30] h-[30] items-center justify-center"
 			{...props}
 		>
-			<ThemeText>{count}</ThemeText>
+			<ThemeText className="text-white">{count}</ThemeText>
 		</View>
 	);
 };
