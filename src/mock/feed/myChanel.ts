@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export const mockMyChannelList: Pathchwork.Channel[] = [
+export const mockMyChannelList: Pathchwork.ChannelList[] = [
 	{
 		id: '1',
 		title: 'Channel Name',
@@ -28,7 +28,7 @@ export const mockMyChannelList: Pathchwork.Channel[] = [
 ];
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export const mockServerChannellList: Pathchwork.Channel[] = [
+export const mockServerChannellList: Pathchwork.ChannelList[] = [
 	{
 		id: '6',
 		title: 'Channel Name',
@@ -56,7 +56,7 @@ export const mockServerChannellList: Pathchwork.Channel[] = [
 	},
 ];
 
-export const mockLocalChannelList: Pathchwork.Channel[] = [
+export const mockLocalChannelList: Pathchwork.ChannelList[] = [
 	{
 		id: '12',
 		title: 'Channel Name',

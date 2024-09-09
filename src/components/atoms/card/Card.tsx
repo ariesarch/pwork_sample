@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ChevronRightIcon } from '@/util/svg/icon.common';

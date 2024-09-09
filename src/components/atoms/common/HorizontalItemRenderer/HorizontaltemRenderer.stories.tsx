@@ -39,8 +39,8 @@ const meta = {
 					props.args.data = mockLocalChannelList;
 					props.args.renderItem = item => (
 						<Card
-							imageSource={(item as Pathchwork.Channel).image}
-							title={(item as Pathchwork.Channel).title}
+							imageSource={(item as Pathchwork.ChannelList).image}
+							title={(item as Pathchwork.ChannelList).title}
 							onPress={() => {}}
 						/>
 					);

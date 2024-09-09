@@ -10,14 +10,20 @@ const ActiveChannels = () => {
 	const navigation = useNavigation();
 	return (
 		<View>
-			<ThemeText className="pl-4 mb-3 font-semibold leading-[17.6px]">Active in these channels</ThemeText>
+			<ThemeText className="pl-4 mb-3 font-semibold leading-[17.6px]">
+				Active in these channels
+			</ThemeText>
 			<FlatList
 				data={activeChannelData}
 				renderItem={({ item }) => (
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() =>
+							navigation.navigate('ChannelProfile', {
+								slug: 'science.channel.org',
+							})
+						}
 					/>
 				)}
 				keyExtractor={item => item.id}

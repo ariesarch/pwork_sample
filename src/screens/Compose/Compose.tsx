@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import { useColorScheme } from 'nativewind';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';

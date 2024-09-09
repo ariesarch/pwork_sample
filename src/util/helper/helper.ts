@@ -19,4 +19,8 @@ const scale = (size: number) => {
 
 const keyExtractor = (_: any, index: number) => index.toString();
 
+export const appendApiVersion = (url: string, version: string = 'v1') => {
+	return `/api/${version}/${url}`;
+};
+
 export { scale, keyExtractor };

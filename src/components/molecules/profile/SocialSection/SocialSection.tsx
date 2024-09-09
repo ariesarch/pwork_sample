@@ -1,4 +1,3 @@
-import React from 'react';
 import { ScrollView, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Chip from '@/components/atoms/common/Chip/Chip';
@@ -14,7 +13,7 @@ import { socialLinks } from '@/mock/profile/socialLinks';
 import { scale } from '@/util/helper/helper';
 
 const SocialSection = ({ ...props }: ViewProps) => {
-	const { colorScheme, toggleColorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
 
 	const renderAccountSocialLink = () => {
 		const renderSocialIcons = ({
@@ -61,10 +60,10 @@ const SocialSection = ({ ...props }: ViewProps) => {
 		<View className="pt-2">
 			<View className="flex-row items-center pl-4">
 				<LinkIcon {...{ colorScheme }} />
-				<ThemeText className="ml-1" size={'fs_13'}>
+				<ThemeText className="ml-1" size="fs_13">
 					Links{' '}
-					<ThemeText variant={'textGrey'} size={'fs_13'}>
-						{'(5)'}
+					<ThemeText variant="textGrey" size="fs_13">
+						(5)
 					</ThemeText>
 				</ThemeText>
 			</View>

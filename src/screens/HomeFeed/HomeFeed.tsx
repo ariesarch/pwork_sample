@@ -7,7 +7,6 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
 	mockHashTag,
 	mockLocalChannelList,
-	mockMyChannelList,
 	mockServerChannellList,
 } from '@/mock/feed/myChanel';
 import { mockUserList } from '@/mock/feed/statusList';
@@ -15,9 +14,12 @@ import { HomeStackScreenProps } from '@/types/navigation';
 import { ChevronRight, ListItem } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { Pressable, ScrollView, View } from 'react-native';
+import { useGetMyChannels } from '@/hooks/queries/channel.queries';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
+	const { data: channelList } = useGetMyChannels();
+
 	return (
 		<SafeScreen>
 			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
@@ -32,15 +34,20 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 						</Pressable>
 					</View>
 					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{mockMyChannelList.map((item, idx) => (
-							<View key={idx}>
-								<Card
-									imageSource={item.image}
-									title={item.title}
-									onPress={() => navigation.navigate('ChannelProfile')}
-								/>
-							</View>
-						))}
+						{channelList &&
+							channelList.map((item, idx) => (
+								<View key={idx}>
+									<Card
+										imageSource={item.image_url}
+										title={item.name}
+										onPress={() =>
+											navigation.navigate('ChannelProfile', {
+												slug: item.slug,
+											})
+										}
+									/>
+								</View>
+							))}
 					</ScrollView>
 				</View>
 				<View className="ml-6 my-2">
@@ -58,7 +65,11 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelProfile')}
+									onPress={() =>
+										navigation.navigate('ChannelProfile', {
+											slug: 'science.channel.org',
+										})
+									}
 								/>
 							</View>
 						))}
@@ -99,7 +110,11 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								<Card
 									imageSource={item.image}
 									title={item.title}
-									onPress={() => navigation.navigate('ChannelProfile')}
+									onPress={() =>
+										navigation.navigate('ChannelProfile', {
+											slug: 'science.channel.org',
+										})
+									}
 								/>
 							</View>
 						))}
