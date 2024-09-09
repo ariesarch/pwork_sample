@@ -16,7 +16,7 @@ mockServer.onGet('/my-channel').reply(200, [
 		id: 1,
 		name: 'Science',
 		is_private: false,
-		slug: 'science.channel.org',
+		slug: 'https://science.channel.org',
 		image_updated_at: '2024-09-05T10:31:48.115+00:00',
 		description: 'Science Channel.',
 		image_url:
@@ -28,7 +28,7 @@ mockServer.onGet('/my-channel').reply(200, [
 		id: 2,
 		name: 'Technology',
 		is_private: false,
-		slug: 'technology.channel.org',
+		slug: 'https://technology.channel.org',
 		image_updated_at: '2024-09-05T10:31:48.115+00:00',
 		description: 'Technology Channel.',
 		image_url:
