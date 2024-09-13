@@ -950,6 +950,8 @@ PODS:
   - React-Mapbuffer (0.74.1):
     - glog
     - React-debug
+  - react-native-blurhash (1.1.11):
+    - React-Core
   - react-native-mmkv (2.12.2):
     - DoubleConversion
     - glog
@@ -1384,6 +1386,7 @@ DEPENDENCIES:
   - React-jsitracing (from `../node_modules/react-native/ReactCommon/hermes/executor/`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-blurhash (from `../node_modules/react-native-blurhash`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1493,6 +1496,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-blurhash:
+    :path: "../node_modules/react-native-blurhash"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-pager-view:
@@ -1602,6 +1607,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 233d1a798fe0ff33b8e630b8f00f62c4a8115fbc
   React-logger: 7e7403a2b14c97f847d90763af76b84b152b6fce
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
+  react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
   react-native-pager-view: f848f89049a8e888d38f10ff31588eb63292a95f
   react-native-safe-area-context: 422017db8bcabbada9ad607d010996c56713234c

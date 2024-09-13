@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 import { Text } from 'react-native';
@@ -12,6 +13,7 @@ const textVariants = cva(
 				textGrey:
 					/* tw */ 'text-patchwork-slate-200 dark:text-patchwork-grey-400',
 				textRedUnderline: /* tw */ 'text-patchwork-red-600 underline',
+				textOrange: 'text-patchwork-600',
 			},
 			size: {
 				default: /* tw */ 'text-sm',
@@ -33,7 +35,7 @@ type TextProps = React.ComponentPropsWithoutRef<typeof Text> &
 	VariantProps<typeof textVariants>;
 
 const ThemeText = React.forwardRef<React.ElementRef<typeof Text>, TextProps>(
-	({ className, variant, size, ...props }, ref) => {
+	({ className, variant, size, children, ...props }, ref) => {
 		return (
 			<Text
 				className={cn(
@@ -41,6 +43,7 @@ const ThemeText = React.forwardRef<React.ElementRef<typeof Text>, TextProps>(
 					textVariants({ variant, size, className }),
 				)}
 				ref={ref}
+				children={children}
 				{...props}
 			/>
 		);

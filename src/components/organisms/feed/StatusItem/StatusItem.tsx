@@ -17,9 +17,9 @@ const StatusItem = ({ status, ...props }: Props) => {
 	return (
 		<View>
 			<View className="flex flex-row m-4" {...props}>
-				{status.replyedStatus && (
+				{/* {status.replyedStatus && (
 					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
-				)}
+				)} */}
 				<Pressable onPress={() => navigation.navigate('Profile')}>
 					<Image
 						source={status.account.avatar as ImageProps}
@@ -35,7 +35,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 				>
 					<StatusHeader status={status} />
 					<StatusContent status={status} />
-					{status.reblogedStatus && (
+					{/* {status.reblogedStatus && (
 						<Pressable
 							className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl"
 							onPress={() => {
@@ -59,11 +59,11 @@ const StatusItem = ({ status, ...props }: Props) => {
 								</View>
 							)}
 						</Pressable>
-					)}
+					)} */}
 					<StatusActionBar />
 				</Pressable>
 			</View>
-			{status.replyedStatus && (
+			{/* {status.replyedStatus && (
 				<Pressable
 					className="flex flex-row mx-4 my-4"
 					onPress={() => {
@@ -94,7 +94,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 						<StatusActionBar />
 					</View>
 				</Pressable>
-			)}
+			)} */}
 			<Underline />
 		</View>
 	);

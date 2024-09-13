@@ -3,7 +3,6 @@ import {
 	GetChannelFeedQueryKey,
 	GetMyChannelListQueryKey,
 } from '@/types/queries/channel.type';
-import { PagedResponse } from '@/util/helper/timeline';
 import { UseInfiniteQueryOptions, useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 

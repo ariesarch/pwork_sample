@@ -26,19 +26,6 @@ declare namespace Pathchwork {
 		image_url: string;
 		is_virtual: boolean;
 	};
-	type Status = {
-		id: number;
-		account: Account;
-		content: string;
-		created_at: string;
-		favourite_count: number;
-		reblogs_count: number;
-		replies_count: number;
-		image?: string;
-		statusType: 'reblog' | 'reply' | 'feed';
-		reblogedStatus?: Status;
-		replyedStatus?: Status;
-	};
 
 	type Account = {
 		id: string;
@@ -114,7 +101,7 @@ declare namespace Pathchwork {
 		};
 		account: Account;
 		media_attachments: Attachment[];
-		mentions: any;
+		mentions: Mention[];
 		tags: any;
 		emojis: any;
 		card?: Card;
@@ -126,5 +113,42 @@ declare namespace Pathchwork {
 		text_count: number;
 		scheduled_at?: string;
 		drafted?: boolean;
+	};
+
+	type Emoji = {
+		shortcode: string;
+		url: string;
+		static_url: string;
+		visible_in_picker: boolean;
+		category?: string;
+	};
+
+	type Mention = {
+		id: string;
+		username: string;
+		acct: string;
+		url: string;
+	};
+
+	type Attachment = {
+		id: string;
+		type: 'image' | 'gifv' | 'video';
+		url: string;
+		preview_url: string;
+		sensitive?: boolean;
+		remote_url?: string;
+		text_url?: string;
+		meta?: {
+			original?: {
+				width: number;
+				height: number;
+				size: string;
+				aspect: number;
+			};
+			small?: { width: number; height: number; size: string; aspect: number };
+			focus?: { x: number; y: number };
+		};
+		description?: string;
+		blurhash?: string;
 	};
 }

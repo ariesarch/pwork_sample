@@ -1,4 +1,4 @@
-import { Image, ImageProps, Pressable, View, ViewProps } from 'react-native';
+import { Image, ImageProps, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
