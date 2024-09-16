@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="nativewind/types" />
 
 declare namespace Pathchwork {
@@ -151,6 +152,26 @@ declare namespace Pathchwork {
 		text_count: number;
 		scheduled_at?: string;
 		drafted?: boolean;
+	};
+
+	type ChannelAbout = {
+		configuration: any;
+		contact: { account: { username: string; created_at: string } };
+		description: string;
+		domain: string;
+		languages: string;
+		rules: ChannelAboutHint[];
+		thumbnail: {
+			blurhash: string;
+			url: string;
+		};
+		title: string;
+	};
+
+	type ChannelAboutHint = {
+		hint: string;
+		id: string;
+		text: string;
 	};
 
 	type Emoji = {

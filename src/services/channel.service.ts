@@ -4,7 +4,10 @@
 import { appendApiVersion, handleError } from '@/util/helper/helper';
 import { AxiosResponse } from 'axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
-import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
+import {
+	GetChannelAboutQueryKey,
+	GetChannelFeedQueryKey,
+} from '@/types/queries/channel.type';
 import { link } from 'fs';
 import mockInstance from './mockInstance';
 import instance from './instance';
@@ -27,7 +30,6 @@ export const getChannelFeed = async (
 	try {
 		const { slug, remote, only_media } = qfContext.queryKey[1];
 		const param = qfContext.pageParam as { max_id: string };
-		console.log('param::', param);
 
 		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
 			appendApiVersion('timelines/public'),
@@ -44,7 +46,6 @@ export const getChannelFeed = async (
 				maxId = match[1];
 			}
 		}
-		console.log('maxId::', maxId);
 
 		return {
 			data: resp.data,
@@ -53,4 +54,17 @@ export const getChannelFeed = async (
 	} catch (e) {
 		return handleError(e);
 	}
+};
+
+export const getChannelAbout = async (
+	qfContext: QueryFunctionContext<GetChannelAboutQueryKey>,
+) => {
+	const { slug } = qfContext.queryKey[1];
+	const resp: AxiosResponse<Pathchwork.ChannelAbout> = await instance.get(
+		appendApiVersion('instance', 'v2'),
+		{
+			params: { slug, isDynamicDomain: true },
+		},
+	);
+	return resp.data;
 };

@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { getChannelFeed, getMyChannelList } from '@/services/channel.service';
 import {
+	getChannelAbout,
+	getChannelFeed,
+	getMyChannelList,
+} from '@/services/channel.service';
+import {
+	GetChannelAboutQueryKey,
 	GetChannelFeedQueryKey,
 	GetMyChannelListQueryKey,
 } from '@/types/queries/channel.type';
@@ -34,4 +39,9 @@ export const useGetChannelFeed = ({
 		...options,
 		...infinitePageParam,
 	});
+};
+
+export const useGetChannelAbout = (slug: string) => {
+	const queryKey: GetChannelAboutQueryKey = ['channel-about', { slug }];
+	return useQuery({ queryKey, queryFn: getChannelAbout });
 };

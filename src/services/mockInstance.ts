@@ -20,7 +20,7 @@ mockServer.onGet('/my-channel').reply(200, [
 		image_updated_at: '2024-09-05T10:31:48.115+00:00',
 		description: 'Science Channel.',
 		image_url:
-			'https://s3-eu-west-2.amazonaws.com/newsmast/cache/media_attachments/files/113/086/195/193/340/011/original/f2ab535980ee7bce.png',
+			'https://s3-eu-west-2.amazonaws.com/patchwork-prod/site_uploads/files/000/000/001/@2x/a1aba67d423ba44a.png',
 		created_at: '2024-09-05T10:31:48.116+00:00',
 		updated_at: '2024-09-05T10:31:48.116+00:00',
 	},
@@ -32,7 +32,7 @@ mockServer.onGet('/my-channel').reply(200, [
 		image_updated_at: '2024-09-05T10:31:48.115+00:00',
 		description: 'Technology Channel.',
 		image_url:
-			'https://newsmast-assets.s3.eu-west-2.amazonaws.com/my_server_newsmast_cover_photos/newsmast_community_profile_photo.png',
+			'https://s3-eu-west-2.amazonaws.com/patchwork-prod/site_uploads/files/000/000/001/@2x/c7bd3f4c9f04816f.png',
 		created_at: '2024-09-05T10:31:48.116+00:00',
 		updated_at: '2024-09-05T10:31:48.116+00:00',
 	},

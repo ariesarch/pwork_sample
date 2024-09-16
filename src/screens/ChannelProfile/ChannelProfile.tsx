@@ -14,7 +14,10 @@ import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrol
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
+import {
+	useGetChannelAbout,
+	useGetChannelFeed,
+} from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
@@ -34,11 +37,12 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		only_media: false,
 	});
 
+	const { data: channelAbout } = useGetChannelAbout(slug);
+
 	const [activeTab, setActiveTab] = useState(0);
 
 	const onTimelineContentLoadMore = () => {
-		console.log('hasNextPage::', hasNextPage);
-		if (hasNextPage) {
+		if (hasNextPage && activeTab === 0) {
 			return fetchNextPage();
 		}
 	};
@@ -52,13 +56,18 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							scrollY={scrollY}
 							showNavBar={showNavBar}
 							bannerSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
-							imageSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
+							imageSrc={
+								channelAbout?.thumbnail.url ||
+								require('../../../assets/images/mock/channel/channel_banner.png')
+							}
 							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName="Channel name"
+							channelName={channelAbout?.title || 'channelName'}
 						/>
 					)}
-					LargeHeaderComponent={ChannelProfileHeaderInfo}
-					sections={[{ data: flattenPages(timeline) }]}
+					LargeHeaderComponent={() => (
+						<ChannelProfileHeaderInfo channelAbout={channelAbout} />
+					)}
+					sections={[{ data: activeTab === 0 ? flattenPages(timeline) : [] }]}
 					disableAutoFixScroll
 					ignoreLeftSafeArea
 					ignoreRightSafeArea
@@ -101,7 +110,11 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 								))}
 							</View>
 							{activeTab === 1 && <Underline className="mt-1" />}
-							{activeTab === 0 ? <HorizontalScrollMenu /> : <ChannelAbout />}
+							{activeTab === 0 ? (
+								<HorizontalScrollMenu />
+							) : (
+								<ChannelAbout channelAbout={channelAbout} />
+							)}
 						</View>
 					)}
 					ListFooterComponent={
