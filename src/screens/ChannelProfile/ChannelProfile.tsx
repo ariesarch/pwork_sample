@@ -13,6 +13,7 @@ import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbo
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
+import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -31,7 +32,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-			{timeline && (
+			{timeline ? (
 				<SectionListWithHeaders
 					HeaderComponent={({ scrollY, showNavBar }) => (
 						<CommonHeader
@@ -89,6 +90,10 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						</View>
 					)}
 				/>
+			) : (
+				<View style={{ flex: 1, marginTop: 100 }}>
+					<ChannelProfileLoading />
+				</View>
 			)}
 		</View>
 	);
