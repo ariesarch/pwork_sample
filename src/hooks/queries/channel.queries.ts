@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getChannelFeed, getMyChannelList } from '@/services/channel.service';
 import {
 	GetChannelFeedQueryKey,
 	GetMyChannelListQueryKey,
 } from '@/types/queries/channel.type';
-import { UseInfiniteQueryOptions, useQuery } from '@tanstack/react-query';
+import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
+import {
+	InfiniteData,
+	useInfiniteQuery,
+	UseInfiniteQueryOptions,
+	useQuery,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export const useGetMyChannels = () => {
@@ -15,8 +22,16 @@ export const useGetChannelFeed = ({
 	options,
 	...queryParam
 }: GetChannelFeedQueryKey[1] & {
-	options?: UseInfiniteQueryOptions<Pathchwork.Status[], AxiosError>;
+	options?: UseInfiniteQueryOptions<
+		InfiniteData<PagedResponse<Pathchwork.Status[]>>,
+		AxiosError
+	>;
 }) => {
 	const queryKey: GetChannelFeedQueryKey = ['channel-feed', queryParam];
-	return useQuery({ queryKey, queryFn: getChannelFeed });
+	return useInfiniteQuery({
+		queryKey,
+		queryFn: getChannelFeed,
+		...options,
+		...infinitePageParam,
+	});
 };

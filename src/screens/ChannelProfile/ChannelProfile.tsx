@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { SectionListWithHeaders } from '@codeherence/react-native-header';
@@ -13,6 +15,7 @@ import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbo
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
+import { flattenPages } from '@/util/helper/timeline';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -20,14 +23,25 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom } = useSafeAreaInsets();
 	const { slug } = route.params;
-	const { data: timeline } = useGetChannelFeed({
+	const {
+		data: timeline,
+		hasNextPage,
+		fetchNextPage,
+		isFetching,
+	} = useGetChannelFeed({
 		slug,
 		remote: false,
 		only_media: false,
 	});
 
 	const [activeTab, setActiveTab] = useState(0);
-	// console.log('timelineContainer::', timeline[0]);
+
+	const onTimelineContentLoadMore = () => {
+		console.log('hasNextPage::', hasNextPage);
+		if (hasNextPage) {
+			return fetchNextPage();
+		}
+	};
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
@@ -44,7 +58,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						/>
 					)}
 					LargeHeaderComponent={ChannelProfileHeaderInfo}
-					sections={[{ data: timeline }]}
+					sections={[{ data: flattenPages(timeline) }]}
 					disableAutoFixScroll
 					ignoreLeftSafeArea
 					ignoreRightSafeArea
@@ -60,6 +74,8 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 					stickySectionHeadersEnabled
 					showsVerticalScrollIndicator={false}
+					onEndReachedThreshold={0.15}
+					onEndReached={onTimelineContentLoadMore}
 					renderSectionHeader={() => (
 						<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 							<View className="flex-1 flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100">
@@ -88,6 +104,11 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							{activeTab === 0 ? <HorizontalScrollMenu /> : <ChannelAbout />}
 						</View>
 					)}
+					ListFooterComponent={
+						isFetching ? (
+							<ActivityIndicator size="small" className="mt-5" />
+						) : null
+					}
 				/>
 			)}
 		</View>
