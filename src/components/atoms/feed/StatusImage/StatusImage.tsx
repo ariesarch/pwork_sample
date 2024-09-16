@@ -1,7 +1,5 @@
 /* eslint-disable consistent-return */
-/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/no-children-prop */
 import { useState } from 'react';
 import { Dimensions, Pressable, ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -76,19 +74,6 @@ const StatusImage = ({ media_attachments }: Props) => {
 												}}
 												blurHash={attachment.blurhash}
 											/>
-											{/* {attachment.description &&
-												attachment.description !== 'null' && (
-													<ShowTooltips
-														isVisible={
-															showTip && selectedImageId === attachment.id
-														}
-														onViewToolTips={() => {
-															setShowTip(!showTip);
-															setSelectedImageId(attachment.id);
-														}}
-														description={attachment.description}
-													/>
-												)} */}
 										</>
 									)}
 								</>
@@ -143,27 +128,5 @@ const StatusImage = ({ media_attachments }: Props) => {
 		</ScrollView>
 	);
 };
-
-// const styles = StyleSheet.create({
-// 	imageSensitiveContainer: {
-// 		position: 'absolute',
-// 		top: 10,
-// 		left: 10,
-// 		justifyContent: 'center',
-// 		paddingHorizontal: 8,
-// 		paddingVertical: 8,
-// 		borderRadius: 8,
-// 	},
-// 	altText: {
-// 		position: 'absolute',
-// 		bottom: 10,
-// 		left: 10,
-// 		justifyContent: 'center',
-// 		paddingHorizontal: 8,
-// 		paddingVertical: 8,
-// 		borderRadius: 8,
-// 		backgroundColor: 'rgba(0, 0, 0, 0.65)',
-// 	},
-// });
 
 export default StatusImage;

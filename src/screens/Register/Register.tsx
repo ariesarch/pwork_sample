@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import { useState } from 'react';
 import { View } from 'react-native';
 import TabSwitch from '@/components/molecules/common/TabSwitch/TabSwitch';

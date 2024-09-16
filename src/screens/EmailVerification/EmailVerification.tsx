@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';

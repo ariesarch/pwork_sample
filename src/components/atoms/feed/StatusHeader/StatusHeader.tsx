@@ -3,6 +3,11 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { timelineDateFormatter } from '@/util/helper/helper';
+
+dayjs.extend(relativeTime);
 
 type Props = {
 	status: Pathchwork.Status;
@@ -37,7 +42,7 @@ const StatusHeader = ({
 				<ThemeText className="font-bold">{status.account.username}</ThemeText>
 			</TouchableOpacity>
 			<ThemeText variant="textGrey" className="ml-2 mt-[2]" size="xs_12">
-				{status.created_at}
+				{timelineDateFormatter(dayjs(status.created_at).fromNow())}
 			</ThemeText>
 			<View className="flex-1" />
 			{showFollowIcon && (

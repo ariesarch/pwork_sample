@@ -1,5 +1,3 @@
-/* eslint-disable react/no-children-prop */
-
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 

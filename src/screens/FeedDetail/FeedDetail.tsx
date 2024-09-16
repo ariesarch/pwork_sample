@@ -26,7 +26,7 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 						showFollowIcon
 					/>
 					<StatusContent status={mockStatusList[0]} className="mt-2" />
-					<StatusActionBar />
+					<StatusActionBar status={mockStatusList[0]} />
 				</View>
 				<Underline className="mt-3" />
 				<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>

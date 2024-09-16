@@ -3,7 +3,11 @@ import { HeartOutlineIcon } from '@/util/svg/icon.common';
 import { useState } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
-const StatusFavourtie = (props: ViewProps) => {
+type Props = {
+	count: number;
+} & ViewProps;
+
+const StatusFavourtie = ({ count, ...props }: Props) => {
 	const [isFavourite, setIsFavoruite] = useState(false);
 	return (
 		<TouchableOpacity
@@ -13,7 +17,7 @@ const StatusFavourtie = (props: ViewProps) => {
 			onPress={() => setIsFavoruite(prev => !prev)}
 		>
 			<HeartOutlineIcon fill={isFavourite ? 'red' : 'none'} />
-			<ThemeText variant="textGrey">2</ThemeText>
+			<ThemeText variant="textGrey">{count}</ThemeText>
 		</TouchableOpacity>
 	);
 };

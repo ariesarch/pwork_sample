@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable react/no-unstable-nested-components */
 import { Compose, Message, Notification, Search } from '@/screens';
 import { BottomStackParamList } from '@/types/navigation';
 import {

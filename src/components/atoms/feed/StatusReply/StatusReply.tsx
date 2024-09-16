@@ -1,9 +1,12 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Reply } from '@/util/svg/icon.common';
-import { TouchableOpacity } from 'react-native';
-import { ViewProps } from 'react-native';
+import { TouchableOpacity, ViewProps } from 'react-native';
 
-const StatusReply = (props: ViewProps) => {
+type Props = {
+	count: number;
+} & ViewProps;
+
+const StatusReply = ({ count, ...props }: Props) => {
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
@@ -11,7 +14,7 @@ const StatusReply = (props: ViewProps) => {
 			{...props}
 		>
 			<Reply />
-			<ThemeText variant="textGrey">2</ThemeText>
+			<ThemeText variant="textGrey">{count}</ThemeText>
 		</TouchableOpacity>
 	);
 };

@@ -2,7 +2,6 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,6 +13,7 @@ type Props = {
 
 const StatusItem = ({ status, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+
 	return (
 		<View>
 			<View className="flex flex-row m-4" {...props}>
@@ -22,7 +22,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 				)} */}
 				<Pressable onPress={() => navigation.navigate('Profile')}>
 					<Image
-						source={status.account.avatar as ImageProps}
+						source={{ uri: status.account.avatar }}
 						className="w-[33] h-[33] rounded-full bg-slate-300"
 					/>
 				</Pressable>
@@ -30,7 +30,9 @@ const StatusItem = ({ status, ...props }: Props) => {
 					className="ml-2 flex-1"
 					{...props}
 					onPress={() => {
-						navigation.navigate('FeedDetail', { statusId: status.id });
+						navigation.navigate('FeedDetail', {
+							statusId: 2,
+						});
 					}}
 				>
 					<StatusHeader status={status} />
@@ -60,7 +62,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 							)}
 						</Pressable>
 					)} */}
-					<StatusActionBar />
+					<StatusActionBar status={status} />
 				</Pressable>
 			</View>
 			{/* {status.replyedStatus && (
