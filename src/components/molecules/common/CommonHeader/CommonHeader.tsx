@@ -21,8 +21,8 @@ import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import AccountName from '@/components/atoms/profile/AccountName';
 import { scale } from '@/util/helper/helper';
 import Banner from '@/components/atoms/common/Banner/Banner';
-import CommonHeaderRight from '../CommonHeaderRight/CommonHeaderRight';
 import Avatar from '@/components/atoms/profile/Avatar';
+import CommonHeaderRight from '../CommonHeaderRight/CommonHeaderRight';
 
 type CommonHeaderProps = {
 	bannerSrc?: any;
@@ -114,7 +114,10 @@ const CommonHeader = ({
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={bannerSrc ?? require('../../../../../assets/images/mock/profile/banner_img.jpeg')}
+				source={
+					bannerSrc ??
+					require('../../../../../assets/images/mock/profile/banner_img.jpeg')
+				}
 				{...{
 					bannerHeight,
 					bannerTranslationStyle,
@@ -125,7 +128,7 @@ const CommonHeader = ({
 			{/* Banner */}
 
 			<Header
-				showNavBar={showNavBar!}
+				showNavBar={showNavBar}
 				headerCenterFadesIn={false}
 				headerStyle={{
 					backgroundColor: 'transparent',
@@ -142,7 +145,11 @@ const CommonHeader = ({
 							<ProfileBackIcon />
 						</TouchableOpacity>
 						<FadingView opacity={showNavBar}>
-							<AccountName accountName={channelName ?? 'Account name'} hasRedMark={channelName ? false : true } className="ml-1" />
+							<AccountName
+								accountName={channelName ?? 'Account name'}
+								hasRedMark={!channelName}
+								className="ml-1"
+							/>
 						</FadingView>
 					</View>
 				}
@@ -162,7 +169,8 @@ const CommonHeader = ({
 					<Animated.View style={profileImageScaleStyle}>
 						<Avatar
 							src={
-								imageSrc ?? require('../../../../../assets/images/mock/profile/profile_img.jpeg')
+								imageSrc ??
+								require('../../../../../assets/images/mock/profile/profile_img.jpeg')
 							}
 							className={`${
 								avatarStyle ??

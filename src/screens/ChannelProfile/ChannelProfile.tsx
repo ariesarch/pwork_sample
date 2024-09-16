@@ -61,11 +61,11 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 								require('../../../assets/images/mock/channel/channel_banner.png')
 							}
 							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName={channelAbout?.title || 'channelName'}
+							channelName="channelName"
 						/>
 					)}
 					LargeHeaderComponent={() => (
-						<ChannelProfileHeaderInfo channelAbout={channelAbout} />
+						<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
 					)}
 					sections={[{ data: activeTab === 0 ? flattenPages(timeline) : [] }]}
 					disableAutoFixScroll
