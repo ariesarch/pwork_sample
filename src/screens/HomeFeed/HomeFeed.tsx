@@ -58,7 +58,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 					)}
 				</View>
 				<View className="ml-6 my-2">
-					{mockServerChannellList ? (
+					{channelList ? (
 						<>
 							<View className="flex flex-row items-center">
 								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
@@ -69,7 +69,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								</Pressable>
 							</View>
 							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{mockServerChannellList.map((item, idx) => (
+								{channelList.map((item, idx) => (
 									<View key={idx}>
 										<Card
 											imageSource={item.image}
@@ -120,13 +120,13 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 					)}
 				</View>
 				<View className="ml-6 my-2">
-					{mockLocalChannelList ? (
+					{channelList ? (
 						<>
 							<ThemeText className="font-bold my-2" size="lg_18">
 								Local Channels
 							</ThemeText>
 							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{mockLocalChannelList.map((item, idx) => (
+								{channelList.map((item, idx) => (
 									<View key={idx}>
 										<Card
 											imageSource={item.image}

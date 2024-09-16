@@ -36,7 +36,7 @@ const SearchEverything = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() => {}}
 						imageVariants={'browsing'}
 						variants={'browsing'}
 						gutters={'mr4'}
