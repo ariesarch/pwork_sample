@@ -17,7 +17,7 @@ const SearchResults = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() => {}}
 					/>
 				)}
 				keyExtractor={item => item.id}

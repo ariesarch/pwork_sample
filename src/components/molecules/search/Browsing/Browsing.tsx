@@ -31,7 +31,7 @@ const Browsing = ({ ...props }: ViewProps) => {
 							key={idx}
 							imageSource={item.image}
 							title={item.title}
-							onPress={() => navigation.navigate('ChannelProfile')}
+							onPress={() => {}}
 							imageVariants={'browsing'}
 						/>
 					))}
@@ -43,7 +43,7 @@ const Browsing = ({ ...props }: ViewProps) => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() => {}}
 						className="w-[149] h-20"
 					/>
 				)}
