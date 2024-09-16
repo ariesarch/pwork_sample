@@ -20,7 +20,7 @@ export type RootStackParamList = {
 export type BottomStackParamList = {
 	Home: NavigatorScreenParams<HomeStackParamList>;
 	Notification: undefined;
-	Search: undefined;
+	Search: NavigatorScreenParams<SearchStackParamList>;
 	Message: undefined;
 	Compose: undefined;
 };
@@ -37,12 +37,22 @@ export type HomeStackParamList = {
 	Profile: undefined;
 };
 
+export type SearchStackParamList = {
+	SearchResults: {
+		query: string | undefined;
+	};
+	SearchFeed: undefined;
+};
+
 export type RootScreenProps<
 	S extends keyof RootStackParamList = keyof RootStackParamList,
 > = StackScreenProps<RootStackParamList, S>;
 
 export type HomeStackScreenProps<S extends keyof HomeStackParamList> =
 	StackScreenProps<HomeStackParamList, S>;
+
+export type SearchStackScreenProps<S extends keyof SearchStackParamList> =
+	StackScreenProps<SearchStackParamList, S>;
 
 export type TabBarScreenProps<
 	S extends keyof BottomStackParamList = keyof BottomStackParamList,

@@ -23,8 +23,8 @@ const ChannelAddContentForm = () => {
 					Add the hashtags used to bring posts into your channel.
 				</ThemeText>
 				<InputFieldName title="Hashtag" isRequired />
-				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3" />
-				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3" />
+				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3 pl-6" />
+				<TextInput startIcon={<ThemeText>#</ThemeText>} styleNW="mt-3 pl-6" />
 				<Button variant="outline" className="rounded-3xl mt-5" size="xl">
 					<ThemeText>Add another</ThemeText>
 				</Button>

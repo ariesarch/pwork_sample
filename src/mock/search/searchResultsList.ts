@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export const mockStatusList: Pathchwork.Status[] = [
+export const mockSearchResultsList: Pathchwork.Status[] = [
 	{
-		id: '2000',
+		id: 2000,
 		account: {
 			id: '1',
 			account_id: '1',
@@ -12,13 +12,14 @@ export const mockStatusList: Pathchwork.Status[] = [
 		content:
 			'Lorem ipsum dolor sit amet consectetur. Ut nisi etiam sapien nec tortor molestie duis. Molestie eget purus turpis nec. Risus viverra vestibulum pretium quisque eget rhoncus sed lorem.',
 		created_at: '12 hr ago',
-		favourites_count: 2,
+		favourite_count: 2,
 		reblogs_count: 1,
 		replies_count: 1,
+		statusType: 'feed',
 		image: require('../../../assets/images/mock/feetImageMock1.jpeg'),
 	},
 	{
-		id: '2001',
+		id: 2001,
 		account: {
 			id: '1',
 			account_id: '1',
@@ -29,7 +30,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 		content:
 			'Lorem ipsum dolor sit amet consectetur. Ut nisi etiam sapien nec tortor molestie duis. Molestie eget purus turpis nec. Risus viverra vestibulum pretium quisque eget rhoncus sed lorem.',
 		created_at: '12 hr ago',
-		favourites_count: 2,
+		favourite_count: 2,
 		reblogs_count: 16,
 		replies_count: 6,
 		statusType: 'feed',
@@ -46,7 +47,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 		content:
 			'Lorem ipsum dolor sit amet consectetur. Ut nisi etiam sapien nec tortor molestie duis. Molestie eget purus turpis nec. Risus viverra vestibulum pretium quisque eget rhoncus sed lorem.',
 		created_at: '12 hr ago',
-		favourites_count: 2,
+		favourite_count: 2,
 		reblogs_count: 16,
 		replies_count: 6,
 		statusType: 'feed',
@@ -63,7 +64,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 		content:
 			'Lorem ipsum dolor sit amet consectetur. Ut nisi etiam sapien nec tortor molestie duis. Molestie eget purus turpis nec. Risus viverra vestibulum pretium quisque eget rhoncus sed lorem.',
 		created_at: '12 hr ago',
-		favourites_count: 2,
+		favourite_count: 2,
 		reblogs_count: 1,
 		replies_count: 1,
 		statusType: 'feed',
@@ -79,7 +80,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 			content:
 				'Consectetur quam cursus posuere at. Diam odio eu luctus viverra magna. Aliquet dui sagittis faucibus sit mi. Ultrices leo in bibendum sem.',
 			created_at: '12 hr ago',
-			favourites_count: 2,
+			favourite_count: 2,
 			reblogs_count: 1,
 			replies_count: 1,
 			statusType: 'feed',
@@ -98,7 +99,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 		content:
 			'Lorem ipsum dolor sit amet consectetur. Ut nisi etiam sapien nec tortor molestie duis. Molestie eget purus turpis nec. Risus viverra vestibulum pretium quisque eget rhoncus sed lorem.',
 		created_at: '19 hr ago',
-		favourites_count: 2,
+		favourite_count: 2,
 		reblogs_count: 7,
 		replies_count: 1,
 		statusType: 'feed',
@@ -114,7 +115,7 @@ export const mockStatusList: Pathchwork.Status[] = [
 			content:
 				'Felis in pellentesque egestas ac accumsan pharetra augue non. Est etiam sagittis praesent enim.',
 			created_at: '23 hr ago',
-			favourites_count: 2,
+			favourite_count: 2,
 			reblogs_count: 7,
 			replies_count: 1,
 			statusType: 'feed',
@@ -184,6 +185,13 @@ export const mockUserList: Pathchwork.Account[] = [
 	{
 		id: '9',
 		account_id: '9',
+		username: 'Test User 10',
+		acct: 'beta@patchwork',
+		avatar: require('../../../assets/images/mock/mockUser10.jpeg'),
+	},
+	{
+		id: '10',
+		account_id: '10',
 		username: 'Test User 10',
 		acct: 'beta@patchwork',
 		avatar: require('../../../assets/images/mock/mockUser10.jpeg'),
@@ -259,7 +267,7 @@ export const mockCommandStatusList: Pathchwork.Status[] = [
 		content:
 			'Felis in pellentesque egestas ac accumsan pharetra augue non. Est etiam sagittis praesent enim.',
 		created_at: '19 hr ago',
-		favourites_count: 1,
+		favourite_count: 1,
 		reblogs_count: 16,
 		replies_count: 6,
 		statusType: 'feed',
@@ -276,7 +284,7 @@ export const mockCommandStatusList: Pathchwork.Status[] = [
 		content:
 			'Leo quam sagittis amet fames porttitor. Pretium et vitae tincidunt quam sit et aenean. Vulputate vulputate proin magna purus tortor scelerisque lobortis felis mi. Fringilla amet pellentesque ut nunc.',
 		created_at: '19 hr ago',
-		favourites_count: 1,
+		favourite_count: 1,
 		reblogs_count: 16,
 		replies_count: 6,
 		statusType: 'feed',
@@ -293,7 +301,7 @@ export const mockCommandStatusList: Pathchwork.Status[] = [
 		content:
 			'Scelerisque a sed convallis turpis nunc ultrices ut habitasse. Nisl cursus tempus facilisis gravida morbi feugiat arcu. Eget aliquet varius arcu consequat velit nulla. Pulvinar consequat dolor diam eu cursus elementum nunc ultricies. Gravida dui nulla leo vitae tincidunt fames maecenas magna dignissim. Egestas id vitae pellentesque nulla risus gravida.',
 		created_at: '19 hr ago',
-		favourites_count: 1,
+		favourite_count: 1,
 		reblogs_count: 16,
 		replies_count: 6,
 		statusType: 'feed',
@@ -315,7 +323,7 @@ export const statusListData: any = [
 				content:
 					'Images are not technically inserted into a web page; images are linked to web pages. The <img> tag creates a holding space for the referenced image.',
 				created_at: '12 hr ago',
-				favourites_count: 2,
+				favourite_count: 2,
 				reblogs_count: 1,
 				replies_count: 1,
 				statusType: 'feed',
@@ -333,7 +341,7 @@ export const statusListData: any = [
 				content:
 					'Nec facilisis faucibus auctor pharetra ac in faucibus tortor. Lobortis enim nunc velit egestas sociis eu praesent pretium.',
 				created_at: '12 hr ago',
-				favourites_count: 2,
+				favourite_count: 2,
 				reblogs_count: 1,
 				replies_count: 1,
 				statusType: 'feed',
@@ -349,7 +357,7 @@ export const statusListData: any = [
 					content:
 						'Images are not technically inserted into a web page; images are linked to web pages. The <img> tag creates a holding space for the referenced image.',
 					created_at: '12 hr ago',
-					favourites_count: 2,
+					favourite_count: 2,
 					reblogs_count: 1,
 					replies_count: 1,
 					statusType: 'feed',
@@ -368,7 +376,7 @@ export const statusListData: any = [
 				content:
 					'Images are not technically inserted into a web page; images are linked to web pages. The <img> tag creates a holding space for the referenced image.',
 				created_at: '19 hr ago',
-				favourites_count: 2,
+				favourite_count: 2,
 				reblogs_count: 7,
 				replies_count: 1,
 				statusType: 'feed',
@@ -383,7 +391,7 @@ export const statusListData: any = [
 					},
 					content: 'ABCDEFG',
 					created_at: '23 hr ago',
-					favourites_count: 2,
+					favourite_count: 2,
 					reblogs_count: 7,
 					replies_count: 1,
 					statusType: 'feed',

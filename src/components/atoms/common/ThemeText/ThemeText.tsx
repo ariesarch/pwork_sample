@@ -18,6 +18,7 @@ const textVariants = cva(
 				default: /* tw */ 'text-sm',
 				fs_13: /* tw */ 'text-[13px]',
 				xs_12: /* tw */ 'text-xs',
+				sm_14: /* tw */ 'text-sm',
 				md_16: /* tw */ 'text-base',
 				lg_18: /* tw */ 'text-lg',
 				xl_20: /* tw */ 'text-xl',

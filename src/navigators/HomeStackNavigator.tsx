@@ -4,6 +4,7 @@ import {
 	FeedDetail,
 	HomeFeed,
 	Profile,
+	SearchResults,
 } from '@/screens';
 import { HomeStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';

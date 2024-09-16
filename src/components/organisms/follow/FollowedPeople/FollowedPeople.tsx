@@ -14,7 +14,7 @@ const FollowedPeople = () => {
 				renderItem={({ item }) => (
 					<AccountAvatar
 						account={item}
-						size={25}
+						size="md"
 						dotAlert={!!item.hasNoti}
 						className="m-4"
 					/>

@@ -13,3 +13,4 @@ export { default as FeedDetail } from './FeedDetail/FeedDetail';
 export { default as ChannelProfile } from './ChannelProfile/ChannelProfile';
 export { default as EmailVerification } from './EmailVerification/EmailVerification';
 export { default as ChannelCreate } from './ChannelCreate/ChannelCreate';
+export { default as SearchResults } from './SearchResults/SearchResults';
