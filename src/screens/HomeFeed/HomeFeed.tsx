@@ -76,7 +76,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
-													slug: 'science.channel.org',
+													slug: 'https://science.channel.org',
 												})
 											}
 										/>
@@ -133,7 +133,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
-													slug: 'science.channel.org',
+													slug: 'https://science.channel.org',
 												})
 											}
 										/>

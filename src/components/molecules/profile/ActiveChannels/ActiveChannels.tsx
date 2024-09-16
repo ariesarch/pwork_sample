@@ -21,7 +21,7 @@ const ActiveChannels = () => {
 						title={item.title}
 						onPress={() =>
 							navigation.navigate('ChannelProfile', {
-								slug: 'science.channel.org',
+								slug: 'https://science.channel.org',
 							})
 						}
 					/>

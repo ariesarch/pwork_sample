@@ -15,7 +15,11 @@ const SearchChannels = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() =>
+							navigation.navigate('ChannelProfile', {
+								slug: 'https://science.channel.org',
+							})
+						}
 						imageVariants={'searchChannels'}
 					/>
 				)}

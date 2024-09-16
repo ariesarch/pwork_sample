@@ -20,10 +20,13 @@ import {
 	useGetChannelFeed,
 } from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
+import { useNavigation } from '@react-navigation/native';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
 }) => {
+	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
 	const { bottom } = useSafeAreaInsets();
 	const { slug } = route.params;
@@ -125,7 +128,13 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 				/>
 			) : (
-				<View style={{ flex: 1, marginTop: 100 }}>
+				<View style={{ flex: 1, marginTop: 60 }}>
+					<TouchableOpacity
+							onPress={() => navigation.canGoBack() && navigation.goBack()}
+							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
+						>
+							<ProfileBackIcon />
+						</TouchableOpacity>
 					<ChannelProfileLoading />
 				</View>
 			)}

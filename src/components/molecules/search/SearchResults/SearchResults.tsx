@@ -10,14 +10,17 @@ const SearchResults = () => {
 	const navigation = useNavigation();
 	return (
 		<View>
-			
 			<FlatList
 				data={activeChannelData}
 				renderItem={({ item }) => (
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => navigation.navigate('ChannelProfile')}
+						onPress={() =>
+							navigation.navigate('ChannelProfile', {
+								slug: 'https://science.channel.org',
+							})
+						}
 					/>
 				)}
 				keyExtractor={item => item.id}

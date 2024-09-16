@@ -36,7 +36,11 @@ const SearchEverything = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() => {}}
+						onPress={() =>
+							navigation.navigate('ChannelProfile', {
+								slug: 'https://science.channel.org',
+							})
+						}
 						imageVariants={'browsing'}
 						variants={'browsing'}
 						gutters={'mr4'}
