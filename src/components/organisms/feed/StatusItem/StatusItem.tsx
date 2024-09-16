@@ -5,7 +5,7 @@ import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusA
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { View, Image, ViewProps, ImageProps, Pressable } from 'react-native';
+import { View, Image, ViewProps, Pressable } from 'react-native';
 
 type Props = {
 	status: Pathchwork.Status;

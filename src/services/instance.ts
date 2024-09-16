@@ -9,10 +9,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(config => {
 	if (config.params && 'isDynamicDomain' in config.params) {
-		console.log('axiosCofig::', config.params);
 		config.baseURL = config.params?.slug;
 	}
-	console.log('configChanged::', config);
 	return config;
 });
 

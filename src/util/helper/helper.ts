@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Dimensions } from 'react-native';
+import { PagedResponse } from './timeline';
 
 export const handleError = (error: any) => {
 	return Promise.reject({

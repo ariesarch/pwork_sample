@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { SectionListWithHeaders } from '@codeherence/react-native-header';
@@ -12,8 +14,12 @@ import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrol
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
+import {
+	useGetChannelAbout,
+	useGetChannelFeed,
+} from '@/hooks/queries/channel.queries';
+import { flattenPages } from '@/util/helper/timeline';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -21,14 +27,26 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom } = useSafeAreaInsets();
 	const { slug } = route.params;
-	const { data: timeline } = useGetChannelFeed({
+	const {
+		data: timeline,
+		hasNextPage,
+		fetchNextPage,
+		isFetching,
+	} = useGetChannelFeed({
 		slug,
 		remote: false,
 		only_media: false,
 	});
 
+	const { data: channelAbout } = useGetChannelAbout(slug);
+
 	const [activeTab, setActiveTab] = useState(0);
-	// console.log('timelineContainer::', timeline[0]);
+
+	const onTimelineContentLoadMore = () => {
+		if (hasNextPage && activeTab === 0) {
+			return fetchNextPage();
+		}
+	};
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
@@ -39,13 +57,18 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							scrollY={scrollY}
 							showNavBar={showNavBar}
 							bannerSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
-							imageSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
+							imageSrc={
+								channelAbout?.thumbnail.url ||
+								require('../../../assets/images/mock/channel/channel_banner.png')
+							}
 							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName="Channel name"
+							channelName="channelName"
 						/>
 					)}
-					LargeHeaderComponent={ChannelProfileHeaderInfo}
-					sections={[{ data: timeline }]}
+					LargeHeaderComponent={() => (
+						<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
+					)}
+					sections={[{ data: activeTab === 0 ? flattenPages(timeline) : [] }]}
 					disableAutoFixScroll
 					ignoreLeftSafeArea
 					ignoreRightSafeArea
@@ -61,6 +84,8 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 					stickySectionHeadersEnabled
 					showsVerticalScrollIndicator={false}
+					onEndReachedThreshold={0.15}
+					onEndReached={onTimelineContentLoadMore}
 					renderSectionHeader={() => (
 						<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 							<View className="flex-1 flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100">
@@ -86,9 +111,18 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 								))}
 							</View>
 							{activeTab === 1 && <Underline className="mt-1" />}
-							{activeTab === 0 ? <HorizontalScrollMenu /> : <ChannelAbout />}
+							{activeTab === 0 ? (
+								<HorizontalScrollMenu />
+							) : (
+								<ChannelAbout channelAbout={channelAbout} />
+							)}
 						</View>
 					)}
+					ListFooterComponent={
+						isFetching ? (
+							<ActivityIndicator size="small" className="mt-5" />
+						) : null
+					}
 				/>
 			) : (
 				<View style={{ flex: 1, marginTop: 100 }}>
