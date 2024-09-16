@@ -72,8 +72,8 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								{channelList.map((item, idx) => (
 									<View key={idx}>
 										<Card
-											imageSource={item.image}
-											title={item.title}
+											imageSource={item.image_url}
+											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
 													slug: 'science.channel.org',
@@ -129,8 +129,8 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								{channelList.map((item, idx) => (
 									<View key={idx}>
 										<Card
-											imageSource={item.image}
-											title={item.title}
+											imageSource={item.image_url}
+											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
 													slug: 'science.channel.org',
