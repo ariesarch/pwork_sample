@@ -15,6 +15,8 @@ import { ChevronRight, ListItem } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useGetMyChannels } from '@/hooks/queries/channel.queries';
+import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
+import PeopleFollowingLoading from '@/components/atoms/loading/PeopleFollowingLoading';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -25,100 +27,123 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View className="ml-6 my-2">
-					<View className="flex flex-row items-center">
-						<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-							My Channels
-						</ThemeText>
-						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey">View All</ThemeText>
-						</Pressable>
-					</View>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{channelList &&
-							channelList.map((item, idx) => (
-								<View key={idx}>
-									<Card
-										imageSource={item.image_url}
-										title={item.name}
-										onPress={() =>
-											navigation.navigate('ChannelProfile', {
-												slug: item.slug,
-											})
-										}
-									/>
-								</View>
-							))}
-					</ScrollView>
+					{channelList ? (
+						<>
+							<View className="flex-row items-center">
+								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+									My Channels
+								</ThemeText>
+								<Pressable onPress={() => {}} className="mr-4">
+									<ThemeText variant="textGrey">View All</ThemeText>
+								</Pressable>
+							</View>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+								{channelList.map((item, idx) => (
+									<View key={idx}>
+										<Card
+											imageSource={item.image_url}
+											title={item.name}
+											onPress={() =>
+												navigation.navigate('ChannelProfile', {
+													slug: item.slug,
+												})
+											}
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</>
+					) : (
+						<ChannelLoading />
+					)}
 				</View>
 				<View className="ml-6 my-2">
-					<View className="flex flex-row items-center">
-						<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-							Server Channels
-						</ThemeText>
-						<Pressable onPress={() => {}} className="mr-4">
-							<ThemeText variant="textGrey">View All</ThemeText>
-						</Pressable>
-					</View>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{mockServerChannellList.map((item, idx) => (
-							<View key={idx}>
-								<Card
-									imageSource={item.image}
-									title={item.title}
-									onPress={() =>
-										navigation.navigate('ChannelProfile', {
-											slug: 'science.channel.org',
-										})
-									}
-								/>
+					{mockServerChannellList ? (
+						<>
+							<View className="flex flex-row items-center">
+								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+									Server Channels
+								</ThemeText>
+								<Pressable onPress={() => {}} className="mr-4">
+									<ThemeText variant="textGrey">View All</ThemeText>
+								</Pressable>
 							</View>
-						))}
-					</ScrollView>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+								{mockServerChannellList.map((item, idx) => (
+									<View key={idx}>
+										<Card
+											imageSource={item.image}
+											title={item.title}
+											onPress={() =>
+												navigation.navigate('ChannelProfile', {
+													slug: 'science.channel.org',
+												})
+											}
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</>
+					) : (
+						<ChannelLoading />
+					)}
 				</View>
 				<View className="ml-6 my-2">
-					<View className="flex flex-row items-center">
-						<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-							People Following
-						</ThemeText>
-						<Pressable
-							onPress={() => navigation.navigate('PeopleFollowing')}
-							className="mr-4"
-						>
-							<ThemeText variant="textGrey">View All</ThemeText>
-						</Pressable>
-					</View>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{mockUserList.map((item, idx) => (
-							<View key={idx}>
-								<AccountAvatar
-									account={item}
-									size="lg"
-									dotAlert={item.hasNoti}
-									className="mr-3"
-								/>
+					{mockUserList ? (
+						<>
+							<View className="flex flex-row items-center">
+								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+									People Following
+								</ThemeText>
+								<Pressable
+									onPress={() => navigation.navigate('PeopleFollowing')}
+									className="mr-4"
+								>
+									<ThemeText variant="textGrey">View All</ThemeText>
+								</Pressable>
 							</View>
-						))}
-					</ScrollView>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+								{mockUserList.map((item, idx) => (
+									<View key={idx}>
+										<AccountAvatar
+											account={item}
+											size={20}
+											dotAlert={item.hasNoti}
+											className="mr-3"
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</>
+					) : (
+						<PeopleFollowingLoading />
+					)}
 				</View>
 				<View className="ml-6 my-2">
-					<ThemeText className="font-bold my-2" size="lg_18">
-						Local Channels
-					</ThemeText>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{mockLocalChannelList.map((item, idx) => (
-							<View key={idx}>
-								<Card
-									imageSource={item.image}
-									title={item.title}
-									onPress={() =>
-										navigation.navigate('ChannelProfile', {
-											slug: 'science.channel.org',
-										})
-									}
-								/>
-							</View>
-						))}
-					</ScrollView>
+					{mockLocalChannelList ? (
+						<>
+							<ThemeText className="font-bold my-2" size="lg_18">
+								Local Channels
+							</ThemeText>
+							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+								{mockLocalChannelList.map((item, idx) => (
+									<View key={idx}>
+										<Card
+											imageSource={item.image}
+											title={item.title}
+											onPress={() =>
+												navigation.navigate('ChannelProfile', {
+													slug: 'science.channel.org',
+												})
+											}
+										/>
+									</View>
+								))}
+							</ScrollView>
+						</>
+					) : (
+						<ChannelLoading isLocalChannel />
+					)}
 				</View>
 				<View className="ml-6 my-2">
 					<ThemeText className="font-bold my-2" size="lg_18">

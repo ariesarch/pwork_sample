@@ -14,6 +14,7 @@ import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrol
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
+import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
 import {
 	useGetChannelAbout,
 	useGetChannelFeed,
@@ -49,7 +50,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-			{timeline && (
+			{timeline ? (
 				<SectionListWithHeaders
 					HeaderComponent={({ scrollY, showNavBar }) => (
 						<CommonHeader
@@ -123,6 +124,10 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						) : null
 					}
 				/>
+			) : (
+				<View style={{ flex: 1, marginTop: 100 }}>
+					<ChannelProfileLoading />
+				</View>
 			)}
 		</View>
 	);
