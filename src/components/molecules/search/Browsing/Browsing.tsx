@@ -18,7 +18,7 @@ const Browsing = ({ ...props }: ViewProps) => {
 					</ThemeText>
 				</View>
 			</View>
-			<ScrollView contentContainerStyle={{paddingHorizontal: 20}}>
+			<ScrollView contentContainerStyle={{ paddingHorizontal: 20 }}>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -31,10 +31,12 @@ const Browsing = ({ ...props }: ViewProps) => {
 							key={idx}
 							imageSource={item.image}
 							title={item.title}
-							onPress={() => navigation.navigate('ChannelProfile', {
-								slug: 'https://science.channel.org',
-							})}
-							imageVariants={'browsing'}
+							onPress={() =>
+								navigation.navigate('ChannelProfile', {
+									slug: item.slug,
+								})
+							}
+							imageVariants="browsing"
 						/>
 					))}
 				</View>
