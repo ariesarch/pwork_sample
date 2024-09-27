@@ -60,7 +60,7 @@ const SearchResults = ({
 					</TouchableOpacity>
 				)}
 			</View>
-			{searchKeyword.length > 0 ? (
+			{/* {searchKeyword.length > 0 ? (
 				<TabView
 					navigationState={{ index, routes }}
 					renderScene={renderScene}
@@ -83,7 +83,7 @@ const SearchResults = ({
 						/>
 					)}
 				/>
-			) : (
+			) : ( */}
 				<View className="flex-row items-center justify-center flex-1">
 					<ThemeText variant="textGrey" className="text-center ">
 						{
@@ -91,7 +91,7 @@ const SearchResults = ({
 						}
 					</ThemeText>
 				</View>
-			)}
+			{/* )} */}
 		</SafeScreen>
 	);
 };

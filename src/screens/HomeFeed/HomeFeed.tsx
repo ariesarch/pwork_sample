@@ -96,7 +96,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									People Following
 								</ThemeText>
 								<Pressable
-									onPress={() => navigation.navigate('PeopleFollowing')}
+									// onPress={() => navigation.navigate('PeopleFollowing')}
 									className="mr-4"
 								>
 									<ThemeText variant="textGrey">View All</ThemeText>
