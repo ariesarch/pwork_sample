@@ -29,19 +29,19 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
 	const { bottom } = useSafeAreaInsets();
-	const { slug } = route.params;
+	const { domain_name } = route.params;
 	const {
 		data: timeline,
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
 	} = useGetChannelFeed({
-		slug,
+		domain_name,
 		remote: false,
 		only_media: false,
 	});
 
-	const { data: channelAbout } = useGetChannelAbout(slug);
+	const { data: channelAbout } = useGetChannelAbout(domain_name);
 
 	const [activeTab, setActiveTab] = useState(0);
 
@@ -130,11 +130,11 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			) : (
 				<View style={{ flex: 1, marginTop: 60 }}>
 					<TouchableOpacity
-							onPress={() => navigation.canGoBack() && navigation.goBack()}
-							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
-						>
-							<ProfileBackIcon />
-						</TouchableOpacity>
+						onPress={() => navigation.canGoBack() && navigation.goBack()}
+						className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
+					>
+						<ProfileBackIcon />
+					</TouchableOpacity>
 					<ChannelProfileLoading />
 				</View>
 			)}

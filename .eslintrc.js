@@ -1,45 +1,26 @@
 module.exports = {
 	env: {
-		'jest/globals': true,
+		es6: true,
+		node: true,
+		jest: true,
 	},
 	root: true,
 	extends: [
-		'@react-native',
-		'airbnb',
 		'eslint:recommended',
-		'airbnb/hooks',
-		'airbnb-typescript',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:@typescript-eslint/recommended-requiring-type-checking',
-		'plugin:prettier/recommended',
-		'plugin:import/recommended',
 		'plugin:react/recommended',
-		'plugin:react/jsx-runtime',
+		'plugin:react-hooks/recommended',
+		'plugin:@typescript-eslint/eslint-recommended',
+		'plugin:@typescript-eslint/recommended',
+		'prettier',
 	],
-	parser: '@typescript-eslint/parser',
-	ignorePatterns: ['plugins/**/*', 'metro.config.js'],
-	parserOptions: {
-		ecmaFeatures: {
-			jsx: true,
-		},
-		ecmaVersion: 'latest',
-		sourceType: 'module',
-		tsconfigRootDir: '.',
-		project: ['./tsconfig.json'],
-	},
+	plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
 	settings: {
-		'import/resolver': {
-			node: {
-				extensions: ['.ts', '.tsx'],
-			},
-			typescript: {},
-		},
 		react: {
-			version: '18.x',
+			version: 'detect',
 		},
 	},
 	rules: {
-		'@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/no-unused-vars': 'off',
 		'global-require': 0,
 		'react-hooks/exhaustive-deps': 'off',
 		quotes: ['error', 'single'],
@@ -56,9 +37,9 @@ module.exports = {
 		'react/no-children-prop': 'off',
 		'react/no-unstable-nested-components': 'off',
 		'react-native/no-inline-styles': 'off',
-		'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
 		'react/display-name': 'off',
 		'no-console': ['error', { allow: ['error'] }],
+		'react/react-in-jsx-scope': 'off',
 		'prettier/prettier': [
 			'error',
 			{

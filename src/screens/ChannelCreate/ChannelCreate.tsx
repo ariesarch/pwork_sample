@@ -9,13 +9,15 @@ import ChannelFilterContentForm from '@/components/organisms/channel/ChannelFilt
 import ChannelInformationForm from '@/components/organisms/channel/ChannelInformationForm/ChannelInformationForm';
 import ChannelShareContentForm from '@/components/organisms/channel/ChannelShareContentForm/ChannelShareContentForm';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { useState } from 'react';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const ChannelCreate = () => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const [activeStep, setActiveStep] = useState(1);
 
 	return (
@@ -50,7 +52,7 @@ const ChannelCreate = () => {
 					onPress={() => {
 						if (activeStep < 5) return setActiveStep(prev => prev + 1);
 						return navigation.navigate('ChannelProfile', {
-							slug: 'science.channel.org',
+							domain_name: 'science.channel.org',
 						});
 					}}
 					className="mx-4 mt-2 mb-10"

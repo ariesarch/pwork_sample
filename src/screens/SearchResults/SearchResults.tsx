@@ -60,7 +60,7 @@ const SearchResults = ({
 					</TouchableOpacity>
 				)}
 			</View>
-			{searchKeyword.length > 0 ? (
+			{/* {searchKeyword.length > 0 ? (
 				<TabView
 					navigationState={{ index, routes }}
 					renderScene={renderScene}
@@ -83,15 +83,15 @@ const SearchResults = ({
 						/>
 					)}
 				/>
-			) : (
-				<View className="flex-row items-center justify-center flex-1">
-					<ThemeText variant="textGrey" className="text-center ">
-						{
-							'Search for people, posts, hashtags, local \n channels, global channels or hubs.'
-						}
-					</ThemeText>
-				</View>
-			)}
+			) : ( */}
+			<View className="flex-row items-center justify-center flex-1">
+				<ThemeText variant="textGrey" className="text-center ">
+					{
+						'Search for people, posts, hashtags, local \n channels, global channels or hubs.'
+					}
+				</ThemeText>
+			</View>
+			{/* )} */}
 		</SafeScreen>
 	);
 };

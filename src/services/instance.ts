@@ -9,7 +9,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(config => {
 	if (config.params && 'isDynamicDomain' in config.params) {
-		config.baseURL = config.params?.slug;
+		config.baseURL = config.params?.domain_name;
 	}
 	return config;
 });

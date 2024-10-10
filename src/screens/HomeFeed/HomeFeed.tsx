@@ -4,11 +4,7 @@ import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvat
 import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import {
-	mockHashTag,
-	mockLocalChannelList,
-	mockServerChannellList,
-} from '@/mock/feed/myChanel';
+import { mockHashTag } from '@/mock/feed/myChanel';
 import { mockUserList } from '@/mock/feed/statusList';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { ChevronRight, ListItem } from '@/util/svg/icon.common';
@@ -45,7 +41,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
-													slug: item.slug,
+													domain_name: item.domain_name,
 												})
 											}
 										/>
@@ -76,7 +72,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
-													slug: 'https://science.channel.org',
+													domain_name: 'https://science.channel.org',
 												})
 											}
 										/>
@@ -107,8 +103,8 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									<View key={idx}>
 										<AccountAvatar
 											account={item}
-											size={20}
-											dotAlert={item.hasNoti}
+											size={'md'}
+											dotAlert={false}
 											className="mr-3"
 										/>
 									</View>
@@ -133,7 +129,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											title={item.name}
 											onPress={() =>
 												navigation.navigate('ChannelProfile', {
-													slug: 'https://science.channel.org',
+													domain_name: 'https://science.channel.org',
 												})
 											}
 										/>

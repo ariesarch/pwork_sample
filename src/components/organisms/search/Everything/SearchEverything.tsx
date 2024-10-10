@@ -8,9 +8,11 @@ import { keyExtractor } from '@/util/helper/helper';
 import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 const SearchEverything = () => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
 	const renderListHeaderComponent = () => {
 		return (
@@ -38,7 +40,7 @@ const SearchEverything = () => {
 						title={item.title}
 						onPress={() =>
 							navigation.navigate('ChannelProfile', {
-								slug: item.slug,
+								domain_name: item.domain_name,
 							})
 						}
 						imageVariants={'browsing'}

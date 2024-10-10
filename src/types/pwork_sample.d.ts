@@ -94,10 +94,33 @@ declare namespace Pathchwork {
 		slug: string;
 		image_updated_at: string;
 		description: string;
+		domain_name: string;
 		image_url: string;
 		created_at: string;
 		updated_at: string;
 	};
+
+	// type Channel = {
+	// 	id: string;
+	// 	type: string;
+	// 	attributes: {
+	// 		id: number;
+	// 		name: string;
+	// 		slug: string;
+	// 		description: string;
+	// 		is_recommended: boolean;
+	// 		admin_following_count: number;
+	// 		account_id: number;
+	// 		patchwork_collection_id: number;
+	// 		guides?: Guide;
+	// 		participants_count: number;
+	// 		visibility: string;
+	// 		domain_name: string;
+	// 		status: string;
+	// 		banner_image_url: string;
+	// 		avatar_image_url: string;
+	// 	};
+	// };
 
 	type Status = {
 		id: string;
@@ -152,6 +175,36 @@ declare namespace Pathchwork {
 		text_count: number;
 		scheduled_at?: string;
 		drafted?: boolean;
+	};
+
+	type StatusDetail = {
+		id: string;
+		created_at: string;
+		in_reply_to_id?: null;
+		in_reply_to_account_id?: null;
+		sensitive: boolean;
+		spoiler_text?: string;
+		visibility: string;
+		language: string;
+		uri: string;
+		url: string;
+		replies_count: number;
+		reblogs_count: number;
+		favourites_count: number;
+		edited_at?: string;
+		content: string;
+		reblog?: Status;
+		application: {
+			name: string;
+			website?: null;
+		};
+		account: Account;
+		media_attachments: Attachment[];
+		mentions: Mention[];
+		tags: any;
+		emojis: any;
+		card?: Card;
+		poll?: Poll;
 	};
 
 	type ChannelAbout = {

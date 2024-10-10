@@ -41,7 +41,7 @@ export const useGetChannelFeed = ({
 	});
 };
 
-export const useGetChannelAbout = (slug: string) => {
-	const queryKey: GetChannelAboutQueryKey = ['channel-about', { slug }];
+export const useGetChannelAbout = (domain_name: string) => {
+	const queryKey: GetChannelAboutQueryKey = ['channel-about', { domain_name }];
 	return useQuery({ queryKey, queryFn: getChannelAbout });
 };

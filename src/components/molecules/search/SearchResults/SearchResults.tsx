@@ -5,9 +5,11 @@ import { activeChannelData } from '@/mock/profile/activeChannels';
 import { scale } from '@/util/helper/helper';
 import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 const SearchResults = () => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	return (
 		<View>
 			<FlatList
@@ -18,12 +20,12 @@ const SearchResults = () => {
 						title={item.title}
 						onPress={() =>
 							navigation.navigate('ChannelProfile', {
-								slug: item.slug,
+								domain_name: item.domain_name,
 							})
 						}
 					/>
 				)}
-				keyExtractor={item => item.id}
+				keyExtractor={item => item.id.toString()}
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				contentContainerStyle={{ paddingLeft: scale(24) }}

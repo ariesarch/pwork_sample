@@ -13,20 +13,22 @@ import { HomeStackScreenProps } from '@/types/navigation';
 import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useFeedDetailQuery } from '@/hooks/queries/feed.queries';
 
 const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
+	// const {} = useFeedDetailQuery()
 	const renderHeader = () => {
 		return (
 			<View>
 				<View className="mx-4">
-					<StatusHeader
+					{/* <StatusHeader
 						status={mockStatusList[0]}
 						imageSize="w-8 h-8"
 						showAvatarIcon
 						showFollowIcon
 					/>
 					<StatusContent status={mockStatusList[0]} className="mt-2" />
-					<StatusActionBar status={mockStatusList[0]} />
+					<StatusActionBar status={mockStatusList[0]} /> */}
 				</View>
 				<Underline className="mt-3" />
 				<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
@@ -48,7 +50,7 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 				style={{ flex: 1 }}
 			>
 				<Header title="Post" leftCustomComponent={<BackButton />} />
-				<FlatList
+				{/* <FlatList
 					data={mockCommandStatusList}
 					ListHeaderComponent={renderHeader}
 					ListHeaderComponentStyle={{ margin: 0, padding: 0 }}
@@ -58,7 +60,7 @@ const FeedDetail = ({ navigation }: HomeStackScreenProps<'FeedDetail'>) => {
 					renderItem={({ item }) => <StatusItem status={item} />}
 					contentContainerStyle={{ flexGrow: 1 }}
 					style={{ flex: 1 }}
-				/>
+				/> */}
 				<View className="mx-6 my-3">
 					<TextInput placeholder="Reply To Account Name" />
 				</View>

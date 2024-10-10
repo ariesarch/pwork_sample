@@ -5,10 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { scale } from '@/util/helper/helper';
 import { searchChannelData } from '@/mock/search/channel';
 import Card from '@/components/atoms/card/Card';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 const Browsing = ({ ...props }: ViewProps) => {
-	const navigation = useNavigation();
-	// const numColumns = 2;
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	return (
 		<View>
 			<View className="ml-6 my-2">
@@ -33,7 +34,7 @@ const Browsing = ({ ...props }: ViewProps) => {
 							title={item.title}
 							onPress={() =>
 								navigation.navigate('ChannelProfile', {
-									slug: item.slug,
+									domain_name: item.domain_name,
 								})
 							}
 							imageVariants="browsing"

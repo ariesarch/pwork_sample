@@ -3,9 +3,11 @@ import { View, FlatList } from 'react-native';
 import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
 import { searchChannelData } from '@/mock/search/channel';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 const SearchChannels = () => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
 	return (
 		<View>
@@ -17,13 +19,13 @@ const SearchChannels = () => {
 						title={item.title}
 						onPress={() =>
 							navigation.navigate('ChannelProfile', {
-								slug: item.slug,
+								domain_name: item.domain_name,
 							})
 						}
 						imageVariants={'searchChannels'}
 					/>
 				)}
-				keyExtractor={item => item.id}
+				keyExtractor={item => item.id.toString()}
 				contentContainerStyle={{
 					alignItems: 'center',
 				}}

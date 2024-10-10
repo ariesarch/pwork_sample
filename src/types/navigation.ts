@@ -29,10 +29,11 @@ export type HomeStackParamList = {
 	PeopleFollowing: undefined;
 	HomeFeed: undefined;
 	FeedDetail: {
-		statusId: number | undefined;
+		id: number;
+		domain_name: string;
 	};
 	ChannelProfile: {
-		slug: string;
+		domain_name: string;
 	};
 	Profile: undefined;
 };
