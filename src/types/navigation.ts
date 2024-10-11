@@ -29,8 +29,7 @@ export type HomeStackParamList = {
 	PeopleFollowing: undefined;
 	HomeFeed: undefined;
 	FeedDetail: {
-		id: number;
-		domain_name: string;
+		id: string;
 	};
 	ChannelProfile: {
 		domain_name: string;

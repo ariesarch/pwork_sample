@@ -9,6 +9,7 @@ import ChannelFilterContentForm from '@/components/organisms/channel/ChannelFilt
 import ChannelInformationForm from '@/components/organisms/channel/ChannelInformationForm/ChannelInformationForm';
 import ChannelShareContentForm from '@/components/organisms/channel/ChannelShareContentForm/ChannelShareContentForm';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -19,6 +20,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 const ChannelCreate = () => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const [activeStep, setActiveStep] = useState(1);
+	const { setDomain } = useActiveDomainAction();
 
 	return (
 		<SafeScreen>
@@ -51,6 +53,7 @@ const ChannelCreate = () => {
 				<Button
 					onPress={() => {
 						if (activeStep < 5) return setActiveStep(prev => prev + 1);
+						setDomain('science.channel.org');
 						return navigation.navigate('ChannelProfile', {
 							domain_name: 'science.channel.org',
 						});

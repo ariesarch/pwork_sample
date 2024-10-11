@@ -7,9 +7,12 @@ import { searchChannelData } from '@/mock/search/channel';
 import Card from '@/components/atoms/card/Card';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 const Browsing = ({ ...props }: ViewProps) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+	const { setDomain } = useActiveDomainAction();
+
 	return (
 		<View>
 			<View className="ml-6 my-2">
@@ -32,11 +35,12 @@ const Browsing = ({ ...props }: ViewProps) => {
 							key={idx}
 							imageSource={item.image}
 							title={item.title}
-							onPress={() =>
+							onPress={() => {
+								setDomain(item.domain_name);
 								navigation.navigate('ChannelProfile', {
 									domain_name: item.domain_name,
-								})
-							}
+								});
+							}}
 							imageVariants="browsing"
 						/>
 					))}

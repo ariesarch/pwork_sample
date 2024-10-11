@@ -221,6 +221,11 @@ declare namespace Pathchwork {
 		title: string;
 	};
 
+	type TimelineReplies = {
+		ancestors: Status[];
+		descendants: Status[];
+	};
+
 	type ChannelAboutHint = {
 		hint: string;
 		id: string;

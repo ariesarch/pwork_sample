@@ -1,4 +1,4 @@
-import { getFeedDetail } from '@/services/feed.service';
+import { getFeedDetail, getFeedReplies } from '@/services/feed.service';
 import {
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
@@ -18,5 +18,5 @@ export const useFeedRepliesQuery = ({
 	id,
 }: FeedRepliesQueryKey[1]) => {
 	const queryKey: FeedRepliesQueryKey = ['feed-replies', { domain_name, id }];
-	// return useQuery({ queryKey, queryFn: getFeedDetail });
+	return useQuery({ queryKey, queryFn: getFeedReplies });
 };

@@ -35,7 +35,7 @@ const StatusHeader = ({
 			>
 				{showAvatarIcon === true && (
 					<Image
-						source={status.account.avatar as ImageProps}
+						source={{ uri: status.account.avatar }}
 						className={`w-5 h-5 rounded-full bg-slate-300 mr-2 ${imageSize}`}
 					/>
 				)}
@@ -46,8 +46,8 @@ const StatusHeader = ({
 			</ThemeText>
 			<View className="flex-1" />
 			{showFollowIcon && (
-				<Button variant="outline" className="rounded-full">
-					<ThemeText>Follow</ThemeText>
+				<Button variant="outline" className="rounded-full mb-2">
+					<ThemeText size="xs_12">Follow</ThemeText>
 				</Button>
 			)}
 		</View>

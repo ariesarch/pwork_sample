@@ -35,7 +35,9 @@ const Profile = () => {
 				showsVerticalScrollIndicator={false}
 				renderSectionHeader={() => (
 					<View
-						className={`flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100`}
+						className={
+							'flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100'
+						}
 					>
 						{['Posts', 'Replies'].map((tab, index) => (
 							<TouchableOpacity
@@ -52,7 +54,9 @@ const Profile = () => {
 								</ThemeText>
 								{activeTab === index && (
 									<View
-										className={`h-[2] w-4/5 bg-patchwork-dark-100 dark:bg-patchwork-light-900`}
+										className={
+											'h-[2] w-4/5 bg-patchwork-dark-100 dark:bg-patchwork-light-900'
+										}
 									/>
 								)}
 							</TouchableOpacity>

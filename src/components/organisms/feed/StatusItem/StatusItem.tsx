@@ -31,7 +31,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 					{...props}
 					onPress={() => {
 						navigation.navigate('FeedDetail', {
-							id: 2,
+							id: status.id,
 						});
 					}}
 				>

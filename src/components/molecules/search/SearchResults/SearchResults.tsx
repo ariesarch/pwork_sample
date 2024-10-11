@@ -7,9 +7,12 @@ import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 const SearchResults = () => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+	const { setDomain } = useActiveDomainAction();
+
 	return (
 		<View>
 			<FlatList
@@ -18,11 +21,12 @@ const SearchResults = () => {
 					<Card
 						imageSource={item.image}
 						title={item.title}
-						onPress={() =>
+						onPress={() => {
+							setDomain(item.domain_name);
 							navigation.navigate('ChannelProfile', {
 								domain_name: item.domain_name,
-							})
-						}
+							});
+						}}
 					/>
 				)}
 				keyExtractor={item => item.id.toString()}

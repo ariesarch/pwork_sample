@@ -13,10 +13,12 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useGetMyChannels } from '@/hooks/queries/channel.queries';
 import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
 import PeopleFollowingLoading from '@/components/atoms/loading/PeopleFollowingLoading';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
 	const { data: channelList } = useGetMyChannels();
+	const { setDomain } = useActiveDomainAction();
 
 	return (
 		<SafeScreen>
@@ -39,11 +41,12 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 										<Card
 											imageSource={item.image_url}
 											title={item.name}
-											onPress={() =>
+											onPress={() => {
+												setDomain(item.domain_name);
 												navigation.navigate('ChannelProfile', {
 													domain_name: item.domain_name,
-												})
-											}
+												});
+											}}
 										/>
 									</View>
 								))}
@@ -70,11 +73,14 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 										<Card
 											imageSource={item.image_url}
 											title={item.name}
-											onPress={() =>
-												navigation.navigate('ChannelProfile', {
-													domain_name: 'https://science.channel.org',
-												})
-											}
+											onPress={() => {
+												{
+													setDomain('https://science.channel.org');
+													navigation.navigate('ChannelProfile', {
+														domain_name: 'https://science.channel.org',
+													});
+												}
+											}}
 										/>
 									</View>
 								))}
@@ -127,11 +133,12 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 										<Card
 											imageSource={item.image_url}
 											title={item.name}
-											onPress={() =>
+											onPress={() => {
+												setDomain('https://science.channel.org');
 												navigation.navigate('ChannelProfile', {
 													domain_name: 'https://science.channel.org',
-												})
-											}
+												});
+											}}
 										/>
 									</View>
 								))}
