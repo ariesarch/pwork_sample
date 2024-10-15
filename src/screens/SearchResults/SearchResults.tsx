@@ -3,7 +3,10 @@ import React, { useState } from 'react';
 import { TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { SearchIcon } from '@/util/svg/icon.common';
-import { HomeStackScreenProps } from '@/types/navigation';
+import {
+	HomeStackScreenProps,
+	SearchStackScreenProps,
+} from '@/types/navigation';
 import { SceneMap, TabView } from 'react-native-tab-view';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import NotiTabBarItemLabel from '@/components/atoms/notifications/NotiTabBarItemLabel/NotiTabBarItemLabel';
@@ -23,7 +26,7 @@ const renderScene = SceneMap({
 
 const SearchResults = ({
 	navigation,
-}: HomeStackScreenProps<'SearchResults'>) => {
+}: SearchStackScreenProps<'SearchResults'>) => {
 	const { colorScheme } = useColorScheme();
 	const layout = useWindowDimensions();
 	const [index, setIndex] = useState(0);

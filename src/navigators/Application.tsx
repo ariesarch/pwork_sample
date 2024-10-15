@@ -13,6 +13,7 @@ import {
 
 import type { RootStackParamList } from '@/types/navigation';
 import BottomTabs from './BottomTabStackNavigator';
+import WebViewer from '@/screens/WebViewer/WebViewer';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -32,6 +33,7 @@ function ApplicationNavigator() {
 						name="EmailVerification"
 						component={EmailVerification}
 					/>
+					<Stack.Screen name="WebViewer" component={WebViewer} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>

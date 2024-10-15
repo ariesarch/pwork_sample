@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import {
 	Pressable,
 	StyleProp,
@@ -11,39 +12,42 @@ import {
 } from 'react-native';
 import ThemeImage from '../../common/ThemeImage/ThemeImage';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '@/types/navigation';
 
 type Props = {
 	meta: any;
 	overrideStyle?: StyleProp<ViewStyle>;
 };
 const RssContentCard = ({ meta, overrideStyle }: Props) => {
-	const renderMetaSEO = (previewData: any) => {
-		const regex = /(<([^>]+)>)/gi;
-		const metaCardTitle = previewData?.title?.replace(regex, '');
+	const navigation =
+		useNavigation<StackNavigationProp<RootStackParamList, 'WebViewer'>>();
+	const regex = /(<([^>]+)>)/gi;
+	const metaCardTitle = meta?.title?.replace(regex, '');
 
-		return (
-			<View style={[styles.metaRoot, overrideStyle]}>
-				<Pressable onPress={() => {}}>
-					<ThemeImage
-						url={previewData?.image}
-						imageStyle={styles.metaImage}
-						blurHash={previewData?.blurhash}
-					/>
-
-					<View style={styles.metaContent}>
-						<ThemeText size="fs_13">
-							{metaCardTitle || previewData?.title}
-						</ThemeText>
-						<ThemeText numberOfLines={1} className="mt-1 underline">
-							{previewData?.url?.split('/')?.slice(0, 3)?.join('/')}
-						</ThemeText>
-					</View>
-				</Pressable>
-			</View>
-		);
+	const navigateToWebView = (url: string) => {
+		navigation.navigate('WebViewer', { url });
 	};
 
-	return renderMetaSEO(meta);
+	return (
+		<View style={[styles.metaRoot, overrideStyle]}>
+			<Pressable onPress={() => navigateToWebView(meta?.url ?? '')}>
+				<ThemeImage
+					url={meta?.image}
+					imageStyle={styles.metaImage}
+					blurHash={meta?.blurhash}
+				/>
+
+				<View style={styles.metaContent}>
+					<ThemeText size="fs_13">{metaCardTitle || meta?.title}</ThemeText>
+					<ThemeText numberOfLines={1} className="mt-1 underline">
+						{meta?.url?.split('/')?.slice(0, 3)?.join('/')}
+					</ThemeText>
+				</View>
+			</Pressable>
+		</View>
+	);
 };
 
 const styles = StyleSheet.create({

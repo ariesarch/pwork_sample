@@ -53,7 +53,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-			{timeline ? (
+			{timeline && channelAbout ? (
 				<SectionListWithHeaders
 					HeaderComponent={({ scrollY, showNavBar }) => (
 						<CommonHeader

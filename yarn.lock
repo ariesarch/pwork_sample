@@ -8318,7 +8318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:^2.2.4":
+"invariant@npm:2.2.4, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -10871,6 +10871,7 @@ __metadata:
     react-dom: 18.2.0
     react-i18next: ^14.1.0
     react-native: 0.74.1
+    react-native-animated-spinkit: ^1.5.2
     react-native-blurhash: ^1.1.11
     react-native-confirmation-code-field: ^7.4.0
     react-native-fast-image: ^8.6.3
@@ -10886,6 +10887,7 @@ __metadata:
     react-native-svg: ^15.3.0
     react-native-tab-view: ^3.5.2
     react-native-walkthrough-tooltip: ^1.6.0
+    react-native-webview: ^13.12.3
     react-test-renderer: 18.2.0
     reactotron-react-native: ^5.1.6
     reactotron-react-native-mmkv: ^0.2.6
@@ -11468,6 +11470,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-animated-spinkit@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "react-native-animated-spinkit@npm:1.5.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 5d84b0958b3f9db5223d7c2af242eae45f133cf50715be56f1e266d7c04fe5ecdbd7e01b08146748b06daaf914fe8bc64f13df7faaee98bc687094ca10cae61e
+  languageName: node
+  linkType: hard
+
 "react-native-blurhash@npm:^1.1.11":
   version: 1.1.11
   resolution: "react-native-blurhash@npm:1.1.11"
@@ -11697,6 +11709,19 @@ __metadata:
   peerDependencies:
     "@types/react": ">=16.8.24"
   checksum: 568d4ef95128e36b0237180a8ea4ee040b74c2912a5916f446f9de611b9179368f168d6f12ae93cd90cf700b9464868df8d5af5a99f9029fd9b99dffdd1c2144
+  languageName: node
+  linkType: hard
+
+"react-native-webview@npm:^13.12.3":
+  version: 13.12.3
+  resolution: "react-native-webview@npm:13.12.3"
+  dependencies:
+    escape-string-regexp: ^4.0.0
+    invariant: 2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 94d824fedc6b5c0402926b99a96f71f4752416e4f038be827552015c0bf6d595d71ba656079618402662aec5e2c539018b0bff2906b6f95261f70893e5dd5d80
   languageName: node
   linkType: hard
 

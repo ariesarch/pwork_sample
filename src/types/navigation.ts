@@ -15,6 +15,7 @@ export type RootStackParamList = {
 	Index: undefined;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
+	WebViewer: { url: string };
 };
 
 export type BottomStackParamList = {

@@ -28,7 +28,7 @@ const ChannelProfileLoading = () => {
 								height={35}
 								borderRadius={30}
 								marginTop={20}
-                // marginRight={40}
+								// marginRight={40}
 							/>
 						</SkeletonPlaceholder.Item>
 
@@ -63,7 +63,7 @@ const ChannelProfileLoading = () => {
 			</View>
 
 			<ChannleProfilePostsLoading />
-			<TimelineLoading style={{paddingTop: 10 }}/>
+			<TimelineLoading style={{ paddingTop: 10 }} />
 			{/* <TimelineLoading style={{ paddingTop: 10 }} /> */}
 		</>
 	);
