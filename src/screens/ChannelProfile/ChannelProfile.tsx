@@ -2,7 +2,7 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useState } from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { SectionListWithHeaders } from '@codeherence/react-native-header';
@@ -22,6 +22,7 @@ import {
 import { flattenPages } from '@/util/helper/timeline';
 import { useNavigation } from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
+import { CircleFade } from 'react-native-animated-spinkit';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -123,8 +124,12 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					)}
 					ListFooterComponent={
 						isFetching ? (
-							<ActivityIndicator size="small" className="mt-5" />
-						) : null
+							<View className="my-3 items-center">
+								<CircleFade size={25} color="white" />
+							</View>
+						) : (
+							<></>
+						)
 					}
 				/>
 			) : (

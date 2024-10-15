@@ -30,7 +30,7 @@ const Profile = () => {
 					paddingBottom: bottom,
 					backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 				}}
-				renderItem={({ item }) => <StatusItem status={item} />}
+				renderItem={({ item }) => <></>}
 				stickySectionHeadersEnabled
 				showsVerticalScrollIndicator={false}
 				renderSectionHeader={() => (
