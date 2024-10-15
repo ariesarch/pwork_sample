@@ -3,37 +3,43 @@ import { View, Text } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Image } from 'react-native-svg';
 
+const backgroundColor = "#f0f0f0";
+const highlightColor = "#bfbfbf";
+
 const ChannleProfilePostsLoading = () => {
 	return (
 		<View
 			style={{
-				// flex: 1,
 				borderTopWidth: 1,
 				borderTopColor: '#585e62',
 				borderBottomWidth: 1,
 				borderBottomColor: '#585e62',
 				paddingHorizontal: 20,
-        paddingBottom: 10,
+				paddingVertical: 10,
 			}}
 		>
-			<SkeletonPlaceholder backgroundColor="#585e62">
+			<SkeletonPlaceholder
+				backgroundColor={backgroundColor}
+				highlightColor={highlightColor}
+				speed={1000}
+			>
 				<SkeletonPlaceholder.Item>
 					{/* Tab Bar  */}
 					<SkeletonPlaceholder.Item
 						flexDirection="row"
 						alignItems="center"
 						justifyContent="space-around"
-						marginVertical={10}
+						marginBottom={10}
 					>
 						<SkeletonPlaceholder.Item
-							width={150}
-							height={40}
-							borderRadius={2}
+							width={"40%"}
+							height={35}
+							borderRadius={3}
 						/>
 						<SkeletonPlaceholder.Item
-							width={150}
-							height={40}
-							borderRadius={2}
+							width={"40%"}
+							height={35}
+							borderRadius={3}
 						/>
 					</SkeletonPlaceholder.Item>
 					{/* Tab Bar  */}
@@ -45,67 +51,67 @@ const ChannleProfilePostsLoading = () => {
 					>
 						<View style={{ alignItems: 'center' }}>
 							<SkeletonPlaceholder.Item
-								width={60}
-								height={60}
-								borderRadius={40}
+								width={50}
+								height={50}
+								borderRadius={50}
 							/>
 							<SkeletonPlaceholder.Item
-								width={40}
+								width={30}
 								height={10}
-								borderRadius={40}
-								marginTop={5}
+								borderRadius={50}
+								marginTop={8}
 							/>
 						</View>
 						<View style={{ alignItems: 'center' }}>
 							<SkeletonPlaceholder.Item
-								width={60}
-								height={60}
-								borderRadius={40}
+								width={50}
+								height={50}
+								borderRadius={50}
 							/>
 							<SkeletonPlaceholder.Item
-								width={60}
+								width={35}
 								height={10}
-								borderRadius={40}
-								marginTop={5}
+								borderRadius={50}
+								marginTop={8}
 							/>
 						</View>
 						<View style={{ alignItems: 'center' }}>
 							<SkeletonPlaceholder.Item
-								width={60}
-								height={60}
-								borderRadius={40}
+								width={50}
+								height={50}
+								borderRadius={50}
 							/>
 							<SkeletonPlaceholder.Item
-								width={60}
+								width={35}
 								height={10}
-								borderRadius={40}
-								marginTop={5}
+								borderRadius={50}
+								marginTop={8}
 							/>
 						</View>
 						<View style={{ alignItems: 'center' }}>
 							<SkeletonPlaceholder.Item
-								width={60}
-								height={60}
-								borderRadius={40}
+								width={50}
+								height={50}
+								borderRadius={50}
 							/>
 							<SkeletonPlaceholder.Item
-								width={60}
+								width={35}
 								height={10}
-								borderRadius={40}
-								marginTop={5}
+								borderRadius={50}
+								marginTop={8}
 							/>
 						</View>
-            <View style={{alignItems: 'center'}}>
+						<View style={{ alignItems: 'center' }}>
 							<SkeletonPlaceholder.Item
-								width={60}
-								height={60}
-								borderRadius={40}
+								width={50}
+								height={50}
+								borderRadius={50}
 							/>
-              <SkeletonPlaceholder.Item
-								width={60}
+							<SkeletonPlaceholder.Item
+								width={35}
 								height={10}
-								borderRadius={40}
-                marginTop={5}
+								borderRadius={50}
+								marginTop={8}
 							/>
 						</View>
 					</SkeletonPlaceholder.Item>

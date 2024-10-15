@@ -8,6 +8,7 @@ import {
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { FastImageProps } from 'react-native-fast-image';
 import Image from '../Image/Image';
+import { Blurhash } from 'react-native-blurhash';
 
 interface BannerTranslationStyleProps {
 	transform: {
@@ -34,6 +35,7 @@ interface BannerProps {
 	blurStyle?: {
 		opacity: number;
 	};
+	blurhash?: string;
 }
 
 const Banner = ({
@@ -42,15 +44,14 @@ const Banner = ({
 	bannerTranslationStyle,
 	animatedScaleStyle,
 	blurStyle,
+	blurhash
 }: BannerProps & FastImageProps) => {
 	const { width } = useWindowDimensions();
-
 	return (
 		<Animated.View
 			style={[
 				StyleSheet.absoluteFill,
 				bannerTranslationStyle,
-				{ paddingBottom: 20, backgroundColor: 'red' },
 			]}
 		>
 			<Animated.View
@@ -65,8 +66,8 @@ const Banner = ({
 							blurStyle,
 						]}
 					/>
-
-					<Image source={source} className="h-36" style={{ width }} />
+						{blurhash ? <Blurhash blurhash={blurhash} style={{ width: "100%", height: "100%" }} />
+        				: <Image source={source} className="h-36" style={{ width }} />}
 				</View>
 			</Animated.View>
 		</Animated.View>
