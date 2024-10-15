@@ -59,7 +59,8 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						<CommonHeader
 							scrollY={scrollY}
 							showNavBar={showNavBar}
-							bannerSrc={require('../../../assets/images/mock/channel/channel_banner.png')}
+							bannerSrc={channelAbout?.thumbnail?.url}
+							blurhash={channelAbout?.thumbnail?.blurhash}
 							imageSrc={
 								channelAbout?.thumbnail.url ||
 								require('../../../assets/images/mock/channel/channel_banner.png')
@@ -128,14 +129,16 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 				/>
 			) : (
-				<View style={{ flex: 1, marginTop: 60 }}>
+				<View style={{ flex: 1}}>
 					<TouchableOpacity
 						onPress={() => navigation.canGoBack() && navigation.goBack()}
 						className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
 					>
 						<ProfileBackIcon />
 					</TouchableOpacity>
+					<View style={{flex:1, marginTop: 20 }}>
 					<ChannelProfileLoading />
+					</View>
 				</View>
 			)}
 		</View>

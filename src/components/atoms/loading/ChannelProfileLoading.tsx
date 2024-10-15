@@ -1,18 +1,24 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-import ChannelLoading from './ChannelLoading';
 import ChannleProfilePostsLoading from './ChannelProfilePostsLoading';
 import TimelineLoading from './TimelineLoading';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const backgroundColor = "#f0f0f0";
+const highlightColor = "#bfbfbf";
 
 const ChannelProfileLoading = () => {
 	return (
 		<>
-			<View style={{ paddingHorizontal: 20, paddingBottom: 10 }}>
-				<SkeletonPlaceholder backgroundColor="#585e62">
+			<View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
+				<SkeletonPlaceholder
+					backgroundColor={backgroundColor}
+					highlightColor={highlightColor}
+					speed={1000}
+				>
 					<SkeletonPlaceholder.Item>
+						{/*Profile Picture and Follow Button*/}
 						<SkeletonPlaceholder.Item
 							flexDirection="row"
 							alignItems="center"
@@ -24,47 +30,33 @@ const ChannelProfileLoading = () => {
 								borderRadius={4}
 							/>
 							<SkeletonPlaceholder.Item
-								width={100}
-								height={35}
+								width={80}
+								height={25}
 								borderRadius={30}
 								marginTop={20}
-								// marginRight={40}
 							/>
 						</SkeletonPlaceholder.Item>
-
-						<SkeletonPlaceholder.Item>
+						{/*Channel Name & account */}
+						<SkeletonPlaceholder.Item marginTop={7}>
 							<SkeletonPlaceholder.Item
-								width={125}
-								height={15}
-								borderRadius={4}
-								marginVertical={8}
-							/>
-							<SkeletonPlaceholder.Item
-								width={230}
-								height={15}
+								width={150}
+								height={25}
 								borderRadius={4}
 							/>
 						</SkeletonPlaceholder.Item>
-						<SkeletonPlaceholder.Item marginTop={6}>
+						<SkeletonPlaceholder.Item marginTop={7}>
 							<SkeletonPlaceholder.Item
-								width={200}
-								height={30}
-								borderRadius={10}
-							/>
-							<SkeletonPlaceholder.Item
-								width={'90%'}
-								height={40}
-								borderRadius={10}
-								marginTop={6}
+								width={"80%"}
+								height={50}
+								borderRadius={4}
 							/>
 						</SkeletonPlaceholder.Item>
 					</SkeletonPlaceholder.Item>
 				</SkeletonPlaceholder>
 			</View>
-
 			<ChannleProfilePostsLoading />
-			<TimelineLoading style={{ paddingTop: 10 }} />
-			{/* <TimelineLoading style={{ paddingTop: 10 }} /> */}
+			<TimelineLoading />
+			<TimelineLoading />
 		</>
 	);
 };

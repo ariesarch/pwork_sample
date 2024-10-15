@@ -29,6 +29,7 @@ type CommonHeaderProps = {
 	imageSrc?: any;
 	avatarStyle?: string | undefined;
 	channelName?: string;
+	blurhash?: string;
 };
 const CommonHeader = ({
 	showNavBar,
@@ -37,6 +38,7 @@ const CommonHeader = ({
 	imageSrc,
 	avatarStyle,
 	channelName,
+	blurhash
 }: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
@@ -114,10 +116,8 @@ const CommonHeader = ({
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={
-					bannerSrc ??
-					require('../../../../../assets/images/mock/profile/banner_img.jpeg')
-				}
+				source={bannerSrc ?? require('../../../../../assets/images/mock/profile/banner_img.jpeg')}
+				blurhash={blurhash}
 				{...{
 					bannerHeight,
 					bannerTranslationStyle,
@@ -172,10 +172,9 @@ const CommonHeader = ({
 								imageSrc ??
 								require('../../../../../assets/images/mock/profile/profile_img.jpeg')
 							}
-							className={`${
-								avatarStyle ??
+							className={`${avatarStyle ??
 								'rounded-full -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
-							}`}
+								}`}
 						/>
 					</Animated.View>
 				</Animated.View>

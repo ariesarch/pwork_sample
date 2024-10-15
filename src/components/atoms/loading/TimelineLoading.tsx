@@ -7,69 +7,51 @@ type Props = {
   borderLineVisible?: boolean;
   style?: StyleProp<ViewStyle>;
 };
+
+const backgroundColor = "#f0f0f0";
+const highlightColor = "#bfbfbf";
+
 const TimelineLoading: React.FC<Props> = ({
   isMediaPlaceholder = false,
   borderLineVisible = false,
   style,
 }) => {
   return (
-    <View
-      style={[{
-        flex: 1,
-        paddingHorizontal: 20,
-        // backgroundColor: colors.backgroundPrimary,
-        // // backgroundColor:"blue",
-        // paddingHorizontal: 16,
-        // paddingVertical: 16,
-        // ...(borderLineVisible && {
-        //   borderBottomWidth: moderateScale(1),
-        //   borderBottomColor: colors.divider,
-        // }),
-      }, style]}
-    >
-      <SkeletonPlaceholder backgroundColor="#585e62">
+    <View style={[{ padding: 20 }, style]}>
+      <SkeletonPlaceholder
+        backgroundColor={backgroundColor}
+        highlightColor={highlightColor}
+        speed={1000}
+      >
         <SkeletonPlaceholder.Item>
           <SkeletonPlaceholder.Item flexDirection="row" alignItems="center">
             <SkeletonPlaceholder.Item
-              width={38}
-              height={38}
+              width={40}
+              height={40}
               borderRadius={50}
             />
             <SkeletonPlaceholder.Item marginLeft={8}>
               <SkeletonPlaceholder.Item
-                width={80}
+                width={100}
                 height={10}
+                borderRadius={4}
                 marginBottom={8}
               />
               <SkeletonPlaceholder.Item
                 width={150}
                 height={8}
+                borderRadius={4}
               />
             </SkeletonPlaceholder.Item>
           </SkeletonPlaceholder.Item>
-          <SkeletonPlaceholder.Item marginTop={16}>
-            <SkeletonPlaceholder.Item
-              width={"100%"}
-              height={12}
-              marginBottom={8}
-            />
-            <SkeletonPlaceholder.Item
-              width={"70%"}
-              height={12}
-            />
-
-            {isMediaPlaceholder && (
-              <SkeletonPlaceholder.Item
-                width={"100%"}
-                height={200}
-                borderRadius={12}
-                marginTop={16}
-              />
-            )}
-          </SkeletonPlaceholder.Item>
-          {/* Reaction */}
           <SkeletonPlaceholder.Item
-            marginTop={16}
+            width={'100%'}
+            height={100}
+            borderRadius={8}
+            marginTop={10}
+          />
+          <SkeletonPlaceholder.Item
+            marginTop={10}
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
