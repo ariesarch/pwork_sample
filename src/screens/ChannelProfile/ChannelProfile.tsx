@@ -134,15 +134,15 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 				/>
 			) : (
-				<View style={{ flex: 1}}>
+				<View style={{ flex: 1 }}>
 					<TouchableOpacity
 						onPress={() => navigation.canGoBack() && navigation.goBack()}
 						className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
 					>
 						<ProfileBackIcon />
 					</TouchableOpacity>
-					<View style={{flex:1, marginTop: 20 }}>
-					<ChannelProfileLoading />
+					<View style={{ flex: 1, marginTop: 20 }}>
+						<ChannelProfileLoading />
 					</View>
 				</View>
 			)}

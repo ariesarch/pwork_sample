@@ -22,8 +22,11 @@ const StatusItem = ({ status, ...props }: Props) => {
 				)} */}
 				<Pressable onPress={() => navigation.navigate('Profile')}>
 					<Image
-						// source={{ uri: status.account.avatar }}
-						source={require("../../../../../assets/images/mock/profile/profile_img.jpeg")}
+						source={
+							status.account.avatar
+								? { uri: status.account.avatar }
+								: require('../../../../../assets/images/mock/profile/profile_img.jpeg')
+						}
 						className="w-[33] h-[33] rounded-full bg-slate-300"
 					/>
 				</Pressable>
