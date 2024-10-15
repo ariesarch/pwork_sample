@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, TouchableOpacity, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { SectionListWithHeaders } from '@codeherence/react-native-header';
@@ -23,6 +23,7 @@ import { flattenPages } from '@/util/helper/timeline';
 import { useNavigation } from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
+import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -51,6 +52,17 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			return fetchNextPage();
 		}
 	};
+
+	const barColor = useAppropiateColorHash('patchwork-dark-100');
+
+	useEffect(() => {
+		StatusBar.setTranslucent(true);
+		StatusBar.setBackgroundColor('transparent');
+		return () => {
+			StatusBar.setTranslucent(false);
+			StatusBar.setBackgroundColor(barColor);
+		};
+	}, []);
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
