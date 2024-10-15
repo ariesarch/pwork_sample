@@ -24,6 +24,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
+import { Platform } from 'react-native';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -56,12 +57,14 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 
 	useEffect(() => {
-		StatusBar.setTranslucent(true);
-		StatusBar.setBackgroundColor('transparent');
-		return () => {
-			StatusBar.setTranslucent(false);
-			StatusBar.setBackgroundColor(barColor);
-		};
+		if (Platform.OS === 'android') {
+			StatusBar.setTranslucent(true);
+			StatusBar.setBackgroundColor('transparent');
+			return () => {
+				StatusBar.setTranslucent(false);
+				StatusBar.setBackgroundColor(barColor);
+			};
+		}
 	}, []);
 
 	return (
