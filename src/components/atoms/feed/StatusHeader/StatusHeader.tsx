@@ -29,7 +29,7 @@ const StatusHeader = ({
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={() => {
-					navigation.navigate('Profile');
+					navigation.navigate('Profile', { id: status.account.id });
 				}}
 				className="flex-row items-center"
 			>

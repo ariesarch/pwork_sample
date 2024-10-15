@@ -11,7 +11,7 @@ export type RootStackParamList = {
 	Register: undefined;
 	Welcome: undefined;
 	AboutYou: undefined;
-	Profile: undefined;
+	Profile: { id: string };
 	Index: undefined;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
@@ -35,7 +35,7 @@ export type HomeStackParamList = {
 	ChannelProfile: {
 		domain_name: string;
 	};
-	Profile: undefined;
+	Profile: { id: string };
 };
 
 export type SearchStackParamList = {

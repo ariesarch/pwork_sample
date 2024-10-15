@@ -29,7 +29,7 @@ const AccountAvatar = ({
 			className="flex flex-row"
 			{...props}
 			onPress={() => {
-				navigation.navigate('Profile');
+				navigation.navigate('Profile', { id: '113087366884543068' }); //temp
 			}}
 		>
 			<View className="items-center ">

@@ -23,6 +23,7 @@ import { flattenPages } from '@/util/helper/timeline';
 import { useNavigation } from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
+import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
@@ -134,17 +135,19 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 				/>
 			) : (
-				<View style={{ flex: 1 }}>
-					<TouchableOpacity
-						onPress={() => navigation.canGoBack() && navigation.goBack()}
-						className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
-					>
-						<ProfileBackIcon />
-					</TouchableOpacity>
-					<View style={{ flex: 1, marginTop: 20 }}>
-						<ChannelProfileLoading />
+				<SafeScreen>
+					<View style={{ flex: 1 }}>
+						<TouchableOpacity
+							onPress={() => navigation.canGoBack() && navigation.goBack()}
+							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
+						>
+							<ProfileBackIcon />
+						</TouchableOpacity>
+						<View style={{ flex: 1, marginTop: 20 }}>
+							<ChannelProfileLoading />
+						</View>
 					</View>
-				</View>
+				</SafeScreen>
 			)}
 		</View>
 	);

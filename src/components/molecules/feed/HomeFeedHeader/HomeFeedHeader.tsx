@@ -25,7 +25,12 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					className="flex-row flex-1 items-center"
-					onPress={() => navigation.navigate('Profile')}
+					onPress={
+						() =>
+							navigation.navigate('Profile', {
+								id: account.id ?? '113087366884543068',
+							}) //temp
+					}
 				>
 					<Image
 						source={account.avatar as ImageProps}

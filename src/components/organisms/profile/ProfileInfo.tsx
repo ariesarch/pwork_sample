@@ -7,19 +7,23 @@ import SocialSection from '@/components/molecules/profile/SocialSection/SocialSe
 import UserStats from '@/components/molecules/profile/UserStats/UserStats';
 import VerticalInfo from '@/components/molecules/common/VerticalInfo/VerticalInfo';
 
-const ProfileInfo = () => {
+type Prop = {
+	accountName: string;
+};
+
+const ProfileInfo = ({ accountName }: Prop) => {
 	return (
 		<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100 mt-[70]">
 			<View className="flex-row mt-3">
 				<VerticalInfo
 					hasRedMark
-					accountName="Account Name"
+					accountName={accountName}
 					username="iwashere"
 					joinedDate="Joined on Dec 2022"
 					userBio="Phasellus nunc leo ullamcorper non. Eget eu ut nunc ut convallis malesuada. Accumsan venenatis at fermentum."
 				/>
 				<ActionButtons name={'Follow'} hasIcon />
-			</View> 
+			</View>
 			<SocialSection />
 			<UserStats posts={24} following={'2.2k'} followers={'7.3k'} />
 			<Underline className="my-2" />

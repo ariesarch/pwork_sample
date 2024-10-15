@@ -20,7 +20,13 @@ const StatusItem = ({ status, ...props }: Props) => {
 				{/* {status.replyedStatus && (
 					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
 				)} */}
-				<Pressable onPress={() => navigation.navigate('Profile')}>
+				<Pressable
+					onPress={() =>
+						navigation.navigate('Profile', {
+							id: status.account.id ?? '113087366884543068', //temp
+						})
+					}
+				>
 					<Image
 						source={
 							status.account.avatar
