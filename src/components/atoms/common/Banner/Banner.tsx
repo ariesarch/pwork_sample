@@ -44,16 +44,11 @@ const Banner = ({
 	bannerTranslationStyle,
 	animatedScaleStyle,
 	blurStyle,
-	blurhash
+	blurhash,
 }: BannerProps & FastImageProps) => {
 	const { width } = useWindowDimensions();
 	return (
-		<Animated.View
-			style={[
-				StyleSheet.absoluteFill,
-				bannerTranslationStyle,
-			]}
-		>
+		<Animated.View style={[StyleSheet.absoluteFill, bannerTranslationStyle]}>
 			<Animated.View
 				onLayout={e => (bannerHeight.value = e.nativeEvent.layout.height)}
 				style={animatedScaleStyle}
@@ -66,8 +61,14 @@ const Banner = ({
 							blurStyle,
 						]}
 					/>
-						{blurhash ? <Blurhash blurhash={blurhash} style={{ width: "100%", height: "100%" }} />
-        				: <Image source={source} className="h-36" style={{ width }} />}
+					{blurhash ? (
+						<Blurhash
+							blurhash={blurhash}
+							style={{ width: '100%', height: '100%' }}
+						/>
+					) : (
+						<Image source={source} className="h-36" style={{ width }} />
+					)}
 				</View>
 			</Animated.View>
 		</Animated.View>

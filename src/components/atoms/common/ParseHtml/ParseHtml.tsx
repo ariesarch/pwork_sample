@@ -4,9 +4,10 @@
 import { useMemo, useRef } from 'react';
 import { parseDocument, ElementType } from 'htmlparser2';
 import type { ChildNode } from 'domhandler';
-import { Platform } from 'react-native';
+import { Platform, Pressable } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -36,7 +37,7 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 				} else {
 					content = node.data.trim();
 				}
-				return <ParseEmojis content={content} />;
+				return <ParseEmojis content={content} key={index} />;
 
 			case ElementType.Tag:
 				switch (node.name) {
@@ -49,11 +50,16 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 								const children = node.children.map(unwrapNode).join('');
 
 								return (
-									<ThemeText
-										variant="textOrange"
+									<TouchableOpacity
+										activeOpacity={0.8}
+										onPress={() => {}}
 										key={index}
-										children={`${children} `}
-									/>
+									>
+										<ThemeText
+											className="font-bold"
+											children={`${children} `}
+										/>
+									</TouchableOpacity>
 								);
 							}
 
@@ -113,13 +119,17 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 							return null;
 						}
 						return (
-							<ThemeText
-								key={index}
+							<TouchableOpacity
 								onPress={() => {}}
-								size="fs_13"
-								variant="textOrange"
-								children={nodeContent}
-							/>
+								activeOpacity={0.8}
+								key={index}
+							>
+								<ThemeText
+									size="fs_13"
+									variant="textOrange"
+									children={nodeContent}
+								/>
+							</TouchableOpacity>
 						);
 
 					case 'br':

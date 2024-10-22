@@ -18,7 +18,7 @@
 		"storybook-generate": "sb-rn-get-stories"
 	},
 	"dependencies": {
-		"@codeherence/react-native-header": "^0.12.2",
+		"@codeherence/react-native-header": "^0.14.0",
 		"@react-native-masked-view/masked-view": "^0.3.1",
 		"@react-navigation/bottom-tabs": "^6.6.1",
 		"@react-navigation/native": "^6.1.17",

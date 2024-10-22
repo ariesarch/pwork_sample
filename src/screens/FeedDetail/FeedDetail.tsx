@@ -34,12 +34,6 @@ const FeedDetail = ({
 		id,
 	});
 
-	// const renderFooter = () => (
-	// 	<View className="mx-3">
-	// 		<TextInput placeholder="Reply To Account Name" />
-	// 	</View>
-	// );
-
 	return (
 		<SafeScreen>
 			{statusReplies && feedDetail ? (

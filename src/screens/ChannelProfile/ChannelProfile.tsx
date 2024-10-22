@@ -2,10 +2,13 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from 'react';
-import { View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
-import { SectionListWithHeaders } from '@codeherence/react-native-header';
+import {
+	FlashListWithHeaders,
+	SectionListWithHeaders,
+} from '@codeherence/react-native-header';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import Underline from '@/components/atoms/common/Underline/Underline';
@@ -71,7 +74,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 			{timeline && channelAbout ? (
-				<SectionListWithHeaders
+				<FlashListWithHeaders
 					HeaderComponent={({ scrollY, showNavBar }) => (
 						<CommonHeader
 							scrollY={scrollY}
@@ -83,62 +86,36 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 								require('../../../assets/images/mock/channel/channel_banner.png')
 							}
 							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName="channelName"
+							channelName={channelAbout.title}
 						/>
 					)}
 					LargeHeaderComponent={() => (
 						<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
 					)}
-					sections={[{ data: activeTab === 0 ? flattenPages(timeline) : [] }]}
+					data={flattenPages(timeline)}
 					disableAutoFixScroll
 					ignoreLeftSafeArea
 					ignoreRightSafeArea
 					headerFadeInThreshold={0.2}
 					disableLargeHeaderFadeAnim
 					contentContainerStyle={{
-						flexGrow: 1,
 						paddingBottom: bottom,
 						backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 					}}
 					renderItem={({ item }) =>
 						activeTab === 0 ? <StatusItem status={item} /> : <></>
 					}
-					stickySectionHeadersEnabled
-					showsVerticalScrollIndicator={false}
+					estimatedItemSize={100}
+					estimatedListSize={{
+						height: Dimensions.get('screen').height,
+						width: Dimensions.get('screen').width,
+					}}
 					onEndReachedThreshold={0.15}
 					onEndReached={onTimelineContentLoadMore}
-					renderSectionHeader={() => (
-						<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-							<View className="flex-1 flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-								{['Posts', 'About'].map((tab, index) => (
-									<View className="flex-1" key={index}>
-										<TouchableOpacity
-											key={`option-${index}`}
-											className="flex-1 items-center justify-center h-[34]"
-											onPress={() => setActiveTab(index)}
-										>
-											<ThemeText
-												size="md_16"
-												variant={activeTab === index ? 'default' : 'textGrey'}
-												className="font-semibold"
-											>
-												{tab}
-											</ThemeText>
-											{activeTab === index && (
-												<View className="absolute top-5 h-[2] w-4/5 mt-3 rounded-lg bg-patchwork-dark-100 dark:bg-patchwork-light-900" />
-											)}
-										</TouchableOpacity>
-									</View>
-								))}
-							</View>
-							{activeTab === 1 && <Underline className="mt-1" />}
-							{activeTab === 0 ? (
-								<HorizontalScrollMenu />
-							) : (
-								<ChannelAbout channelAbout={channelAbout} />
-							)}
-						</View>
-					)}
+					// ListHeaderComponent={() => (
+
+					// )}
+					showsVerticalScrollIndicator={false}
 					ListFooterComponent={
 						isFetching ? (
 							<View className="my-3 items-center">

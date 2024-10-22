@@ -1696,9 +1696,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codeherence/react-native-header@npm:^0.12.2":
-  version: 0.12.2
-  resolution: "@codeherence/react-native-header@npm:0.12.2"
+"@codeherence/react-native-header@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "@codeherence/react-native-header@npm:0.14.0"
   dependencies:
     use-debounce: 9.0.3
   peerDependencies:
@@ -1707,7 +1707,7 @@ __metadata:
     react-native: "*"
     react-native-reanimated: ">=2.0.0"
     react-native-safe-area-context: "*"
-  checksum: cf1081f47471052a265afa29bea3c44d78a2f3d6c52630153decf41ad95d034c804f9bb844f8bfaf19e0e6ceadc4a116681f5cfa353bd801225b80db2efbebc3
+  checksum: 5e7221e75b6e9a6f46ce4a14523e448350168dc3ed9d631d9e696812336259767cade9fbe2dc2d541b631d77d38b9037b49b3e7edf3bdbf32f7503f8925c4448
   languageName: node
   linkType: hard
 
@@ -10816,7 +10816,7 @@ __metadata:
     "@babel/core": ^7.20.0
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
-    "@codeherence/react-native-header": ^0.12.2
+    "@codeherence/react-native-header": ^0.14.0
     "@react-native-async-storage/async-storage": ^1.23.1
     "@react-native-community/datetimepicker": ^8.2.0
     "@react-native-community/slider": ^4.5.2

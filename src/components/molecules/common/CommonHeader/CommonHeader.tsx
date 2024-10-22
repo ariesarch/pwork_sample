@@ -23,6 +23,7 @@ import { scale } from '@/util/helper/helper';
 import Banner from '@/components/atoms/common/Banner/Banner';
 import Avatar from '@/components/atoms/profile/Avatar';
 import CommonHeaderRight from '../CommonHeaderRight/CommonHeaderRight';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type CommonHeaderProps = {
 	bannerSrc?: any;
@@ -38,7 +39,7 @@ const CommonHeader = ({
 	imageSrc,
 	avatarStyle,
 	channelName,
-	blurhash
+	blurhash,
 }: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
@@ -57,14 +58,14 @@ const CommonHeader = ({
 	});
 
 	const profileImageScale = useDerivedValue(() => {
-		return interpolate(scrollY.value, [0, 64], [1, 0.5], Extrapolation.CLAMP);
+		return interpolate(scrollY.value, [0, 90], [1, 0], Extrapolation.CLAMP);
 	});
 
 	const bannerTranslationStyle = useAnimatedStyle(() => {
 		const bannerTranslation = interpolate(
 			scrollY.value,
-			[0, 45],
-			[0, -45],
+			[0, 120],
+			[0, -120],
 			Extrapolation.CLAMP,
 		);
 
@@ -116,7 +117,10 @@ const CommonHeader = ({
 		<View style={{ position: 'relative', zIndex: 1 }}>
 			{/* Banner */}
 			<Banner
-				source={bannerSrc ?? require('../../../../../assets/images/mock/profile/banner_img.jpeg')}
+				source={
+					bannerSrc ??
+					require('../../../../../assets/images/mock/profile/banner_img.jpeg')
+				}
 				blurhash={blurhash}
 				{...{
 					bannerHeight,
@@ -125,7 +129,6 @@ const CommonHeader = ({
 					blurStyle,
 				}}
 			/>
-			{/* Banner */}
 
 			<Header
 				showNavBar={showNavBar}
@@ -134,13 +137,20 @@ const CommonHeader = ({
 					backgroundColor: 'transparent',
 					paddingBottom: scale(20),
 				}}
+				headerLeftStyle={{
+					flex: 1,
+				}}
+				headerRightStyle={{
+					width: undefined,
+					minWidth: undefined,
+				}}
 				noBottomBorder
 				headerRight={<CommonHeaderRight />}
 				headerLeft={
 					<View className="flex-row items-center justify-center">
 						<TouchableOpacity
 							onPress={() => navigation.canGoBack() && navigation.goBack()}
-							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50"
+							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
 						>
 							<ProfileBackIcon />
 						</TouchableOpacity>
@@ -150,6 +160,7 @@ const CommonHeader = ({
 								hasRedMark={!channelName}
 								className="ml-1"
 							/>
+							{/* <ThemeText>{channelName}</ThemeText> */}
 						</FadingView>
 					</View>
 				}
@@ -172,9 +183,10 @@ const CommonHeader = ({
 								imageSrc ??
 								require('../../../../../assets/images/mock/profile/profile_img.jpeg')
 							}
-							className={`${avatarStyle ??
+							className={`${
+								avatarStyle ??
 								'rounded-full -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
-								}`}
+							}`}
 						/>
 					</Animated.View>
 				</Animated.View>

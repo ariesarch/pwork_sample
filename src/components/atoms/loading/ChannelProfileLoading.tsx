@@ -5,8 +5,8 @@ import ChannleProfilePostsLoading from './ChannelProfilePostsLoading';
 import TimelineLoading from './TimelineLoading';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const backgroundColor = "#f0f0f0";
-const highlightColor = "#bfbfbf";
+const backgroundColor = '#f0f0f0';
+const highlightColor = '#bfbfbf';
 
 const ChannelProfileLoading = () => {
 	return (
@@ -46,7 +46,7 @@ const ChannelProfileLoading = () => {
 						</SkeletonPlaceholder.Item>
 						<SkeletonPlaceholder.Item marginTop={7}>
 							<SkeletonPlaceholder.Item
-								width={"80%"}
+								width={'80%'}
 								height={50}
 								borderRadius={4}
 							/>
