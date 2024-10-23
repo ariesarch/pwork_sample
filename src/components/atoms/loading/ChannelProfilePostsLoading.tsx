@@ -3,19 +3,16 @@ import { View, Text } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Image } from 'react-native-svg';
 
-const backgroundColor = "#f0f0f0";
-const highlightColor = "#bfbfbf";
+const backgroundColor = '#f0f0f0';
+const highlightColor = '#bfbfbf';
 
 const ChannleProfilePostsLoading = () => {
 	return (
 		<View
 			style={{
-				borderTopWidth: 1,
-				borderTopColor: '#585e62',
-				borderBottomWidth: 1,
-				borderBottomColor: '#585e62',
 				paddingHorizontal: 20,
-				paddingVertical: 10,
+				paddingTop: 15,
+				paddingBottom: 10,
 			}}
 		>
 			<SkeletonPlaceholder
@@ -24,26 +21,6 @@ const ChannleProfilePostsLoading = () => {
 				speed={1000}
 			>
 				<SkeletonPlaceholder.Item>
-					{/* Tab Bar  */}
-					<SkeletonPlaceholder.Item
-						flexDirection="row"
-						alignItems="center"
-						justifyContent="space-around"
-						marginBottom={10}
-					>
-						<SkeletonPlaceholder.Item
-							width={"40%"}
-							height={35}
-							borderRadius={3}
-						/>
-						<SkeletonPlaceholder.Item
-							width={"40%"}
-							height={35}
-							borderRadius={3}
-						/>
-					</SkeletonPlaceholder.Item>
-					{/* Tab Bar  */}
-
 					{/* Horizontal Menu  */}
 					<SkeletonPlaceholder.Item
 						flexDirection="row"

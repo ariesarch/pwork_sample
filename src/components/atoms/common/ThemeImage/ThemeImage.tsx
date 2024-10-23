@@ -45,8 +45,6 @@ const ThemeImage = ({
 					/>
 				);
 			}
-		} else {
-			return null;
 		}
 	};
 

@@ -26,8 +26,8 @@ import CommonHeaderRight from '../CommonHeaderRight/CommonHeaderRight';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type CommonHeaderProps = {
-	bannerSrc?: any;
-	imageSrc?: any;
+	bannerSrc?: string;
+	imageSrc?: string;
 	avatarStyle?: string | undefined;
 	channelName?: string;
 	blurhash?: string;
@@ -64,8 +64,8 @@ const CommonHeader = ({
 	const bannerTranslationStyle = useAnimatedStyle(() => {
 		const bannerTranslation = interpolate(
 			scrollY.value,
-			[0, 120],
-			[0, -120],
+			[0, 150],
+			[0, -150],
 			Extrapolation.CLAMP,
 		);
 
@@ -115,12 +115,8 @@ const CommonHeader = ({
 
 	return (
 		<View style={{ position: 'relative', zIndex: 1 }}>
-			{/* Banner */}
 			<Banner
-				source={
-					bannerSrc ??
-					require('../../../../../assets/images/mock/profile/banner_img.jpeg')
-				}
+				source={bannerSrc}
 				blurhash={blurhash}
 				{...{
 					bannerHeight,
@@ -185,7 +181,7 @@ const CommonHeader = ({
 							}
 							className={`${
 								avatarStyle ??
-								'rounded-full -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
+								'rounded-full -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]'
 							}`}
 						/>
 					</Animated.View>

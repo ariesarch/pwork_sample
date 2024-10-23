@@ -1,20 +1,10 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-/* eslint-disable consistent-return */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from 'react';
 import { View, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
-import {
-	FlashListWithHeaders,
-	SectionListWithHeaders,
-} from '@codeherence/react-native-header';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { FlashListWithHeaders } from '@codeherence/react-native-header';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
-import Underline from '@/components/atoms/common/Underline/Underline';
 import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
-import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
-import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
 import { HomeStackScreenProps } from '@/types/navigation';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
@@ -29,13 +19,15 @@ import { CircleFade } from 'react-native-animated-spinkit';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { Platform } from 'react-native';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
 }) => {
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name } = route.params;
 	const {
 		data: timeline,
@@ -79,13 +71,10 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						<CommonHeader
 							scrollY={scrollY}
 							showNavBar={showNavBar}
-							bannerSrc={channelAbout?.thumbnail?.url}
+							bannerSrc={channelAbout?.contact.account.header}
 							blurhash={channelAbout?.thumbnail?.blurhash}
-							imageSrc={
-								channelAbout?.thumbnail.url ||
-								require('../../../assets/images/mock/channel/channel_banner.png')
-							}
-							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
+							imageSrc={channelAbout?.thumbnail.url}
+							avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
 							channelName={channelAbout.title}
 						/>
 					)}
@@ -96,7 +85,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					disableAutoFixScroll
 					ignoreLeftSafeArea
 					ignoreRightSafeArea
-					headerFadeInThreshold={0.2}
+					headerFadeInThreshold={0.3}
 					disableLargeHeaderFadeAnim
 					contentContainerStyle={{
 						paddingBottom: bottom,
@@ -112,9 +101,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}}
 					onEndReachedThreshold={0.15}
 					onEndReached={onTimelineContentLoadMore}
-					// ListHeaderComponent={() => (
-
-					// )}
 					showsVerticalScrollIndicator={false}
 					ListFooterComponent={
 						isFetching ? (
@@ -127,19 +113,22 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 					}
 				/>
 			) : (
-				<SafeScreen>
+				<View className="flex-1">
 					<View style={{ flex: 1 }}>
+						<ChannelBannerLoading />
+					</View>
+					<View style={{ position: 'absolute', top }}>
 						<TouchableOpacity
 							onPress={() => navigation.canGoBack() && navigation.goBack()}
 							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
 						>
 							<ProfileBackIcon />
 						</TouchableOpacity>
-						<View style={{ flex: 1, marginTop: 20 }}>
-							<ChannelProfileLoading />
-						</View>
 					</View>
-				</SafeScreen>
+					<View style={{ marginTop: 130 }}>
+						<ChannelProfileLoading />
+					</View>
+				</View>
 			)}
 		</View>
 	);

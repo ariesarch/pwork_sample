@@ -209,7 +209,35 @@ declare namespace Pathchwork {
 
 	type ChannelAbout = {
 		configuration: any;
-		contact: { account: { username: string; created_at: string } };
+		contact: {
+			account: {
+				acct: string;
+				avatar: string;
+				avatar_static: string;
+				bot: boolean;
+				created_at: string;
+				discoverable: null;
+				display_name: string;
+				emojis: [];
+				fields: [];
+				followers_count: number;
+				following_count: number;
+				group: boolean;
+				header: string;
+				header_static: string;
+				hide_collections: null;
+				id: string;
+				indexable: boolean;
+				last_status_at: string;
+				locked: boolean;
+				noindex: boolean;
+				note: string;
+				statuses_count: number;
+				uri: string;
+				url: string;
+				username: string;
+			};
+		};
 		description: string;
 		domain: string;
 		languages: string;

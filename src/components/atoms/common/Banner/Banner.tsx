@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { FastImageProps } from 'react-native-fast-image';
-import Image from '../Image/Image';
 import { Blurhash } from 'react-native-blurhash';
+import Image from '../Image/Image';
 
 interface BannerTranslationStyleProps {
 	transform: {
@@ -28,7 +28,7 @@ interface BannerAnimatedScaleStyleProps {
 	)[];
 }
 interface BannerProps {
-	source: ImageSourcePropType | undefined;
+	source: string | undefined;
 	bannerHeight: SharedValue<number>;
 	bannerTranslationStyle?: BannerTranslationStyleProps;
 	animatedScaleStyle: BannerAnimatedScaleStyleProps;
@@ -62,10 +62,7 @@ const Banner = ({
 						]}
 					/>
 					{blurhash ? (
-						<Blurhash
-							blurhash={blurhash}
-							style={{ width: '100%', height: '100%' }}
-						/>
+						<Blurhash blurhash={blurhash} className="h-36" style={{ width }} />
 					) : (
 						<Image source={source} className="h-36" style={{ width }} />
 					)}

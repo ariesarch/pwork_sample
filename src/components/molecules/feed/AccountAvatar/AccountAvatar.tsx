@@ -39,7 +39,6 @@ const AccountAvatar = ({
 				/>
 				<ThemeText className="mt-2">{account.username}</ThemeText>
 				{dotAlert && (
-					//top-[4] right-[12]
 					<View
 						className={cn(
 							'absolute border-2 border-white dark:border-patchwork-dark-100 bg-patchwork-red-50 w-[13] h-[13] rounded-full',

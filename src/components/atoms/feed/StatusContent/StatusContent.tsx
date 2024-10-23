@@ -66,6 +66,6 @@ const StatusContent = ({ status }: Props) => {
 };
 
 const FALLBACK_PREVIEW_IMAGE_URL =
-	'https://newsmast-assets.s3.eu-west-2.amazonaws.com/default_fallback_resized.png';
+	'https://patchwork-staging-bucket.s3.eu-west-2.amazonaws.com/default_fallback_resized.png';
 
 export default StatusContent;

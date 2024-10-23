@@ -18,7 +18,6 @@ const ChannelProfileLoading = () => {
 					speed={1000}
 				>
 					<SkeletonPlaceholder.Item>
-						{/*Profile Picture and Follow Button*/}
 						<SkeletonPlaceholder.Item
 							flexDirection="row"
 							alignItems="center"
@@ -29,26 +28,20 @@ const ChannelProfileLoading = () => {
 								height={80}
 								borderRadius={4}
 							/>
-							<SkeletonPlaceholder.Item
-								width={80}
-								height={25}
-								borderRadius={30}
-								marginTop={20}
-							/>
 						</SkeletonPlaceholder.Item>
 						{/*Channel Name & account */}
 						<SkeletonPlaceholder.Item marginTop={7}>
 							<SkeletonPlaceholder.Item
 								width={150}
-								height={25}
+								height={13}
 								borderRadius={4}
+								marginTop={12}
 							/>
-						</SkeletonPlaceholder.Item>
-						<SkeletonPlaceholder.Item marginTop={7}>
 							<SkeletonPlaceholder.Item
-								width={'80%'}
-								height={50}
+								width={100}
+								height={13}
 								borderRadius={4}
+								marginTop={8}
 							/>
 						</SkeletonPlaceholder.Item>
 					</SkeletonPlaceholder.Item>
