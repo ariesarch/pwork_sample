@@ -17,26 +17,30 @@ import {
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
+import { useMemo } from 'react';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
 	const domain_name = useSelectedDomain();
-	const { id } = route.params;
-	const { data: feedDetail } = useFeedDetailQuery({
+	const { id, feedData } = route.params;
+	const { data: fetchedFeedDetail } = useFeedDetailQuery({
 		domain_name,
 		id,
+		enabled: !feedData,
 	});
 
-	const { data: statusReplies } = useFeedRepliesQuery({
-		domain_name,
-		id,
-	});
+	const { data: statusReplies, isLoading: isLoadingReplies } =
+		useFeedRepliesQuery({
+			domain_name,
+			id,
+		});
 
+	const feedDetail = useMemo(() => feedData ?? fetchedFeedDetail, [feedData]);
 	return (
 		<SafeScreen>
-			{statusReplies && feedDetail ? (
+			{feedDetail ? (
 				<View className="flex-1">
 					<KeyboardAwareScrollView className=" bg-patchwork-light-900 dark:bg-patchwork-dark-100 flex-1">
 						<Header title="Post" leftCustomComponent={<BackButton />} />
@@ -59,6 +63,14 @@ const FeedDetail = ({
 							<Underline className="mt-3" />
 							<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
 							<Underline />
+							{
+								isLoadingReplies && (
+									<View className="flex items-center justify-center flex-1 mt-3">
+										<Flow size={50} color={customColor['patchwork-red-50']} />
+									</View>
+								)
+								// if(statusReplies && !isLoadingReplies) => return status replies
+							}
 						</View>
 					</KeyboardAwareScrollView>
 					<View className="mx-6 my-3">

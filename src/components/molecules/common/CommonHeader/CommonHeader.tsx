@@ -31,6 +31,7 @@ type CommonHeaderProps = {
 	avatarStyle?: string | undefined;
 	channelName?: string;
 	blurhash?: string;
+	handleOnPressHeader?: () => void;
 };
 const CommonHeader = ({
 	showNavBar,
@@ -40,6 +41,7 @@ const CommonHeader = ({
 	avatarStyle,
 	channelName,
 	blurhash,
+	handleOnPressHeader,
 }: ScrollHeaderProps & CommonHeaderProps) => {
 	const navigation = useNavigation();
 	const { left, right } = useSafeAreaInsets();
@@ -150,14 +152,16 @@ const CommonHeader = ({
 						>
 							<ProfileBackIcon />
 						</TouchableOpacity>
-						<FadingView opacity={showNavBar}>
-							<AccountName
-								accountName={channelName ?? 'Account name'}
-								hasRedMark={!channelName}
-								className="ml-1"
-							/>
-							{/* <ThemeText>{channelName}</ThemeText> */}
-						</FadingView>
+						<TouchableOpacity onPress={handleOnPressHeader}>
+							<FadingView opacity={showNavBar}>
+								<AccountName
+									accountName={channelName ?? 'Account name'}
+									hasRedMark={!channelName}
+									className="ml-1"
+								/>
+								{/* <ThemeText>{channelName}</ThemeText> */}
+							</FadingView>
+						</TouchableOpacity>
 					</View>
 				}
 			/>

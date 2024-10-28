@@ -1,6 +1,6 @@
 export type FeedDetailQueryKey = [
 	'feed-detail',
-	{ id: string; domain_name: string },
+	{ id: string; domain_name: string; enabled: boolean },
 ];
 
 export type FeedRepliesQueryKey = [

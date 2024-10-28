@@ -20,9 +20,13 @@ import { AxiosError } from 'axios';
 export const useFeedDetailQuery = ({
 	domain_name,
 	id,
+	enabled,
 }: FeedDetailQueryKey[1]) => {
-	const queryKey: FeedDetailQueryKey = ['feed-detail', { domain_name, id }];
-	return useQuery({ queryKey, queryFn: getFeedDetail });
+	const queryKey: FeedDetailQueryKey = [
+		'feed-detail',
+		{ domain_name, id, enabled },
+	];
+	return useQuery({ queryKey, queryFn: getFeedDetail, enabled });
 };
 
 export const useFeedRepliesQuery = ({

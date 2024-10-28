@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState, useRef, useMemo } from 'react';
 import { View, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
@@ -9,30 +9,43 @@ import { FlashListWithHeaders } from '@codeherence/react-native-header';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
 import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
-import { HomeStackScreenProps } from '@/types/navigation';
+import {
+	BottomStackParamList,
+	HomeStackParamList,
+	HomeStackScreenProps,
+} from '@/types/navigation';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
 import {
 	useGetChannelAbout,
 	useGetChannelFeed,
 } from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import {
+	useFocusEffect,
+	useNavigation,
+	CompositeNavigationProp,
+	useScrollToTop,
+} from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
-import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { Platform } from 'react-native';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import Underline from '@/components/atoms/common/Underline/Underline';
-import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
-import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
+import ChannelListHeaderTabs from '@/components/organisms/channel/ChannelListHeaderTabs/ChannelListHeaderTabs';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { StackNavigationProp } from '@react-navigation/stack';
+import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
+
+type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
+	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
+	StackNavigationProp<HomeStackParamList, 'ChannelProfile'>
+>;
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
 }) => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<ChannelProfileScreenNavigationProp>();
+	const flashListRef = useRef<any>(null);
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name } = route.params;
@@ -48,16 +61,23 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	});
 
 	const { data: channelAbout } = useGetChannelAbout(domain_name);
+	const barColor = useAppropiateColorHash('patchwork-dark-100');
 
 	const [activeTab, setActiveTab] = useState(0);
+
+	const feed = useMemo(() => flattenPages(timeline), [timeline]);
+	const items = useMemo(() => ['Header', ...feed], [feed]);
+	const handleOnPressStatus = useHandleOnPressStatus(
+		feed,
+		navigation,
+		'FeedDetail',
+	);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
 			return fetchNextPage();
 		}
 	};
-
-	const barColor = useAppropiateColorHash('patchwork-dark-100');
 
 	useFocusEffect(
 		useCallback(() => {
@@ -68,29 +88,55 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		}, [barColor]),
 	);
 
-	const items: (string | Pathchwork.Status)[] = [
-		'Header',
-		...flattenPages(timeline),
-	];
+	const MemoizedStatusItem = memo(
+		({
+			status,
+			handleOnPressStatus,
+		}: {
+			status: Pathchwork.Status;
+			handleOnPressStatus: () => void;
+		}) => {
+			return <StatusItem status={status} handleOnPress={handleOnPressStatus} />;
+		},
+	);
+
+	// to check again
+	useScrollToTop(
+		useRef({
+			scrollToTop: () => {
+				flashListRef.current?.scrollToOffset({ animated: true, offset: 0 });
+			},
+		}),
+	);
 
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 			{timeline && channelAbout ? (
 				<FlashListWithHeaders
-					HeaderComponent={({ scrollY, showNavBar }) => (
-						<CommonHeader
-							scrollY={scrollY}
-							showNavBar={showNavBar}
-							bannerSrc={channelAbout?.contact.account.header}
-							blurhash={channelAbout?.thumbnail?.blurhash}
-							imageSrc={channelAbout?.thumbnail.url}
-							avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName={channelAbout.title}
-						/>
-					)}
+					HeaderComponent={({ scrollY, showNavBar }) => {
+						return (
+							<CommonHeader
+								scrollY={scrollY}
+								showNavBar={showNavBar}
+								bannerSrc={channelAbout?.contact.account.header}
+								blurhash={channelAbout?.thumbnail?.blurhash}
+								imageSrc={channelAbout?.thumbnail.url}
+								avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
+								channelName={channelAbout.title}
+								handleOnPressHeader={() =>
+									flashListRef?.current?.scrollToOffset({
+										offset: 0,
+										animated: true,
+									})
+								}
+							/>
+						);
+					}}
 					LargeHeaderComponent={() => (
 						<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
 					)}
+					ref={flashListRef}
+					scrollEventThrottle={16}
 					data={items}
 					disableAutoFixScroll
 					ignoreLeftSafeArea
@@ -101,50 +147,28 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						paddingBottom: bottom,
 						backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 					}}
-					stickyHeaderIndices={[0]}
 					keyExtractor={(item, index) =>
 						typeof item === 'string' ? item : item.id.toString()
 					}
 					renderItem={({ item }) => {
 						if (typeof item === 'string') {
-							// Rendering header
 							return (
-								<View className="bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-									<View className="flex-1 flex-row bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-										{['Posts', 'About'].map((tab, index) => (
-											<View className="flex-1" key={index}>
-												<TouchableOpacity
-													key={`option-${index}`}
-													className="flex-1 items-center justify-center h-[34]"
-													onPress={() => setActiveTab(index)}
-												>
-													<ThemeText
-														size="md_16"
-														variant={
-															activeTab === index ? 'default' : 'textGrey'
-														}
-														className="font-semibold"
-													>
-														{tab}
-													</ThemeText>
-													{activeTab === index && (
-														<View className="absolute top-5 h-[2] w-4/5 mt-3 rounded-lg bg-patchwork-dark-100 dark:bg-patchwork-light-900" />
-													)}
-												</TouchableOpacity>
-											</View>
-										))}
-									</View>
-									{activeTab === 1 && <Underline className="mt-1" />}
-									{activeTab === 0 ? (
-										<HorizontalScrollMenu />
-									) : (
-										<ChannelAbout channelAbout={channelAbout} />
-									)}
-								</View>
+								<ChannelListHeaderTabs
+									activeTab={activeTab}
+									handleOnPressTab={i => setActiveTab(i)}
+									channelAbout={channelAbout}
+								/>
 							);
 						} else {
 							if (activeTab === 0) {
-								return <StatusItem status={item} />;
+								return (
+									<MemoizedStatusItem
+										handleOnPressStatus={() => {
+											handleOnPressStatus(item);
+										}}
+										status={item}
+									/>
+								);
 							} else {
 								return <></>;
 							}
