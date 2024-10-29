@@ -2,7 +2,14 @@
 /* eslint-disable consistent-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { memo, useCallback, useState, useRef, useMemo } from 'react';
-import { View, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	StatusBar,
+	Dimensions,
+	NativeSyntheticEvent,
+	NativeScrollEvent,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { FlashListWithHeaders } from '@codeherence/react-native-header';
@@ -35,6 +42,14 @@ import ChannelListHeaderTabs from '@/components/organisms/channel/ChannelListHea
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
+import { UpIcon } from '@/util/svg/icon.common';
+import Animated, {
+	runOnJS,
+	useAnimatedStyle,
+	useDerivedValue,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated';
 
 type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
@@ -64,6 +79,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 
 	const [activeTab, setActiveTab] = useState(0);
+	const [scrollY, setScrollY] = useState<number>(0);
 
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
 	const items = useMemo(() => ['Header', ...feed], [feed]);
@@ -88,17 +104,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		}, [barColor]),
 	);
 
-	const MemoizedStatusItem = memo(
-		({
-			status,
-			handleOnPressStatus,
-		}: {
-			status: Pathchwork.Status;
-			handleOnPressStatus: () => void;
-		}) => {
-			return <StatusItem status={status} handleOnPress={handleOnPressStatus} />;
-		},
-	);
+	const MemoizedStatusItem = memo(StatusItem);
 
 	// to check again
 	useScrollToTop(
@@ -109,89 +115,128 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		}),
 	);
 
+	const handleOnScrollWorklet = (e: NativeScrollEvent) => {
+		'worklet';
+		runOnJS(setScrollY)(e.contentOffset.y);
+	};
+
+	const animatedButtonStyle = useAnimatedStyle(() => {
+		return {
+			opacity: withTiming(scrollY > 150 ? 1 : 0, { duration: 300 }),
+			transform: [
+				{ scale: withTiming(scrollY > 150 ? 1 : 0, { duration: 300 }) },
+			],
+		};
+	});
+
 	return (
 		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 			{timeline && channelAbout ? (
-				<FlashListWithHeaders
-					HeaderComponent={({ scrollY, showNavBar }) => {
-						return (
-							<CommonHeader
-								scrollY={scrollY}
-								showNavBar={showNavBar}
-								bannerSrc={channelAbout?.contact.account.header}
-								blurhash={channelAbout?.thumbnail?.blurhash}
-								imageSrc={channelAbout?.thumbnail.url}
-								avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-								channelName={channelAbout.title}
-								handleOnPressHeader={() =>
-									flashListRef?.current?.scrollToOffset({
-										offset: 0,
-										animated: true,
-									})
-								}
-							/>
-						);
-					}}
-					LargeHeaderComponent={() => (
-						<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
-					)}
-					ref={flashListRef}
-					scrollEventThrottle={16}
-					data={items}
-					disableAutoFixScroll
-					ignoreLeftSafeArea
-					ignoreRightSafeArea
-					headerFadeInThreshold={0.3}
-					disableLargeHeaderFadeAnim
-					contentContainerStyle={{
-						paddingBottom: bottom,
-						backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
-					}}
-					keyExtractor={(item, index) =>
-						typeof item === 'string' ? item : item.id.toString()
-					}
-					renderItem={({ item }) => {
-						if (typeof item === 'string') {
+				<>
+					<FlashListWithHeaders
+						HeaderComponent={({ scrollY, showNavBar }) => {
 							return (
-								<ChannelListHeaderTabs
-									activeTab={activeTab}
-									handleOnPressTab={i => setActiveTab(i)}
-									channelAbout={channelAbout}
+								<CommonHeader
+									scrollY={scrollY}
+									showNavBar={showNavBar}
+									bannerSrc={channelAbout?.contact.account.header}
+									blurhash={channelAbout?.thumbnail?.blurhash}
+									imageSrc={channelAbout?.thumbnail.url}
+									avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
+									channelName={channelAbout.title}
+									handleOnPressHeader={() =>
+										flashListRef?.current?.scrollToOffset({
+											offset: 0,
+											animated: true,
+										})
+									}
 								/>
 							);
-						} else {
-							if (activeTab === 0) {
+						}}
+						LargeHeaderComponent={() => (
+							<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
+						)}
+						ref={flashListRef}
+						scrollEventThrottle={16}
+						onScrollWorklet={handleOnScrollWorklet}
+						data={items}
+						disableAutoFixScroll
+						ignoreLeftSafeArea
+						ignoreRightSafeArea
+						headerFadeInThreshold={0.3}
+						disableLargeHeaderFadeAnim
+						contentContainerStyle={{
+							paddingBottom: bottom,
+							backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
+						}}
+						keyExtractor={(item, index) =>
+							typeof item === 'string' ? item : item.id.toString()
+						}
+						renderItem={({ item }) => {
+							if (typeof item === 'string') {
 								return (
-									<MemoizedStatusItem
-										handleOnPressStatus={() => {
-											handleOnPressStatus(item);
-										}}
-										status={item}
+									<ChannelListHeaderTabs
+										activeTab={activeTab}
+										handleOnPressTab={i => setActiveTab(i)}
+										channelAbout={channelAbout}
 									/>
 								);
 							} else {
-								return <></>;
+								if (activeTab === 0) {
+									return (
+										<MemoizedStatusItem
+											handleOnPress={() => handleOnPressStatus(item)}
+											status={item}
+										/>
+									);
+								} else {
+									return <></>;
+								}
 							}
+						}}
+						estimatedItemSize={100}
+						estimatedListSize={{
+							height: Dimensions.get('screen').height,
+							width: Dimensions.get('screen').width,
+						}}
+						onEndReachedThreshold={0.15}
+						onEndReached={onTimelineContentLoadMore}
+						showsVerticalScrollIndicator={false}
+						ListFooterComponent={
+							isFetching ? (
+								<View className="my-3 items-center">
+									<CircleFade size={25} color="white" />
+								</View>
+							) : (
+								<></>
+							)
 						}
-					}}
-					estimatedItemSize={100}
-					estimatedListSize={{
-						height: Dimensions.get('screen').height,
-						width: Dimensions.get('screen').width,
-					}}
-					onEndReachedThreshold={0.15}
-					onEndReached={onTimelineContentLoadMore}
-					showsVerticalScrollIndicator={false}
-					ListFooterComponent={
-						isFetching ? (
-							<View className="my-3 items-center">
-								<CircleFade size={25} color="white" />
-							</View>
-						) : (
-							<></>
-						)
-					}
-				/>
+					/>
+					<Animated.View
+						style={[
+							animatedButtonStyle,
+							{
+								position: 'absolute',
+								bottom: 20,
+								left: 20,
+								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								padding: 10,
+								borderRadius: 30,
+							},
+						]}
+					>
+						<TouchableOpacity
+							onPress={() =>
+								flashListRef?.current?.scrollToOffset({
+									offset: 0,
+									animated: true,
+								})
+							}
+						>
+							<UpIcon colorScheme={colorScheme} />
+						</TouchableOpacity>
+					</Animated.View>
+				</>
 			) : (
 				<View className="flex-1">
 					<View style={{ flex: 1 }}>

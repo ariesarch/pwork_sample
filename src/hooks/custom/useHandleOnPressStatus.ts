@@ -10,13 +10,10 @@ const useHandleOnPressStatus = (
     (item: Pathchwork.Status) => {
       const index = feed.findIndex(feedItem => feedItem.id === item.id);
       if (index < 100) {
-        const result = feed[index];
-        if (result) {
-          navigation.navigate(screenToNavigate, {
-            id: item.id,
-            feedData: result,
-          });
-        }
+        navigation.navigate(screenToNavigate, {
+          id: item.id,
+          selectedFeedIndex: index,
+        });
       } else {
         navigation.navigate(screenToNavigate, { id: item.id });
       }

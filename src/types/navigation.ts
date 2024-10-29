@@ -31,7 +31,7 @@ export type HomeStackParamList = {
 	HomeFeed: undefined;
 	FeedDetail: {
 		id: string;
-		feedData?: Pathchwork.Status;
+		selectedFeedIndex?: number;
 	};
 	ChannelProfile: {
 		domain_name: string;

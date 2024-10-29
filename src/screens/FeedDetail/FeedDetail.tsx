@@ -18,26 +18,48 @@ import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { useMemo } from 'react';
+import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
 	const domain_name = useSelectedDomain();
-	const { id, feedData } = route.params;
+	const { id, selectedFeedIndex } = route.params;
 	const { data: fetchedFeedDetail } = useFeedDetailQuery({
 		domain_name,
 		id,
-		enabled: !feedData,
+		options: {
+			enabled: !selectedFeedIndex,
+		},
 	});
-
 	const { data: statusReplies, isLoading: isLoadingReplies } =
 		useFeedRepliesQuery({
 			domain_name,
 			id,
 		});
 
-	const feedDetail = useMemo(() => feedData ?? fetchedFeedDetail, [feedData]);
+	const { data: cachedTimeline } = useGetChannelFeed({
+		domain_name,
+		remote: false,
+		only_media: false,
+		options: {
+			enabled: false,
+		},
+	});
+
+	const cachedFeedDetail = useMemo(() => {
+		if (selectedFeedIndex !== undefined && cachedTimeline) {
+			const cachedFeeds = cachedTimeline.pages.flatMap(page => page.data);
+			return cachedFeeds[selectedFeedIndex];
+		}
+	}, [selectedFeedIndex, cachedTimeline]);
+
+	const feedDetail = useMemo(
+		() => cachedFeedDetail ?? fetchedFeedDetail,
+		[cachedFeedDetail, fetchedFeedDetail],
+	);
+
 	return (
 		<SafeScreen>
 			{feedDetail ? (
