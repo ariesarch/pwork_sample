@@ -17,26 +17,52 @@ import {
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
+import { useMemo } from 'react';
+import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
 	const domain_name = useSelectedDomain();
-	const { id } = route.params;
-	const { data: feedDetail } = useFeedDetailQuery({
+	const { id, selectedFeedIndex } = route.params;
+	const { data: fetchedFeedDetail } = useFeedDetailQuery({
 		domain_name,
 		id,
+		options: {
+			enabled: !selectedFeedIndex,
+		},
+	});
+	const { data: statusReplies, isLoading: isLoadingReplies } =
+		useFeedRepliesQuery({
+			domain_name,
+			id,
+		});
+
+	const { data: cachedTimeline } = useGetChannelFeed({
+		domain_name,
+		remote: false,
+		only_media: false,
+		options: {
+			enabled: false,
+		},
 	});
 
-	const { data: statusReplies } = useFeedRepliesQuery({
-		domain_name,
-		id,
-	});
+	const cachedFeedDetail = useMemo(() => {
+		if (selectedFeedIndex !== undefined && cachedTimeline) {
+			const cachedFeeds = cachedTimeline.pages.flatMap(page => page.data);
+			return cachedFeeds[selectedFeedIndex];
+		}
+	}, [selectedFeedIndex, cachedTimeline]);
+
+	const feedDetail = useMemo(
+		() => cachedFeedDetail ?? fetchedFeedDetail,
+		[cachedFeedDetail, fetchedFeedDetail],
+	);
 
 	return (
 		<SafeScreen>
-			{statusReplies && feedDetail ? (
+			{feedDetail ? (
 				<View className="flex-1">
 					<KeyboardAwareScrollView className=" bg-patchwork-light-900 dark:bg-patchwork-dark-100 flex-1">
 						<Header title="Post" leftCustomComponent={<BackButton />} />
@@ -59,6 +85,14 @@ const FeedDetail = ({
 							<Underline className="mt-3" />
 							<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
 							<Underline />
+							{
+								isLoadingReplies && (
+									<View className="flex items-center justify-center flex-1 mt-3">
+										<Flow size={50} color={customColor['patchwork-red-50']} />
+									</View>
+								)
+								// if(statusReplies && !isLoadingReplies) => return status replies
+							}
 						</View>
 					</KeyboardAwareScrollView>
 					<View className="mx-6 my-3">

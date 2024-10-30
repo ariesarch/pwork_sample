@@ -11,9 +11,10 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
 	status: Pathchwork.Status;
+	handleOnPress?: () => void;
 } & ViewProps;
 
-const StatusItem = ({ status, ...props }: Props) => {
+const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
 	return (
@@ -38,15 +39,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 						className="w-[33] h-[33] rounded-full bg-slate-300"
 					/>
 				</Pressable>
-				<Pressable
-					className="ml-2 flex-1"
-					{...props}
-					onPress={() => {
-						navigation.navigate('FeedDetail', {
-							id: status.id,
-						});
-					}}
-				>
+				<Pressable className="ml-2 flex-1" {...props} onPress={handleOnPress}>
 					<StatusHeader status={status} />
 					<StatusContent status={status} />
 					{/* {status.reblogedStatus && (

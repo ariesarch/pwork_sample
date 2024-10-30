@@ -18,15 +18,22 @@ import {
 	UseInfiniteQueryOptions,
 	UseInfiniteQueryResult,
 	useQuery,
+	UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export const useFeedDetailQuery = ({
-	domain_name,
-	id,
-}: FeedDetailQueryKey[1]) => {
-	const queryKey: FeedDetailQueryKey = ['feed-detail', { domain_name, id }];
-	return useQuery({ queryKey, queryFn: getFeedDetail });
+	options,
+	...queryParam
+}: FeedDetailQueryKey[1] & {
+	options?: UseQueryOptions<PagedResponse<Pathchwork.Status[]>, AxiosError>;
+}) => {
+	const queryKey: FeedDetailQueryKey = ['feed-detail', queryParam];
+	return useQuery({
+		queryKey,
+		queryFn: getFeedDetail,
+		...options,
+	});
 };
 
 export const useFeedRepliesQuery = ({
