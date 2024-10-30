@@ -5,6 +5,7 @@
 
 import { Dimensions } from 'react-native';
 import { PagedResponse } from './timeline';
+import { AxiosResponse } from 'axios';
 
 export const handleError = (error: any) => {
 	return Promise.reject({
@@ -59,6 +60,31 @@ export const timelineDateFormatter = (value: string) => {
 		return value.replace(' years', 'y');
 	}
 	return value;
+};
+
+export const getMaxId = (resp: AxiosResponse) => {
+	const linkHeader = resp.headers.link as string;
+	let maxId = null;
+	if (linkHeader) {
+		const regex = /max_id=(\d+)/;
+		const match = linkHeader.match(regex);
+		if (match) {
+			maxId = match[1];
+		}
+	}
+	return maxId;
+};
+
+export const calculateHashTagCount = (
+	hashTagList: Pathchwork.HashtagHistory[],
+	countType?: 'accounts' | 'uses',
+) => {
+	if (!Array.isArray(hashTagList)) return 0;
+	return hashTagList.reduce(
+		(accumulator: number, hashtag: Pathchwork.HashtagHistory) =>
+			accumulator + parseInt(hashtag[countType ?? 'uses']),
+		0,
+	);
 };
 
 export { scale, keyExtractor };

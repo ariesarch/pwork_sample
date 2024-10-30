@@ -8,6 +8,10 @@ import { Platform, Pressable } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { HomeStackParamList } from '@/types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -17,6 +21,7 @@ type Props = {
 
 const HTMLParser = ({ status, isMainStatus }: Props) => {
 	const isFirstLink = useRef(true);
+	const domain_name = useSelectedDomain();
 	const document = useMemo(() => {
 		return parseDocument(status.content);
 	}, [status.content]);
@@ -24,6 +29,15 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 		return status?.media_attachments?.length !== 0;
 	}, [status?.image_url]);
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+
+	const handleHashTahPress = (tag: string) => {
+		const specialTag = tag.replace(/#/g, '');
+		navigation.navigate('HashTagDetail', {
+			hashtag: specialTag?.toLowerCase(),
+			hashtagDomain: domain_name,
+		});
+	};
 
 	const renderNode = (node: ChildNode, index: number) => {
 		let classes;
@@ -50,16 +64,16 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 								const children = node.children.map(unwrapNode).join('');
 
 								return (
-									<TouchableOpacity
-										activeOpacity={0.8}
-										onPress={() => {}}
+									<Pressable
+										onPress={() => handleHashTahPress(children)}
 										key={index}
+										className="active:opacity-80"
 									>
 										<ThemeText
 											className="font-bold"
 											children={`${children} `}
 										/>
-									</TouchableOpacity>
+									</Pressable>
 								);
 							}
 

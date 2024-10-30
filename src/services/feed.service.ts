@@ -2,8 +2,9 @@ import {
 	AccountDetailFeedQueryKey,
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
+	HashtagDetailFeedQueryKey,
 } from '@/types/queries/feed.type';
-import { appendApiVersion, handleError } from '@/util/helper/helper';
+import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import instance from './instance';
@@ -39,7 +40,7 @@ export const getAccountDetailFeed = async (
 ) => {
 	try {
 		const { domain_name, account_id } = qfContext.queryKey[1];
-		const param = qfContext.pageParam as { max_id: string };
+		const max_id = qfContext.pageParam as string;
 
 		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
 			appendApiVersion(`accounts/${account_id}/statuses`),
@@ -47,7 +48,7 @@ export const getAccountDetailFeed = async (
 				params: {
 					domain_name,
 					isDynamicDomain: true,
-					...param,
+					max_id,
 				},
 			},
 		);
@@ -64,6 +65,33 @@ export const getAccountDetailFeed = async (
 		return {
 			data: resp.data,
 			links: { next: { max_id: maxId } },
+		};
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const getHashtagDetailFeed = async (
+	qfContext: QueryFunctionContext<HashtagDetailFeedQueryKey>,
+) => {
+	try {
+		const { domain_name, hashtag } = qfContext.queryKey[1];
+		const max_id = qfContext.pageParam as string;
+
+		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+			appendApiVersion(`timelines/tag/${hashtag}`),
+			{
+				params: {
+					domain_name,
+					isDynamicDomain: true,
+					max_id,
+				},
+			},
+		);
+
+		return {
+			data: resp.data,
+			links: { next: { max_id: getMaxId(resp) } },
 		};
 	} catch (e) {
 		return handleError(e);

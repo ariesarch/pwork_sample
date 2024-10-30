@@ -3,12 +3,15 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type BioProps = {
 	userBio: string;
-	userBioTextStyle?: string
+	userBioTextStyle?: string;
 };
 
 const Bio = ({ userBio, userBioTextStyle }: BioProps) => {
 	return (
-		<ThemeText className={`mt-2 leading-[18px] ${userBioTextStyle}`} textBreakStrategy="balanced">
+		<ThemeText
+			className={`mt-2 leading-[18px] ${userBioTextStyle}`}
+			textBreakStrategy="balanced"
+		>
 			{userBio}
 		</ThemeText>
 	);

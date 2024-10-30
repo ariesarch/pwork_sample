@@ -207,6 +207,18 @@ declare namespace Pathchwork {
 		poll?: Poll;
 	};
 
+	type HashtagDetail = {
+		history: HashtagHistory[];
+		name: string;
+		url: string;
+	};
+
+	type HashtagHistory = {
+		day: string;
+		accounts: string;
+		uses: string;
+	};
+
 	type ChannelAbout = {
 		configuration: any;
 		contact: {

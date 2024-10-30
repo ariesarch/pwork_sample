@@ -5,7 +5,7 @@ const ChannelBannerLoading = () => {
 		<SkeletonPlaceholder
 			backgroundColor={'#dedede'}
 			highlightColor={'#fff'}
-			speed={4000}
+			speed={1000}
 		>
 			<SkeletonPlaceholder.Item>
 				<SkeletonPlaceholder.Item width={'100%'} height={170} />

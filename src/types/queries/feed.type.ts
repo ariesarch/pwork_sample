@@ -12,3 +12,8 @@ export type AccountDetailFeedQueryKey = [
 	'account-detail-feed',
 	{ domain_name: string; account_id: string },
 ];
+
+export type HashtagDetailFeedQueryKey = [
+	'hashtag-detail-feed',
+	{ domain_name: string; hashtag: string },
+];

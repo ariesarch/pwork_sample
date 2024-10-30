@@ -17,10 +17,11 @@ import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoad
 import { useNavigation } from '@react-navigation/native';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { CircleFade } from 'react-native-animated-spinkit';
+import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
 
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({ route }) => {
 	const { colorScheme } = useColorScheme();
-	const { bottom } = useSafeAreaInsets();
+	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
 	const { id } = route.params;
 	const domain_name = useSelectedDomain();
@@ -52,18 +53,17 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({ route }) => {
 						<CommonHeader
 							scrollY={scrollY}
 							showNavBar={showNavBar}
-							bannerSrc={timeline}
-							blurhash={timelineList[0].account.avatar} //tmp
+							bannerSrc={timelineList[0]?.account?.header}
 							imageSrc={
-								timelineList[0].account.avatar ||
+								timelineList[0]?.account?.avatar ||
 								require('../../../assets/images/mock/channel/channel_banner.png')
 							}
 							avatarStyle="rounded-md -top-4 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-							channelName={timelineList[0].account.display_name} //tmp
+							channelName={timelineList[0]?.account?.display_name} //tmp
 						/>
 					)}
 					LargeHeaderComponent={() => (
-						<ProfileInfo accountName={timelineList[0].account.display_name} />
+						<ProfileInfo accountName={timelineList[0]?.account?.display_name} />
 					)}
 					sections={[{ data: activeTab === 0 ? flattenPages(timeline) : [] }]}
 					disableAutoFixScroll
@@ -124,19 +124,22 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({ route }) => {
 					}
 				/>
 			) : (
-				<SafeScreen>
+				<View className="flex-1">
 					<View style={{ flex: 1 }}>
+						<ChannelBannerLoading />
+					</View>
+					<View style={{ position: 'absolute', top }}>
 						<TouchableOpacity
 							onPress={() => navigation.canGoBack() && navigation.goBack()}
 							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
 						>
 							<ProfileBackIcon />
 						</TouchableOpacity>
-						<View style={{ flex: 1, marginTop: 20 }}>
-							<ChannelProfileLoading />
-						</View>
 					</View>
-				</SafeScreen>
+					<View style={{ marginTop: 130 }}>
+						<ChannelProfileLoading />
+					</View>
+				</View>
 			)}
 		</View>
 	);

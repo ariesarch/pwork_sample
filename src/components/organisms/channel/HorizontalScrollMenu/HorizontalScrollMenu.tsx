@@ -38,14 +38,14 @@ const HorizontalScrollMenu = () => {
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				contentContainerStyle={{ paddingLeft: scale(20) }}
-        className='pt-5 pb-3 bg-patchwork-light-900 dark:bg-patchwork-dark-100'
+				className="pt-5 pb-3 bg-patchwork-light-900 dark:bg-patchwork-dark-100"
 			>
 				<QuickVerticalInfo
 					name="All"
 					count={329}
 					image={require('../../../../../assets/images/mock/profile/all.png')}
-          className='bg-patchwork-red-50 text-patchwork-red-50 border-patchwork-red-50 -right-4'
-          countColor={'text-white'}
+					className="bg-patchwork-red-50 text-patchwork-red-50 border-patchwork-red-50 -right-4"
+					countColor={'text-white'}
 				/>
 				{profiles.map(profile => (
 					<QuickVerticalInfo

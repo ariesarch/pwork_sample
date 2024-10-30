@@ -2,17 +2,21 @@ import {
 	getAccountDetailFeed,
 	getFeedDetail,
 	getFeedReplies,
+	getHashtagDetailFeed,
 } from '@/services/feed.service';
 import {
 	AccountDetailFeedQueryKey,
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
+	HashtagDetailFeedQueryKey,
 } from '@/types/queries/feed.type';
 import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
 import {
 	InfiniteData,
+	QueryFunctionContext,
 	useInfiniteQuery,
 	UseInfiniteQueryOptions,
+	UseInfiniteQueryResult,
 	useQuery,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -37,10 +41,7 @@ export const useAccountDetailFeed = ({
 	options,
 	...queryParam
 }: AccountDetailFeedQueryKey[1] & {
-	options?: UseInfiniteQueryOptions<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>,
-		AxiosError
-	>;
+	options?: UseInfiniteQueryOptions;
 }) => {
 	const queryKey: AccountDetailFeedQueryKey = [
 		'account-detail-feed',
@@ -48,7 +49,28 @@ export const useAccountDetailFeed = ({
 	];
 	return useInfiniteQuery({
 		queryKey,
+		...options,
 		queryFn: getAccountDetailFeed,
+		...infinitePageParam,
+	});
+};
+
+export const useHashtagDetailFeedQuery = ({
+	options,
+	...queryParam
+}: HashtagDetailFeedQueryKey[1] & {
+	options?: UseInfiniteQueryOptions<
+		InfiniteData<PagedResponse<Pathchwork.Status[]>>,
+		AxiosError
+	>;
+}) => {
+	const queryKey: HashtagDetailFeedQueryKey = [
+		'hashtag-detail-feed',
+		queryParam,
+	];
+	return useInfiniteQuery({
+		queryKey,
+		queryFn: getHashtagDetailFeed,
 		...options,
 		...infinitePageParam,
 	});

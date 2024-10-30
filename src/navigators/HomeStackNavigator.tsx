@@ -4,6 +4,7 @@ import {
 	FeedDetail,
 	HomeFeed,
 	Profile,
+	HashTagDetail,
 } from '@/screens';
 import { HomeStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -18,6 +19,7 @@ const HomeStack = () => {
 			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
 			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
+			<Stack.Screen name="HashTagDetail" component={HashTagDetail} />
 		</Stack.Navigator>
 	);
 };

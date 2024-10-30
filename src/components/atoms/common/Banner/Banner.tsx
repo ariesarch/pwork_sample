@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-	ImageSourcePropType,
-	StyleSheet,
-	View,
-	useWindowDimensions,
-} from 'react-native';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import Animated, { SharedValue } from 'react-native-reanimated';
 import { FastImageProps } from 'react-native-fast-image';
 import { Blurhash } from 'react-native-blurhash';
-import Image from '../Image/Image';
+import { Image } from 'react-native';
 
 interface BannerTranslationStyleProps {
 	transform: {
@@ -64,7 +59,11 @@ const Banner = ({
 					{blurhash ? (
 						<Blurhash blurhash={blurhash} className="h-36" style={{ width }} />
 					) : (
-						<Image source={source} className="h-36" style={{ width }} />
+						<Image
+							source={{ uri: source }}
+							className="h-36"
+							style={{ width }}
+						/>
 					)}
 				</View>
 			</Animated.View>

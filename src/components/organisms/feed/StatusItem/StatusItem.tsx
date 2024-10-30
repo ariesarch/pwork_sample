@@ -5,7 +5,9 @@ import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusA
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { memo } from 'react';
 import { View, Image, ViewProps, Pressable } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -112,4 +114,4 @@ const StatusItem = ({ status, ...props }: Props) => {
 	);
 };
 
-export default StatusItem;
+export default memo(StatusItem);

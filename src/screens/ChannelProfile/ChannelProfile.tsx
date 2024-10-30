@@ -101,7 +101,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 						paddingBottom: bottom,
 						backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 					}}
-					stickyHeaderIndices={[0]}
 					keyExtractor={(item, index) =>
 						typeof item === 'string' ? item : item.id.toString()
 					}
@@ -150,7 +149,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							}
 						}
 					}}
-					estimatedItemSize={100}
+					estimatedItemSize={500}
 					estimatedListSize={{
 						height: Dimensions.get('screen').height,
 						width: Dimensions.get('screen').width,

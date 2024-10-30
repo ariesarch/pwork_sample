@@ -36,6 +36,7 @@ export type HomeStackParamList = {
 		domain_name: string;
 	};
 	Profile: { id: string };
+	HashTagDetail: { hashtag: string; hashtagDomain: string };
 };
 
 export type SearchStackParamList = {

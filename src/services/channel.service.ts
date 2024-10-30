@@ -24,7 +24,7 @@ export const getChannelFeed = async (
 ) => {
 	try {
 		const { domain_name, remote, only_media } = qfContext.queryKey[1];
-		const param = qfContext.pageParam as { max_id: string };
+		const max_id = qfContext.pageParam as string;
 
 		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
 			appendApiVersion('timelines/public'),
@@ -34,7 +34,7 @@ export const getChannelFeed = async (
 					remote,
 					only_media,
 					isDynamicDomain: true,
-					...param,
+					max_id,
 				},
 			},
 		);
