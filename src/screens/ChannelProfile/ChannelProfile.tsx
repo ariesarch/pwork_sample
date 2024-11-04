@@ -30,7 +30,11 @@ import {
 	CompositeNavigationProp,
 	useScrollToTop,
 } from '@react-navigation/native';
-import { ProfileBackIcon } from '@/util/svg/icon.profile';
+import {
+	EllipsisIcon,
+	ProfileBackIcon,
+	SearchIconInProfile,
+} from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { Platform } from 'react-native';
@@ -39,14 +43,17 @@ import ChannelListHeaderTabs from '@/components/organisms/channel/ChannelListHea
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
-import { UpIcon } from '@/util/svg/icon.common';
-import Animated, {
-	runOnJS,
-	useAnimatedStyle,
-	useDerivedValue,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated';
+import {
+	MaterialTabBar,
+	MaterialTabItem,
+	Tabs,
+} from 'react-native-collapsible-tab-view';
+import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader/CollapsibleFeedHeader';
+import FeedTitleHeader from '@/components/atoms/feed/FeedTitleHeader/FeedTitleHeader';
+import { ScrollProvider } from '@/context/sharedScrollContext';
+import customColor from '@/util/constant/color';
+import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
+import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 
 type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
@@ -57,7 +64,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
 }) => {
 	const navigation = useNavigation<ChannelProfileScreenNavigationProp>();
-	const flashListRef = useRef<any>(null);
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name } = route.params;
@@ -74,12 +80,13 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 
 	const { data: channelAbout } = useGetChannelAbout(domain_name);
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
-
-	const [activeTab, setActiveTab] = useState(0);
-	const [scrollY, setScrollY] = useState<number>(0);
+	const tabBarTextColor = useAppropiateColorHash(
+		'patchwork-light-900',
+		'patchwork-dark-100',
+	);
 
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
-	const items = useMemo(() => ['Header', ...feed], [feed]);
+
 	const handleOnPressStatus = useHandleOnPressStatus(
 		feed,
 		navigation,
@@ -87,7 +94,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	);
 
 	const onTimelineContentLoadMore = () => {
-		if (hasNextPage && activeTab === 0) {
+		if (hasNextPage) {
 			return fetchNextPage();
 		}
 	};
@@ -101,158 +108,114 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		}, [barColor]),
 	);
 
-	const MemoizedStatusItem = memo(StatusItem);
-
-	// to check again
-	useScrollToTop(
-		useRef({
-			scrollToTop: () => {
-				flashListRef.current?.scrollToOffset({ animated: true, offset: 0 });
-			},
-		}),
-	);
-
-	const handleOnScrollWorklet = (e: NativeScrollEvent) => {
-		'worklet';
-		// runOnJS(setScrollY)(e.contentOffset.y);
-	};
-
-	const animatedButtonStyle = useAnimatedStyle(() => {
-		return {
-			opacity: withTiming(scrollY > 150 ? 1 : 0, { duration: 300 }),
-			transform: [
-				{ scale: withTiming(scrollY > 150 ? 1 : 0, { duration: 300 }) },
-			],
-		};
-	});
-
 	return (
-		<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-			{timeline && channelAbout ? (
-				<>
-					<FlashListWithHeaders
-						HeaderComponent={({ scrollY, showNavBar }) => {
-							return (
-								<CommonHeader
-									scrollY={scrollY}
-									showNavBar={showNavBar}
-									bannerSrc={channelAbout?.contact.account.header}
-									blurhash={channelAbout?.thumbnail?.blurhash}
-									imageSrc={channelAbout?.thumbnail.url}
-									avatarStyle="rounded-md -top-5 w-20 h-20 border-patchwork-dark-100 border-[2.56px]"
-									channelName={channelAbout.title}
-									handleOnPressHeader={() =>
-										flashListRef?.current?.scrollToOffset({
-											offset: 0,
-											animated: true,
-										})
-									}
-								/>
-							);
-						}}
-						LargeHeaderComponent={() => (
-							<ChannelProfileHeaderInfo channelAbout={channelAbout!} />
-						)}
-						ref={flashListRef}
-						scrollEventThrottle={16}
-						onScrollWorklet={handleOnScrollWorklet}
-						data={items}
-						disableAutoFixScroll
-						ignoreLeftSafeArea
-						ignoreRightSafeArea
-						headerFadeInThreshold={0.3}
-						disableLargeHeaderFadeAnim
-						contentContainerStyle={{
-							paddingBottom: bottom,
-							backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
-						}}
-						keyExtractor={(item, index) =>
-							typeof item === 'string' ? item : item.id.toString()
-						}
-						renderItem={({ item }) => {
-							if (typeof item === 'string') {
+		<ScrollProvider>
+			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
+				{channelAbout && timeline ? (
+					<>
+						<FeedTitleHeader channelAbout={channelAbout} />
+						<Tabs.Container
+							renderHeader={() => {
+								return <CollapsibleFeedHeader channelAbout={channelAbout} />;
+							}}
+							minHeaderHeight={Platform.OS == 'ios' ? 100 : 60}
+							containerStyle={{ flex: 1 }}
+							renderTabBar={props => {
 								return (
-									<ChannelListHeaderTabs
-										activeTab={activeTab}
-										handleOnPressTab={i => setActiveTab(i)}
-										channelAbout={channelAbout}
+									<MaterialTabBar
+										keepActiveTabCentered
+										{...props}
+										indicatorStyle={{
+											backgroundColor: tabBarTextColor,
+											maxWidth: 180,
+											marginHorizontal: 12,
+										}}
+										style={{
+											backgroundColor: barColor,
+										}}
+										TabItemComponent={props => (
+											<MaterialTabItem
+												{...props}
+												labelStyle={props.labelStyle}
+												pressColor="#fff0"
+												label={props.label}
+												android_ripple={{
+													color: '#fff0',
+												}}
+											/>
+										)}
+										activeColor={tabBarTextColor}
+										labelStyle={{
+											fontWeight: 'bold',
+											textTransform: 'capitalize',
+										}}
+										inactiveColor={customColor['patchwork-grey-400']}
 									/>
 								);
-							} else {
-								if (activeTab === 0) {
-									return (
-										<MemoizedStatusItem
+							}}
+						>
+							<Tabs.Tab name="Posts">
+								<Tabs.FlashList
+									data={feed}
+									contentContainerStyle={{
+										paddingBottom: bottom,
+										backgroundColor:
+											colorScheme === 'dark' ? '#2E363B' : '#ffffff',
+									}}
+									ListHeaderComponent={<HorizontalScrollMenu />}
+									keyExtractor={item => item.id.toString()}
+									renderItem={({ item }) => (
+										<StatusItem
 											handleOnPress={() => handleOnPressStatus(item)}
 											status={item}
 										/>
-									);
-								} else {
-									return <></>;
-								}
-							}
-						}}
-						estimatedItemSize={500}
-						estimatedListSize={{
-							height: Dimensions.get('screen').height,
-							width: Dimensions.get('screen').width,
-						}}
-						onEndReachedThreshold={0.15}
-						onEndReached={onTimelineContentLoadMore}
-						showsVerticalScrollIndicator={false}
-						ListFooterComponent={
-							isFetching ? (
-								<View className="my-3 items-center">
-									<CircleFade size={25} color="white" />
-								</View>
-							) : (
-								<></>
-							)
-						}
-					/>
-					<Animated.View
-						style={[
-							animatedButtonStyle,
-							{
-								position: 'absolute',
-								bottom: 20,
-								left: 20,
-								backgroundColor: 'rgba(0, 0, 0, 0.5)',
-								padding: 10,
-								borderRadius: 30,
-							},
-						]}
-					>
-						<TouchableOpacity
-							onPress={() =>
-								flashListRef?.current?.scrollToOffset({
-									offset: 0,
-									animated: true,
-								})
-							}
-						>
-							<UpIcon colorScheme={colorScheme} />
-						</TouchableOpacity>
-					</Animated.View>
-				</>
-			) : (
-				<View className="flex-1">
-					<View style={{ flex: 1 }}>
-						<ChannelBannerLoading />
+									)}
+									estimatedItemSize={500}
+									estimatedListSize={{
+										height: Dimensions.get('screen').height,
+										width: Dimensions.get('screen').width,
+									}}
+									onEndReachedThreshold={0.15}
+									onEndReached={onTimelineContentLoadMore}
+									showsVerticalScrollIndicator={false}
+									ListFooterComponent={
+										isFetching ? (
+											<View className="my-3 items-center">
+												<CircleFade size={25} color="white" />
+											</View>
+										) : (
+											<></>
+										)
+									}
+								/>
+							</Tabs.Tab>
+							<Tabs.Tab name="About">
+								<Tabs.ScrollView>
+									<ChannelAbout channelAbout={channelAbout} />
+								</Tabs.ScrollView>
+							</Tabs.Tab>
+						</Tabs.Container>
+					</>
+				) : (
+					<View className="flex-1">
+						<View style={{ flex: 1 }}>
+							<ChannelBannerLoading />
+						</View>
+						<View style={{ position: 'absolute', top }}>
+							<TouchableOpacity
+								onPress={() => navigation.canGoBack() && navigation.goBack()}
+								className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
+							>
+								<ProfileBackIcon />
+							</TouchableOpacity>
+						</View>
+						<View style={{ marginTop: 130 }}>
+							<ChannelProfileLoading />
+						</View>
 					</View>
-					<View style={{ position: 'absolute', top }}>
-						<TouchableOpacity
-							onPress={() => navigation.canGoBack() && navigation.goBack()}
-							className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-50 ml-4 mb-3"
-						>
-							<ProfileBackIcon />
-						</TouchableOpacity>
-					</View>
-					<View style={{ marginTop: 130 }}>
-						<ChannelProfileLoading />
-					</View>
-				</View>
-			)}
-		</View>
+				)}
+			</View>
+		</ScrollProvider>
 	);
 };
 

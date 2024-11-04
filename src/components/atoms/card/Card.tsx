@@ -68,7 +68,7 @@ const Card = ({
 				<Image uri={imageSource} className={imageVariant({ imageVariants })} />
 			</Pressable>
 			<View className={styles.cardFooter}>
-				<ThemeText>{title}</ThemeText>
+				<ThemeText className="text-white">{title}</ThemeText>
 				<ChevronRightIcon />
 			</View>
 		</View>

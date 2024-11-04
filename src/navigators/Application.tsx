@@ -1,5 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
 	Login,
@@ -17,10 +17,18 @@ import WebViewer from '@/screens/WebViewer/WebViewer';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+const CustomTheme = {
+	...DefaultTheme,
+	colors: {
+		...DefaultTheme.colors,
+		background: '#2E363B',
+	},
+};
+
 function ApplicationNavigator() {
 	return (
 		<SafeAreaProvider>
-			<NavigationContainer>
+			<NavigationContainer theme={CustomTheme}>
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
 					<Stack.Screen name="Welcome" component={Welcome} />
 					<Stack.Screen name="Register" component={Register} />

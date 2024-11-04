@@ -1,4 +1,4 @@
-import customColor, { CustomColorType } from '@/util/constant/color';
+import customColor from '@/util/constant/color';
 import { useColorScheme } from 'nativewind';
 import colors from 'tailwindcss/colors';
 import { DefaultColors } from 'tailwindcss/types/generated/colors';
@@ -25,7 +25,7 @@ type NestedKeys<T> = {
 		: string & K;
 }[keyof T];
 
-type ColorKeys = NestedKeys<DefaultColors> | keyof CustomColorType;
+type ColorKeys = NestedKeys<DefaultColors> | keyof typeof customColor;
 
 const useAppropiateColorHash = (
 	darkmodeColor: ColorKeys,

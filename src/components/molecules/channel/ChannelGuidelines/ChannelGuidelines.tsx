@@ -17,7 +17,7 @@ const ChannelGuidelines = ({ channelAbout }: Props) => {
 							return (
 								<View className="flex-row items-center my-2" key={idx}>
 									<View className="w-[30] h-[30] items-center justify-center bg-patchwork-red-50 rounded-full mr-2">
-										<ThemeText className="font-semibold text-patchwork-dark-100">
+										<ThemeText className="font-semibold text-white">
 											{idx + 1}
 										</ThemeText>
 									</View>

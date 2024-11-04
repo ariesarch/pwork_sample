@@ -6407,7 +6407,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dequal@npm:^2.0.2":
+"dequal@npm:2.0.3, dequal@npm:^2.0.2":
   version: 2.0.3
   resolution: "dequal@npm:2.0.3"
   checksum: 8679b850e1a3d0ebbc46ee780d5df7b478c23f335887464023a631d1b9af051ad4a6595a44220f9ff8ff95a8ddccf019b5ad778a976fd7bbf77383d36f412f90
@@ -10873,13 +10873,14 @@ __metadata:
     react-native: 0.74.1
     react-native-animated-spinkit: ^1.5.2
     react-native-blurhash: ^1.1.11
+    react-native-collapsible-tab-view: ^8.0.0
     react-native-confirmation-code-field: ^7.4.0
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.16.0
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-linear-gradient: ^2.8.3
     react-native-mmkv: ^2.12.2
-    react-native-pager-view: ^6.3.3
+    react-native-pager-view: ^6.4.1
     react-native-reanimated: ^3.9.0-rc.1
     react-native-safe-area-context: ^4.10.1
     react-native-screens: 3.31.1
@@ -11490,6 +11491,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-collapsible-tab-view@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "react-native-collapsible-tab-view@npm:8.0.0"
+  dependencies:
+    use-deep-compare: ^1.1.0
+  peerDependencies:
+    "@shopify/flash-list": ">=1.0.0"
+    react: "*"
+    react-native: "*"
+    react-native-pager-view: "*"
+    react-native-reanimated: ">=3.8.1"
+  peerDependenciesMeta:
+    "@shopify/flash-list":
+      optional: true
+  checksum: eae6b8bc3efcb16ec7334e4e8888f34deb416019699db1e026c485867b77753869d66221ea753c708a9103821fe5246165c21955d2cd31a3c2b2b9c41ff0d4ee
+  languageName: node
+  linkType: hard
+
 "react-native-confirmation-code-field@npm:^7.4.0":
   version: 7.4.0
   resolution: "react-native-confirmation-code-field@npm:7.4.0"
@@ -11602,13 +11621,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:^6.3.3":
-  version: 6.3.3
-  resolution: "react-native-pager-view@npm:6.3.3"
+"react-native-pager-view@npm:^6.4.1":
+  version: 6.4.1
+  resolution: "react-native-pager-view@npm:6.4.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: b4f6ef33a7de34c254aa0cfdcdb7231c256e5d2b5c5d16f16a7c54379829bae7ec1d86e7daf23ef89dbac6088cf36e9678c3009a20e4ba786498848c86113399
+  checksum: 558f08efccf748eed91a2a88be4f90e49e2b63a28c1b9db5de9711eb324a75e9565a3dbf92c523a623a2c7d5a7e0d8a0db88599bc85d33158544a7d0e724319e
   languageName: node
   linkType: hard
 
@@ -13518,6 +13537,17 @@ __metadata:
   peerDependencies:
     react: ">=16.8.0"
   checksum: e9aa3b89abe28bd746cfb5e7edc281d786788b6afe4063cfd8e34c4fff58af212809f13bffa16ff291bead199abb497325330e66d1e772d1843853edbd4646ba
+  languageName: node
+  linkType: hard
+
+"use-deep-compare@npm:^1.1.0":
+  version: 1.3.0
+  resolution: "use-deep-compare@npm:1.3.0"
+  dependencies:
+    dequal: 2.0.3
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: fada69c4562a92e1e81e406c40023a8adef2d020a84802ca05b9d9a476ee174087828e3f1224bfaac5059e6ef024c66a492260111a21f22f16581dc3cbfceb52
   languageName: node
   linkType: hard
 

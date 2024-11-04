@@ -976,7 +976,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-pager-view (6.3.3):
+  - react-native-pager-view (6.4.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1639,7 +1639,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 11029dcd47c5c9e057a4092ab9c2a8d10a496a33
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
-  react-native-pager-view: f848f89049a8e888d38f10ff31588eb63292a95f
+  react-native-pager-view: bc6cf48ea4f08ea5c5a74e19c6579e9b86d8729c
   react-native-safe-area-context: 422017db8bcabbada9ad607d010996c56713234c
   react-native-slider: ce295d2bf830a7990af05b0bd70ab28c133e230c
   react-native-webview: 445e447f227f775d8dd2b4823bca55c458d4eff7
