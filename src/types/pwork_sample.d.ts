@@ -308,4 +308,14 @@ declare namespace Pathchwork {
 		description?: string;
 		blurhash?: string;
 	};
-}
+	type ImageUrl = {
+		id: Pathchwork.Attachment["id"];
+		preview_url?: Pathchwork.Attachment["preview_url"];
+		url: Pathchwork.Attachment["url"];
+		remote_url?: Pathchwork.Attachment["remote_url"];
+		sensitive?: boolean;
+		width?: number;
+		height?: number;
+	};
+};
+

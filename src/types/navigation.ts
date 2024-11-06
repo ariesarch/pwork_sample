@@ -16,6 +16,10 @@ export type RootStackParamList = {
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
 	WebViewer: { url: string };
+	ImageViewer: {
+		imageUrls: Pathchwork.ImageUrl[];
+		id: Pathchwork.Attachment['id'];
+	};
 };
 
 export type BottomStackParamList = {

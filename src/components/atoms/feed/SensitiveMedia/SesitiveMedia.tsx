@@ -9,22 +9,29 @@ type Props = {
 	onViewSensitiveContent: (attachmentId: string) => void;
 	onViewMastodonSensitiveContent?: () => void;
 	sensitiveFromMastodon?: boolean;
+	scaleValue?: number;
 };
+
 const SensitiveMedia: React.FC<Props> = ({
 	attachmentId,
 	mediaType = 'photo',
 	onViewSensitiveContent,
 	onViewMastodonSensitiveContent,
 	sensitiveFromMastodon,
+	scaleValue = 1,
 }) => {
 	return (
 		<View style={styles.sensitiveContainer}>
-			<MediaSensitiveDisbaleIcon />
-			<ThemeText
+			<View
 				style={{
-					maxWidth: 200,
-					textAlign: 'center',
+					transform: [{ scale: scaleValue }],
+					marginBottom: scaleValue < 1 ? -12 : 0,
 				}}
+			>
+				<MediaSensitiveDisbaleIcon />
+			</View>
+			<ThemeText
+				style={{ fontSize: scaleValue < 1 ? 8 : 13 }}
 				className="font-bold max-w-[200px] text-white"
 			>
 				This {mediaType === 'photo' ? 'photo' : 'video'} may include sensitive
@@ -36,12 +43,17 @@ const SensitiveMedia: React.FC<Props> = ({
 						? onViewMastodonSensitiveContent
 						: () => onViewSensitiveContent(attachmentId)
 				}
-				children={
-					<View style={[styles.forceViewSensitiveButton]}>
-						<ThemeText className="font-bold text-white">View anyway</ThemeText>
-					</View>
-				}
-			/>
+				style={{ marginTop: scaleValue < 1 ? -25 : 0 }}
+			>
+				<View
+					style={[
+						styles.forceViewSensitiveButton,
+						{ transform: [{ scale: scaleValue }] },
+					]}
+				>
+					<ThemeText className="font-bold text-white">View anyway</ThemeText>
+				</View>
+			</Pressable>
 		</View>
 	);
 };
@@ -55,7 +67,6 @@ const styles = StyleSheet.create({
 		bottom: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
-		gap: 8,
 	},
 	forceViewSensitiveButton: {
 		backgroundColor: 'rgba(54, 70, 99, 0.4)',

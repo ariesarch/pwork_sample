@@ -15,3 +15,4 @@ export { default as EmailVerification } from './EmailVerification/EmailVerificat
 export { default as ChannelCreate } from './ChannelCreate/ChannelCreate';
 export { default as SearchResults } from './SearchResults/SearchResults';
 export { default as HashTagDetail } from './HashTagDetail/HashTagDetail';
+export { default as ImageViewer } from './ImageViewer/ImageViewer';
