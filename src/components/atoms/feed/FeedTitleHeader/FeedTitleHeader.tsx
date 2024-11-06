@@ -18,13 +18,13 @@ import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type Props = {
-	channelAbout: Pathchwork.ChannelAbout;
+	title: string;
 };
 
 export const SolidHeaderDepth = Platform.OS == 'ios' ? 60 : 100;
 export const TitleDepth = Platform.OS == 'ios' ? 100 : 140;
 
-const FeedTitleHeader = ({ channelAbout }: Props) => {
+const FeedTitleHeader = ({ title }: Props) => {
 	const { top } = useSafeAreaInsets();
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const { setColorScheme, colorScheme } = useColorScheme();
@@ -69,9 +69,7 @@ const FeedTitleHeader = ({ channelAbout }: Props) => {
 				className="flex-1 items-center justify-center"
 				style={animatedTitleStyle}
 			>
-				<ThemeText className="font-bold text-[16px]">
-					{channelAbout.title}
-				</ThemeText>
+				<ThemeText className="font-bold text-[16px]">{title}</ThemeText>
 			</Animated.View>
 			<View className="flex-row items-center gap-2">
 				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50">

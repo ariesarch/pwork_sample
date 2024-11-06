@@ -31,7 +31,7 @@ const VerticalInfo = ({
 			<AccountName {...{ accountName, acctNameTextStyle, hasRedMark }} />
 			<UserName {...{ username, joinedDate }} />
 			{showChannelFollowers && <ChannelFollowers followers="7.3k" />}
-			<Bio {...{ userBio, userBioTextStyle }} />
+			{userBio && <Bio {...{ userBio, userBioTextStyle }} />}
 		</View>
 	);
 };

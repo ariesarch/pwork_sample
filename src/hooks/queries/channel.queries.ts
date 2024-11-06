@@ -8,6 +8,7 @@ import {
 	GetChannelFeedQueryKey,
 	GetMyChannelListQueryKey,
 } from '@/types/queries/channel.type';
+import { InfiniteQueryOptionHelper } from '@/util/helper/helper';
 import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
 import {
 	InfiniteData,
@@ -26,9 +27,8 @@ export const useGetChannelFeed = ({
 	options,
 	...queryParam
 }: GetChannelFeedQueryKey[1] & {
-	options?: UseInfiniteQueryOptions<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>,
-		AxiosError
+	options?: InfiniteQueryOptionHelper<
+		InfiniteData<PagedResponse<Pathchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: GetChannelFeedQueryKey = ['channel-feed', queryParam];

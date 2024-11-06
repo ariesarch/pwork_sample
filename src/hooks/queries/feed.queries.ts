@@ -10,6 +10,10 @@ import {
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
 } from '@/types/queries/feed.type';
+import {
+	InfiniteQueryOptionHelper,
+	QueryOptionHelper,
+} from '@/util/helper/helper';
 import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
 import {
 	InfiniteData,
@@ -26,7 +30,7 @@ export const useFeedDetailQuery = ({
 	options,
 	...queryParam
 }: FeedDetailQueryKey[1] & {
-	options?: UseQueryOptions<PagedResponse<Pathchwork.Status[]>, AxiosError>;
+	options?: QueryOptionHelper<Pathchwork.StatusDetail>;
 }) => {
 	const queryKey: FeedDetailQueryKey = ['feed-detail', queryParam];
 	return useQuery({
@@ -48,7 +52,9 @@ export const useAccountDetailFeed = ({
 	options,
 	...queryParam
 }: AccountDetailFeedQueryKey[1] & {
-	options?: UseInfiniteQueryOptions;
+	options?: InfiniteQueryOptionHelper<
+		InfiniteData<PagedResponse<Pathchwork.Status[]>>
+	>;
 }) => {
 	const queryKey: AccountDetailFeedQueryKey = [
 		'account-detail-feed',
@@ -66,9 +72,8 @@ export const useHashtagDetailFeedQuery = ({
 	options,
 	...queryParam
 }: HashtagDetailFeedQueryKey[1] & {
-	options?: UseInfiniteQueryOptions<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>,
-		AxiosError
+	options?: InfiniteQueryOptionHelper<
+		InfiniteData<PagedResponse<Pathchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: HashtagDetailFeedQueryKey = [

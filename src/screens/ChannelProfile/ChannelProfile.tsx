@@ -62,8 +62,8 @@ type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
+	navigation,
 }) => {
-	const navigation = useNavigation<ChannelProfileScreenNavigationProp>();
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name } = route.params;
@@ -113,10 +113,15 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 				{channelAbout && timeline ? (
 					<>
-						<FeedTitleHeader channelAbout={channelAbout} />
+						<FeedTitleHeader title={channelAbout.title} />
 						<Tabs.Container
 							renderHeader={() => {
-								return <CollapsibleFeedHeader channelAbout={channelAbout} />;
+								return (
+									<CollapsibleFeedHeader
+										type="Channel"
+										channel={channelAbout}
+									/>
+								);
 							}}
 							minHeaderHeight={Platform.OS == 'ios' ? 100 : 60}
 							containerStyle={{ flex: 1 }}

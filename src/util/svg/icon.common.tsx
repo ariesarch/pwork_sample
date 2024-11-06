@@ -4,7 +4,9 @@ import Svg, {
 	Circle,
 	ClipPath,
 	Defs,
+	Ellipse,
 	G,
+	Line,
 	Path,
 	Rect,
 	SvgProps,
@@ -588,6 +590,47 @@ export const MediaSensitiveDisbaleIcon = (props: SvgProps) => (
 				strokeLinecap="round"
 				strokeLinejoin="round"
 			/>
+		</G>
+	</Svg>
+);
+
+export const Browser = (props: SvgProps) => (
+	<Svg
+		width="24px"
+		height="24px"
+		viewBox="0 0 192 192"
+		fill="none"
+		stroke="#fff"
+	>
+		<G id="SVGRepo_bgCarrier" stroke-width="0"></G>
+		<G
+			id="SVGRepo_tracerCarrier"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		></G>
+		<G id="SVGRepo_iconCarrier">
+			<Circle
+				cx="96"
+				cy="96"
+				r="74"
+				stroke="#fff"
+				strokeWidth="6.719999999999999"
+			></Circle>
+			<Ellipse
+				cx="96"
+				cy="96"
+				stroke="#fff"
+				strokeWidth="6.719999999999999"
+				rx="30"
+				ry="74"
+			></Ellipse>
+			<Path
+				stroke="#fff"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="6.719999999999999"
+				d="M28 72h136M28 120h136"
+			></Path>
 		</G>
 	</Svg>
 );

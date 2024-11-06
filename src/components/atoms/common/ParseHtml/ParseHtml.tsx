@@ -4,7 +4,7 @@
 import { useMemo, useRef } from 'react';
 import { parseDocument, ElementType } from 'htmlparser2';
 import type { ChildNode } from 'domhandler';
-import { Platform, Pressable } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -133,17 +133,12 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 							return null;
 						}
 						return (
-							<TouchableOpacity
-								onPress={() => {}}
-								activeOpacity={0.8}
+							<ThemeText
 								key={index}
-							>
-								<ThemeText
-									size="fs_13"
-									variant="textOrange"
-									children={nodeContent}
-								/>
-							</TouchableOpacity>
+								size="fs_13"
+								variant="textOrange"
+								children={nodeContent}
+							/>
 						);
 
 					case 'br':

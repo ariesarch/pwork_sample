@@ -5,7 +5,12 @@
 
 import { Dimensions } from 'react-native';
 import { PagedResponse } from './timeline';
-import { AxiosResponse } from 'axios';
+import { Axios, AxiosError, AxiosResponse } from 'axios';
+import {
+	QueryKey,
+	UseInfiniteQueryOptions,
+	UseQueryOptions,
+} from '@tanstack/react-query';
 
 export const handleError = (error: any) => {
 	return Promise.reject({
@@ -86,5 +91,29 @@ export const calculateHashTagCount = (
 		0,
 	);
 };
+
+export type QueryOptionHelper<
+	TQueryFnData = unknown,
+	TError = AxiosError,
+	TData = TQueryFnData,
+> = Omit<UseQueryOptions<TQueryFnData, TError, TData>, 'queryKey' | 'queryFn'>;
+
+export type InfiniteQueryOptionHelper<
+	TQueryFnData = unknown,
+	TData = TQueryFnData,
+	PageParam = number,
+	TQueryData = TQueryFnData,
+	TError = AxiosError,
+> = Omit<
+	UseInfiniteQueryOptions<
+		TQueryFnData,
+		TError,
+		TData,
+		TQueryData,
+		QueryKey,
+		PageParam
+	>,
+	'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
+>;
 
 export { scale, keyExtractor };

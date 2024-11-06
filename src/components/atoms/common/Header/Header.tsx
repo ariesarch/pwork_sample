@@ -7,11 +7,13 @@ type Props = {
 	title?: string;
 	leftCustomComponent?: React.ReactElement;
 	rightCustomComponent?: React.ReactElement;
+	hideUnderline?: boolean;
 } & ViewProps;
 const Header = ({
 	title,
 	leftCustomComponent,
 	rightCustomComponent,
+	hideUnderline = false,
 	...props
 }: Props) => {
 	return (
@@ -28,7 +30,7 @@ const Header = ({
 				)}
 				<View />
 			</View>
-			<Underline className="mb-3" />
+			{!hideUnderline && <Underline className="mb-3" />}
 		</>
 	);
 };
