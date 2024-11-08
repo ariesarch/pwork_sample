@@ -1,25 +1,24 @@
-import { useCallback } from 'react';
+import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
+import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { NavigationProp } from '@react-navigation/native';
 
 const useHandleOnPressStatus = (
-  feed: Pathchwork.Status[],
-  navigation: NavigationProp<any>,
-  screenToNavigate: string,
+	feed: Pathchwork.Status[],
+	navigation: NavigationProp<any>,
+	queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey,
 ) => {
-  return useCallback(
-    (item: Pathchwork.Status) => {
-      const index = feed.findIndex(feedItem => feedItem.id === item.id);
-      if (index < 100) {
-        navigation.navigate(screenToNavigate, {
-          id: item.id,
-          selectedFeedIndex: index,
-        });
-      } else {
-        navigation.navigate(screenToNavigate, { id: item.id });
-      }
-    },
-    [feed, navigation],
-  );
+	return (itemId: string) => {
+		const index = feed.findIndex(feedItem => feedItem.id === itemId);
+		if (index < 100) {
+			navigation.navigate('FeedDetail', {
+				id: itemId,
+				selectedFeedIndex: index,
+				queryKey,
+			});
+		} else {
+			navigation.navigate('FeedDetail', { id: itemId });
+		}
+	};
 };
 
 export default useHandleOnPressStatus;

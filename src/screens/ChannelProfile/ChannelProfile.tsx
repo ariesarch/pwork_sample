@@ -67,16 +67,17 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name } = route.params;
+	const queryParams = {
+		domain_name,
+		remote: false,
+		only_media: false,
+	};
 	const {
 		data: timeline,
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
-	} = useGetChannelFeed({
-		domain_name,
-		remote: false,
-		only_media: false,
-	});
+	} = useGetChannelFeed(queryParams);
 
 	const { data: channelAbout } = useGetChannelAbout(domain_name);
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
@@ -87,11 +88,10 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
 
-	const handleOnPressStatus = useHandleOnPressStatus(
-		feed,
-		navigation,
-		'FeedDetail',
-	);
+	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
+		'channel-feed',
+		queryParams,
+	]);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage) {
@@ -171,7 +171,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => (
 										<StatusItem
-											handleOnPress={() => handleOnPressStatus(item)}
+											handleOnPress={() => handleOnPressStatus(item.id)}
 											status={item}
 										/>
 									)}

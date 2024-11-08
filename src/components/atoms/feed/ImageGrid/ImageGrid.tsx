@@ -1,43 +1,38 @@
-import React, { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 interface ImageGridProps {
 	media_attachments: Pathchwork.Attachment[];
 	renderImage: (
 		attachment: Pathchwork.Attachment,
-		style: any,
+		style: StyleProp<ViewStyle>,
 		index: number,
 	) => JSX.Element | undefined;
 	numColumns: number;
-	imageHeight: number;
 }
 
 const ImageGrid: React.FC<ImageGridProps> = ({
 	media_attachments,
 	renderImage,
 	numColumns,
-	imageHeight,
 }) => {
 	const isTwoColumns = numColumns === 2;
 
 	return (
 		<View style={styles.container}>
 			{media_attachments.map((attachment, index) => {
-				let style: any = { height: imageHeight };
+				let style: any = { height: 150 };
 
 				if (isTwoColumns) {
 					style =
 						index % 2 === 0
-							? [styles.leftRoundRadius, style]
+							? [styles.leftRoundRadius, style, { width: '100%' }]
 							: [
 									styles.rightRoundRadius,
-									{ ...style, marginLeft: 2.5, width: '100%' },
+									{ ...style, marginLeft: 2, width: '100%' },
 							  ];
 				} else {
-					style =
-						index === 2
-							? [styles.topRightRadius, style]
-							: [{ ...style, marginTop: 2.5, borderRadius: 10, width: '100%' }];
+					style = { ...style, borderRadius: 10, width: '100%' };
 				}
 
 				return (
@@ -64,11 +59,11 @@ const styles = StyleSheet.create({
 	},
 	leftContainer: {
 		flex: 1,
-		marginRight: 2.5,
+		marginRight: 2,
 	},
 	rightContainer: {
 		flex: 1,
-		marginLeft: 2.5,
+		marginLeft: 2,
 	},
 	leftRoundRadius: {
 		borderTopLeftRadius: 10,
@@ -83,4 +78,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(ImageGrid);
+export default ImageGrid;

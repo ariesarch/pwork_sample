@@ -5,6 +5,8 @@ import {
 } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { GetChannelFeedQueryKey } from './queries/channel.type';
+import { AccountDetailFeedQueryKey } from './queries/feed.type';
 
 export type RootStackParamList = {
 	Login: undefined;
@@ -36,6 +38,7 @@ export type HomeStackParamList = {
 	FeedDetail: {
 		id: string;
 		selectedFeedIndex?: number;
+		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 	};
 	ChannelProfile: {
 		domain_name: string;

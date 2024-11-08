@@ -1,11 +1,11 @@
 import React, { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 interface FourImageGridProps {
 	media_attachments: Pathchwork.Attachment[];
 	renderImage: (
 		attachment: Pathchwork.Attachment,
-		style: any,
+		style: StyleProp<ViewStyle>,
 		index: number,
 	) => JSX.Element | undefined;
 }
@@ -18,36 +18,24 @@ const FourImageGrid: React.FC<FourImageGridProps> = ({
 		<View style={styles.leftContainer}>
 			{renderImage(
 				media_attachments[0],
-				[
-					styles.topLeftRadius,
-					{ height: 73, marginBottom: 2.5, width: '100%' },
-				],
+				[styles.topLeftRadius, { height: 73, marginBottom: 1, width: '100%' }],
 				0,
 			)}
 			{renderImage(
 				media_attachments[1],
-				[
-					styles.bottomLeftRadius,
-					{ height: 73, marginTop: 2.5, width: '100%' },
-				],
+				[styles.bottomLeftRadius, { height: 73, marginTop: 1, width: '100%' }],
 				1,
 			)}
 		</View>
 		<View style={styles.rightContainer}>
 			{renderImage(
 				media_attachments[2],
-				[
-					styles.topRightRadius,
-					{ height: 73, marginBottom: 2.5, width: '100%' },
-				],
+				[styles.topRightRadius, { height: 73, marginBottom: 1, width: '100%' }],
 				2,
 			)}
 			{renderImage(
 				media_attachments[3],
-				[
-					styles.bottomRightRadius,
-					{ height: 73, marginTop: 2.5, width: '100%' },
-				],
+				[styles.bottomRightRadius, { height: 73, marginTop: 1, width: '100%' }],
 				3,
 			)}
 		</View>
@@ -83,4 +71,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(FourImageGrid);
+export default FourImageGrid;

@@ -46,26 +46,25 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-
+	const queryParams = {
+		domain_name,
+		account_id: id,
+	};
 	const {
 		data: timeline,
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
-	} = useAccountDetailFeed({
-		domain_name,
-		account_id: id,
-	});
+	} = useAccountDetailFeed(queryParams);
 
 	const timelineList = timeline ? flattenPages(timeline) : [];
 
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
 
-	const handleOnPressStatus = useHandleOnPressStatus(
-		feed,
-		navigation,
-		'FeedDetail',
-	);
+	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
+		'account-detail-feed',
+		queryParams,
+	]);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
@@ -135,7 +134,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => (
 										<StatusItem
-											handleOnPress={() => handleOnPressStatus(item)}
+											handleOnPress={() => {
+												handleOnPressStatus(item.id);
+											}}
 											status={item}
 										/>
 									)}

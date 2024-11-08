@@ -1,11 +1,11 @@
-import React, { memo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 
 interface ThreeImageGridProps {
 	media_attachments: Pathchwork.Attachment[];
 	renderImage: (
 		attachment: Pathchwork.Attachment,
-		style: any,
+		style: StyleProp<ViewStyle>,
 		index: number,
 	) => JSX.Element | undefined;
 }
@@ -19,7 +19,10 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 			media_attachments[0],
 			[
 				styles.leftRoundRadius,
-				{ height: 150, marginRight: 2.5, width: '100%' },
+				{
+					height: 150,
+					width: '100%',
+				},
 			],
 			0,
 		)}
@@ -28,7 +31,7 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 				media_attachments[1],
 				[
 					styles.topRightRadius,
-					{ height: 73, marginBottom: 2.5, width: '100%' },
+					{ height: 72, marginBottom: 1.2, width: '100%' },
 				],
 				1,
 			)}
@@ -36,7 +39,7 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 				media_attachments[2],
 				[
 					styles.bottomRightRadius,
-					{ height: 73, marginTop: 2.5, width: '100%' },
+					{ height: 72, marginTop: 1.2, width: '100%' },
 				],
 				2,
 			)}
@@ -55,7 +58,7 @@ const styles = StyleSheet.create({
 	},
 	rightContainer: {
 		flex: 1,
-		marginLeft: 2.5,
+		marginLeft: 3.5,
 	},
 	leftRoundRadius: {
 		borderTopLeftRadius: 10,
@@ -69,4 +72,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default memo(ThreeImageGrid);
+export default ThreeImageGrid;
