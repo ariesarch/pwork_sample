@@ -23,7 +23,7 @@ const Header = ({
 					<View className="absolute left-0 z-10">{leftCustomComponent}</View>
 				)}
 				<View className="flex-1 items-center justify-center">
-					<ThemeText>{title}</ThemeText>
+					<ThemeText className="font-bold">{title}</ThemeText>
 				</View>
 				{rightCustomComponent && (
 					<View className="absolute right-0 z-10">{rightCustomComponent}</View>

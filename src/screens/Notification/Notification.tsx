@@ -11,10 +11,10 @@ import NotiAll from '@/components/organisms/notifications/NotiAll/NotiAll';
 
 const renderScene = SceneMap({
 	all: NotiAll,
-	likes: NotiAll,
-	comments: NotiAll,
-	shares: NotiAll,
-	follows: NotiAll,
+	metions: NotiAll,
+	// comments: NotiAll,
+	// shares: NotiAll,
+	// follows: NotiAll,
 });
 
 const Notification = () => {
@@ -25,10 +25,10 @@ const Notification = () => {
 
 	const [routes] = useState([
 		{ key: 'all', title: 'All' },
-		{ key: 'likes', title: 'Likes' },
-		{ key: 'comments', title: 'Comments' },
-		{ key: 'shares', title: 'Shares' },
-		{ key: 'follows', title: 'Follows' },
+		{ key: 'metions', title: 'Metions' },
+		// { key: 'comments', title: 'Comments' },
+		// { key: 'shares', title: 'Shares' },
+		// { key: 'follows', title: 'Follows' },
 	]);
 
 	return (
@@ -48,7 +48,7 @@ const Notification = () => {
 							borderBottomWidth: 1,
 							borderBottomColor: colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
 						}}
-						tabStyle={{ width: 'auto' }}
+						tabStyle={{ width: layout.width / 2.1 }}
 						renderLabel={({ route, focused }) => (
 							<NotiTabBarItemLabel {...{ route, focused }} />
 						)}

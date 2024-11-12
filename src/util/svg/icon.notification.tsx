@@ -1,60 +1,50 @@
-import { Path, Svg, SvgProps } from "react-native-svg";
+import { Path, Svg, SvgProps } from 'react-native-svg';
 
 interface ColorSchemeProps {
 	colorScheme?: 'dark' | 'light';
-};
+}
 
 export const NotificationFavoriteIcon = (props: SvgProps) => (
-  <Svg width="20" height="17" viewBox="0 0 20 17" fill="none" {...props}>
-    <Path
-      fill="#FF3C26"
-      stroke="#FF3C26"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M17.237 2.237a4.098 4.098 0 0 1 .135 5.654l-7.373 8.11-7.37-8.11a4.098 4.098 0 1 1 6.23-5.316L10 4l1.14-1.425a4.098 4.098 0 0 1 6.097-.338Z"
-    />
-  </Svg>
-)
+	<Svg width="17" height="17" viewBox="0 0 17 17" fill="none" {...props}>
+		<Path
+			fill="#FF3C26"
+			d="m9.375 1.063 2.031 4.156 4.469.656c.375.063.688.313.813.688a.928.928 0 0 1-.25 1l-3.25 3.218.78 4.563a.982.982 0 0 1-.405.969c-.313.25-.72.25-1.063.093l-4-2.156-4.031 2.156a.959.959 0 0 1-1.032-.093.982.982 0 0 1-.406-.97l.75-4.562-3.25-3.219c-.25-.25-.344-.656-.25-1 .125-.375.438-.625.813-.687l4.5-.656 2-4.157A.974.974 0 0 1 8.5.5c.375 0 .719.219.875.563Z"
+		/>
+	</Svg>
+);
 
 export const NotificationCommentIcon = (props: SvgProps) => (
-  <Svg fill="none" width="20" height="18" viewBox="0 0 20 18" {...props}>
-    <Path
-      fill="#FF3C26"
-      d="M14 5h4a1 1 0 0 1 1 1v11l-3.333-2.769a1.002 1.002 0 0 0-.64-.231H7a1 1 0 0 1-1-1v-3H4.973c-.234 0-.46.082-.64.23L1 13V2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v3Z"
-    />
-    <Path
-      stroke="#2E363B"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M14 5h4a1 1 0 0 1 1 1v11l-3.333-2.769a1.002 1.002 0 0 0-.64-.231H7a1 1 0 0 1-1-1v-3m8-5V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v11l3.333-2.77c.18-.148.406-.23.64-.23H6m8-5v4a1 1 0 0 1-1 1H6"
-    />
-  </Svg>
-)
-export const NotificationRepostIcon = ({
+	<Svg fill="none" width="20" height="18" viewBox="0 0 20 18" {...props}>
+		<Path
+			fill="#FF3C26"
+			d="M14 5h4a1 1 0 0 1 1 1v11l-3.333-2.769a1.002 1.002 0 0 0-.64-.231H7a1 1 0 0 1-1-1v-3H4.973c-.234 0-.46.082-.64.23L1 13V2a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v3Z"
+		/>
+		<Path
+			stroke="#2E363B"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={2}
+			d="M14 5h4a1 1 0 0 1 1 1v11l-3.333-2.769a1.002 1.002 0 0 0-.64-.231H7a1 1 0 0 1-1-1v-3m8-5V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v11l3.333-2.77c.18-.148.406-.23.64-.23H6m8-5v4a1 1 0 0 1-1 1H6"
+		/>
+	</Svg>
+);
+export const NotificationBoostedIcon = ({
 	colorScheme,
 	...props
 }: SvgProps & ColorSchemeProps) => (
-  <Svg width="18" height="20" viewBox="0 0 18 20" fill="none" {...props}>
-    <Path
-      stroke="#FF3C26"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M6.999 14h-5v5m9-13h5V1M1.582 7.003a8 8 0 0 1 14.331-1.027m.504 7.021a8 8 0 0 1-14.332 1.027"
-    />
-  </Svg>
-)
+	<Svg width="17" height="17" viewBox="0 0 17 17" fill="none" {...props}>
+		<Path
+			fill="#FF3C26"
+			d="M.531 7.188C1.281 5 3.344 3.5 5.656 3.5h5.407L9.78 2.219a.964.964 0 0 1 0-1.406.964.964 0 0 1 1.406 0l3 3a.964.964 0 0 1 0 1.406l-3 3a.964.964 0 0 1-1.406 0 .964.964 0 0 1 0-1.406L11.062 5.5H5.657c-1.468 0-2.75.938-3.218 2.344-.188.5-.75.781-1.282.625-.5-.188-.781-.75-.625-1.281Zm15.906 2.656a5.39 5.39 0 0 1-5.125 3.656H5.907l1.282 1.313a.964.964 0 0 1 0 1.406.964.964 0 0 1-1.407 0l-3-3a.964.964 0 0 1 0-1.406l3-3a.964.964 0 0 1 1.407 0 .964.964 0 0 1 0 1.406L5.905 11.5h5.407c1.468 0 2.75-.906 3.218-2.313.188-.5.75-.812 1.281-.624.5.187.782.75.626 1.28Z"
+		/>
+	</Svg>
+);
 
 export const NotificationPeopleFollowIcon = (props: SvgProps) => (
-  <Svg width="14" height="17" viewBox="0 0 14 17" fill="none" {...props}>
-    <Path
-      stroke="#FF3C26"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M13 16c0-2.21-2.686-4-6-4s-6 1.79-6 4m6-7a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"
-    />
-  </Svg>
-)
+	<Svg width="21" height="17" viewBox="0 0 21 17" fill="none" {...props}>
+		<Path
+			fill="#FF3C26"
+			d="M3.5 4.5c0-1.406.75-2.719 2-3.438 1.219-.718 2.75-.718 4 0 1.219.72 2 2.032 2 3.438 0 1.438-.781 2.75-2 3.469-1.25.718-2.781.718-4 0a3.977 3.977 0 0 1-2-3.469Zm-3 11.094C.5 12.5 2.969 10 6.063 10h2.843C12 10 14.5 12.5 14.5 15.594c0 .5-.438.906-.938.906H1.406a.907.907 0 0 1-.906-.906Zm15.75-5.344v-2h-2a.722.722 0 0 1-.75-.75.74.74 0 0 1 .75-.75h2v-2A.74.74 0 0 1 17 4a.76.76 0 0 1 .75.75v2h2a.76.76 0 0 1 .75.75.74.74 0 0 1-.75.75h-2v2A.74.74 0 0 1 17 11a.722.722 0 0 1-.75-.75Z"
+		/>
+	</Svg>
+);
