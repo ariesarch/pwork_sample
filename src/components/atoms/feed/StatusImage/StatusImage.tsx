@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { memo, useState } from 'react';
+import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Blurhash } from 'react-native-blurhash';
@@ -10,13 +10,16 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/types/navigation';
 import { FourImageGrid, ImageGrid, ThreeImageGrid } from '../ImageGrid';
 import { getBorderRadiusStyle } from '@/util/helper/getBorderRadiusStyle';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type Props = {
 	media_attachments: Pathchwork.Attachment[];
 };
 
+type NavigationProps = StackNavigationProp<RootStackParamList>;
+
 const StatusImage = ({ media_attachments }: Props) => {
-	const navigation = useNavigation<any>();
+	const navigation = useNavigation<NavigationProps>();
 	const [imageSensitiveState, setImageSensitiveState] = useState<{
 		[id: string]: boolean;
 	}>(() => {
@@ -78,93 +81,77 @@ const StatusImage = ({ media_attachments }: Props) => {
 		}));
 	};
 
-	const MemoizedImage = memo(
-		({
-			item,
-			imageStyle,
-			index,
-			isSensitive,
-			onForceViewSensitiveMedia,
-			navigateToImagesViewer,
-		}: {
-			item: Pathchwork.Attachment;
-			imageStyle: any;
-			index: number;
-			isSensitive: boolean;
-			onForceViewSensitiveMedia: (id: string) => void;
-			navigateToImagesViewer: (id: string) => void;
-		}) => {
-			const imageAttachmentUrl = {
-				uri: item?.remote_url || item?.url,
-			};
-			const length = media_attachments.length;
-
-			const renderSensitiveImage = () => (
-				<View style={getBorderRadiusStyle(index, length)}>
-					<Blurhash
-						blurhash={item.blurhash as string}
-						style={{
-							height: length === 3 && index === 0 ? 148 : length > 2 ? 73 : 150,
-						}}
-					/>
-					<SensitiveMedia
-						mediaType="photo"
-						attachmentId={item.id}
-						onViewSensitiveContent={onForceViewSensitiveMedia}
-						scaleValue={length === 3 && index === 0 ? 1 : length > 2 ? 0.5 : 1}
-					/>
-				</View>
-			);
-
-			if (item.type === 'image') {
-				return (
-					<Pressable
-						onPress={() => !isSensitive && navigateToImagesViewer(item.id)}
-						style={{ flex: 1 }}
-					>
-						{isSensitive ? (
-							renderSensitiveImage()
-						) : (
-							<ThemeImage
-								url={imageAttachmentUrl.uri}
-								blurHash={item.blurhash}
-								imageStyle={imageStyle}
-							/>
-						)}
-					</Pressable>
-				);
-			} else if (
-				item.url?.match(/.(?:a?png|jpe?g|webp|avif|heic|gif|svg|ico|icns)$/i)
-			) {
-				return (
-					<FastImage
-						source={imageAttachmentUrl}
-						resizeMode="cover"
-						style={imageStyle}
-					/>
-				);
-			}
-
-			return null;
-		},
-	);
-
 	const renderImage = (
 		item: Pathchwork.Attachment,
 		imageStyle: any,
 		index: number,
 	) => {
 		const isSensitive = imageSensitiveState[item.id];
-		return (
-			<MemoizedImage
-				item={item}
-				imageStyle={imageStyle}
-				index={index}
-				isSensitive={isSensitive}
-				onForceViewSensitiveMedia={onForceViewSensitiveMedia}
-				navigateToImagesViewer={navigateToImagesViewer}
-			/>
+		const imageAttachmentUrl = {
+			uri: item?.remote_url || item?.url,
+		};
+		const length = media_attachments.length;
+
+		const renderSensitiveImage = () => (
+			<View style={getBorderRadiusStyle(index, length)}>
+				<Blurhash
+					blurhash={item.blurhash as string}
+					style={{
+						height: length === 3 && index === 0 ? 148 : length > 2 ? 73 : 150,
+					}}
+				/>
+				<SensitiveMedia
+					mediaType="photo"
+					attachmentId={item.id}
+					onViewSensitiveContent={onForceViewSensitiveMedia}
+					scaleValue={length === 3 && index === 0 ? 1 : length > 2 ? 0.5 : 1}
+				/>
+			</View>
 		);
+
+		if (item.type === 'image') {
+			return (
+				<Pressable
+					onPress={() => !isSensitive && navigateToImagesViewer(item.id)}
+					style={{ flex: 1 }}
+				>
+					{isSensitive ? (
+						renderSensitiveImage()
+					) : (
+						<View
+							style={
+								item.blurhash
+									? [
+											imageStyle,
+											{
+												overflow: 'hidden',
+												width: '100%',
+												height: '100%',
+											},
+									  ]
+									: {}
+							}
+						>
+							<ThemeImage
+								url={imageAttachmentUrl.uri}
+								blurHash={item.blurhash}
+								imageStyle={imageStyle}
+							/>
+						</View>
+					)}
+				</Pressable>
+			);
+		} else if (
+			item.url?.match(/.(?:a?png|jpe?g|webp|avif|heic|gif|svg|ico|icns)$/i)
+		) {
+			return (
+				<FastImage
+					source={imageAttachmentUrl}
+					resizeMode="cover"
+					style={imageStyle}
+				/>
+			);
+		}
 	};
 
 	switch (media_attachments.length) {
@@ -181,7 +168,6 @@ const StatusImage = ({ media_attachments }: Props) => {
 					media_attachments={media_attachments}
 					renderImage={renderImage}
 					numColumns={2}
-					imageHeight={150}
 				/>
 			);
 		case 4:
@@ -197,7 +183,6 @@ const StatusImage = ({ media_attachments }: Props) => {
 					media_attachments={media_attachments}
 					renderImage={renderImage}
 					numColumns={1}
-					imageHeight={150}
 				/>
 			);
 	}

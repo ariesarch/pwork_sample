@@ -18,14 +18,16 @@ import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { useMemo } from 'react';
-import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
+import { InfiniteData, useQueryClient } from '@tanstack/react-query';
+import { PagedResponse } from '@/util/helper/timeline';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
+	const queryClient = useQueryClient();
 	const domain_name = useSelectedDomain();
-	const { id, selectedFeedIndex } = route.params;
+	const { id, selectedFeedIndex, queryKey } = route.params;
 	const { data: fetchedFeedDetail } = useFeedDetailQuery({
 		domain_name,
 		id,
@@ -39,14 +41,9 @@ const FeedDetail = ({
 			id,
 		});
 
-	const { data: cachedTimeline } = useGetChannelFeed({
-		domain_name,
-		remote: false,
-		only_media: false,
-		options: {
-			enabled: false,
-		},
-	});
+	const cachedTimeline:
+		| InfiniteData<PagedResponse<Pathchwork.Status[]>>
+		| undefined = queryKey ? queryClient.getQueryData(queryKey) : undefined;
 
 	const cachedFeedDetail = useMemo(() => {
 		if (selectedFeedIndex !== undefined && cachedTimeline) {
