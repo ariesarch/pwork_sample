@@ -1,4 +1,5 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
 import { useState } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';
@@ -16,7 +17,14 @@ const StatusFavourtie = ({ count, ...props }: Props) => {
 			{...props}
 			onPress={() => setIsFavoruite(prev => !prev)}
 		>
-			<HeartOutlineIcon fill={isFavourite ? 'red' : 'none'} />
+			<HeartOutlineIcon
+				stroke={
+					isFavourite
+						? customColor['patchwork-red-50']
+						: customColor['patchwork-grey-100']
+				}
+				fill={isFavourite ? customColor['patchwork-red-50'] : 'none'}
+			/>
 			<ThemeText variant="textGrey">{count}</ThemeText>
 		</TouchableOpacity>
 	);

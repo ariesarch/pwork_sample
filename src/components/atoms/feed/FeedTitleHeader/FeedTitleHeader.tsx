@@ -9,7 +9,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSharedScrollY } from '@/context/sharedScrollContext';
 import Animated, {
 	interpolate,
-	useAnimatedReaction,
 	useAnimatedStyle,
 } from 'react-native-reanimated';
 import { useColorScheme } from 'nativewind';
@@ -27,7 +26,7 @@ export const TitleDepth = Platform.OS == 'ios' ? 100 : 140;
 const FeedTitleHeader = ({ title }: Props) => {
 	const { top } = useSafeAreaInsets();
 	const sharedScrollYOffset = useSharedScrollY('Channel');
-	const { setColorScheme, colorScheme } = useColorScheme();
+	const { colorScheme } = useColorScheme();
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
 	const animatedHeaderStyle = useAnimatedStyle(() => {
@@ -75,12 +74,7 @@ const FeedTitleHeader = ({ title }: Props) => {
 				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50">
 					<SearchIconInProfile />
 				</TouchableOpacity>
-				<TouchableOpacity
-					className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
-					onPress={() =>
-						setColorScheme(colorScheme == 'light' ? 'dark' : 'light')
-					}
-				>
+				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1">
 					<EllipsisIcon />
 				</TouchableOpacity>
 			</View>

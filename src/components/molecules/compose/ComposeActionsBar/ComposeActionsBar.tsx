@@ -54,9 +54,7 @@ const ComposeActionsBar = () => {
 				<View className="flex-1 items-end">
 					<View className="flex-row items-center">
 						<ComposePlusIcon />
-						<ThemeText className="ml-2 text-white" size={'fs_15'}>
-							Long Post
-						</ThemeText>
+						<ThemeText className="ml-2 text-white">Long Post</ThemeText>
 					</View>
 				</View>
 			</View>
@@ -85,7 +83,9 @@ const ComposeActionsBar = () => {
 					onCloseThemeModal: () => setPostVisibilityModalVisible(false),
 				}}
 			>
-				<VisibilitySettings onClose={() => setPostVisibilityModalVisible(false)} />
+				<VisibilitySettings
+					onClose={() => setPostVisibilityModalVisible(false)}
+				/>
 			</ThemeModal>
 		</>
 	);

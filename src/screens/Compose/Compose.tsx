@@ -1,5 +1,4 @@
 import { View, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
-import { useColorScheme } from 'nativewind';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -14,17 +13,13 @@ const PLATFORM_KEYBOARD_OFFSET = Platform.select({
 });
 
 const Compose = () => {
-	const { toggleColorScheme } = useColorScheme();
 	return (
 		<SafeScreen>
 			<Header
 				title="New Post"
 				leftCustomComponent={<BackButton />}
 				rightCustomComponent={
-					<Pressable
-						onPress={toggleColorScheme}
-						className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full"
-					>
+					<Pressable className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full">
 						<ThemeText>Post</ThemeText>
 					</Pressable>
 				}

@@ -17,30 +17,31 @@ const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 
 	return (
 		<View>
-			<View className="flex flex-row m-4" {...props}>
+			<View className="flex-1 m-4" {...props}>
 				{/* {status.replyedStatus && (
 					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
 				)} */}
-				<Pressable
-					onPress={() =>
-						navigation.navigate('Profile', {
-							id: status.account.id ?? '113087366884543068', //temp
-						})
-					}
-				>
-					<Image
-						source={
-							status.account.avatar
-								? { uri: status.account.avatar }
-								: require('../../../../../assets/images/mock/profile/profile_img.jpeg')
+				<View className="flex-row">
+					<Pressable
+						onPress={() =>
+							navigation.navigate('Profile', {
+								id: status.account.id ?? '113087366884543068', //temp
+							})
 						}
-						className="w-[33] h-[33] rounded-full bg-slate-300"
-					/>
-				</Pressable>
-				<Pressable className="ml-2 flex-1" {...props} onPress={handleOnPress}>
-					<StatusHeader status={status} />
-					<StatusContent status={status} />
-					{/* {status.reblogedStatus && (
+					>
+						<Image
+							source={
+								status.account.avatar
+									? { uri: status.account.avatar }
+									: require('../../../../../assets/images/mock/profile/profile_img.jpeg')
+							}
+							className="w-[33] h-[33] rounded-full bg-slate-300"
+						/>
+					</Pressable>
+					<Pressable className="ml-2 flex-1" {...props} onPress={handleOnPress}>
+						<StatusHeader status={status} />
+						<StatusContent status={status} />
+						{/* {status.reblogedStatus && (
 						<Pressable
 							className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl"
 							onPress={() => {
@@ -65,9 +66,14 @@ const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 							)}
 						</Pressable>
 					)} */}
+						{/* <StatusActionBar status={status} /> */}
+					</Pressable>
+				</View>
+				<View className="flex-1 ml-10">
 					<StatusActionBar status={status} />
-				</Pressable>
+				</View>
 			</View>
+
 			{/* {status.replyedStatus && (
 				<Pressable
 					className="flex flex-row mx-4 my-4"

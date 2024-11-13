@@ -312,7 +312,7 @@ export const RePost = (props: SvgProps) => (
 export const HeartOutlineIcon = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
-			stroke="#828689"
+			stroke={props.stroke}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
@@ -334,12 +334,12 @@ export const Tranlsate = (props: SvgProps) => (
 export const ShareTo = (props: SvgProps) => (
 	<Svg width="19" height="18" viewBox="0 0 19 18" fill="none" {...props}>
 		<Path
-			d="M7.25 4.5L9.5 2.25M9.5 2.25L11.75 4.5M9.5 2.25V9.75M5.75017 7.5C5.05126 7.5 4.7018 7.5 4.42615 7.61418C4.05861 7.76642 3.76642 8.05861 3.61418 8.42615C3.5 8.7018 3.5 9.05109 3.5 9.75V13.35C3.5 14.1901 3.5 14.6098 3.66349 14.9307C3.8073 15.2129 4.0366 15.4429 4.31885 15.5867C4.6394 15.75 5.05925 15.75 5.89768 15.75H13.1027C13.9411 15.75 14.3604 15.75 14.6809 15.5867C14.9632 15.4429 15.1929 15.2129 15.3367 14.9307C15.5 14.6101 15.5 14.1908 15.5 13.3523V9.75C15.5 9.05109 15.4999 8.7018 15.3857 8.42615C15.2335 8.05861 14.9416 7.76642 14.574 7.61418C14.2984 7.5 13.9489 7.5 13.25 7.5"
-			stroke="#828689"
-			stroke-opacity="0.4"
-			stroke-width={2}
-			stroke-linecap="round"
-			stroke-linejoin="round"
+			stroke="#fff"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeOpacity={0.4}
+			strokeWidth={2}
+			d="M7.25 4.5 9.5 2.25m0 0 2.25 2.25M9.5 2.25v7.5M5.75 7.5c-.699 0-1.048 0-1.324.114a1.5 1.5 0 0 0-.812.812C3.5 8.702 3.5 9.051 3.5 9.75v3.6c0 .84 0 1.26.163 1.58a1.5 1.5 0 0 0 .656.657c.32.163.74.163 1.579.163h7.205c.838 0 1.257 0 1.578-.163.282-.144.512-.374.656-.656.163-.32.163-.74.163-1.579V9.75c0-.699 0-1.048-.114-1.324a1.5 1.5 0 0 0-.812-.812c-.276-.114-.625-.114-1.324-.114"
 		/>
 	</Svg>
 );
