@@ -26,6 +26,7 @@ const TextInput = ({
 	...textInputProps
 }: InputProps) => {
 	const inputColor = useAppropiateColorHash('patchwork-light-900');
+	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const [isFocused, setIsFocused] = useState(false);
 
 	return (
@@ -49,7 +50,7 @@ const TextInput = ({
 				</View>
 			)}
 			<RNTextInput
-				selectionColor={inputColor}
+				selectionColor={selectionColor}
 				testID="text-input"
 				placeholderTextColor={inputColor}
 				style={[{ color: inputColor }]}

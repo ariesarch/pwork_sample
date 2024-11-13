@@ -3,7 +3,6 @@ import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Header from '@/components/atoms/common/Header/Header';
-import Audience from '@/components/molecules/compose/Audience/Audience';
 import ComposeTextInput from '@/components/atoms/compose/ComposeTextInput/ComposeTextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 
@@ -29,7 +28,7 @@ const Compose = () => {
 				keyboardVerticalOffset={PLATFORM_KEYBOARD_OFFSET}
 				style={{ flexGrow: 1 }}
 			>
-				<Audience />
+				{/* <Audience /> */}
 				<View className="px-4">
 					<ComposeTextInput />
 				</View>
