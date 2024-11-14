@@ -1,5 +1,5 @@
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	FlatList,
 	Pressable,
@@ -28,34 +28,38 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { scale } from '@/util/helper/helper';
-import { useRecommendedChannels } from '@/hooks/queries/channel.queries';
+import {
+	useRecommendedChannels,
+	useSearchChannel,
+} from '@/hooks/queries/channel.queries';
 import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
-
-const renderScene = SceneMap({
-	top: SearchResultsList,
-	people: SearchResultsList,
-	hashtags: SearchResultsList,
-	postsandhub: SearchResultsList,
-});
+import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
+import { ScrollView } from 'react-native-gesture-handler';
+import useDebounce from '@/hooks/custom/useDebounce';
+import Keyword from '@/components/atoms/common/Keyword/Keyword';
+import { Flow } from 'react-native-animated-spinkit';
+import customColor from '@/util/constant/color';
 
 const SearchResults = ({
 	navigation,
 }: SearchStackScreenProps<'SearchResults'>) => {
 	const { colorScheme } = useColorScheme();
-	const layout = useWindowDimensions();
-	const [index, setIndex] = useState(0);
 	const [searchKeyword, setSearchKeyword] = useState('');
-
-	const [routes] = useState([
-		{ key: 'top', title: 'Top' },
-		{ key: 'people', title: 'People' },
-		{ key: 'hashtags', title: 'Hashtags' },
-		{ key: 'postsandhub', title: 'Posts & Hubs' },
-	]);
-
+	const [finalKeyword, setFinalKeyword] = useState('');
 	// const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { setDomain } = useActiveDomainAction();
-	const { data: recommendedChannels } = useRecommendedChannels();
+	const { data: searchChannelRes, isFetching: isSearching } = useSearchChannel({
+		searchKeyword: finalKeyword,
+		enabled: finalKeyword.length > 0,
+	});
+	const startDebounce = useDebounce();
+
+	useEffect(() => {
+		startDebounce(() => {
+			setFinalKeyword(searchKeyword);
+		}, 500);
+	}, [searchKeyword]);
+
 	return (
 		<SafeScreen>
 			<View className="flex-row items-center mx-4 my-4">
@@ -80,88 +84,26 @@ const SearchResults = ({
 					</TouchableOpacity>
 				)}
 			</View>
-			{/* searchResultsList */}
 			{searchKeyword.length > 0 ? (
-				// <TabView
-				// 	navigationState={{ index, routes }}
-				// 	renderScene={renderScene}
-				// 	onIndexChange={setIndex}
-				// 	initialLayout={{ width: layout.width }}
-				// 	renderTabBar={props => (
-				// 		<TabBar
-				// 			{...props}
-				// 			scrollEnabled
-				// 			indicatorStyle={{ backgroundColor: '#FF3C26' }}
-				// 			style={{
-				// 				borderBottomWidth: 1,
-				// 				borderBottomColor:
-				// 					colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
-				// 			}}
-				// 			tabStyle={{ width: 'auto' }}
-				// 			renderLabel={({ route, focused }) => (
-				// 				<SearchResultsTabBarItemLabel {...{ route, focused }} />
-				// 			)}
-				// 		/>
-				// 	)}
-				// />
-				// <View className="flex-1">
-				// 	<ThemeText className="text-xl font-semibold mx-8 mb-4">
-				// 		Channels related to "{searchKeyword}"
-				// 	</ThemeText>
-				// 	<FlatList
-				// 		data={activeChannelData}
-				// 		renderItem={({ item }) => (
-				// 			<Card
-				// 				imageSource={item.image}
-				// 				title={item.title}
-				// 				onPress={() => {
-				// 					// setDomain(item.domain_name);
-				// 					// navigation.navigate('ChannelProfile', {
-				// 					// 	domain_name: item.domain_name,
-				// 					// });
-				// 				}}
-				// 				imageVariants="relatedChannels"
-				// 				variants="channels"
-				// 			/>
-				// 		)}
-				// 		keyExtractor={item => item.id.toString()}
-				// 		showsHorizontalScrollIndicator={false}
-				// 		contentContainerStyle={{
-				// 			alignItems: 'center',
-				// 			rowGap: 10,
-				// 		}}
-				// 		ItemSeparatorComponent={() => <View style={{ width: scale(16) }} />} // Adds spacing between cards
-				// 	/>
-				// </View>
 				<View className="mx-6 my-2">
-					{recommendedChannels ? (
+					{!isSearching && searchChannelRes && (
 						<>
 							<View className="flex-row items-center">
 								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-									Channels related to "{searchKeyword}"
+									{`Channels related to ${searchKeyword}`}
 								</ThemeText>
 							</View>
-							{recommendedChannels.map((item, idx) => (
-								<View key={idx}>
-									<ChannelCard
-										channel={item.attributes}
-										handlePress={() => {
-											setDomain(item.attributes.domain_name);
-											navigation.navigate('ChannelProfile', {
-												domain_name: item.attributes.domain_name,
-												channel_info: {
-													avatar_image_url: item.attributes.avatar_image_url,
-													banner_image_url: item.attributes.banner_image_url,
-													channel_name: item.attributes.name,
-												},
-											});
-										}}
-									/>
-								</View>
-							))}
+							<ScrollView className="mb-[140]">
+								{searchChannelRes.map((item, idx) => (
+									<View key={idx}>
+										<ChannelCard
+											channel={item.attributes}
+											handlePress={() => {}}
+										/>
+									</View>
+								))}
+							</ScrollView>
 						</>
-					) : (
-						<ChannelLoading title="Explore Channels" cardCount={3} />
 					)}
 				</View>
 			) : (
@@ -172,6 +114,11 @@ const SearchResults = ({
 							'Search for local channels or global channels.'
 						}
 					</ThemeText>
+				</View>
+			)}
+			{isSearching && (
+				<View className="mx-6 my-2 items-center mt-5">
+					<Flow size={50} color={customColor['patchwork-red-50']} />
 				</View>
 			)}
 		</SafeScreen>

@@ -16,3 +16,8 @@ export type GetChannelAdditionalInfoQueryKey = [
 	'channel-additional-info',
 	{ domain_name: string },
 ];
+
+export type GetChannelSearchQueryKey = [
+	'channel-search',
+	{ searchKeyword: string },
+];

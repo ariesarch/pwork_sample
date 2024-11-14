@@ -5,6 +5,7 @@ import {
 	GetChannelAboutQueryKey,
 	GetChannelAdditionalInfoQueryKey,
 	GetChannelFeedQueryKey,
+	GetChannelSearchQueryKey,
 	GetRecommendedChannelsQueryKey,
 } from '@/types/queries/channel.type';
 import mockInstance from './mockInstance';
@@ -93,6 +94,21 @@ export const getRecommendedChannel = async (
 			params: {
 				domain_name: 'https://dashboard.channel.org',
 				isDynamicDomain: true,
+			},
+		});
+	return resp.data.data;
+};
+
+export const getSearchChannelResult = async (
+	qfContext: QueryFunctionContext<GetChannelSearchQueryKey>,
+) => {
+	const { searchKeyword } = qfContext.queryKey[1];
+	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+		await instance.get(appendApiVersion('channels/search', 'v1'), {
+			params: {
+				domain_name: 'https://dashboard.channel.org',
+				isDynamicDomain: true,
+				q: searchKeyword,
 			},
 		});
 	return resp.data.data;
