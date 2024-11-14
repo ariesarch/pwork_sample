@@ -1,4 +1,4 @@
-import { Compose, Message, Notification, Search } from '@/screens';
+import { Compose, Notification, Search } from '@/screens';
 import { BottomStackParamList } from '@/types/navigation';
 import {
 	ComposeTabIcon,
@@ -13,6 +13,7 @@ import { Platform, View } from 'react-native';
 import HomeStack from './HomeStackNavigator';
 import { scale } from '@/util/helper/helper';
 import SearchStack from './SearchStackNavigator';
+import ConversationsStack from './ConversationsStackNavigator';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
@@ -83,8 +84,8 @@ export default function BottomTabs() {
 				}}
 			/>
 			<Tab.Screen
-				name="Message"
-				component={Message}
+				name="Conversations"
+				component={ConversationsStack}
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<MessageTabIcon colorScheme={colorScheme} focused={focused} />
