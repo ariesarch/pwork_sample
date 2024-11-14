@@ -10,6 +10,7 @@ import {
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { SearchIcon } from '@/util/svg/icon.common';
 import {
+	HomeStackParamList,
 	HomeStackScreenProps,
 	SearchStackScreenProps,
 } from '@/types/navigation';
@@ -46,7 +47,6 @@ const SearchResults = ({
 	const { colorScheme } = useColorScheme();
 	const [searchKeyword, setSearchKeyword] = useState('');
 	const [finalKeyword, setFinalKeyword] = useState('');
-	// const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { setDomain } = useActiveDomainAction();
 	const { data: searchChannelRes, isFetching: isSearching } = useSearchChannel({
 		searchKeyword: finalKeyword,
@@ -98,7 +98,17 @@ const SearchResults = ({
 									<View key={idx}>
 										<ChannelCard
 											channel={item.attributes}
-											handlePress={() => {}}
+											handlePress={() => {
+												setDomain(item.attributes.domain_name);
+												navigation.navigate('ChannelProfile', {
+													domain_name: item.attributes.domain_name,
+													channel_info: {
+														avatar_image_url: item.attributes.avatar_image_url,
+														banner_image_url: item.attributes.banner_image_url,
+														channel_name: item.attributes.name,
+													},
+												});
+											}}
 										/>
 									</View>
 								))}
