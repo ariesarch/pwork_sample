@@ -37,6 +37,8 @@ import {
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import ReplyActionBar from '@/components/molecules/compose/ReplyActionBar/ReplyActionBar';
 import { cn } from '@/util/helper/twutil';
+import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
+import FeedDetailStatus from '@/components/atoms/feed/FeedDetailStatus/FeedDetailStatus';
 
 const FeedDetail = ({
 	navigation,
@@ -48,6 +50,10 @@ const FeedDetail = ({
 	const { height, progress } = useGradualAnimation();
 	const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 	const [reply, setReply] = useState('');
+	const inputBarBgColor = useAppropiateColorHash(
+		'patchwork-dark-400',
+		'patchwork-light-50',
+	);
 
 	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
 		return {
@@ -59,6 +65,10 @@ const FeedDetail = ({
 	const replyActionBarStyle = useAnimatedStyle(() => ({
 		opacity: progress.value,
 		height: progress.value < 0.5 ? 0 : 'auto',
+	}));
+
+	const inputBarBgColorStyle = useAnimatedStyle(() => ({
+		backgroundColor: progress.value > 0.5 ? inputBarBgColor : '',
 	}));
 
 	// useAnimatedReaction(
@@ -113,19 +123,13 @@ const FeedDetail = ({
 								<StatusItem handleOnPress={() => {}} status={item} />
 							)}
 							keyExtractor={item => item.id.toString()}
-							ListHeaderComponent={() =>
-								renderHeader(feedDetail as Pathchwork.Status)
-							}
-						/>
-						<View
-							className={cn(
-								'p-2',
-								isKeyboardOpen
-									? 'bg-patchwork-light-50 dark:bg-patchwork-dark-400'
-									: '',
+							ListHeaderComponent={() => (
+								<FeedDetailStatus
+									feedDetail={feedDetail as Pathchwork.Status}
+								/>
 							)}
-						>
-							{/* bg-patchwork-light-50 dark:bg-patchwork-dark-400 */}
+						/>
+						<Animated.View className={'p-2'} style={inputBarBgColorStyle}>
 							<Animated.View className={'flex-row'} style={replyActionBarStyle}>
 								<ThemeText className="mb-2 ml-1 normal-case text-xs">
 									Replying to {'>'}
@@ -146,7 +150,7 @@ const FeedDetail = ({
 							<Animated.View style={replyActionBarStyle}>
 								<ReplyActionBar />
 							</Animated.View>
-						</View>
+						</Animated.View>
 						<Animated.View style={virtualKeyboardContainerStyle} />
 					</View>
 				</View>
@@ -156,26 +160,6 @@ const FeedDetail = ({
 				</View>
 			)}
 		</SafeScreen>
-	);
-};
-
-const renderHeader = (feedDetail: Pathchwork.Status) => {
-	return (
-		<View>
-			<View className="mx-4">
-				<StatusHeader
-					status={feedDetail}
-					imageSize="w-8 h-8"
-					showAvatarIcon
-					showFollowIcon
-				/>
-				<StatusContent status={feedDetail} className="mt-2" />
-				<StatusActionBar status={feedDetail} />
-			</View>
-			<Underline className="mt-3" />
-			<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
-			<Underline />
-		</View>
 	);
 };
 
