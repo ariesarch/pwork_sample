@@ -10,6 +10,7 @@ import {
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { SearchIcon } from '@/util/svg/icon.common';
 import {
+	HomeStackParamList,
 	HomeStackScreenProps,
 	SearchStackScreenProps,
 } from '@/types/navigation';
@@ -46,7 +47,6 @@ const SearchResults = ({
 	const { colorScheme } = useColorScheme();
 	const [searchKeyword, setSearchKeyword] = useState('');
 	const [finalKeyword, setFinalKeyword] = useState('');
-	// const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { setDomain } = useActiveDomainAction();
 	const { data: searchChannelRes, isFetching: isSearching } = useSearchChannel({
 		searchKeyword: finalKeyword,
@@ -63,7 +63,13 @@ const SearchResults = ({
 	return (
 		<SafeScreen>
 			<View className="flex-row items-center mx-4 my-4">
-				{searchKeyword.length > 0 && <BackButton />}
+				{searchKeyword.length > 0 && (
+					<BackButton
+						customOnPress={() => {
+							navigation.goBack();
+						}}
+					/>
+				)}
 				<View className="flex-1 ml-4">
 					<TextInput
 						placeholder="Search"
@@ -72,17 +78,23 @@ const SearchResults = ({
 						startIcon={<SearchIcon className="mt-[2]" />}
 					/>
 				</View>
-				{searchKeyword.length == 0 && <BackButton /> && (
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							navigation.goBack();
-						}}
-						className="ml-2"
-					>
-						<ThemeText>Cancel</ThemeText>
-					</TouchableOpacity>
-				)}
+				{searchKeyword.length == 0 && (
+						<BackButton
+							customOnPress={() => {
+								navigation.goBack();
+							}}
+						/>
+					) && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								navigation.goBack();
+							}}
+							className="ml-2"
+						>
+							<ThemeText>Cancel</ThemeText>
+						</TouchableOpacity>
+					)}
 			</View>
 			{searchKeyword.length > 0 ? (
 				<View className="mx-6 my-2">
@@ -98,7 +110,17 @@ const SearchResults = ({
 									<View key={idx}>
 										<ChannelCard
 											channel={item.attributes}
-											handlePress={() => {}}
+											handlePress={() => {
+												setDomain(item.attributes.domain_name);
+												navigation.navigate('ChannelProfile', {
+													domain_name: item.attributes.domain_name,
+													channel_info: {
+														avatar_image_url: item.attributes.avatar_image_url,
+														banner_image_url: item.attributes.banner_image_url,
+														channel_name: item.attributes.name,
+													},
+												});
+											}}
 										/>
 									</View>
 								))}
