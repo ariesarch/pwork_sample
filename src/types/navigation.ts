@@ -7,6 +7,7 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { GetChannelFeedQueryKey } from './queries/channel.type';
 import { AccountDetailFeedQueryKey } from './queries/feed.type';
+import { SearchUsersQueryKey } from './queries/conversations.type';
 
 export type RootStackParamList = {
 	Login: undefined;
@@ -28,7 +29,6 @@ export type BottomStackParamList = {
 	Home: NavigatorScreenParams<HomeStackParamList>;
 	Notification: undefined;
 	Search: NavigatorScreenParams<SearchStackParamList>;
-	Message: undefined;
 	Compose:
 		| {
 				type: 'create';
@@ -37,6 +37,7 @@ export type BottomStackParamList = {
 				type: 'repost';
 				incomingStatus: Pathchwork.Status;
 		  };
+	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 };
 
 export type HomeStackParamList = {
@@ -64,6 +65,20 @@ export type SearchStackParamList = {
 		query: string | undefined;
 	};
 	SearchFeed: undefined;
+	ChannelProfile: {
+		domain_name: string;
+		channel_info: {
+			avatar_image_url: string;
+			banner_image_url: string;
+			channel_name: string;
+		};
+	};
+};
+
+export type ConversationsStackParamList = {
+	StartConversation: undefined;
+	NewMessage: undefined;
+	Chat: { id: string; queryKey: SearchUsersQueryKey };
 };
 
 export type RootScreenProps<
@@ -75,6 +90,10 @@ export type HomeStackScreenProps<S extends keyof HomeStackParamList> =
 
 export type SearchStackScreenProps<S extends keyof SearchStackParamList> =
 	StackScreenProps<SearchStackParamList, S>;
+
+export type ConversationsStackScreenProps<
+	S extends keyof ConversationsStackParamList,
+> = StackScreenProps<ConversationsStackParamList, S>;
 
 export type TabBarScreenProps<
 	S extends keyof BottomStackParamList = keyof BottomStackParamList,

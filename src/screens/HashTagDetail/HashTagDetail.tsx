@@ -7,13 +7,14 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { useHashtagDetailFeedQuery } from '@/hooks/queries/feed.queries';
 import { useHashTagDetailQuery } from '@/hooks/queries/hashtag.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
+import customColor from '@/util/constant/color';
 import { calculateHashTagCount } from '@/util/helper/helper';
 import { flattenPages } from '@/util/helper/timeline';
 import { FlashList } from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { Dimensions, View } from 'react-native';
-import { CircleFade } from 'react-native-animated-spinkit';
+import { CircleFade, Flow } from 'react-native-animated-spinkit';
 
 const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 	route,
@@ -74,7 +75,7 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 					/>
 				}
 			/>
-			{hashtagDetail && (
+			{hashtagDetail && timeline ? (
 				<FlashList
 					data={flattenPages(timeline)}
 					keyExtractor={item => item.id}
@@ -133,6 +134,10 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 						)
 					}
 				/>
+			) : (
+				<View className="flex-1 items-center justify-center">
+					<Flow size={50} color={customColor['patchwork-red-50']} />
+				</View>
 			)}
 		</SafeScreen>
 	);
