@@ -63,7 +63,13 @@ const SearchResults = ({
 	return (
 		<SafeScreen>
 			<View className="flex-row items-center mx-4 my-4">
-				{searchKeyword.length > 0 && <BackButton />}
+				{searchKeyword.length > 0 && (
+					<BackButton
+						customOnPress={() => {
+							navigation.goBack();
+						}}
+					/>
+				)}
 				<View className="flex-1 ml-4">
 					<TextInput
 						placeholder="Search"
@@ -72,17 +78,23 @@ const SearchResults = ({
 						startIcon={<SearchIcon className="mt-[2]" />}
 					/>
 				</View>
-				{searchKeyword.length == 0 && <BackButton /> && (
-					<TouchableOpacity
-						activeOpacity={0.8}
-						onPress={() => {
-							navigation.goBack();
-						}}
-						className="ml-2"
-					>
-						<ThemeText>Cancel</ThemeText>
-					</TouchableOpacity>
-				)}
+				{searchKeyword.length == 0 && (
+						<BackButton
+							customOnPress={() => {
+								navigation.goBack();
+							}}
+						/>
+					) && (
+						<TouchableOpacity
+							activeOpacity={0.8}
+							onPress={() => {
+								navigation.goBack();
+							}}
+							className="ml-2"
+						>
+							<ThemeText>Cancel</ThemeText>
+						</TouchableOpacity>
+					)}
 			</View>
 			{searchKeyword.length > 0 ? (
 				<View className="mx-6 my-2">
