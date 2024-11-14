@@ -38,7 +38,7 @@ const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				startIcon={<SearchIcon />}
 				onPress={() => navigation.navigate('SearchResults')}
 			/>
-			{showUnderLine && <Underline className="mt-2" />}
+			{/* {showUnderLine && <Underline className="mt-2" />} */}
 		</View>
 	);
 };
