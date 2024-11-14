@@ -12,6 +12,7 @@ const darkToLightColorMappings: Record<string, ColorKeys> = {
 const colorNameToHash: Record<string, string> = {
 	'patchwork-dark-50': customColor['patchwork-dark-50'],
 	'patchwork-dark-100': customColor['patchwork-dark-100'],
+	'patchwork-dark-400': customColor['patchwork-dark-400'],
 	'patchwork-light-50': customColor['patchwork-light-50'],
 	'patchwork-light-900': customColor['patchwork-light-900'],
 	'patchwork-red-50': customColor['patchwork-red-50'],

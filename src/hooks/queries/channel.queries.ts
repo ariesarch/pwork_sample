@@ -1,5 +1,6 @@
 import {
 	GetChannelAdditionalInfoQueryKey,
+	GetChannelSearchQueryKey,
 	GetMyChannelListQueryKey,
 } from './../../types/queries/channel.type';
 import {
@@ -8,6 +9,7 @@ import {
 	getChannelFeed,
 	getMyChannelList,
 	getRecommendedChannel,
+	getSearchChannelResult,
 } from '@/services/channel.service';
 import {
 	GetChannelAboutQueryKey,
@@ -61,4 +63,22 @@ export const useGetChannelAdditionalInfo = (domain_name: string) => {
 		{ domain_name },
 	];
 	return useQuery({ queryKey, queryFn: getChannelAdditionalInfo });
+};
+
+export const useSearchChannel = ({
+	searchKeyword,
+	enabled = false,
+}: {
+	searchKeyword: string;
+	enabled?: boolean;
+}) => {
+	const queryKey: GetChannelSearchQueryKey = [
+		'channel-search',
+		{ searchKeyword },
+	];
+	return useQuery({
+		queryKey,
+		queryFn: getSearchChannelResult,
+		enabled,
+	});
 };
