@@ -77,8 +77,35 @@ declare namespace Pathchwork {
 
 	type ChannelList = {
 		id: string;
-		title: string;
-		image: string;
+		type: string;
+		attributes: ChannelAttributes;
+	};
+
+	type ChannelAttributes = {
+		id: number;
+		name: string;
+		slug: string;
+		description: string;
+		is_recommended: boolean;
+		admin_following_count: number;
+		account_id: number;
+		patchwork_collection_id: number;
+		guides: string;
+		participants_count: number;
+		visibility: string;
+		community_type: {
+			data: {
+				id: string;
+				type: string;
+				attributes: {
+					id: number;
+					name: string;
+				};
+			};
+		};
+		banner_image_url: string;
+		avatar_image_url: string;
+		domain_name: string;
 	};
 
 	type HashTag = {
@@ -261,6 +288,11 @@ declare namespace Pathchwork {
 		title: string;
 	};
 
+	type ChannelAdditionalInfo = {
+		content: string;
+		updated_at: string;
+	};
+
 	type TimelineReplies = {
 		ancestors: Status[];
 		descendants: Status[];
@@ -309,13 +341,12 @@ declare namespace Pathchwork {
 		blurhash?: string;
 	};
 	type ImageUrl = {
-		id: Pathchwork.Attachment["id"];
-		preview_url?: Pathchwork.Attachment["preview_url"];
-		url: Pathchwork.Attachment["url"];
-		remote_url?: Pathchwork.Attachment["remote_url"];
+		id: Pathchwork.Attachment['id'];
+		preview_url?: Pathchwork.Attachment['preview_url'];
+		url: Pathchwork.Attachment['url'];
+		remote_url?: Pathchwork.Attachment['remote_url'];
 		sensitive?: boolean;
 		width?: number;
 		height?: number;
 	};
-};
-
+}

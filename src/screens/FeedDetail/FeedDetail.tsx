@@ -17,9 +17,26 @@ import {
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { InfiniteData, useQueryClient } from '@tanstack/react-query';
 import { PagedResponse } from '@/util/helper/timeline';
+import { FlatList } from 'react-native-gesture-handler';
+import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
+import { useKeyboardAnimation } from 'react-native-keyboard-controller';
+import Animated, {
+	interpolate,
+	runOnJS,
+	useAnimatedReaction,
+	useAnimatedStyle,
+	withTiming,
+} from 'react-native-reanimated';
+import {
+	BottomBarHeight,
+	useGradualAnimation,
+} from '@/hooks/custom/useGradualAnimation';
+import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
+import ReplyActionBar from '@/components/molecules/compose/ReplyActionBar/ReplyActionBar';
+import { cn } from '@/util/helper/twutil';
 
 const FeedDetail = ({
 	navigation,
@@ -28,6 +45,33 @@ const FeedDetail = ({
 	const queryClient = useQueryClient();
 	const domain_name = useSelectedDomain();
 	const { id, selectedFeedIndex, queryKey } = route.params;
+	const { height, progress } = useGradualAnimation();
+	const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+	const [reply, setReply] = useState('');
+
+	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
+		return {
+			height:
+				height.value > BottomBarHeight ? height.value - BottomBarHeight : 0,
+		};
+	});
+
+	const replyActionBarStyle = useAnimatedStyle(() => ({
+		opacity: progress.value,
+		height: progress.value < 0.5 ? 0 : 'auto',
+	}));
+
+	// useAnimatedReaction(
+	// 	() => progress.value,
+	// 	currentVal => {
+	// 		if (currentVal == 1) {
+	// 			return runOnJS(setKeyboardOpen)(true);
+	// 		} else {
+	// 			return runOnJS(setKeyboardOpen)(false);
+	// 		}
+	// 	},
+	// );
+
 	const { data: fetchedFeedDetail } = useFeedDetailQuery({
 		domain_name,
 		id,
@@ -61,39 +105,49 @@ const FeedDetail = ({
 		<SafeScreen>
 			{feedDetail ? (
 				<View className="flex-1">
-					<KeyboardAwareScrollView className=" bg-patchwork-light-900 dark:bg-patchwork-dark-100 flex-1">
+					<View className="flex-1">
 						<Header title="Post" leftCustomComponent={<BackButton />} />
-						<View>
-							<View className="mx-4">
-								<StatusHeader
-									status={feedDetail as Pathchwork.Status}
-									imageSize="w-8 h-8"
-									showAvatarIcon
-									showFollowIcon
-								/>
-								<StatusContent
-									status={feedDetail as Pathchwork.Status}
-									className="mt-2"
-								/>
-								<StatusActionBar status={feedDetail as Pathchwork.Status} />
-							</View>
-						</View>
-						<View className="flex-1">
-							<Underline className="mt-3" />
-							<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
-							<Underline />
-							{
-								isLoadingReplies && (
-									<View className="flex items-center justify-center flex-1 mt-3">
-										<Flow size={50} color={customColor['patchwork-red-50']} />
-									</View>
-								)
-								// if(statusReplies && !isLoadingReplies) => return status replies
+						<FlatList
+							data={statusReplies?.ancestors}
+							renderItem={({ item }) => (
+								<StatusItem handleOnPress={() => {}} status={item} />
+							)}
+							keyExtractor={item => item.id.toString()}
+							ListHeaderComponent={() =>
+								renderHeader(feedDetail as Pathchwork.Status)
 							}
+						/>
+						<View
+							className={cn(
+								'p-2',
+								isKeyboardOpen
+									? 'bg-patchwork-light-50 dark:bg-patchwork-dark-400'
+									: '',
+							)}
+						>
+							{/* bg-patchwork-light-50 dark:bg-patchwork-dark-400 */}
+							<Animated.View className={'flex-row'} style={replyActionBarStyle}>
+								<ThemeText className="mb-2 ml-1 normal-case text-xs">
+									Replying to {'>'}
+								</ThemeText>
+								<ThemeText variant="textOrange" className="mb-2 ml-1 text-xs">
+									@{feedDetail.account.username}
+								</ThemeText>
+							</Animated.View>
+							<TextInput
+								selectionColor={customColor['patchwork-red-50']}
+								placeholder={
+									isKeyboardOpen
+										? 'Type your reply'
+										: `Reply To ${feedDetail.account.username}`
+								}
+								onChangeText={setReply}
+							/>
+							<Animated.View style={replyActionBarStyle}>
+								<ReplyActionBar />
+							</Animated.View>
 						</View>
-					</KeyboardAwareScrollView>
-					<View className="mx-6 my-3">
-						<TextInput placeholder="Reply To Account Name" />
+						<Animated.View style={virtualKeyboardContainerStyle} />
 					</View>
 				</View>
 			) : (
@@ -102,6 +156,26 @@ const FeedDetail = ({
 				</View>
 			)}
 		</SafeScreen>
+	);
+};
+
+const renderHeader = (feedDetail: Pathchwork.Status) => {
+	return (
+		<View>
+			<View className="mx-4">
+				<StatusHeader
+					status={feedDetail}
+					imageSize="w-8 h-8"
+					showAvatarIcon
+					showFollowIcon
+				/>
+				<StatusContent status={feedDetail} className="mt-2" />
+				<StatusActionBar status={feedDetail} />
+			</View>
+			<Underline className="mt-3" />
+			<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>
+			<Underline />
+		</View>
 	);
 };
 

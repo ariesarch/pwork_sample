@@ -3,17 +3,18 @@ import { AxiosResponse } from 'axios';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	GetChannelAboutQueryKey,
+	GetChannelAdditionalInfoQueryKey,
 	GetChannelFeedQueryKey,
+	GetRecommendedChannelsQueryKey,
 } from '@/types/queries/channel.type';
 import mockInstance from './mockInstance';
 import instance from './instance';
 
-export const getMyChannelList = async (): Promise<Pathchwork.Channel[]> => {
+export const getMyChannelList = async (): Promise<Pathchwork.ChannelList[]> => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Channel[]> = await mockInstance.get(
-			'my-channel',
-		);
-		return resp.data;
+		const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+			await mockInstance.get('my-channel');
+		return resp.data.data;
 	} catch (e) {
 		return handleError(e);
 	}
@@ -68,4 +69,31 @@ export const getChannelAbout = async (
 		},
 	);
 	return resp.data;
+};
+
+export const getChannelAdditionalInfo = async (
+	qfContext: QueryFunctionContext<GetChannelAdditionalInfoQueryKey>,
+) => {
+	const { domain_name } = qfContext.queryKey[1];
+	const resp: AxiosResponse<Pathchwork.ChannelAdditionalInfo> =
+		await instance.get(
+			appendApiVersion('instance/extended_description', 'v1'),
+			{
+				params: { domain_name, isDynamicDomain: true },
+			},
+		);
+	return resp.data;
+};
+
+export const getRecommendedChannel = async (
+	qfContext: QueryFunctionContext<GetRecommendedChannelsQueryKey>,
+) => {
+	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+		await instance.get(appendApiVersion('channels/recommend_channels', 'v1'), {
+			params: {
+				domain_name: 'https://dashboard.channel.org',
+				isDynamicDomain: true,
+			},
+		});
+	return resp.data.data;
 };

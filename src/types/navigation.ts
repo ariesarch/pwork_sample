@@ -49,6 +49,11 @@ export type HomeStackParamList = {
 	};
 	ChannelProfile: {
 		domain_name: string;
+		channel_info: {
+			avatar_image_url: string;
+			banner_image_url: string;
+			channel_name: string;
+		};
 	};
 	Profile: { id: string };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };

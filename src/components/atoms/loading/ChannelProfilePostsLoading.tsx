@@ -1,10 +1,8 @@
+import customColor from '@/util/constant/color';
 import React from 'react';
 import { View, Text } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Image } from 'react-native-svg';
-
-const backgroundColor = '#f0f0f0';
-const highlightColor = '#bfbfbf';
 
 const ChannleProfilePostsLoading = () => {
 	return (
@@ -16,8 +14,8 @@ const ChannleProfilePostsLoading = () => {
 			}}
 		>
 			<SkeletonPlaceholder
-				backgroundColor={backgroundColor}
-				highlightColor={highlightColor}
+				backgroundColor={customColor['skeleton-bg']}
+				highlightColor={customColor['skeleton-highlight']}
 				speed={1000}
 			>
 				<SkeletonPlaceholder.Item>

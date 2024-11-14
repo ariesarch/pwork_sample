@@ -1,3 +1,4 @@
+import customColor from '@/util/constant/color';
 import React from 'react';
 import { View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
@@ -5,7 +6,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 const PeopleFollowingLoading = () => {
 	return (
 		<View style={{ flex: 1 }}>
-			<SkeletonPlaceholder backgroundColor="#585e62">
+			<SkeletonPlaceholder backgroundColor={customColor['skeleton-bg']}>
 				<SkeletonPlaceholder.Item>
 					{/* Title  */}
 					<SkeletonPlaceholder.Item
@@ -37,7 +38,12 @@ const PeopleFollowingLoading = () => {
 								borderRadius={100}
 								marginRight={11}
 							/>
-							<SkeletonPlaceholder.Item marginTop={8} marginLeft={12} width={80} height={10} />
+							<SkeletonPlaceholder.Item
+								marginTop={8}
+								marginLeft={12}
+								width={80}
+								height={10}
+							/>
 						</View>
 						<View>
 							<SkeletonPlaceholder.Item
@@ -46,7 +52,12 @@ const PeopleFollowingLoading = () => {
 								borderRadius={100}
 								marginRight={11}
 							/>
-							<SkeletonPlaceholder.Item marginTop={8} marginLeft={12} width={80} height={10} />
+							<SkeletonPlaceholder.Item
+								marginTop={8}
+								marginLeft={12}
+								width={80}
+								height={10}
+							/>
 						</View>
 						<View>
 							<SkeletonPlaceholder.Item
@@ -55,7 +66,12 @@ const PeopleFollowingLoading = () => {
 								borderRadius={100}
 								marginRight={11}
 							/>
-							<SkeletonPlaceholder.Item marginTop={8} marginLeft={12} width={80} height={10} />
+							<SkeletonPlaceholder.Item
+								marginTop={8}
+								marginLeft={12}
+								width={80}
+								height={10}
+							/>
 						</View>
 						<View>
 							<SkeletonPlaceholder.Item
@@ -64,7 +80,12 @@ const PeopleFollowingLoading = () => {
 								borderRadius={100}
 								marginRight={11}
 							/>
-							<SkeletonPlaceholder.Item marginTop={8} marginLeft={12} width={80} height={10} />
+							<SkeletonPlaceholder.Item
+								marginTop={8}
+								marginLeft={12}
+								width={80}
+								height={10}
+							/>
 						</View>
 					</SkeletonPlaceholder.Item>
 					{/* Card  */}

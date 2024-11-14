@@ -3,18 +3,17 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import ChannleProfilePostsLoading from './ChannelProfilePostsLoading';
 import TimelineLoading from './TimelineLoading';
+import customColor from '@/util/constant/color';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const backgroundColor = '#f0f0f0';
-const highlightColor = '#bfbfbf';
 
 const ChannelProfileLoading = () => {
 	return (
 		<>
 			<View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
 				<SkeletonPlaceholder
-					backgroundColor={backgroundColor}
-					highlightColor={highlightColor}
+					backgroundColor={customColor['skeleton-bg']}
+					highlightColor={customColor['skeleton-highlight']}
 					speed={1000}
 				>
 					<SkeletonPlaceholder.Item>

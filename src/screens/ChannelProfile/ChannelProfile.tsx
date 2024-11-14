@@ -21,6 +21,7 @@ import {
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
 import {
 	useGetChannelAbout,
+	useGetChannelAdditionalInfo,
 	useGetChannelFeed,
 } from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
@@ -66,7 +67,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 }) => {
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
-	const { domain_name } = route.params;
+	const { domain_name, channel_info } = route.params;
 	const queryParams = {
 		domain_name,
 		remote: false,
@@ -80,6 +81,10 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	} = useGetChannelFeed(queryParams);
 
 	const { data: channelAbout } = useGetChannelAbout(domain_name);
+
+	const { data: chanelAdditionalInfo } =
+		useGetChannelAdditionalInfo(domain_name);
+
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
 		'patchwork-light-900',
@@ -113,13 +118,14 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 				{channelAbout && timeline ? (
 					<>
-						<FeedTitleHeader title={channelAbout.title} />
+						<FeedTitleHeader title={channel_info.channel_name} />
 						<Tabs.Container
 							renderHeader={() => {
 								return (
 									<CollapsibleFeedHeader
 										type="Channel"
 										channel={channelAbout}
+										channelInfo={channel_info}
 									/>
 								);
 							}}
@@ -196,7 +202,12 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							</Tabs.Tab>
 							<Tabs.Tab name="About">
 								<Tabs.ScrollView>
-									<ChannelAbout channelAbout={channelAbout} />
+									{chanelAdditionalInfo && (
+										<ChannelAbout
+											channelAbout={channelAbout}
+											channelAdditionalInfo={chanelAdditionalInfo}
+										/>
+									)}
 								</Tabs.ScrollView>
 							</Tabs.Tab>
 						</Tabs.Container>

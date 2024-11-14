@@ -1,12 +1,18 @@
 import {
+	GetChannelAdditionalInfoQueryKey,
+	GetMyChannelListQueryKey,
+} from './../../types/queries/channel.type';
+import {
 	getChannelAbout,
+	getChannelAdditionalInfo,
 	getChannelFeed,
 	getMyChannelList,
+	getRecommendedChannel,
 } from '@/services/channel.service';
 import {
 	GetChannelAboutQueryKey,
 	GetChannelFeedQueryKey,
-	GetMyChannelListQueryKey,
+	GetRecommendedChannelsQueryKey,
 } from '@/types/queries/channel.type';
 import { InfiniteQueryOptionHelper } from '@/util/helper/helper';
 import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
@@ -16,11 +22,15 @@ import {
 	UseInfiniteQueryOptions,
 	useQuery,
 } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
 export const useGetMyChannels = () => {
 	const queryKey: GetMyChannelListQueryKey = ['my-channel'];
 	return useQuery({ queryKey, queryFn: getMyChannelList });
+};
+
+export const useRecommendedChannels = () => {
+	const queryKey: GetRecommendedChannelsQueryKey = ['recommended-channel'];
+	return useQuery({ queryKey, queryFn: getRecommendedChannel });
 };
 
 export const useGetChannelFeed = ({
@@ -43,4 +53,12 @@ export const useGetChannelFeed = ({
 export const useGetChannelAbout = (domain_name: string) => {
 	const queryKey: GetChannelAboutQueryKey = ['channel-about', { domain_name }];
 	return useQuery({ queryKey, queryFn: getChannelAbout });
+};
+
+export const useGetChannelAdditionalInfo = (domain_name: string) => {
+	const queryKey: GetChannelAdditionalInfoQueryKey = [
+		'channel-additional-info',
+		{ domain_name },
+	];
+	return useQuery({ queryKey, queryFn: getChannelAdditionalInfo });
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import type { TextStyle } from 'react-native';
 import { ThemeText } from '../ThemeText/ThemeText';
+import { moderateScale } from 'react-native-size-matters';
 
 const regexEmoji = /(:[A-Za-z0-9_]+:)/;
 
@@ -29,22 +30,14 @@ const ParseEmojis: React.FC<Props> = ({ content, emojis, style, color }) => {
 
 							if (emojiIndex === -1) {
 								return (
-									<ThemeText
-										key={emojiShortcode + i}
-										fontStyle={fontStyle}
-										color={color}
-									>
+									<ThemeText key={emojiShortcode + i}>
 										{emojiShortcode}
 									</ThemeText>
 								);
 							} else {
 								const uri = emojis[emojiIndex].url;
 								return (
-									<ThemeText
-										key={emojiShortcode + i}
-										fontStyle={fontStyle}
-										color={color}
-									>
+									<ThemeText key={emojiShortcode + i}>
 										{i === 0 ? ' ' : undefined}
 										<Image
 											source={{ uri }}
@@ -58,11 +51,7 @@ const ParseEmojis: React.FC<Props> = ({ content, emojis, style, color }) => {
 								);
 							}
 						} else {
-							return (
-								<ThemeText key={i} fontStyle={fontStyle} color={color}>
-									{str}
-								</ThemeText>
-							);
+							return <ThemeText key={i}>{str}</ThemeText>;
 						}
 					})
 			) : (

@@ -1,10 +1,10 @@
+import customColor from '@/util/constant/color';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ChannelBannerLoading = () => {
 	return (
 		<SkeletonPlaceholder
-			backgroundColor={'#dedede'}
-			highlightColor={'#fff'}
+			backgroundColor={customColor['skeleton-highlight']}
 			speed={1000}
 		>
 			<SkeletonPlaceholder.Item>
