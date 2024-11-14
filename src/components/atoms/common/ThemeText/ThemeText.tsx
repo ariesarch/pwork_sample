@@ -12,7 +12,7 @@ const textVariants = cva(
 				textGrey:
 					/* tw */ 'text-patchwork-slate-200 dark:text-patchwork-grey-400',
 				textRedUnderline: /* tw */ 'text-patchwork-red-600 underline',
-				textOrange: 'text-patchwork-red-600',
+				textOrange: 'text-patchwork-red-50',
 			},
 			size: {
 				default: /* tw */ 'text-sm',

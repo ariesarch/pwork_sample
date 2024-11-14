@@ -1,11 +1,10 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { RePost } from '@/util/svg/icon.common';
-import { TouchableOpacity } from 'react-native';
-import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils';
+import { TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
 type Props = {
 	count: number;
-} & ViewProps;
+} & TouchableOpacityProps;
 
 const StatusReblog = ({ count, ...props }: Props) => {
 	return (

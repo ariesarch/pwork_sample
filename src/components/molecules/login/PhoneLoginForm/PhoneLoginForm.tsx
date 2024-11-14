@@ -64,7 +64,17 @@ const PhoneLoginForm = () => {
 					<ThemeText className="font-semibold">Forget your password?</ThemeText>
 				</Pressable>
 			</View>
-			<Button onPress={() => navigation.navigate('Index')} className="my-3">
+			<Button
+				onPress={() =>
+					navigation.navigate('Index', {
+						screen: 'Home',
+						params: {
+							screen: 'HomeFeed',
+						},
+					})
+				}
+				className="my-3"
+			>
 				<ThemeText className="text-white">Login</ThemeText>
 			</Button>
 		</View>

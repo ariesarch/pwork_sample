@@ -192,3 +192,30 @@ export const ComposeCircleCheckIcon = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+export const ComposeRepostSendIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="15" height="13" viewBox="0 0 15 13" fill="none" {...props}>
+		<Path
+			fill={colorScheme == 'dark' ? '#fff' : '#000'}
+			d="M4.637 6.094h6.836L2.777 2.375l1.86 3.719Zm0 1.312-1.86 3.746 8.696-3.746H4.637ZM2.203.707l12.25 5.25a.896.896 0 0 1 .547.82.887.887 0 0 1-.547.793l-12.25 5.25a.889.889 0 0 1-.984-.218c-.246-.247-.301-.657-.137-.985L3.516 6.75 1.082 1.91A.917.917 0 0 1 1.219.898a.93.93 0 0 1 .984-.191Z"
+		/>
+	</Svg>
+);
+
+export const ComposeRepostInputExplorer = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeOpacity={0.8}
+			strokeWidth={2}
+			d="M15 3v6M15 9h6M9 21v-6M9 15H3"
+		/>
+	</Svg>
+);

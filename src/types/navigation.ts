@@ -14,7 +14,7 @@ export type RootStackParamList = {
 	Welcome: undefined;
 	AboutYou: undefined;
 	Profile: { id: string };
-	Index: undefined;
+	Index: NavigatorScreenParams<BottomStackParamList>;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
 	WebViewer: { url: string };
@@ -29,12 +29,19 @@ export type BottomStackParamList = {
 	Notification: undefined;
 	Search: NavigatorScreenParams<SearchStackParamList>;
 	Message: undefined;
-	Compose: undefined;
+	Compose:
+		| {
+				type: 'create';
+		  }
+		| {
+				type: 'repost';
+				incomingStatus: Pathchwork.Status;
+		  };
 };
 
 export type HomeStackParamList = {
-	PeopleFollowing: undefined;
 	HomeFeed: undefined;
+	PeopleFollowing: undefined;
 	FeedDetail: {
 		id: string;
 		selectedFeedIndex?: number;

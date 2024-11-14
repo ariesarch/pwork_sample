@@ -73,6 +73,12 @@ export default function BottomTabs() {
 						</View>
 					),
 				}}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault();
+						navigation.navigate('Compose', { type: 'create' });
+					},
+				})}
 			/>
 			<Tab.Screen
 				name="Notification"

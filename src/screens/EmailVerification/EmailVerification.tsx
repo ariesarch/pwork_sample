@@ -38,7 +38,12 @@ const EmailVerification: React.FC<RootScreenProps<'EmailVerification'>> = ({
 
 	useEffect(() => {
 		if (code.length === 4) {
-			navigation.navigate('Index');
+			navigation.navigate('Index', {
+				screen: 'Home',
+				params: {
+					screen: 'HomeFeed',
+				},
+			});
 		}
 	}, [code]);
 
