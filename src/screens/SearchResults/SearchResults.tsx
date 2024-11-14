@@ -76,6 +76,7 @@ const SearchResults = ({
 						value={searchKeyword}
 						onChangeText={str => setSearchKeyword(str)}
 						startIcon={<SearchIcon className="mt-[2]" />}
+						autoCapitalize="none"
 					/>
 				</View>
 				{searchKeyword.length == 0 && (
@@ -105,7 +106,10 @@ const SearchResults = ({
 									{`Channels related to ${searchKeyword}`}
 								</ThemeText>
 							</View>
-							<ScrollView className="mb-[140]">
+							<ScrollView
+								className="mb-[140]"
+								showsVerticalScrollIndicator={false}
+							>
 								{searchChannelRes.map((item, idx) => (
 									<View key={idx}>
 										<ChannelCard
