@@ -42,7 +42,7 @@ const NewMessage = () => {
 	const [selectedUser, setSelectedUser] = useState<Pathchwork.Account | null>(
 		null,
 	);
-	const snapPoints = useMemo(() => ['5%', '50%'], []);
+	const snapPoints = useMemo(() => ['50%', '80%'], []);
 	const { chatHistory, setChatHistory } = useChatHistoryStore();
 	const queryParams = { query: username, resolve: false, limit: 4 };
 
@@ -153,35 +153,35 @@ const NewMessage = () => {
 						className="text-white flex-1 p-2 px-0"
 					/>
 				</View>
-			</KeyboardAvoidingView>
-			<BottomSheet
-				index={-1}
-				ref={bottomSheetRef}
-				snapPoints={snapPoints}
-				backgroundStyle={{ backgroundColor: 'rgba(64, 75, 82, 1)' }}
-				handleIndicatorStyle={{ backgroundColor: '#fff' }}
-			>
-				{isLoading ? (
-					<View className="flex-1 justify-center items-center">
-						<ActivityIndicator size="large" color="#ffffff" />
-					</View>
-				) : searchedUsers?.data?.length && !selectedUser ? (
-					<BottomSheetFlatList
-						data={searchedUsers.data}
-						keyExtractor={item => item.id}
-						renderItem={renderItem}
-						contentContainerStyle={{
-							backgroundColor: 'rgba(64, 75, 82, 1)',
-						}}
-					/>
-				) : (
-					!selectedUser && (
+				<BottomSheet
+					index={-1}
+					ref={bottomSheetRef}
+					snapPoints={snapPoints}
+					backgroundStyle={{ backgroundColor: 'rgba(64, 75, 82, 1)' }}
+					handleIndicatorStyle={{ backgroundColor: '#fff' }}
+				>
+					{isLoading ? (
 						<View className="flex-1 justify-center items-center">
-							<ThemeText className="text-white">No user is found!</ThemeText>
+							<ActivityIndicator size="large" color="#ffffff" />
 						</View>
-					)
-				)}
-			</BottomSheet>
+					) : searchedUsers?.data?.length && !selectedUser ? (
+						<BottomSheetFlatList
+							data={searchedUsers.data}
+							keyExtractor={item => item.id}
+							renderItem={renderItem}
+							contentContainerStyle={{
+								backgroundColor: 'rgba(64, 75, 82, 1)',
+							}}
+						/>
+					) : (
+						!selectedUser && (
+							<View className="flex-1 justify-center items-center">
+								<ThemeText className="text-white">No user is found!</ThemeText>
+							</View>
+						)
+					)}
+				</BottomSheet>
+			</KeyboardAvoidingView>
 		</SafeScreen>
 	);
 };
