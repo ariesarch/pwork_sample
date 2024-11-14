@@ -25,6 +25,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { useSearchUsers } from '@/hooks/queries/conversations.queries';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 
 const PLATFORM_KEYBOARD_OFFSET = Platform.select({
 	android: 42,
@@ -34,6 +35,8 @@ const PLATFORM_KEYBOARD_OFFSET = Platform.select({
 const NewMessage = () => {
 	const navigation =
 		useNavigation<StackNavigationProp<ConversationsStackParamList>>();
+	const selectionColor = useAppropiateColorHash('patchwork-red-50');
+
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const messageInputRef = useRef<TextInput>(null);
 
@@ -151,8 +154,11 @@ const NewMessage = () => {
 						value={selectedUser ? messageText : username}
 						onChangeText={handleTextChange}
 						className="text-white flex-1 p-2 px-0"
+						autoCapitalize="none"
+						selectionColor={selectionColor}
 					/>
 				</View>
+
 				<BottomSheet
 					index={-1}
 					ref={bottomSheetRef}

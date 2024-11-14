@@ -39,20 +39,26 @@ const SearchChannelHeader = () => {
 			<FlatList
 				data={channelList}
 				renderItem={({ item }) => (
-					<Pressable className="m-2" onPress={() => handleChannelClick(item)}>
+					<Pressable
+						className="m-2 rounded-md"
+						onPress={() => handleChannelClick(item)}
+					>
 						<FastImage
-							className="bg-patchwork-dark-50 h-[150] w-[160]"
+							className="bg-patchwork-dark-50 h-[150] w-[160] rounded-md"
 							source={{
 								uri: item.attributes.avatar_image_url,
 							}}
 							resizeMode={FastImage.resizeMode.cover}
 						/>
-						<View className="absolute w-[160] h-[150] bg-black opacity-20 bottom-0"></View>
-						<View className="absolute bottom-0 mx-1 mb-1 flex-row items-center">
-							<ThemeText className="text-xs  flex-1">
+						<View className="absolute w-[160] h-[150] rounded-md bg-black opacity-30 bottom-0"></View>
+						<View className="absolute bottom-0 mx-2 mb-1 flex-row items-center">
+							<ThemeText
+								className="flex-1 font-SourceSans3_Medium"
+								size={'fs_13'}
+							>
 								{item.attributes.name}
 							</ThemeText>
-							<ChevronRightIcon width="8" height="8" />
+							<ChevronRightIcon className="ml-1" />
 						</View>
 					</Pressable>
 				)}

@@ -21,9 +21,11 @@ export const ChannelCard = ({ channel, handlePress }: Props) => {
 				}}
 				resizeMode={'cover'}
 			/>
-			<View className="absolute bottom-0 bg-black opacity-10 w-full h-56 rounded-md"></View>
+			<View className="absolute bottom-0 bg-black opacity-30 w-full h-56 rounded-md"></View>
 			<View className="absolute bottom-2 mx-2 flex-row items-center">
-				<ThemeText className="font-bold flex-1">{channel.name}</ThemeText>
+				<ThemeText className="flex-1 font-SourceSans3_Medium">
+					{channel.name}
+				</ThemeText>
 				<ChevronRightIcon />
 			</View>
 		</Pressable>
