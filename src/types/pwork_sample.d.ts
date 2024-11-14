@@ -345,8 +345,46 @@ declare namespace Pathchwork {
 		preview_url?: Pathchwork.Attachment['preview_url'];
 		url: Pathchwork.Attachment['url'];
 		remote_url?: Pathchwork.Attachment['remote_url'];
+		id: Pathchwork.Attachment['id'];
+		preview_url?: Pathchwork.Attachment['preview_url'];
+		url: Pathchwork.Attachment['url'];
+		remote_url?: Pathchwork.Attachment['remote_url'];
 		sensitive?: boolean;
 		width?: number;
 		height?: number;
+	};
+
+	type AccountField = {
+		name: string;
+		value: string;
+		verified_at: string | null;
+	};
+
+	type Account = {
+		id: string;
+		username: string;
+		acct: string;
+		display_name: string;
+		locked: boolean;
+		bot: boolean;
+		discoverable: boolean | null;
+		group: boolean;
+		created_at: string;
+		note: string;
+		url: string;
+		uri: string;
+		avatar: string;
+		avatar_static: string;
+		header: string;
+		header_static: string;
+		followers_count: number;
+		following_count: number;
+		statuses_count: number;
+		last_status_at: string;
+		emojis: [];
+		fields: AccountField[];
+		indexable?: boolean;
+		hide_collections?: null;
+		noindex?: boolean;
 	};
 }
