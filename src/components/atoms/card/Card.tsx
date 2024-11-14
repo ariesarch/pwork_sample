@@ -11,6 +11,7 @@ const cardVariant = cva('rounded-[4px] overflow-hidden shadow-lg bg-white', {
 		variants: {
 			default: /* tw */ '',
 			browsing: /* tw */ 'w-40 h-20',
+			channels: /* tw */ 'w-[342px] h-[240px]',
 		},
 		gutters: {
 			default: /* tw */ 'mr-2',
@@ -30,6 +31,7 @@ const imageVariant = cva('w-36 h-36', {
 			default: '',
 			browsing: /* tw */ 'w-40 h-20',
 			searchChannels: /* tw */ 'w-[163.5] h-[149]',
+			relatedChannels: /* tw */ 'w-[342px] h-[200px]',
 		},
 	},
 	defaultVariants: {
