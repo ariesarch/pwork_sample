@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { useColorScheme } from 'nativewind';
 import React from 'react';

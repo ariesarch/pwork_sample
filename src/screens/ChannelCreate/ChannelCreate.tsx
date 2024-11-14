@@ -53,10 +53,10 @@ const ChannelCreate = () => {
 				<Button
 					onPress={() => {
 						if (activeStep < 5) return setActiveStep(prev => prev + 1);
-						setDomain('science.channel.org');
-						return navigation.navigate('ChannelProfile', {
-							domain_name: 'science.channel.org',
-						});
+						// setDomain('science.channel.org');
+						// return navigation.navigate('ChannelProfile', {
+						// 	domain_name: 'science.channel.org',
+						// });
 					}}
 					className="mx-4 mt-2 mb-10"
 				>

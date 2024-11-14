@@ -13,6 +13,7 @@ import {
 } from '@tanstack/react-query';
 
 export const handleError = (error: any) => {
+	console.error('API Request Failed::', error?.response.message);
 	return Promise.reject({
 		status: error?.response.status,
 		message:
@@ -90,6 +91,13 @@ export const calculateHashTagCount = (
 			accumulator + parseInt(hashtag[countType ?? 'uses']),
 		0,
 	);
+};
+
+export const ensureHttp = (url: string) => {
+	if (!url.startsWith('https://')) {
+		return 'https://' + url;
+	}
+	return url;
 };
 
 export type QueryOptionHelper<

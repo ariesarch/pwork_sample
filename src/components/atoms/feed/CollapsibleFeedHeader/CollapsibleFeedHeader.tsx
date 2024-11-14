@@ -30,6 +30,11 @@ import Underline from '../../common/Underline/Underline';
 type ChannelProps = {
 	type: 'Channel';
 	channel: Pathchwork.ChannelAbout;
+	channelInfo: {
+		avatar_image_url: string;
+		banner_image_url: string;
+		channel_name: string;
+	};
 };
 
 type ProfileProps = {
@@ -52,10 +57,10 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		<View>
 			<View className="bg-white dark:bg-patchwork-dark-100">
 				<FastImage
-					className="bg-patchwork-grey-50 h-[140]"
+					className="bg-patchwork-dark-50 h-[140]"
 					source={{
 						uri: isChannel
-							? props.channel?.contact.account.header
+							? props.channelInfo.banner_image_url
 							: props.profile.header,
 						priority: FastImage.priority.normal,
 					}}
@@ -65,16 +70,16 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 					<Animated.View className="flex-1">
 						<FastImage
 							className={cn(
-								'w-[70] h-[70] mt-[-25] bg-patchwork-grey-50  border-patchwork-dark-100 border-4',
+								'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50  border-patchwork-dark-100 border-4',
 								isChannel ? 'rounded-md' : 'rounded-full',
 							)}
 							source={{
 								uri: isChannel
-									? props.channel?.contact.account.avatar
+									? props.channelInfo.avatar_image_url
 									: props.profile.avatar,
 								priority: FastImage.priority.normal,
 							}}
-							resizeMode={FastImage.resizeMode.contain}
+							resizeMode={FastImage.resizeMode.cover}
 						/>
 					</Animated.View>
 					<Button
@@ -87,7 +92,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 				</View>
 				{isChannel ? (
 					<VerticalInfo
-						accountName={props.channel.title}
+						accountName={props.channelInfo.channel_name}
 						username={props.channel.contact.account.username}
 						joinedDate={dayjs(props.channel.contact.account.created_at).format(
 							'MMM YYYY',

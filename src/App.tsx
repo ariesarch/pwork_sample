@@ -5,6 +5,7 @@ import './translations';
 import { useEffect } from 'react';
 import { useColorScheme } from 'nativewind';
 import ApplicationNavigator from './navigators/Application';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 
 export const queryClient = new QueryClient();
 
@@ -19,7 +20,9 @@ function App() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<ApplicationNavigator />
+			<KeyboardProvider>
+				<ApplicationNavigator />
+			</KeyboardProvider>
 		</QueryClientProvider>
 	);
 }

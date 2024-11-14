@@ -48,6 +48,7 @@
 		"react-native-fast-image": "^8.6.3",
 		"react-native-gesture-handler": "^2.16.0",
 		"react-native-keyboard-aware-scroll-view": "^0.9.5",
+		"react-native-keyboard-controller": "^1.14.4",
 		"react-native-linear-gradient": "^2.8.3",
 		"react-native-mmkv": "^2.12.2",
 		"react-native-pager-view": "^6.4.1",

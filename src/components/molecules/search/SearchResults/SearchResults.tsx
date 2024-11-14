@@ -22,10 +22,10 @@ const SearchResults = () => {
 						imageSource={item.image}
 						title={item.title}
 						onPress={() => {
-							setDomain(item.domain_name);
-							navigation.navigate('ChannelProfile', {
-								domain_name: item.domain_name,
-							});
+							// setDomain(item.domain_name);
+							// navigation.navigate('ChannelProfile', {
+							// 	domain_name: item.domain_name,
+							// });
 						}}
 					/>
 				)}

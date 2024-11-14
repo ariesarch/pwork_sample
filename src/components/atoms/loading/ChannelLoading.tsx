@@ -2,59 +2,42 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import { Image } from 'react-native-svg';
+import { ThemeText } from '../common/ThemeText/ThemeText';
+import customColor from '@/util/constant/color';
 
-const ChannelLoading = ({ isLocalChannel }: { isLocalChannel?: boolean }) => {
+const ChannelLoading = ({
+	title,
+	cardCount = 1,
+}: {
+	title: string;
+	cardCount?: number;
+}) => {
 	return (
 		<View style={{ flex: 1 }}>
-			<SkeletonPlaceholder backgroundColor="#585e62">
+			<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+				{title}
+			</ThemeText>
+			<SkeletonPlaceholder
+				backgroundColor={customColor['skeleton-bg']}
+				speed={1200}
+				highlightColor={customColor['skeleton-highlight']}
+			>
 				<SkeletonPlaceholder.Item>
-					{/* Title  */}
-					<SkeletonPlaceholder.Item
-						flexDirection="row"
-						alignItems="center"
-						justifyContent="space-between"
-						marginVertical={10}
-					>
-						<SkeletonPlaceholder.Item
-							width={144}
-							height={15}
-							borderRadius={2}
-						/>
-						{!isLocalChannel && (
-							<SkeletonPlaceholder.Item
-								width={60}
-								height={15}
-								borderRadius={2}
-								marginRight={10}
-							/>
-						)}
-					</SkeletonPlaceholder.Item>
-					{/* Title  */}
-
-					{/* Card  */}
-					<SkeletonPlaceholder.Item flexDirection="row">
-						<SkeletonPlaceholder.Item
-							width={144}
-							height={144}
-							borderRadius={4}
-							marginRight={11}
-							overflow="hidden"
-						/>
-						<SkeletonPlaceholder.Item
-							width={144}
-							height={144}
-							borderRadius={4}
-							marginRight={11}
-							overflow="hidden"
-						/>
-						<SkeletonPlaceholder.Item
-							width={144}
-							height={144}
-							borderRadius={4}
-							overflow="hidden"
-						/>
-					</SkeletonPlaceholder.Item>
-					{/* Card  */}
+					{Array(cardCount)
+						.fill('')
+						.map((_, index) => {
+							return (
+								<SkeletonPlaceholder.Item
+									key={index}
+									width={'100%'}
+									height={240}
+									borderRadius={8}
+									marginRight={11}
+									marginBottom={20}
+									overflow="hidden"
+								/>
+							);
+						})}
 				</SkeletonPlaceholder.Item>
 			</SkeletonPlaceholder>
 		</View>

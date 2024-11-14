@@ -21,7 +21,7 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<View>
-			<View className="flex flex-row items-center mx-6">
+			<View className="flex flex-row items-center mx-6 pb-2">
 				<TouchableOpacity
 					activeOpacity={0.8}
 					className="flex-row flex-1 items-center"
@@ -45,12 +45,12 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 						</ThemeText>
 					</View>
 				</TouchableOpacity>
-				<Pressable
+				{/* <Pressable
 					className="p-3 border border-slate-200 rounded-full active:opacity-80 mr-2"
 					onPress={() => navigation.navigate('ChannelCreate')}
 				>
 					<AddCommunityIcon colorScheme={colorScheme} />
-				</Pressable>
+				</Pressable> */}
 				<Pressable className="p-3 border border-slate-200 rounded-full active:opacity-80">
 					<SettingIcon colorScheme={colorScheme} />
 				</Pressable>

@@ -22,10 +22,12 @@ module.exports = {
 				'patchwork-light-900': '#fff',
 				'patchwork-red-50': '#FF3C26',
 				'patchwork-red-600': '#ED1800',
+				'skeleton-highlight': '#7A8288',
+				'skeleton-bg': '#585e82',
 			},
 			spacing: {
-				'34': '8.125rem',
-			}
+				34: '8.125rem',
+			},
 		},
 	},
 	plugins: [],

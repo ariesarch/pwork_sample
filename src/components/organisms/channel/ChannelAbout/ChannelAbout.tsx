@@ -5,12 +5,13 @@ import ChannelInformation from '@/components/molecules/channel/ChannelInformatio
 
 type Props = {
 	channelAbout: Pathchwork.ChannelAbout | undefined;
+	channelAdditionalInfo: Pathchwork.ChannelAdditionalInfo;
 };
-const ChannelAbout = ({ channelAbout }: Props) => {
+const ChannelAbout = (prop: Props) => {
 	return (
 		<>
-			<ChannelGuidelines channelAbout={channelAbout} />
-			<ChannelInformation channelAbout={channelAbout} />
+			<ChannelGuidelines channelAbout={prop.channelAbout} />
+			<ChannelInformation {...prop} />
 		</>
 	);
 };

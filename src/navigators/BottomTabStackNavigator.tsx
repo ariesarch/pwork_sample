@@ -24,10 +24,9 @@ export default function BottomTabs() {
 			screenOptions={{
 				headerShown: false,
 				tabBarShowLabel: false,
-				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
 					backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#fff',
-					height: Platform.OS == 'ios' ? scale(4) : scale(6),
+					height: Platform.OS == 'ios' ? 100 : 70,
 					// borderTopWidth: 1,
 					// borderTopColor: colorScheme === 'dark' ? '#585e62' : '#fefefe',
 				},

@@ -77,9 +77,9 @@ const FeedTitleHeader = ({ title }: Props) => {
 				</TouchableOpacity>
 				<TouchableOpacity
 					className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
-					onPress={() =>
-						setColorScheme(colorScheme == 'light' ? 'dark' : 'light')
-					}
+					onPress={() => {
+						// setColorScheme(colorScheme == 'light' ? 'dark' : 'light')
+					}}
 				>
 					<EllipsisIcon />
 				</TouchableOpacity>

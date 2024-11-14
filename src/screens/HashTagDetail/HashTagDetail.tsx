@@ -56,7 +56,6 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 	const getTodayPostCount = (hashtag: Pathchwork.HashtagHistory) => {
 		const date = dayjs.unix(parseInt(hashtag.day));
 		const isToday = date.isSame(dayjs(), 'day');
-		console.log('isToday::', isToday);
 		if (isToday) {
 			return hashtag.uses;
 		}

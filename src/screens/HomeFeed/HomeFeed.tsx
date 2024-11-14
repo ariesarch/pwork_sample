@@ -10,183 +10,90 @@ import { HomeStackScreenProps } from '@/types/navigation';
 import { ChevronRight, ListItem } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { Pressable, ScrollView, View } from 'react-native';
-import { useGetMyChannels } from '@/hooks/queries/channel.queries';
 import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
 import PeopleFollowingLoading from '@/components/atoms/loading/PeopleFollowingLoading';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
+import {
+	useGetMyChannels,
+	useRecommendedChannels,
+} from '@/hooks/queries/channel.queries';
+import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
-	const { data: channelList } = useGetMyChannels();
 	const { setDomain } = useActiveDomainAction();
+	const { data: recommendedChannels } = useRecommendedChannels();
+
+	const { data: myChannels } = useGetMyChannels();
 
 	return (
 		<SafeScreen>
 			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
 			<ScrollView showsVerticalScrollIndicator={false}>
-				<View className="ml-6 my-2">
-					{channelList ? (
+				<View className="mx-6 my-2">
+					{myChannels ? (
 						<>
 							<View className="flex-row items-center">
 								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
 									My Channels
 								</ThemeText>
-								<Pressable onPress={() => {}} className="mr-4">
-									<ThemeText variant="textGrey">View All</ThemeText>
-								</Pressable>
 							</View>
-							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{channelList.map((item, idx) => (
-									<View key={idx}>
-										<Card
-											imageSource={item.image_url}
-											title={item.name}
-											onPress={() => {
-												setDomain(item.domain_name);
-												navigation.navigate('ChannelProfile', {
-													domain_name: item.domain_name,
-												});
-											}}
-										/>
-									</View>
-								))}
-							</ScrollView>
+							{myChannels.map((item, idx) => (
+								<View key={idx}>
+									<ChannelCard
+										channel={item.attributes}
+										handlePress={() => {
+											setDomain(item.attributes.domain_name);
+											navigation.navigate('ChannelProfile', {
+												domain_name: item.attributes.domain_name,
+												channel_info: {
+													avatar_image_url: item.attributes.avatar_image_url,
+													banner_image_url: item.attributes.banner_image_url,
+													channel_name: item.attributes.name,
+												},
+											});
+										}}
+									/>
+								</View>
+							))}
 						</>
 					) : (
-						<ChannelLoading />
+						<ChannelLoading title="My Channels" />
 					)}
 				</View>
-				<View className="ml-6 my-2">
-					{channelList ? (
+				<View className="mx-6 my-2">
+					{recommendedChannels ? (
 						<>
-							<View className="flex flex-row items-center">
+							<View className="flex-row items-center">
 								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-									Server Channels
+									Explore Channels
 								</ThemeText>
-								<Pressable onPress={() => {}} className="mr-4">
+								<Pressable onPress={() => {}}>
 									<ThemeText variant="textGrey">View All</ThemeText>
 								</Pressable>
 							</View>
-							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{channelList.map((item, idx) => (
-									<View key={idx}>
-										<Card
-											imageSource={item.image_url}
-											title={item.name}
-											onPress={() => {
-												{
-													setDomain('https://science.channel.org');
-													navigation.navigate('ChannelProfile', {
-														domain_name: 'https://science.channel.org',
-													});
-												}
-											}}
-										/>
-									</View>
-								))}
-							</ScrollView>
+							{recommendedChannels.map((item, idx) => (
+								<View key={idx}>
+									<ChannelCard
+										channel={item.attributes}
+										handlePress={() => {
+											setDomain(item.attributes.domain_name);
+											navigation.navigate('ChannelProfile', {
+												domain_name: item.attributes.domain_name,
+												channel_info: {
+													avatar_image_url: item.attributes.avatar_image_url,
+													banner_image_url: item.attributes.banner_image_url,
+													channel_name: item.attributes.name,
+												},
+											});
+										}}
+									/>
+								</View>
+							))}
 						</>
 					) : (
-						<ChannelLoading />
+						<ChannelLoading title="Explore Channels" cardCount={3} />
 					)}
-				</View>
-				<View className="ml-6 my-2">
-					{mockUserList ? (
-						<>
-							<View className="flex flex-row items-center">
-								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
-									People Following
-								</ThemeText>
-								<Pressable
-									// onPress={() => navigation.navigate('PeopleFollowing')}
-									className="mr-4"
-								>
-									<ThemeText variant="textGrey">View All</ThemeText>
-								</Pressable>
-							</View>
-							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{mockUserList.map((item, idx) => (
-									<View key={idx}>
-										<AccountAvatar
-											account={item}
-											size={'md'}
-											dotAlert={false}
-											className="mr-3"
-										/>
-									</View>
-								))}
-							</ScrollView>
-						</>
-					) : (
-						<PeopleFollowingLoading />
-					)}
-				</View>
-				<View className="ml-6 my-2">
-					{channelList ? (
-						<>
-							<ThemeText className="font-bold my-2" size="lg_18">
-								Local Channels
-							</ThemeText>
-							<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-								{channelList.map((item, idx) => (
-									<View key={idx}>
-										<Card
-											imageSource={item.image_url}
-											title={item.name}
-											onPress={() => {
-												setDomain('https://science.channel.org');
-												navigation.navigate('ChannelProfile', {
-													domain_name: 'https://science.channel.org',
-												});
-											}}
-										/>
-									</View>
-								))}
-							</ScrollView>
-						</>
-					) : (
-						<ChannelLoading isLocalChannel />
-					)}
-				</View>
-				<View className="ml-6 my-2">
-					<ThemeText className="font-bold my-2" size="lg_18">
-						HashTag Following
-					</ThemeText>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{mockHashTag.map((item, idx) => (
-							<View key={idx} className="my-1">
-								<Chip
-									variant="outline"
-									title={item.name}
-									className="mx-1"
-									dotAlert={item.hasNoti}
-								/>
-							</View>
-						))}
-					</ScrollView>
-				</View>
-				<View className="ml-6 my-2">
-					<ThemeText className="font-bold mt-2" size="lg_18">
-						My Lists
-					</ThemeText>
-					<ScrollView
-						horizontal
-						showsHorizontalScrollIndicator={false}
-						className="mt-2"
-					>
-						{mockHashTag.map((item, idx) => (
-							<View key={idx} className="my-1">
-								<Chip
-									variant="outline"
-									startIcon={<ListItem colorScheme={colorScheme} />}
-									endIcon={<ChevronRight colorScheme={colorScheme} />}
-									title="List Name"
-									className="mx-1"
-									dotAlert={item.hasNoti}
-								/>
-							</View>
-						))}
-					</ScrollView>
 				</View>
 			</ScrollView>
 		</SafeScreen>
