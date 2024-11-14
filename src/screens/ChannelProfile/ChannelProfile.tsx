@@ -149,6 +149,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 												{...props}
 												labelStyle={props.labelStyle}
 												pressColor="#fff0"
+												className="font-"
 												label={props.label}
 												android_ripple={{
 													color: '#fff0',
@@ -157,8 +158,8 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 										)}
 										activeColor={tabBarTextColor}
 										labelStyle={{
-											fontWeight: 'bold',
 											textTransform: 'capitalize',
+											fontFamily: 'SourceSans3-Bold',
 										}}
 										inactiveColor={customColor['patchwork-grey-400']}
 									/>

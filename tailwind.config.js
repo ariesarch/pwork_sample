@@ -8,6 +8,12 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				SourceSans3_Bold: 'SourceSans3-Bold',
+				SourceSans3_Medium: 'SourceSans3-Medium',
+				SourceSans3_Regular: 'SourceSans3-Regular',
+				SourceSans3_SemiBold: 'SourceSans3-SemiBold',
+			},
 			colors: {
 				'patchwork-dark-50': '#585e62',
 				'patchwork-dark-100': '#2E363B',
@@ -24,9 +30,6 @@ module.exports = {
 				'patchwork-red-600': '#ED1800',
 				'skeleton-highlight': '#7A8288',
 				'skeleton-bg': '#585e82',
-			},
-			spacing: {
-				34: '8.125rem',
 			},
 		},
 	},

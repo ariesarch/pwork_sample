@@ -14,8 +14,8 @@ const buttonVariants = cva(
 				secondary: /* tw */ 'bg-green-400 active:opacity-80',
 			},
 			size: {
-				default: 'h-10 px-4 py-2 native:h-12 native:px-5 native:py-3',
-				sm: 'h-9 rounded-md px-3',
+				default: 'h-10 px-3 py-2 native:h-12 native:px-5 native:py-3',
+				sm: 'h-8 rounded-md px-3',
 				lg: 'h-11 rounded-md px-8 native:h-14',
 				xl: 'h-12 rounded-xl px-8 native:h-16',
 				icon: /* tw */ 'h-14 w-14 rounded-full px-1',

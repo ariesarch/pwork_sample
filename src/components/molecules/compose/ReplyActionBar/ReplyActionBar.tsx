@@ -13,7 +13,7 @@ const ReplyActionBar = () => {
 	const { colorScheme } = useColorScheme();
 
 	return (
-		<View className="flex-row mb-1 mt-2">
+		<View className="flex-row items-center pt-2">
 			<View className="flex-row flex-1">
 				<Pressable
 					className={'mr-3'}
@@ -32,7 +32,7 @@ const ReplyActionBar = () => {
 					children={<ComposePollIcon {...{ colorScheme }} />}
 				/>
 			</View>
-			<Button variant="outline" disabled className="rounded-2xl h-8" size="sm">
+			<Button variant="outline" disabled className="rounded-2xl h-7" size="sm">
 				<ThemeText className="m-0" size="xs_12">
 					Publish
 				</ThemeText>

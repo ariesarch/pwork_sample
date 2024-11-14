@@ -32,9 +32,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
-	<string></string>
+	<string/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -51,5 +51,12 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SourceSans3-Bold.ttf</string>
+		<string>SourceSans3-Medium.ttf</string>
+		<string>SourceSans3-Regular.ttf</string>
+		<string>SourceSans3-SemiBold.ttf</string>
+	</array>
 </dict>
 </plist>

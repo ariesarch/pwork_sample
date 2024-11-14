@@ -57,12 +57,12 @@ const EmailLoginForm = () => {
 						/>
 					)
 				}
-				styleNW="mb-6"
+				styleNW="mb-4"
 			/>
 
 			<View className="flex flex-row justify-end mb-6">
 				<Pressable onPress={() => {}}>
-					<ThemeText className="font-semibold">Forget your password?</ThemeText>
+					<ThemeText>Forgot your password?</ThemeText>
 				</Pressable>
 			</View>
 			<Button

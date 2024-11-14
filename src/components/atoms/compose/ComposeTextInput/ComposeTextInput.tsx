@@ -18,7 +18,7 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 			autoFocus
 			spellCheck
 			{...textInputProps}
-			className="text-white"
+			className="text-white font-SourceSans3_Regular text-base opacity-80"
 		/>
 	);
 };

@@ -87,7 +87,9 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 						size="sm"
 						className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
 					>
-						<ThemeText className="text-black">Follow</ThemeText>
+						<ThemeText className="text-black" size={'fs_13'}>
+							Follow
+						</ThemeText>
 					</Button>
 				</View>
 				{isChannel ? (

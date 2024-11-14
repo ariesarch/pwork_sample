@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import { cn } from '@/util/helper/twutil';
 
 const textVariants = cva(
-	'font-sans text-sm group flex items-center justify-center rounded-md',
+	'font-SourceSans3_Regular text-sm group flex items-center justify-center rounded-md',
 	{
 		variants: {
 			variant: {

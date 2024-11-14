@@ -25,7 +25,7 @@ const StatusHeader = ({
 }: Props) => {
 	const navigation = useNavigation();
 	return (
-		<View className="flex flex-row items-center " {...props}>
+		<View className="flex flex-row items-center mb-2" {...props}>
 			<TouchableOpacity
 				activeOpacity={0.8}
 				onPress={() => {
@@ -46,8 +46,8 @@ const StatusHeader = ({
 			</ThemeText>
 			<View className="flex-1" />
 			{showFollowIcon && (
-				<Button variant="outline" className="rounded-full mb-2">
-					<ThemeText size="xs_12">Follow</ThemeText>
+				<Button variant="outline" className="rounded-full h-8 py-0 px-4">
+					<ThemeText size="fs_13">Follow</ThemeText>
 				</Button>
 			)}
 		</View>

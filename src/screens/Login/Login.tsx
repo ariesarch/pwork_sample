@@ -13,9 +13,14 @@ const Login: React.FC<RootScreenProps<'Login'>> = ({ navigation }) => {
 
 	return (
 		<SafeScreen>
-			<Header title="Log in" leftCustomComponent={<BackButton />} />
+			<Header
+				hideUnderline
+				title="Log in"
+				leftCustomComponent={<BackButton />}
+			/>
 			<View className="mx-8">
-				<TabSwitch
+				<EmailLoginForm />
+				{/* <TabSwitch
 					tabs={[
 						{ value: '1', label: 'Email' },
 						{ value: '2', label: 'Phone number' },
@@ -23,7 +28,7 @@ const Login: React.FC<RootScreenProps<'Login'>> = ({ navigation }) => {
 					onTabPress={setActiveTab}
 					currentTab={activeTab}
 				/>
-				{activeTab === '1' ? <EmailLoginForm /> : <PhoneLoginForm />}
+				{activeTab === '1' ? <EmailLoginForm /> : <PhoneLoginForm />} */}
 			</View>
 		</SafeScreen>
 	);

@@ -13,10 +13,11 @@ const AlreadyHaveAcc = ({ ...props }: ViewProps) => {
 			<ThemeText variant="textGrey">Already have an account?</ThemeText>
 			<Button
 				variant="outline"
+				size={'sm'}
 				className={styles.signInBtn}
 				onPress={() => navigation.navigate('Login')}
 			>
-				<ThemeText>Sign In</ThemeText>
+				<ThemeText size={'fs_13'}>Sign In</ThemeText>
 			</Button>
 		</View>
 	);

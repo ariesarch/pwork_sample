@@ -63,7 +63,11 @@ const TextInput = ({
 				multiline={textArea}
 				textAlignVertical={textArea ? 'top' : 'bottom'}
 				{...textInputProps}
-				className={cn('w-full', textArea ? 'h-32' : 'h-10', extraInputStyle)}
+				className={cn(
+					'w-full font-SourceSans3_Regular',
+					textArea ? 'h-32' : 'h-10',
+					extraInputStyle,
+				)}
 			/>
 
 			{endIcon && (

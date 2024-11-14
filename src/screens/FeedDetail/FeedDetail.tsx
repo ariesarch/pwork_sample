@@ -127,8 +127,8 @@ const FeedDetail = ({
 						>
 							{/* bg-patchwork-light-50 dark:bg-patchwork-dark-400 */}
 							<Animated.View className={'flex-row'} style={replyActionBarStyle}>
-								<ThemeText className="mb-2 ml-1 normal-case text-xs">
-									Replying to {'>'}
+								<ThemeText className="mb-2 ml-1 normal-case text-xs opacity-80">
+									Replying to ▸
 								</ThemeText>
 								<ThemeText variant="textOrange" className="mb-2 ml-1 text-xs">
 									@{feedDetail.account.username}
@@ -139,7 +139,7 @@ const FeedDetail = ({
 								placeholder={
 									isKeyboardOpen
 										? 'Type your reply'
-										: `Reply To ${feedDetail.account.username}`
+										: `Reply to ${feedDetail.account.username}`
 								}
 								onChangeText={setReply}
 							/>

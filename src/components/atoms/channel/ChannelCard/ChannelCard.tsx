@@ -13,7 +13,7 @@ export const ChannelCard = ({ channel, handlePress }: Props) => {
 	return (
 		<Pressable className="mb-5 active:opacity-90" onPress={handlePress}>
 			<FastImage
-				className="w-full h-[240] rounded-md"
+				className="w-full h-56 rounded-md"
 				source={{
 					uri: channel.avatar_image_url,
 					priority: FastImage.priority.high,
@@ -21,7 +21,7 @@ export const ChannelCard = ({ channel, handlePress }: Props) => {
 				}}
 				resizeMode={'cover'}
 			/>
-			<View className="absolute bottom-0 bg-black opacity-10 w-full h-[240] rounded-md"></View>
+			<View className="absolute bottom-0 bg-black opacity-10 w-full h-56 rounded-md"></View>
 			<View className="absolute bottom-2 mx-2 flex-row items-center">
 				<ThemeText className="font-bold flex-1">{channel.name}</ThemeText>
 				<ChevronRightIcon />
