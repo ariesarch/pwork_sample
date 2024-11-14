@@ -1,24 +1,16 @@
-import Card from '@/components/atoms/card/Card';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import TabBar from '@/components/molecules/common/TabBar/TabBar';
-import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
-import SearchChannels from '@/components/organisms/search/Channel/SearchChannels';
-import SearchEverything from '@/components/organisms/search/Everything/SearchEverything';
-import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { useRecommendedChannels } from '@/hooks/queries/channel.queries';
-import { searchChannelData } from '@/mock/search/channel';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
-import { HomeStackParamList } from '@/types/navigation';
+import { SearchStackParamList } from '@/types/navigation';
 import { ChevronRightIcon } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React from 'react';
-import { FlatList, Pressable, useWindowDimensions, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { TabView, SceneMap } from 'react-native-tab-view';
 
 const SearchChannelHeader = () => {
-	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+	const navigation = useNavigation<StackNavigationProp<SearchStackParamList>>();
 	const { setDomain } = useActiveDomainAction();
 	const { data: channelList } = useRecommendedChannels();
 
