@@ -10,6 +10,7 @@ import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import { memo, useCallback } from 'react';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
+import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 
 const PLATFORM_KEYBOARD_OFFSET = Platform.select({
 	android: 42,
@@ -44,29 +45,31 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 
 	return (
 		<SafeScreen>
-			<Header
-				title={renderComposeHeaderTitle()}
-				leftCustomComponent={<BackButton />}
-				rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
-			/>
-			<KeyboardAvoidingView
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				keyboardVerticalOffset={PLATFORM_KEYBOARD_OFFSET}
-				style={{ flexGrow: 1 }}
-			>
-				{composeParams.type !== 'repost' && (
-					<View className="px-4">
-						<ComposeTextInput />
-					</View>
-				)}
-				{/****** Re-post Status Rendering ******/}
-				{composeParams.type === 'repost' && (
-					<RepostStatus status={composeParams.incomingStatus} />
-				)}
-				{/****** Re-post Status Rendering ******/}
-				<View className="flex-1" />
-				<ComposeActionsBar />
-			</KeyboardAvoidingView>
+			<ComposeStatusProvider type={composeParams?.type}>
+				<Header
+					title={renderComposeHeaderTitle()}
+					leftCustomComponent={<BackButton />}
+					rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
+				/>
+				<KeyboardAvoidingView
+					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+					keyboardVerticalOffset={PLATFORM_KEYBOARD_OFFSET}
+					style={{ flexGrow: 1 }}
+				>
+					{composeParams.type !== 'repost' && (
+						<View className="px-4">
+							<ComposeTextInput />
+						</View>
+					)}
+					{/****** Re-post Status Rendering ******/}
+					{composeParams.type === 'repost' && (
+						<RepostStatus status={composeParams.incomingStatus} />
+					)}
+					{/****** Re-post Status Rendering ******/}
+					<View className="flex-1" />
+					<ComposeActionsBar />
+				</KeyboardAvoidingView>
+			</ComposeStatusProvider>
 		</SafeScreen>
 	);
 };

@@ -18,7 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { CircleFade } from 'react-native-animated-spinkit';
 import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
-import { ScrollProvider } from '@/context/sharedScrollContext';
+import { ScrollProvider } from '@/context/sharedScrollContext/sharedScroll.context';
 import FeedTitleHeader from '@/components/atoms/feed/FeedTitleHeader/FeedTitleHeader';
 import {
 	MaterialTabBar,

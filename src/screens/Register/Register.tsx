@@ -7,10 +7,12 @@ import PhoneRegisterForm from '@/components/molecules/login/PhoneRegisterForm/Ph
 import Header from '@/components/atoms/common/Header/Header';
 import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyHaveAcc';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { RootScreenProps } from '@/types/navigation';
+import { GuestStackScreenProps } from '@/types/navigation';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 
-const Register: React.FC<RootScreenProps<'Register'>> = ({ navigation }) => {
+const Register: React.FC<GuestStackScreenProps<'Register'>> = ({
+	navigation,
+}) => {
 	const [activeTab, setActiveTab] = useState('1');
 
 	return (

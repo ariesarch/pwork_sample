@@ -11,6 +11,7 @@ import {
 	UseInfiniteQueryOptions,
 	UseQueryOptions,
 } from '@tanstack/react-query';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 export const handleError = (error: any) => {
 	console.error('API Request Failed::', error?.response.message);
@@ -123,5 +124,22 @@ export type InfiniteQueryOptionHelper<
 	>,
 	'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
 >;
+
+export const saveAppToken = async (key: string, value: string) => {
+	try {
+		await EncryptedStorage.setItem(key, value);
+	} catch (err) {
+		console.log(`Failed To Save ${key}`, err);
+	}
+};
+
+export const getAppToken = async () => {
+	try {
+		const token = await EncryptedStorage.getItem('AUTH_TOKEN');
+		return token;
+	} catch (err) {
+		console.log(`Failed To Retrieve Auth Token`, err);
+	}
+};
 
 export { scale, keyExtractor };

@@ -35,6 +35,7 @@ export const useFeedDetailQuery = ({
 	const queryKey: FeedDetailQueryKey = ['feed-detail', queryParam];
 	return useQuery({
 		queryKey,
+		//@ts-expect-error
 		queryFn: getFeedDetail,
 		...options,
 	});
@@ -63,6 +64,7 @@ export const useAccountDetailFeed = ({
 	return useInfiniteQuery({
 		queryKey,
 		...options,
+		//@ts-expect-error
 		queryFn: getAccountDetailFeed,
 		...infinitePageParam,
 	});
@@ -82,6 +84,7 @@ export const useHashtagDetailFeedQuery = ({
 	];
 	return useInfiniteQuery({
 		queryKey,
+		//@ts-expect-error
 		queryFn: getHashtagDetailFeed,
 		...options,
 		...infinitePageParam,

@@ -387,4 +387,11 @@ declare namespace Pathchwork {
 		hide_collections?: null;
 		noindex?: boolean;
 	};
+
+	type LoginRespone = {
+		access_token: string;
+		token_type: string;
+		scope: string;
+		created_at: string;
+	};
 }

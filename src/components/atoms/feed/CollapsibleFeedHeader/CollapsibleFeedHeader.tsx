@@ -20,7 +20,7 @@ import Animated, {
 	useAnimatedReaction,
 	useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useSharedScrollY } from '@/context/sharedScrollContext';
+import { useSharedScrollY } from '@/context/sharedScrollContext/sharedScroll.context';
 import { SolidHeaderDepth } from '../FeedTitleHeader/FeedTitleHeader';
 import { channel } from 'diagnostics_channel';
 import SocialSection from '@/components/molecules/profile/SocialSection/SocialSection';
