@@ -23,7 +23,7 @@ const ComposeActionsBar = () => {
 		useState(false);
 
 	return (
-		<>
+		<View>
 			<View className={styles.container}>
 				<Pressable
 					className={'mr-3'}
@@ -87,7 +87,7 @@ const ComposeActionsBar = () => {
 					onClose={() => setPostVisibilityModalVisible(false)}
 				/>
 			</ThemeModal>
-		</>
+		</View>
 	);
 };
 

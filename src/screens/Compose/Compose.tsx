@@ -1,4 +1,4 @@
-import { View, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Pressable } from 'react-native';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -10,18 +10,16 @@ import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import { memo, useCallback } from 'react';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
-
-const PLATFORM_KEYBOARD_OFFSET = Platform.select({
-	android: 42,
-	ios: 0,
-});
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 	return isRepost ? (
 		<ComposeRepostButton onPress={() => {}} />
 	) : (
 		<Pressable className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full">
-			<ThemeText>Post</ThemeText>
+			<ThemeText size={'fs_13'} className="leading-5">
+				Post
+			</ThemeText>
 		</Pressable>
 	);
 });
@@ -49,24 +47,21 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 				leftCustomComponent={<BackButton />}
 				rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
 			/>
-			<KeyboardAvoidingView
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				keyboardVerticalOffset={PLATFORM_KEYBOARD_OFFSET}
-				style={{ flexGrow: 1 }}
+			<KeyboardAwareScrollView
+				contentContainerStyle={{ flexGrow: 1, flex: 1 }}
+				keyboardShouldPersistTaps="always"
 			>
-				{composeParams.type !== 'repost' && (
-					<View className="px-4">
+				{composeParams.type === 'repost' ? (
+					/* ***** Re-post Status Rendering ***** */
+					<RepostStatus status={composeParams.incomingStatus} />
+				) : (
+					/* ***** Re-post Status Rendering ***** */
+					<View className="flex-1 px-4">
 						<ComposeTextInput />
 					</View>
 				)}
-				{/****** Re-post Status Rendering ******/}
-				{composeParams.type === 'repost' && (
-					<RepostStatus status={composeParams.incomingStatus} />
-				)}
-				{/****** Re-post Status Rendering ******/}
-				<View className="flex-1" />
 				<ComposeActionsBar />
-			</KeyboardAvoidingView>
+			</KeyboardAwareScrollView>
 		</SafeScreen>
 	);
 };
