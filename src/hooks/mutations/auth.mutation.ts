@@ -1,4 +1,4 @@
-import { loginMutationFunction } from '@/services/auth.service';
+import { login } from '@/services/auth.service';
 import { LoginMutationPayload } from '@/types/queries/auth.type';
 import {
 	MutationOptions,
@@ -14,5 +14,5 @@ export const useLoginEmailMutation = (
 		LoginMutationPayload
 	>,
 ) => {
-	return useMutation({ mutationFn: loginMutationFunction, ...options });
+	return useMutation({ mutationFn: login, ...options });
 };

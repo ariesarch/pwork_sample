@@ -95,11 +95,11 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 				{isChannel ? (
 					<VerticalInfo
 						accountName={props.channelInfo.channel_name}
-						username={props.channel.contact.account.username}
-						joinedDate={dayjs(props.channel.contact.account.created_at).format(
-							'MMM YYYY',
-						)}
-						userBio={props.channel.description}
+						username={props.channel.contact?.account?.username}
+						joinedDate={dayjs(
+							props.channel.contact?.account?.created_at,
+						).format('MMM YYYY')}
+						userBio={props.channel?.description}
 						showChannelFollowers
 					/>
 				) : (
@@ -108,7 +108,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							hasRedMark
 							accountName={props.profile.display_name}
 							username={props.profile.acct}
-							joinedDate={dayjs(props.profile.created_at).format('MMM YYYY')}
+							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
 							userBio={props.profile.about_me}
 						/>
 						<SocialSection className="mt-1" />

@@ -142,4 +142,8 @@ export const getAppToken = async () => {
 	}
 };
 
+export const removeAppToken = async () => {
+	return await EncryptedStorage.clear();
+};
+
 export { scale, keyExtractor };

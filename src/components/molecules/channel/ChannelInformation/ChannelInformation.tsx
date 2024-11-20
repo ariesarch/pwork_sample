@@ -13,7 +13,7 @@ type Props = {
 };
 const ChannelInformation = ({ channelAbout, channelAdditionalInfo }: Props) => {
 	const { colorScheme } = useColorScheme();
-	const createdDate = dayjs(channelAbout?.contact.account.created_at).format(
+	const createdDate = dayjs(channelAbout?.contact?.account?.created_at).format(
 		'YYYY-MM-DD',
 	);
 	return (
@@ -26,7 +26,7 @@ const ChannelInformation = ({ channelAbout, channelAdditionalInfo }: Props) => {
 				<ThemeText className="ml-2">
 					Created at {createdDate} by{' '}
 					<ThemeText className="text-patchwork-red-50">
-						{`@${channelAbout?.contact.account.username}`}
+						{`@${channelAbout?.contact?.account?.username}`}
 					</ThemeText>
 				</ThemeText>
 			</View>

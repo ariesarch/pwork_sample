@@ -2,10 +2,12 @@ import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	GetUserQueryKey,
 	LoginMutationPayload,
+	VerifyAuthTokenQueryKey,
 } from '@/types/queries/auth.type';
 import instance from '@/services/instance';
-import { handleError } from '@/util/helper/helper';
+import { appendApiVersion, handleError } from '@/util/helper/helper';
 import { AxiosResponse } from 'axios';
+import { GetRecommendedChannelsQueryKey } from '@/types/queries/channel.type';
 
 export const getUserById = async ({
 	queryKey,
@@ -19,7 +21,7 @@ export const getUserById = async ({
 	}
 };
 
-export const loginMutationFunction = async (params: LoginMutationPayload) => {
+export const login = async (params: LoginMutationPayload) => {
 	const body = {
 		...params,
 		grant_type: 'password',
@@ -35,4 +37,11 @@ export const loginMutationFunction = async (params: LoginMutationPayload) => {
 	} catch (error) {
 		return handleError(error);
 	}
+};
+
+export const verifyAuthToken = async () => {
+	const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
+		appendApiVersion('accounts/verify_credentials', 'v1'),
+	);
+	return resp.data;
 };

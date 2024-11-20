@@ -10,6 +10,9 @@ import {
 	TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import { removeAppToken } from '@/util/helper/helper';
+import { useAuthStoreAction } from '@/store/auth/authStore';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -19,6 +22,13 @@ type Props = {
 const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
+	const { clearAuthState } = useAuthStoreAction();
+
+	const handleLogout = async () => {
+		await removeAppToken();
+		clearAuthState();
+	};
+
 	return (
 		<View>
 			<View className="flex flex-row items-center mx-6 pb-2">
@@ -32,26 +42,27 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 							}) //temp
 					}
 				>
-					<Image
-						source={account.avatar as ImageProps}
-						className="w-[60] h-[60] rounded-full"
+					<FastImage
+						className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"
+						source={{
+							uri: account.avatar,
+							priority: FastImage.priority.normal,
+						}}
+						resizeMode={FastImage.resizeMode.cover}
 					/>
 					<View className="flex flex-1 mx-3">
 						<ThemeText className="font-bold" size="md_16">
 							Welcome Back
 						</ThemeText>
 						<ThemeText variant="textGrey" size="xs_12">
-							Account Name
+							{account.display_name}
 						</ThemeText>
 					</View>
 				</TouchableOpacity>
-				{/* <Pressable
-					className="p-3 border border-slate-200 rounded-full active:opacity-80 mr-2"
-					onPress={() => navigation.navigate('ChannelCreate')}
+				<Pressable
+					className="p-3 border border-slate-200 rounded-full active:opacity-80"
+					onPress={handleLogout}
 				>
-					<AddCommunityIcon colorScheme={colorScheme} />
-				</Pressable> */}
-				<Pressable className="p-3 border border-slate-200 rounded-full active:opacity-80">
 					<SettingIcon colorScheme={colorScheme} />
 				</Pressable>
 			</View>

@@ -18,6 +18,7 @@ import {
 	useRecommendedChannels,
 } from '@/hooks/queries/channel.queries';
 import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -25,10 +26,15 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { data: recommendedChannels } = useRecommendedChannels();
 
 	const { data: myChannels } = useGetMyChannels();
+	const { userInfo } = useAuthStore();
+	console.log('userInfo::', userInfo);
 
 	return (
 		<SafeScreen>
-			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
+			<HomeFeedHeader
+				account={userInfo ?? mockUserList[0]}
+				showUnderLine={false}
+			/>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View className="mx-6 my-2">
 					{myChannels ? (

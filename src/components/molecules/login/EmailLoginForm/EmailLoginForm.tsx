@@ -14,6 +14,7 @@ import { Flow } from 'react-native-animated-spinkit';
 import { HTTP_ERROR_MESSAGE } from '@/util/constant';
 import { useAuthStoreAction } from '@/store/auth/authStore';
 import { saveAppToken } from '@/util/helper/helper';
+import { verifyAuthToken } from '@/services/auth.service';
 
 const EmailLoginForm = () => {
 	const {
@@ -23,12 +24,14 @@ const EmailLoginForm = () => {
 	} = useForm({
 		resolver: yupResolver(loginSchema),
 	});
-	const { setAuthToken } = useAuthStoreAction();
+	const { setAuthToken, setUserInfo } = useAuthStoreAction();
 
 	const { mutateAsync, isPending } = useLoginEmailMutation({
 		onSuccess: async response => {
+			await saveAppToken('AUTH_TOKEN', response.access_token);
+			const userInfo = await verifyAuthToken();
+			setUserInfo(userInfo);
 			setAuthToken(response.access_token);
-			saveAppToken('AUTH_TOKEN', response.access_token);
 		},
 		onError: error => {
 			if (error.status == 400) {

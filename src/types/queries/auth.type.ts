@@ -7,4 +7,6 @@ export type LoginMutationPayload = {
 	password: string;
 };
 
+export type VerifyAuthTokenQueryKey = ['verify-token'];
+
 export type GetUserQueryKey = ['user', GetUserQueryParam];
