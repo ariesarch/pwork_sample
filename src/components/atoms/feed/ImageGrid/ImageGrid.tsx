@@ -1,6 +1,5 @@
-import { cn } from '@/util/helper/twutil';
 import React from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleProp, ViewStyle } from 'react-native';
 
 interface ImageGridProps {
 	media_attachments: Pathchwork.Attachment[];
@@ -20,28 +19,34 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 	const isTwoColumns = numColumns === 2;
 
 	return (
-		<View style={styles.container}>
+		<View className="flex-1 flex-row rounded-lg mt-2">
 			{media_attachments.map((attachment, index) => {
 				let style: any = { height: 150 };
 
 				if (isTwoColumns) {
 					style =
 						index % 2 === 0
-							? [styles.leftRoundRadius, style, { width: '100%' }]
-							: [
-									styles.rightRoundRadius,
-									{ ...style, marginLeft: 2, width: '100%' },
-							  ];
+							? {
+									width: '100%',
+									borderTopLeftRadius: 10,
+									borderBottomLeftRadius: 10,
+									...style,
+							  }
+							: {
+									marginLeft: 2,
+									width: '100%',
+									borderTopRightRadius: 10,
+									borderBottomRightRadius: 10,
+									...style,
+							  };
 				} else {
-					style = { ...style, borderRadius: 10, width: '100%' };
+					style = { borderRadius: 10, width: '100%', ...style };
 				}
 
 				return (
 					<View
 						key={index}
-						style={
-							index % 2 === 0 ? styles.leftContainer : styles.rightContainer
-						}
+						className={`${index % 2 === 0 ? 'flex-1 mr-0.5' : 'flex-1 ml-0.5'}`}
 					>
 						{renderImage(attachment, style, index)}
 					</View>
@@ -50,33 +55,5 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'row',
-		borderRadius: 10,
-		marginTop: 10,
-	},
-	leftContainer: {
-		flex: 1,
-		marginRight: 2,
-	},
-	rightContainer: {
-		flex: 1,
-		marginLeft: 2,
-	},
-	leftRoundRadius: {
-		borderTopLeftRadius: 10,
-		borderBottomLeftRadius: 10,
-	},
-	rightRoundRadius: {
-		borderTopRightRadius: 10,
-		borderBottomRightRadius: 10,
-	},
-	topRightRadius: {
-		borderTopRightRadius: 10,
-	},
-});
 
 export default ImageGrid;

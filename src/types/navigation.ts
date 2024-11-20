@@ -12,6 +12,7 @@ import { SearchUsersQueryKey } from './queries/conversations.type';
 export type RootStackParamList = {
 	AboutYou: undefined;
 	Profile: { id: string };
+	ProfileOther: { id: string };
 	Index: NavigatorScreenParams<BottomStackParamList>;
 	Guest: NavigatorScreenParams<GuestStackParamList>;
 	EmailVerification: undefined;
@@ -55,6 +56,7 @@ export type HomeStackParamList = {
 		};
 	};
 	Profile: { id: string };
+	ProfileOther: { id: string };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 };
 

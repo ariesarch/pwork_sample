@@ -40,8 +40,12 @@ export const login = async (params: LoginMutationPayload) => {
 };
 
 export const verifyAuthToken = async () => {
-	const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
-		appendApiVersion('accounts/verify_credentials', 'v1'),
-	);
-	return resp.data;
+	try {
+		const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
+			appendApiVersion('accounts/verify_credentials', 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
 };

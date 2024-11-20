@@ -33,11 +33,18 @@ function App() {
 
 	const retrieveToken = async () => {
 		const token = await getAppToken();
+		console.log('bb::', token);
+
 		if (token) {
-			const userInfo = await verifyAuthToken();
-			setLoading(false);
-			setUserInfo(userInfo);
-			return setAuthToken(userInfo ? token : '');
+			await verifyAuthToken()
+				.then(userInfo => {
+					setUserInfo(userInfo);
+					return setAuthToken(userInfo ? token : '');
+				})
+				.catch(() => {
+					return setAuthToken('');
+				});
+			return setLoading(false);
 		}
 		setLoading(false);
 		return setAuthToken('');

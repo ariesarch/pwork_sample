@@ -24,8 +24,8 @@ const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 				<View className="flex-row">
 					<Pressable
 						onPress={() =>
-							navigation.navigate('Profile', {
-								id: status.account.id ?? '113087366884543068', //temp
+							navigation.navigate('ProfileOther', {
+								id: status.account.id,
 							})
 						}
 					>

@@ -1,3 +1,4 @@
+import { DEFAULT_API_URL } from '@/util/constant';
 import {
 	appendApiVersion,
 	ensureHttp,
@@ -5,7 +6,7 @@ import {
 } from '@/util/helper/helper';
 import axios from 'axios';
 
-const baseURL = `${process.env.API_URL ?? 'https://dashboard.channel.org'}`;
+const baseURL = `${process.env.API_URL ?? DEFAULT_API_URL}`;
 const tempAuthToken = 'ShLWbMQmYtXX1M7_vc3kG6gTx6sAWsk2zpq9lsHLPpE';
 
 const instance = axios.create({

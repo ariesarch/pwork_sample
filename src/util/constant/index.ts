@@ -3,3 +3,5 @@ export const HTTP_ERROR_MESSAGE = {
 	ACCOUNT_DEACTIVATED: 'account deactivated',
 	INVALID_GRANT: 'invalid_grant',
 };
+
+export const DEFAULT_API_URL = 'https://channel.org';

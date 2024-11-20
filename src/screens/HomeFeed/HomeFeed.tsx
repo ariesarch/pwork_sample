@@ -1,6 +1,5 @@
 import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
 import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -27,7 +26,6 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 
 	const { data: myChannels } = useGetMyChannels();
 	const { userInfo } = useAuthStore();
-	console.log('userInfo::', userInfo);
 
 	return (
 		<SafeScreen>
