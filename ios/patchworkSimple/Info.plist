@@ -33,6 +33,14 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
+	<key>NSCameraUsageDescription</key>
+	<string>Newsmast would like to take pictures and record videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Newsmast would like to access your microphone.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Patchwork app would like to save photos to your photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Patchwork app would like to select photos and videos from your library.</string>
 	<key>UILaunchStoryboardName</key>
 	<string/>
 	<key>UIRequiredDeviceCapabilities</key>

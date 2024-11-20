@@ -26,6 +26,7 @@ const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 
 type ComposeScreenRouteProp = RouteProp<BottomStackParamList, 'Compose'>;
 const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
+	console.log('Compose Rendered!');
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
 
