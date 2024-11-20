@@ -191,7 +191,7 @@ declare namespace Pathchwork {
 		account: Account;
 		media_attachments: Attachment[];
 		mentions: Mention[];
-		tags: any;
+		tags: Tags[];
 		emojis: any;
 		card?: Card;
 		poll?: Poll;
@@ -354,37 +354,44 @@ declare namespace Pathchwork {
 		height?: number;
 	};
 
-	type AccountField = {
-		name: string;
+	// type Field = {
+	// 	name: string;
+	// 	value: string;
+	// 	// verified_at?: string | null;
+	// };
+
+	type FieldName =
+		| 'Website'
+		| 'Twitter'
+		| 'TikTok'
+		| 'Youtube'
+		| 'Linkedin'
+		| 'Instagram'
+		| 'Substack'
+		| 'Facebook'
+		| 'Email';
+
+	type Field = {
+		name: FieldName;
 		value: string;
-		verified_at: string | null;
 	};
 
-	type Account = {
-		id: string;
-		username: string;
-		acct: string;
-		display_name: string;
-		locked: boolean;
-		bot: boolean;
-		discoverable: boolean | null;
-		group: boolean;
-		created_at: string;
-		note: string;
+	type ProfileDetail = {
+		account_data: {
+			account: Account;
+			is_requested: boolean;
+			is_my_account: boolean;
+			is_followed: boolean;
+		};
+		community_images_url: string[];
+		following_images_url: string[];
+		is_admin: boolean;
+		community_slug: string;
+		account_type: string;
+	};
+
+	type Tags = {
+		name: string;
 		url: string;
-		uri: string;
-		avatar: string;
-		avatar_static: string;
-		header: string;
-		header_static: string;
-		followers_count: number;
-		following_count: number;
-		statuses_count: number;
-		last_status_at: string;
-		emojis: [];
-		fields: AccountField[];
-		indexable?: boolean;
-		hide_collections?: null;
-		noindex?: boolean;
 	};
 }

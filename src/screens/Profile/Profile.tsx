@@ -1,21 +1,15 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { View, TouchableOpacity, Platform, Dimensions } from 'react-native';
-import { SectionListWithHeaders } from '@codeherence/react-native-header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { statusListData } from '@/mock/feed/statusList';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import { useColorScheme } from 'nativewind';
-import ProfileInfo from '@/components/organisms/profile/ProfileInfo';
-import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
 import { useAccountDetailFeed } from '@/hooks/queries/feed.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { flattenPages } from '@/util/helper/timeline';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
-import { useNavigation } from '@react-navigation/native';
-import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { CircleFade } from 'react-native-animated-spinkit';
 import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
 import { ScrollProvider } from '@/context/sharedScrollContext';
@@ -28,10 +22,21 @@ import {
 import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader/CollapsibleFeedHeader';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
-import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
-import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
-
+import {
+	useGetProfileDetail,
+	useGetProfileDetailStatus,
+} from '@/hooks/queries/profile.queries';
+import AddNewLink, {
+	SocialMediaLink,
+} from '@/components/organisms/profile/AddNewLink/AddNewLink';
+import {
+	ProfileDetailQueryKey,
+	UpdateProfileCredentialsQueryKey,
+	UpdateProfileCredentialsQueryParam,
+} from '@/types/queries/profile.type';
+import { QueryClient, useMutation } from '@tanstack/react-query';
+import { updateProfileCredendials } from '@/services/profile.service';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -39,6 +44,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
+	const [isNewLinkModalVisible, setIsNewLinkModalVisible] =
+		useState<boolean>(false);
 	const { id } = route.params;
 	const domain_name = useSelectedDomain();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
@@ -46,44 +53,190 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
+	const queryClient = new QueryClient();
+
+	const queryKey: ProfileDetailQueryKey = [
+		'get_profile_detail_info_by_account',
+		{ id: id.toString() },
+	];
+
+	const { data: profileDetail, isLoading: isLoadingProfileDetail } =
+		useGetProfileDetail(queryKey);
+
+	const existingData = queryClient.getQueryData(queryKey);
+	console.log(existingData);
+
+	const { data: statuses, isLoading: isLoadingStatuses } =
+		useGetProfileDetailStatus({ id });
+
+	const updateProfileMutation = useMutation({
+		mutationFn: (updatedData: UpdateProfileCredentialsQueryParam) => {
+			return updateProfileCredendials(updatedData);
+		},
+		onSuccess: (_, variables) => {
+			console.log('Variables:', variables);
+
+			const existingData = queryClient.getQueryData(queryKey);
+			console.log('cached data by get query data: ', existingData);
+			// if (!existingData) {
+			// 	console.warn('No existing data in the cache to update:', queryKey);
+			// 	return;
+			// }
+			// queryClient.setQueryData(
+			// 	queryKey,
+			// 	(oldData: Pathchwork.ProfileDetail | undefined) => {
+			// 		if (!oldData) return undefined;
+
+			// 		const updatedAccount: Pathchwork.Account = {
+			// 			...oldData.account_data.account,
+			// 			fields: variables.fields,
+			// 		};
+
+			// 		return {
+			// 			...oldData,
+			// 			account_data: {
+			// 				...oldData.account_data,
+			// 				account: updatedAccount,
+			// 			},
+			// 		};
+			// 	},
+			// );
+
+			console.log('Profile detail cache updated successfully.');
+
+			// const cachedData = queryClient.getQueryData(queryKey);
+			// console.log('Cached data after update:', cachedData);
+		},
+	});
+
+	const handleAddSocialLink = async (
+		link: SocialMediaLink,
+		username: string,
+	) => {
+		setIsNewLinkModalVisible(false);
+		const acc: Pathchwork.Account = profileDetail?.data?.account_data?.account;
+		if (acc) {
+			const updatedProfile: UpdateProfileCredentialsQueryParam = {
+				display_name: acc.display_name,
+				note: acc.note.replace(/<[^>]*>/g, ''),
+				avatar: '',
+				header: '',
+				bot: acc.bot,
+				discoverable: acc.discoverable,
+				hide_collections: acc.hide_collections,
+				country: acc.country,
+				fields: [
+					{
+						name: 'Website',
+						value:
+							link.title === 'Website' && username
+								? `https://${username}`
+								: acc.fields?.find(v => v.name === 'Website')?.value || '',
+					},
+					{
+						name: 'Twitter',
+						value:
+							link.title === 'Twitter' && username
+								? `https://twitter.com/${username}`
+								: acc.fields?.find(v => v.name === 'Twitter')?.value || '',
+					},
+					{
+						name: 'TikTok',
+						value:
+							link.title === 'TikTok' && username
+								? `https://www.tiktok.com/@${username}`
+								: acc.fields?.find(v => v.name === 'TikTok')?.value || '',
+					},
+					{
+						name: 'Youtube',
+						value:
+							link.title === 'Youtube' && username
+								? `https://www.youtube.com/@${username}`
+								: acc.fields?.find(v => v.name === 'Youtube')?.value || '',
+					},
+					{
+						name: 'Linkedin',
+						value:
+							link.title === 'Linkedin' && username
+								? `https://www.linkedin.com/in/${username}`
+								: acc.fields?.find(v => v.name === 'Linkedin')?.value || '',
+					},
+					{
+						name: 'Instagram',
+						value:
+							link.title === 'Instagram' && username
+								? `https://www.instagram.com/${username}`
+								: acc.fields?.find(v => v.name === 'Instagram')?.value || '',
+					},
+					{
+						name: 'Substack',
+						value:
+							link.title === 'Substack' && username
+								? `https://${username}.substack.com`
+								: acc.fields?.find(v => v.name === 'Substack')?.value || '',
+					},
+					{
+						name: 'Facebook',
+						value:
+							link.title === 'Facebook' && username
+								? `https://www.facebook.com/${username}`
+								: acc.fields?.find(v => v.name === 'Facebook')?.value || '',
+					},
+					{
+						name: 'Email',
+						value:
+							link.title === 'Email' && username
+								? `mailto:${username}`
+								: acc.fields?.find(v => v.name === 'Email')?.value || '',
+					},
+				],
+			};
+			updateProfileMutation.mutate(updatedProfile);
+		}
+	};
+
 	const queryParams = {
 		domain_name,
 		account_id: id,
 	};
-	const {
-		data: timeline,
-		hasNextPage,
-		fetchNextPage,
-		isFetching,
-	} = useAccountDetailFeed(queryParams);
+	// const {
+	// 	data: timeline,
+	// 	hasNextPage,
+	// 	fetchNextPage,
+	// 	isFetching,
+	// } = useAccountDetailFeed(queryParams);
+	// const timelineList = timeline ? flattenPages(timeline) : [];
+	// const feed = useMemo(() => flattenPages(timeline), [timeline]);
+	// const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
+	// 	'account-detail-feed',
+	// 	queryParams,
+	// ]);
 
-	const timelineList = timeline ? flattenPages(timeline) : [];
-
-	const feed = useMemo(() => flattenPages(timeline), [timeline]);
-
-	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
-		'account-detail-feed',
-		queryParams,
-	]);
-
-	const onTimelineContentLoadMore = () => {
-		if (hasNextPage && activeTab === 0) {
-			return fetchNextPage();
-		}
-	};
+	// const onTimelineContentLoadMore = () => {
+	// 	if (hasNextPage && activeTab === 0) {
+	// 		return fetchNextPage();
+	// 	}
+	// };
+	if (updateProfileMutation.isPending) {
+		return <ThemeText>Loading...</ThemeText>;
+	}
 
 	return (
 		<ScrollProvider>
 			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-				{timeline ? (
+				{profileDetail && statuses ? (
 					<>
-						<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
+						<FeedTitleHeader title={'Severus'} />
+						{updateProfileMutation.isSuccess && (
+							<ThemeText>mutation success</ThemeText>
+						)}
 						<Tabs.Container
 							renderHeader={() => {
 								return (
 									<CollapsibleFeedHeader
 										type="Profile"
-										profile={timelineList[0]?.account}
+										profile={profileDetail.data}
+										onPressPlusIcon={() => setIsNewLinkModalVisible(true)}
 									/>
 								);
 							}}
@@ -125,7 +278,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 						>
 							<Tabs.Tab name="Posts">
 								<Tabs.FlashList
-									data={flattenPages(timeline)}
+									data={statuses}
 									contentContainerStyle={{
 										paddingBottom: bottom,
 										backgroundColor:
@@ -135,7 +288,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									renderItem={({ item }) => (
 										<StatusItem
 											handleOnPress={() => {
-												handleOnPressStatus(item.id);
+												// handleOnPressStatus(item.id);
 											}}
 											status={item}
 										/>
@@ -146,17 +299,17 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										width: Dimensions.get('screen').width,
 									}}
 									onEndReachedThreshold={0.15}
-									onEndReached={onTimelineContentLoadMore}
+									// onEndReached={onTimelineContentLoadMore}
 									showsVerticalScrollIndicator={false}
-									ListFooterComponent={
-										isFetching ? (
-											<View className="my-3 items-center">
-												<CircleFade size={25} color="white" />
-											</View>
-										) : (
-											<></>
-										)
-									}
+									// ListFooterComponent={
+									// 	isFetching ? (
+									// 		<View className="my-3 items-center">
+									// 			<CircleFade size={25} color="white" />
+									// 		</View>
+									// 	) : (
+									// 		<></>
+									// 	)
+									// }
 								/>
 							</Tabs.Tab>
 							<Tabs.Tab name="Replies">
@@ -167,6 +320,13 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 								</Tabs.ScrollView>
 							</Tabs.Tab>
 						</Tabs.Container>
+						<AddNewLink
+							openThemeModal={isNewLinkModalVisible}
+							onClose={() => setIsNewLinkModalVisible(false)}
+							onPressAdd={(link, username) =>
+								handleAddSocialLink(link, username)
+							}
+						/>
 					</>
 				) : (
 					<View className="flex-1">

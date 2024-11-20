@@ -28,7 +28,7 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 					onPress={
 						() =>
 							navigation.navigate('Profile', {
-								id: account.id ?? '113087366884543068',
+								id: '113248202351184612',
 							}) //temp
 					}
 				>

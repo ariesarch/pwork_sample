@@ -10,22 +10,9 @@ export const searchUsers = async ({
 		const [, params] = queryKey;
 		const { query, resolve = false, limit = 4 } = params;
 		// temporary token
-		const token = '1sqQuoOCxOg4ENTn6_WrlnmHOMGXOGpsSVfMv76btOs';
-		// const resp: AxiosResponse<Pathchwork.Account[]> = await instance.get(
-		// 	appendApiVersion(`/accounts/search`),
-		// 	{
-		// 		params: {
-		// 			q: query,
-		// 			resolve,
-		// 			limit,
-		// 		},
-		// 		headers: {
-		// 			Authorization: `Bearer ${token}`,
-		// 		},
-		// 	},
-		// );
+		const token = 'uVsshEFJVC-1_F8xDXbWD1RViBxwBcAjKAp6xlztZzA';
 		const resp = await axios.get(
-			`https://mastodon.social/api/v1/accounts/search`,
+			`https://backend.newsmast.org/api/v1/accounts/search`,
 			{
 				params: {
 					q: query,

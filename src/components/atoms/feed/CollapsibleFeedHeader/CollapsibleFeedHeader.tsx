@@ -39,7 +39,9 @@ type ChannelProps = {
 
 type ProfileProps = {
 	type: 'Profile';
-	profile: Pathchwork.Account;
+	profile: Pathchwork.ProfileDetail;
+	onPressPlusIcon?: () => void;
+	onPressEditIcon?: () => void;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -60,8 +62,8 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 					className="bg-patchwork-dark-50 h-[140]"
 					source={{
 						uri: isChannel
-							? props.channelInfo.banner_image_url
-							: props.profile.header,
+							? props.channelInfo?.banner_image_url
+							: props.profile?.account_data?.account?.header,
 						priority: FastImage.priority.normal,
 					}}
 					resizeMode={FastImage.resizeMode.cover}
@@ -75,22 +77,33 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							)}
 							source={{
 								uri: isChannel
-									? props.channelInfo.avatar_image_url
-									: props.profile.avatar,
+									? props.channelInfo?.avatar_image_url
+									: props.profile?.account_data?.account?.avatar,
 								priority: FastImage.priority.normal,
 							}}
 							resizeMode={FastImage.resizeMode.cover}
 						/>
 					</Animated.View>
-					<Button
-						variant="default"
-						size="sm"
-						className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-					>
-						<ThemeText className="text-black" size={'fs_13'}>
-							Follow
-						</ThemeText>
-					</Button>
+					{props.type === 'Profile' &&
+					props.profile.account_data?.is_my_account ? (
+						<Button
+							variant="default"
+							size="sm"
+							className="bg-transparent border-white border rounded-3xl px-6 mt-5"
+						>
+							<ThemeText size={'fs_13'}>Edit account</ThemeText>
+						</Button>
+					) : (
+						<Button
+							variant="default"
+							size="sm"
+							className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+						>
+							<ThemeText className="text-black" size={'fs_13'}>
+								Follow
+							</ThemeText>
+						</Button>
+					)}
 				</View>
 				{isChannel ? (
 					<VerticalInfo
@@ -106,13 +119,24 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 					<>
 						<VerticalInfo
 							hasRedMark
-							accountName={props.profile.display_name}
-							username={props.profile.acct}
-							joinedDate={dayjs(props.profile.created_at).format('MMM YYYY')}
-							userBio={props.profile.about_me}
+							accountName={props.profile?.account_data?.account?.display_name}
+							username={props.profile?.account_data?.account?.acct}
+							joinedDate={dayjs(
+								props.profile?.account_data?.account?.created_at,
+							).format('MMM YYYY')}
+							userBio={props.profile?.account_data?.account?.about_me}
 						/>
-						<SocialSection className="mt-1" />
-						<UserStats posts={24} following={'2.2k'} followers={'7.3k'} />
+						<SocialSection
+							isMyAccount={props.profile?.account_data?.is_my_account}
+							fields={props.profile?.account_data?.account?.fields}
+							onPressEditIcon={props.onPressEditIcon}
+							onPressPlusIcon={props.onPressPlusIcon}
+						/>
+						<UserStats
+							posts={props.profile?.account_data?.account?.collection_count}
+							following={props.profile?.account_data?.account?.following_count}
+							followers={props.profile?.account_data?.account?.followers_count}
+						/>
 						<Underline className="mb-2 mt-4" />
 					</>
 				)}

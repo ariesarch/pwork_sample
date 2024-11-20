@@ -13,6 +13,7 @@ const queryClientManager = new QueryClientManager({
 });
 
 Reactotron.configure({
+	host: '10.0.3.2',
 	name: config.name,
 	onDisconnect: () => {
 		queryClientManager.unsubscribe();
