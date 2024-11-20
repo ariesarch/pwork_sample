@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Pressable, Platform, PermissionsAndroid } from 'react-native';
+import { View, Pressable } from 'react-native';
 import {
 	ComposeGlobeIcon,
 	ComposeLinkIcon,
@@ -21,24 +21,7 @@ import {
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
 
-const requestCameraPermission = async () => {
-	if (Platform.OS === 'android') {
-		try {
-			const granted = await PermissionsAndroid.request(
-				PermissionsAndroid.PERMISSIONS.CAMERA,
-			);
-			if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-				return true;
-			}
-		} catch (err) {
-			console.warn('🚀 ~ requestCameraPermission ~ err:', err);
-		}
-	}
-};
-
 const ComposeActionsBar = () => {
-	console.log('🚀 ~ ComposeActionsBar ~ ComposeActionsBar:');
-
 	const { colorScheme } = useColorScheme();
 
 	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
@@ -88,15 +71,17 @@ const ComposeActionsBar = () => {
 
 			{/****** Manage Attachments ( Photos and Videos ) ******/}
 			<ThemeModal
-				isFlex
 				hasNotch={false}
 				{...{
 					openThemeModal: mediaModal,
 					onCloseThemeModal: () => onToggleMediaModal(),
 				}}
-				containerStyle={{ borderRadius: 24 }}
+				modalPositionStyle={{
+					justifyContent: 'flex-end',
+				}}
+				containerStyle={{ borderRadius: 0 }}
 			>
-				<ManageAttachmentModal />
+				<ManageAttachmentModal {...{ onToggleMediaModal }} />
 			</ThemeModal>
 			{/****** Manage Attachments ( Photos and Videos ) ******/}
 

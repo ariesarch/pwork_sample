@@ -9,8 +9,6 @@ import {
 } from '@/mock/compose/visibilitySettings';
 
 const VisibilitySettings = ({ onClose }: { onClose: () => void }) => {
-	console.log('VisibilitySettings');
-
 	const [selectedOption, setSelectedOption] = useState<string>('Local only');
 
 	const onPressVisibilitySettings = (item: VisibilitySettingsProps) => {

@@ -1,18 +1,19 @@
+import { Asset } from 'react-native-image-picker';
 import { create } from 'zustand';
 
 type ManageAttachmentState = {
 	mediaModal: boolean;
-	selectedMedia: string;
+	selectedMedia: Asset[];
 	actions: {
 		onToggleMediaModal: () => void;
-		onSelectMedia: (media: string) => void;
+		onSelectMedia: (media: Asset[]) => void;
 	};
 };
 
 export const useManageAttachmentStore = create<ManageAttachmentState>()(
 	set => ({
 		mediaModal: false,
-		selectedMedia: '',
+		selectedMedia: [],
 		actions: {
 			onToggleMediaModal: () =>
 				set(state => ({ mediaModal: !state.mediaModal })),

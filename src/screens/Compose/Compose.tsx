@@ -1,4 +1,7 @@
-import { View, Pressable } from 'react-native';
+import { memo, useCallback } from 'react';
+import { View, Pressable, ScrollView } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -8,9 +11,9 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { RouteProp } from '@react-navigation/native';
 import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
-import { memo, useCallback } from 'react';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
 
 const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 	return isRepost ? (
@@ -26,9 +29,10 @@ const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 
 type ComposeScreenRouteProp = RouteProp<BottomStackParamList, 'Compose'>;
 const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
-	console.log('Compose Rendered!');
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
+
+	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 
 	const renderComposeHeaderTitle = useCallback(() => {
 		switch (composeParams?.type) {
@@ -41,28 +45,61 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 		}
 	}, [composeParams?.type]);
 
+	// ****** Compose Action Toolbar ****** //
+	const { height } = useGradualAnimation();
+
+	const toolbarAnimatedViewStyle = useAnimatedStyle(() => {
+		return {
+			height: Math.abs(height.value),
+		};
+	});
+	// ****** Compose Action Toolbar ****** //
+
 	return (
 		<SafeScreen>
-			<Header
-				title={renderComposeHeaderTitle()}
-				leftCustomComponent={<BackButton />}
-				rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
-			/>
-			<KeyboardAwareScrollView
-				contentContainerStyle={{ flexGrow: 1, flex: 1 }}
-				keyboardShouldPersistTaps="always"
-			>
-				{composeParams.type === 'repost' ? (
-					/* ***** Re-post Status Rendering ***** */
-					<RepostStatus status={composeParams.incomingStatus} />
-				) : (
-					/* ***** Re-post Status Rendering ***** */
-					<View className="flex-1 px-4">
-						<ComposeTextInput />
-					</View>
-				)}
+			<View style={{ flex: 1 }}>
+				{/* Header */}
+				<Header
+					title={renderComposeHeaderTitle()}
+					leftCustomComponent={<BackButton />}
+					rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
+				/>
+
+				{/* Scrollable Content */}
+				<ScrollView
+					keyboardShouldPersistTaps="always"
+					contentContainerStyle={{ paddingBottom: 100 }}
+					showsVerticalScrollIndicator={false}
+				>
+					{composeParams.type === 'repost' ? (
+						<RepostStatus status={composeParams.incomingStatus} />
+					) : (
+						<>
+							{/* Compose Text Input */}
+							<ComposeTextInput />
+
+							{/* Additional Components */}
+							<View className="my-5">
+								{selectedMedia.length > 0 && (
+									<FastImage
+										className="w-full h-56 rounded-md"
+										source={{
+											uri: selectedMedia[0].uri,
+											priority: FastImage.priority.high,
+											cache: FastImage.cacheControl.immutable,
+										}}
+										resizeMode={'cover'}
+									/>
+								)}
+							</View>
+						</>
+					)}
+				</ScrollView>
+				{/* Compose Action Tool Bar */}
 				<ComposeActionsBar />
-			</KeyboardAwareScrollView>
+				<Animated.View style={toolbarAnimatedViewStyle} />
+				{/* Compose Action Tool Bar */}
+			</View>
 		</SafeScreen>
 	);
 };

@@ -20,7 +20,7 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
 	return (
-		<View>
+		<View className="mt-4">
 			<View className="flex flex-row items-center mx-6 pb-2">
 				<TouchableOpacity
 					activeOpacity={0.8}
