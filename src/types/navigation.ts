@@ -74,6 +74,11 @@ export type SearchStackParamList = {
 			channel_name: string;
 		};
 	};
+	FeedDetail: {
+		id: string;
+		selectedFeedIndex?: number;
+		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
+	};
 };
 
 export type ConversationsStackParamList = {

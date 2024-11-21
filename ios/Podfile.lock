@@ -956,6 +956,27 @@ PODS:
     - React-Core
   - react-native-encrypted-storage (4.0.3):
     - React-Core
+  - react-native-image-picker (7.1.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-keyboard-controller (1.14.4):
     - DoubleConversion
     - glog
@@ -1434,6 +1455,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-blurhash (from `../node_modules/react-native-blurhash`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-encrypted-storage (from `../node_modules/react-native-encrypted-storage`)
   - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
@@ -1552,6 +1574,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blurhash"
   react-native-encrypted-storage:
     :path: "../node_modules/react-native-encrypted-storage"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-keyboard-controller:
     :path: "../node_modules/react-native-keyboard-controller"
   react-native-mmkv:
@@ -1668,6 +1692,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: bf56147c9775491e53122a94c423ac201417e326
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
+  react-native-image-picker: c3afe5472ef870d98a4b28415fc0b928161ee5f7
   react-native-keyboard-controller: 411952ecd9d57f3c0c07c04c1e541a0ab3cad76e
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
   react-native-pager-view: bc6cf48ea4f08ea5c5a74e19c6579e9b86d8729c

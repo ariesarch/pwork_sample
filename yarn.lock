@@ -10998,6 +10998,7 @@ __metadata:
     react-native-encrypted-storage: ^4.0.3
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.16.0
+    react-native-image-picker: ^7.1.2
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-keyboard-controller: ^1.14.4
     react-native-linear-gradient: ^2.8.3
@@ -11708,6 +11709,16 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 70da4fc51d92899591aadf03396a8e0b78223fbe71da5b10e76232058c1ef5943d54c1dd8da815d5b6a8b41f259ea9d50457680e2ef7878c88d7396771170ae3
+  languageName: node
+  linkType: hard
+
+"react-native-image-picker@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "react-native-image-picker@npm:7.1.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: af52328b7cb06c28549442f0d923cfa92dde8d5a968a642336df4c882f81adbf0e5e606a14de27f96883a76fa1e03230061c4080011c9107942edebc8e09c478
   languageName: node
   linkType: hard
 
