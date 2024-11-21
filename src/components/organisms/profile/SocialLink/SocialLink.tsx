@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { BackIcon, CloseIcon } from '@/util/svg/icon.common';
@@ -22,7 +22,6 @@ import {
 	AppIcon,
 	LinkIcon,
 } from '@/util/svg/icon.profile';
-import { useColorScheme } from 'nativewind';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
 
@@ -32,6 +31,8 @@ type Props = {
 	openThemeModal: boolean;
 	onClose: () => void;
 	onPressAdd: (link: SocialMediaLink, username: string) => void;
+	data: Pathchwork.Field[];
+	formType: 'add' | 'edit';
 };
 
 export type SocialMediaLink = {
@@ -49,24 +50,58 @@ const SOCIAL_MEDIA_LINKS: SocialMediaLink[] = [
 	{ icon: <TiktokIcon />, title: 'TikTok' },
 	{ icon: <TwitchIcon />, title: 'Twitch' },
 	{ icon: <PatreonIcon />, title: 'Patreon' },
-	{ icon: <PenIcon colorScheme="light" />, title: 'Blog' },
-	{ icon: <GlobeIcon colorScheme="light" />, title: 'Website' },
-	{ icon: <PodcastIcon />, title: 'Podcast' },
-	{ icon: <NewsletterIcon />, title: 'Newsletter' },
-	{ icon: <ForumIcon />, title: 'Forum' },
-	{ icon: <AppIcon />, title: 'App' },
-	{ icon: <LinkIcon colorScheme="light" />, title: 'Custom URL' },
+	// { icon: <PenIcon colorScheme="light" />, title: 'Blog' },
+	// { icon: <GlobeIcon colorScheme="light" />, title: 'Website' },
+	// { icon: <PodcastIcon />, title: 'Podcast' },
+	// { icon: <NewsletterIcon />, title: 'Newsletter' },
+	// { icon: <ForumIcon />, title: 'Forum' },
+	// { icon: <AppIcon />, title: 'App' },
+	// { icon: <LinkIcon colorScheme="light" />, title: 'Custom URL' },
 ];
 
-const AddNewLink: React.FC<Props> = ({
+const SocialLink: React.FC<Props> = ({
 	openThemeModal,
 	onClose,
 	onPressAdd,
+	formType = 'add',
+	data,
 }) => {
 	const [selectedLink, setSelectedLink] = useState<SocialMediaLink | null>(
 		null,
 	);
 	const [username, setUsername] = useState<string | null>(null);
+	const Icons: Record<string, JSX.Element> = {
+		Twitter: <TwitterIcon />,
+		Youtube: <YoutubeIcon />,
+		Instagram: <InstagramIcon />,
+		Linkedin: <LinkedinIcon />,
+		Facebook: <FacebookIcon />,
+		Reddit: <RedditIcon />,
+		TikTok: <TiktokIcon />,
+		Twitch: <TwitchIcon />,
+		Patreon: <PatreonIcon />,
+	};
+	const LinksToEdit: SocialMediaLink[] = data?.map(item => ({
+		icon: Icons[item.name],
+		title: item.name,
+	}));
+	const links =
+		formType === 'edit'
+			? LinksToEdit
+			: SOCIAL_MEDIA_LINKS.filter(link => {
+					const fieldValue = data?.find(
+						field => field.name === link.title,
+					)?.value;
+					return !fieldValue || !fieldValue.includes(link.title.toLowerCase());
+			  });
+	useEffect(() => {
+		if (formType === 'edit' && data && selectedLink) {
+			const relatedData = data.find(item => item.name === selectedLink.title);
+			if (relatedData) {
+				setUsername(relatedData.value.split('.com/')[1].split('"')[0]);
+			}
+		}
+	}, [formType, data, selectedLink]);
 
 	return (
 		<ThemeModal
@@ -91,7 +126,7 @@ const AddNewLink: React.FC<Props> = ({
 					<CloseIcon onPress={onClose} />
 				</View>
 				<ThemeText size="md_16" className="self-center">
-					Add new link
+					{formType === 'edit' ? 'Edit Link' : 'Add new link'}
 				</ThemeText>
 				{selectedLink ? (
 					<View className="items-start">
@@ -117,12 +152,12 @@ const AddNewLink: React.FC<Props> = ({
 							variant={'outline'}
 							disabled={!username}
 						>
-							<ThemeText>Add</ThemeText>
+							<ThemeText>{formType === 'edit' ? 'Edit' : 'Add'}</ThemeText>
 						</Button>
 					</View>
 				) : (
 					<View className="flex-row flex-wrap mt-3">
-						{SOCIAL_MEDIA_LINKS.map((link, index) => (
+						{links.map((link, index) => (
 							<Chip
 								variant={'white'}
 								key={index}
@@ -139,4 +174,4 @@ const AddNewLink: React.FC<Props> = ({
 	);
 };
 
-export default AddNewLink;
+export default SocialLink;

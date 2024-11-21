@@ -42,7 +42,7 @@ const SocialSection = ({
 	const renderAccountSocialLink = () => {
 		const renderSocialIcons = (field: Pathchwork.Field) => {
 			const { name, value } = field;
-
+			if (!value) return null;
 			const SocialIcons = {
 				Twitter: <TwitterIcon />,
 				Reddit: <RedditIcon />,
@@ -50,36 +50,44 @@ const SocialSection = ({
 				Instagram: <InstagramIcon />,
 				Linkedin: <LinkedinIcon />,
 				Youtube: <YoutubeIcon />,
-				Tikok: <TiktokIcon />,
+				TikTok: <TiktokIcon />,
 				Twitch: <TwitchIcon />,
 				Patreon: <PatreonIcon />,
-				Podcast: <PodcastIcon />,
-				Forum: <ForumIcon />,
-				Newsletter: <NewsletterIcon />,
-				App: <AppIcon />,
-				Blog: <PenIcon {...{ colorScheme }} />,
-				Default: <GlobeIcon {...{ colorScheme }} />,
+				// Podcast: <PodcastIcon />,
+				// Forum: <ForumIcon />,
+				// Newsletter: <NewsletterIcon />,
+				// App: <AppIcon />,
+				// Blog: <PenIcon {...{ colorScheme }} />,
+				// Default: <GlobeIcon {...{ colorScheme }} />,
 			};
 
 			const getTitle = (name: string, value: string) => {
 				if (name === 'Reddit') {
-					return `u/${value.split('user/')[1]?.split('/')[0] || ''}`;
+					return `${value?.split('/u/')[1]?.split('"')[0]}`;
 				}
 				if (name === 'Email' || name === 'Website') {
 					return value;
 				}
 				if (name === 'Blog') {
-					return value.split('//')[1];
+					return value?.split('//')[1];
 				}
-				return value.split('.com/')[1];
+				return value?.split('.com/')[1]?.split('"')[0];
 			};
 
-			const Icon = SocialIcons[name] || SocialIcons.Default;
+			const Icon = SocialIcons[name];
+
+			const decodedStr = value
+				.replace(/&quot;/g, '"')
+				.replace(/&lt;/g, '<')
+				.replace(/&gt;/g, '>');
+			const hrefPart = decodedStr?.split('href="')[1];
+			const hrefValue = hrefPart?.split('"')[0];
+
 			return (
 				<Chip
 					startIcon={Icon}
 					title={getTitle(name, value)}
-					onPress={() => Linking.openURL(value)}
+					onPress={() => Linking.openURL(hrefValue)}
 				/>
 			);
 		};
@@ -98,16 +106,18 @@ const SocialSection = ({
 						>
 							<PlusIcon />
 						</TouchableOpacity>
-						<TouchableOpacity
-							className="rounded-full p-2.5 bg-slate-200 dark:bg-patchwork-grey-70 mr-1"
-							onPress={onPressEditIcon}
-						>
-							<PenIcon colorScheme={colorScheme} />
-						</TouchableOpacity>
+						{fields?.find(v => v.value) && (
+							<TouchableOpacity
+								className="rounded-full p-2.5 bg-slate-200 dark:bg-patchwork-grey-70 mr-1"
+								onPress={onPressEditIcon}
+							>
+								<PenIcon colorScheme={colorScheme} />
+							</TouchableOpacity>
+						)}
 					</>
 				)}
-				{fields?.map((field: Pathchwork.Field) => (
-					<View className="mr-1" key={field.value}>
+				{fields?.map((field, i) => (
+					<View className="mr-1" key={field.value + i}>
 						{renderSocialIcons(field)}
 					</View>
 				))}
@@ -117,7 +127,7 @@ const SocialSection = ({
 	return (
 		<View className="pt-2">
 			<View className="flex-row items-center pl-4">
-				<LinkIcon {...{ colorScheme }} />
+				<LinkIcon colorScheme={colorScheme} />
 				<ThemeText className="ml-1" size="fs_13">
 					Links{' '}
 					<ThemeText variant="textGrey" size="fs_13">

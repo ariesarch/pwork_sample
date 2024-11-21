@@ -361,15 +361,15 @@ declare namespace Pathchwork {
 	// };
 
 	type FieldName =
-		| 'Website'
+		| 'Patreon'
 		| 'Twitter'
 		| 'TikTok'
 		| 'Youtube'
 		| 'Linkedin'
 		| 'Instagram'
-		| 'Substack'
+		| 'Reddit'
 		| 'Facebook'
-		| 'Email';
+		| 'Twitch';
 
 	type Field = {
 		name: FieldName;

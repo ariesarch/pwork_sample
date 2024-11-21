@@ -22,6 +22,7 @@ export type RootStackParamList = {
 		imageUrls: Pathchwork.ImageUrl[];
 		id: Pathchwork.Attachment['id'];
 	};
+	EditProfile: undefined;
 };
 
 export type BottomStackParamList = {

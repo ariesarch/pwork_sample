@@ -34,7 +34,57 @@ export type UpdateProfileCredentialsQueryParam = {
 	];
 };
 
-export type UpdateProfileCredentialsQueryKey = [
-	'update_credentials',
-	UpdateProfileCredentialsQueryParam,
-];
+export type UpdateProfilePayload = {
+	display_name?: string;
+	note?: string;
+	avatar?: string;
+	header?: string;
+	locked?: boolean;
+	bot?: boolean;
+	discoverable?: boolean;
+	hide_collections?: boolean;
+	indexable?: boolean;
+	fields_attributes?: {
+		0: {
+			name: string;
+			value?: string;
+		};
+		1: {
+			name: string;
+			value?: string;
+		};
+		2: {
+			name: string;
+			value?: string;
+		};
+		3: {
+			name: string;
+			value?: string;
+		};
+		4: {
+			name: string;
+			value?: string;
+		};
+		5: {
+			name: string;
+			value?: string;
+		};
+		6: {
+			name: string;
+			value?: string;
+		};
+		7: {
+			name: string;
+			value?: string;
+		};
+		8: {
+			name: string;
+			value?: string;
+		};
+	};
+	source?: {
+		privacy: string;
+		sensitive: boolean;
+		language: string;
+	};
+};

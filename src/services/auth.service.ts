@@ -27,6 +27,7 @@ export const login = async (params: LoginMutationPayload) => {
 		grant_type: 'password',
 		client_id: process.env.CLIENT_ID,
 		client_secret: process.env.CLIENT_SECRET_TOKEN,
+		scope: 'read write follow push',
 	};
 	console.log('CLIENT_ID::', process.env.CLIENT_ID);
 
