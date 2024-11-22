@@ -1,3 +1,5 @@
+import { Asset } from 'react-native-image-picker';
+
 export type ProfileDetailQueryParam = {
 	id: string;
 };
@@ -37,8 +39,8 @@ export type UpdateProfileCredentialsQueryParam = {
 export type UpdateProfilePayload = {
 	display_name?: string;
 	note?: string;
-	avatar?: string;
-	header?: string;
+	avatar?: string | Asset;
+	header?: string | Asset;
 	locked?: boolean;
 	bot?: boolean;
 	discoverable?: boolean;

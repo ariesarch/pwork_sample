@@ -13,6 +13,7 @@ import SocialSection from '@/components/molecules/profile/SocialSection/SocialSe
 import UserStats from '@/components/molecules/profile/UserStats/UserStats';
 import Underline from '../../common/Underline/Underline';
 import { useNavigation } from '@react-navigation/native';
+import { cleanText } from '@/util/helper/cleanText';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -112,6 +113,9 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
 							userBio={props.profile?.about_me}
 						/>
+						<ThemeText className="mx-3">
+							{cleanText(props.profile?.note)}
+						</ThemeText>
 						<SocialSection
 							isMyAccount={props.is_my_account}
 							fields={props.profile.fields}
