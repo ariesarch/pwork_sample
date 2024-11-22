@@ -66,7 +66,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		useGetProfileDetail(queryKey);
 
 	const existingData = queryClient.getQueryData(queryKey);
-	console.log(existingData);
 
 	const updateProfileMutation = useMutation({
 		mutationFn: (updatedData: UpdateProfileCredentialsQueryParam) => {

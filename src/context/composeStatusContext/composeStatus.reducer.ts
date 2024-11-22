@@ -7,6 +7,11 @@ export const initialState: ComposeState = {
 		count: 0,
 		raw: '',
 	},
+	link: {
+		isLinkInclude: false,
+		firstLinkUrl: '',
+		showLinkCard: false,
+	},
 	maxCount: 500,
 };
 
@@ -21,6 +26,12 @@ export function composeReducer(
 			return { ...state, tag: action.payload };
 		case 'maxCount':
 			return { ...state, maxCount: action.payload };
+		case 'link':
+			return { ...state, link: action.payload };
+		case 'currentMention':
+			return { ...state, currentMention: action.payload };
+		case 'replaceMentionText':
+			return { ...state, text: action.payload, currentMention: undefined };
 		default:
 			throw new Error(`Unhandled action type:`);
 	}

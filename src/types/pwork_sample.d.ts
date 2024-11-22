@@ -127,6 +127,19 @@ declare namespace Pathchwork {
 		updated_at: string;
 	};
 
+	type LinkPreview = {
+		url: string;
+		favicon: string;
+		title: string;
+		description: string;
+		images: {
+			src: string;
+			size: Array<number>;
+			type: string;
+		}[];
+		videos: [];
+	};
+
 	// type Channel = {
 	// 	id: string;
 	// 	type: string;

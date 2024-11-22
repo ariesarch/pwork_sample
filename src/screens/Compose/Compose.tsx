@@ -10,7 +10,12 @@ import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import { memo, useCallback } from 'react';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
-import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
+import {
+	ComposeStatusProvider,
+	useComposeStatus,
+} from '@/context/composeStatusContext/composeStatus.context';
+import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
+import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
 
 const PLATFORM_KEYBOARD_OFFSET = Platform.select({
 	android: 42,
@@ -59,6 +64,7 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 					{composeParams.type !== 'repost' && (
 						<View className="px-4">
 							<ComposeTextInput />
+							<LinkCard />
 						</View>
 					)}
 					{/****** Re-post Status Rendering ******/}
@@ -66,6 +72,7 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 						<RepostStatus status={composeParams.incomingStatus} />
 					)}
 					{/****** Re-post Status Rendering ******/}
+					<UserSuggestionModal />
 					<View className="flex-1" />
 					<ComposeActionsBar />
 				</KeyboardAvoidingView>

@@ -15,6 +15,9 @@ import { HTTP_ERROR_MESSAGE } from '@/util/constant';
 import { useAuthStoreAction } from '@/store/auth/authStore';
 import { saveAppToken } from '@/util/helper/helper';
 import { verifyAuthToken } from '@/services/auth.service';
+import { GuestStackParamList } from '@/types/navigation';
+import { StackNavigationProp } from '@react-navigation/stack';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 
 const EmailLoginForm = () => {
 	const {
@@ -25,6 +28,8 @@ const EmailLoginForm = () => {
 		resolver: yupResolver(loginSchema),
 	});
 	const { setAuthToken, setUserInfo } = useAuthStoreAction();
+	const [isAlertOpen, setAlert] = useState(false);
+	const navigation = useNavigation<StackNavigationProp<GuestStackParamList>>();
 
 	const { mutateAsync, isPending } = useLoginEmailMutation({
 		onSuccess: async response => {
@@ -36,7 +41,8 @@ const EmailLoginForm = () => {
 		onError: error => {
 			if (error.status == 400) {
 				if (error?.message == HTTP_ERROR_MESSAGE?.INVALID_GRANT) {
-					Alert.alert('Error', 'Invalid login credentials');
+					// Alert.alert('Error', 'Invalid login credentials');
+					setAlert(true);
 				}
 			}
 		},
@@ -129,18 +135,12 @@ const EmailLoginForm = () => {
 					</View>
 				)}
 			/>
-			{/* <View className="bg-patchwork-red-50 p-3 rounded-md mb-4 flex-row items-center">
-				<InfoIcon
-					width="16"
-					height="16"
-					className="mr-2"
-					colorScheme={colorScheme}
-				/>
-				<ThemeText>Invalid Credentials</ThemeText>
-			</View> */}
 
 			<View className="flex flex-row justify-end mb-6">
-				<Pressable onPress={() => {}}>
+				<Pressable
+					onPress={() => navigation.navigate('ForgotPassword')}
+					className="active:opacity-90"
+				>
 					<ThemeText>Forgot your password?</ThemeText>
 				</Pressable>
 			</View>
@@ -151,6 +151,14 @@ const EmailLoginForm = () => {
 					<ThemeText className="text-white">Login</ThemeText>
 				)}
 			</Button>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Invalid login credentials'}
+					title="Error"
+					handleCancel={() => setAlert(false)}
+					handleOk={() => setAlert(false)}
+				/>
+			)}
 		</View>
 	);
 };

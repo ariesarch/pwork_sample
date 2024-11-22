@@ -12,6 +12,8 @@ import {
 	UseQueryOptions,
 } from '@tanstack/react-query';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { Match } from 'linkify-it';
+import { differenceWith, isEqual } from 'lodash';
 
 export const handleError = (error: any) => {
 	console.error('API Request Failed::', error?.response.message);
@@ -144,6 +146,45 @@ export const getAppToken = async () => {
 
 export const removeAppToken = async () => {
 	return await EncryptedStorage.clear();
+};
+
+export const showLinkCardIfNotManuallyClose = (
+	currentUrl: string,
+	previousUrl: string,
+	showLinkCard: boolean,
+) => {
+	// /matches &&
+	return previousUrl == currentUrl ? showLinkCard : true;
+};
+
+export const findFirstLink = (matches: Match[]) => {
+	const firstMatch = matches.find(item => item.schema === '');
+	return firstMatch ? firstMatch.url : '';
+};
+
+export const findMentionChanges = (
+	mentionList: Match[] | undefined,
+	prevMentionList: Match[] | undefined,
+) => {
+	return differenceWith(mentionList, prevMentionList ?? [], isEqual);
+};
+
+export const getReplacedMentionText = (
+	originalString: string,
+	startIndex: number,
+	fullDisplayName: string,
+) => {
+	const endIndex =
+		originalString.indexOf(' ', startIndex) === -1
+			? originalString.length
+			: originalString.indexOf(' ', startIndex);
+
+	return (
+		originalString.slice(0, startIndex) +
+		'@' +
+		fullDisplayName +
+		originalString.slice(endIndex)
+	);
 };
 
 export { scale, keyExtractor };
