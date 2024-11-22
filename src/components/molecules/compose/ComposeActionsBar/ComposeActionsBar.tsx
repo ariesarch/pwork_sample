@@ -20,6 +20,8 @@ import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import PollModal from '@/components/organisms/compose/modal/Poll/PollModal';
+import { usePollStore } from '@/store/compose/poll/pollStore';
 
 const ComposeActionsBar = () => {
 	const { colorScheme } = useColorScheme();
@@ -27,9 +29,12 @@ const ComposeActionsBar = () => {
 	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
 	const { onToggleMediaModal } = useManageAttachmentActions();
 
-	const [ctaModalVisible, setCTAModalVisible] = useState(false);
+	const isPollCreated = usePollStore(state => state.isPollCreated);
+	const [isPollModalVisible, setPollModalVisible] = useState(false);
+
 	const [postVisibilityModalVisible, setPostVisibilityModalVisible] =
 		useState(false);
+	const [ctaModalVisible, setCTAModalVisible] = useState(false);
 
 	return (
 		<View>
@@ -48,8 +53,14 @@ const ComposeActionsBar = () => {
 					children={<ComposeLocationIcon {...{ colorScheme }} />}
 				/>
 				<Pressable
+					onPress={() => setPollModalVisible(true)}
 					className={'mr-3'}
-					children={<ComposePollIcon {...{ colorScheme }} />}
+					children={
+						<ComposePollIcon
+							{...{ colorScheme }}
+							stroke={isPollCreated ? '#FF3C26' : '#FFFFFF'}
+						/>
+					}
 				/>
 				<Pressable
 					onPress={() => setPostVisibilityModalVisible(true)}
@@ -84,6 +95,13 @@ const ComposeActionsBar = () => {
 				<ManageAttachmentModal {...{ onToggleMediaModal }} />
 			</ThemeModal>
 			{/****** Manage Attachments ( Photos and Videos ) ******/}
+
+			{/****** Poll ******/}
+			<PollModal
+				visible={isPollModalVisible}
+				onClose={() => setPollModalVisible(false)}
+			/>
+			{/****** Poll ******/}
 
 			{/****** Visibility Settings ******/}
 			<ThemeModal

@@ -90,10 +90,32 @@ export const ComposePollIcon = ({
 	...props
 }: SvgProps & ColorSchemeType) => (
 	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
-		<Circle cx={5.5} cy={7.5} r={2.5} stroke="#fff" strokeWidth={2} />
-		<Path stroke="#fff" strokeLinecap="round" strokeWidth={2} d="M11 7.5h10" />
-		<Circle cx={5.5} cy={16.5} r={2.5} stroke="#fff" strokeWidth={2} />
-		<Path stroke="#fff" strokeLinecap="round" strokeWidth={2} d="M11 16.5h10" />
+		<Circle
+			cx={5.5}
+			cy={7.5}
+			r={2.5}
+			stroke={props.stroke || '#fff'}
+			strokeWidth={2}
+		/>
+		<Path
+			stroke={props.stroke || '#fff'}
+			strokeLinecap="round"
+			strokeWidth={2}
+			d="M11 7.5h10"
+		/>
+		<Circle
+			cx={5.5}
+			cy={16.5}
+			r={2.5}
+			stroke={props.stroke || '#fff'}
+			strokeWidth={2}
+		/>
+		<Path
+			stroke={props.stroke || '#fff'}
+			strokeLinecap="round"
+			strokeWidth={2}
+			d="M11 16.5h10"
+		/>
 	</Svg>
 );
 
@@ -279,6 +301,30 @@ export const ComposeAddFileIcon = ({
 			strokeLinejoin="round"
 			strokeWidth={2}
 			d="M3.5 9v10.4c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C4.26 21 4.54 21 5.098 21H15.5m-1-8v-3m0 0V7m0 3h-3m3 0h3m-10 3.8V6.2c0-1.12 0-1.68.218-2.108.192-.377.497-.682.874-.874C9.02 3 9.58 3 10.7 3h7.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874c.218.428.218.988.218 2.108v7.6c0 1.12 0 1.68-.218 2.108a2.001 2.001 0 0 1-.874.874c-.428.218-.986.218-2.104.218h-7.607c-1.118 0-1.678 0-2.105-.218a2 2 0 0 1-.874-.874C7.5 15.48 7.5 14.92 7.5 13.8Z"
+		/>
+	</Svg>
+);
+
+export const DeletePollOptionIcon = (props: SvgProps) => (
+	<Svg width="25" height="25" fill="none" viewBox="0 0 24 24" {...props}>
+		<Path
+			stroke={props.stroke || '#fff'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={1.5}
+			d="m16 8-8 8m4-4 4 4M8 8l2 2m11 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+		/>
+	</Svg>
+);
+
+export const PollDropperIcon = (props: SvgProps) => (
+	<Svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...props}>
+		<Path
+			d={'m12 6-4 4-4-4'}
+			stroke={'#FF3C26'}
+			strokeWidth={1.5}
+			strokeLinecap="round"
+			strokeLinejoin="round"
 		/>
 	</Svg>
 );
