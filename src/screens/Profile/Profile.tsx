@@ -243,14 +243,14 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 					{userInfo && timeline ? (
 						<>
-							<FeedTitleHeader title={'Severus'} />
+							<FeedTitleHeader title={userInfo?.display_name || ''} />
 							<Tabs.Container
 								renderHeader={() => {
 									return (
 										<CollapsibleFeedHeader
 											type="Profile"
 											is_my_account={true}
-											profile={timelineList[0]?.account}
+											profile={userInfo}
 											onPressPlusIcon={() =>
 												setSocialLinkAction({ visible: true, formType: 'add' })
 											}
