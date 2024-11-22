@@ -97,8 +97,13 @@ const SocialLink: React.FC<Props> = ({
 	useEffect(() => {
 		if (formType === 'edit' && data && selectedLink) {
 			const relatedData = data.find(item => item.name === selectedLink.title);
-			if (relatedData) {
-				setUsername(relatedData.value.split('.com/')[1].split('"')[0]);
+			if (relatedData && relatedData.value) {
+				if (selectedLink.title === 'Twitch') {
+					setUsername(relatedData.value?.split('.tv/')[1].split('"')[0]);
+				} else {
+					setUsername(relatedData.value?.split('.com/')[1].split('"')[0]);
+				}
+				console.log(relatedData.value);
 			}
 		}
 	}, [formType, data, selectedLink]);
