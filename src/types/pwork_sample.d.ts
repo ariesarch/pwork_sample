@@ -360,31 +360,43 @@ declare namespace Pathchwork {
 		verified_at: string | null;
 	};
 
-	type Account = {
-		id: string;
-		username: string;
-		acct: string;
-		display_name: string;
-		locked: boolean;
-		bot: boolean;
-		discoverable: boolean | null;
-		group: boolean;
-		created_at: string;
-		note: string;
-		url: string;
-		uri: string;
-		avatar: string;
-		avatar_static: string;
-		header: string;
-		header_static: string;
-		followers_count: number;
-		following_count: number;
-		statuses_count: number;
-		last_status_at: string;
-		emojis: [];
-		fields: AccountField[];
-		indexable?: boolean;
-		hide_collections?: null;
-		noindex?: boolean;
+	// type Account = {
+	// 	id: string;
+	// 	username: string;
+	// 	acct: string;
+	// 	display_name: string;
+	// 	locked: boolean;
+	// 	bot: boolean;
+	// 	discoverable: boolean | null;
+	// 	group: boolean;
+	// 	created_at: string;
+	// 	note: string;
+	// 	url: string;
+	// 	uri: string;
+	// 	avatar: string;
+	// 	avatar_static: string;
+	// 	header: string;
+	// 	header_static: string;
+	// 	followers_count: number;
+	// 	following_count: number;
+	// 	statuses_count: number;
+	// 	last_status_at: string;
+	// 	emojis: [];
+	// 	fields: AccountField[];
+	// 	indexable?: boolean;
+	// 	hide_collections?: null;
+	// 	noindex?: boolean;
+	// };
+
+	type NotificatioinGroups = {
+		group_key: string;
+		latest_page_notification_at: string;
+		most_recent_notification_id: string;
+		notifications_count: number;
+		page_max_id: string;
+		page_min_id: string;
+		sample_account_ids: string[];
+		status_id: string;
+		type: 'favourite' | 'mention' | 'follow' | 'reblog' | 'poll';
 	};
 }

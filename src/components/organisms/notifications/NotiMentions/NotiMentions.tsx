@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
-import { Dimensions, FlatList } from 'react-native';
-import { useNotifications } from '@/hooks/queries/notifications.queries';
-import NotificationTabItem from '@/components/molecules/notifications/NotificationTabItem/NotificationTabItem';
+import { Dimensions } from 'react-native';
+import { useMentionsNotifications } from '@/hooks/queries/notifications.queries';
 import { NotificationItem } from '@/services/notification.service';
-import { transformNotifications } from '@/util/helper/notifications';
+import NotificationTabItem from '@/components/molecules/notifications/NotificationTabItem/NotificationTabItem';
 import Underline from '@/components/atoms/common/Underline/Underline';
+import { transformNotifications } from '@/util/helper/notifications';
 import NotificationLoading from '@/components/atoms/loading/NotificationLoading';
 import { FlashList } from '@shopify/flash-list';
 import NotificationListEmpty from '@/components/atoms/notifications/NotificationListEmpty/NotificationListEmpty';
 
-const NotiAll = () => {
-	const { data, isSuccess } = useNotifications();
+const NotiMentions = () => {
+	const { data, isSuccess } = useMentionsNotifications();
 
 	const renderItem = useCallback(
 		({ item }: { item: NotificationItem }) => (
@@ -22,7 +22,7 @@ const NotiAll = () => {
 
 	return (
 		<FlashList
-			data={transformNotifications(data, 'all')}
+			data={transformNotifications(data, 'mentions')}
 			renderItem={renderItem}
 			ItemSeparatorComponent={Underline}
 			ListEmptyComponent={<NotificationListEmpty />}
@@ -35,4 +35,4 @@ const NotiAll = () => {
 	);
 };
 
-export default NotiAll;
+export default NotiMentions;

@@ -14,6 +14,7 @@ import HomeStack from './HomeStackNavigator';
 import { scale } from '@/util/helper/helper';
 import SearchStack from './SearchStackNavigator';
 import ConversationsStack from './ConversationsStackNavigator';
+import NotiStack from './NotiStackNavigator';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
@@ -82,7 +83,7 @@ export default function BottomTabs() {
 			/>
 			<Tab.Screen
 				name="Notification"
-				component={Notification}
+				component={NotiStack}
 				options={{
 					tabBarIcon: ({ focused }) => (
 						<NotificationTabIcon colorScheme={colorScheme} focused={focused} />
