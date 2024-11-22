@@ -71,6 +71,9 @@ const SocialSection = ({
 				if (name === 'Blog') {
 					return value?.split('//')[1];
 				}
+				if (name === 'Twitch') {
+					return value?.split('.tv/')[1].split('"')[0];
+				}
 				return value?.split('.com/')[1]?.split('"')[0];
 			};
 
