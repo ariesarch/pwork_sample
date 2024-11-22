@@ -12,6 +12,13 @@ import { RouteProp } from '@react-navigation/native';
 import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
+import {
+	ComposeStatusProvider,
+	useComposeStatus,
+} from '@/context/composeStatusContext/composeStatus.context';
+import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
+import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
+
 import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
 
@@ -57,49 +64,55 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 
 	return (
 		<SafeScreen>
-			<View style={{ flex: 1 }}>
-				{/* Header */}
-				<Header
-					title={renderComposeHeaderTitle()}
-					leftCustomComponent={<BackButton />}
-					rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
-				/>
+			<ComposeStatusProvider type={composeParams.type}>
+				<View style={{ flex: 1 }}>
+					{/* Header */}
+					<Header
+						title={renderComposeHeaderTitle()}
+						leftCustomComponent={<BackButton />}
+						rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
+					/>
 
-				{/* Scrollable Content */}
-				<ScrollView
-					keyboardShouldPersistTaps="always"
-					contentContainerStyle={{ paddingBottom: 100 }}
-					showsVerticalScrollIndicator={false}
-				>
-					{composeParams.type === 'repost' ? (
-						<RepostStatus status={composeParams.incomingStatus} />
-					) : (
-						<>
-							{/* Compose Text Input */}
-							<ComposeTextInput />
-
-							{/* Additional Components */}
-							<View className="my-5">
-								{selectedMedia.length > 0 && (
-									<FastImage
-										className="w-full h-56 rounded-md"
-										source={{
-											uri: selectedMedia[0].uri,
-											priority: FastImage.priority.high,
-											cache: FastImage.cacheControl.immutable,
-										}}
-										resizeMode={'cover'}
-									/>
-								)}
+					{/* Scrollable Content */}
+					<ScrollView
+						keyboardShouldPersistTaps="always"
+						contentContainerStyle={{ paddingBottom: 100 }}
+						showsVerticalScrollIndicator={false}
+					>
+						{composeParams.type === 'repost' ? (
+							<RepostStatus status={composeParams.incomingStatus} />
+						) : (
+							<View className="px-4">
+								<ComposeTextInput />
+								<LinkCard />
+								{/* Additional Components */}
+								<View className="my-5">
+									{selectedMedia.length > 0 && (
+										<FastImage
+											className="w-full h-56 rounded-md"
+											source={{
+												uri: selectedMedia[0].uri,
+												priority: FastImage.priority.high,
+												cache: FastImage.cacheControl.immutable,
+											}}
+											resizeMode={'cover'}
+										/>
+									)}
+								</View>
 							</View>
-						</>
-					)}
-				</ScrollView>
-				{/* Compose Action Tool Bar */}
-				<ComposeActionsBar />
-				<Animated.View style={toolbarAnimatedViewStyle} />
-				{/* Compose Action Tool Bar */}
-			</View>
+						)}
+					</ScrollView>
+
+					{/* UserSuggestionModal */}
+					<UserSuggestionModal />
+					{/* UserSuggestionModal */}
+
+					{/* Compose Action Tool Bar */}
+					<ComposeActionsBar />
+					<Animated.View style={toolbarAnimatedViewStyle} />
+					{/* Compose Action Tool Bar */}
+				</View>
+			</ComposeStatusProvider>
 		</SafeScreen>
 	);
 };

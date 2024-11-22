@@ -141,7 +141,7 @@ const PollModal = ({ visible, onClose }: PollModalProps) => {
 											setDuration(item);
 											hideMenu();
 										}}
-										className="bg-patchwork-dark-100"
+										className="bg-patchwork-dark-50"
 									>
 										<ThemeText>{item}</ThemeText>
 									</MenuItem>

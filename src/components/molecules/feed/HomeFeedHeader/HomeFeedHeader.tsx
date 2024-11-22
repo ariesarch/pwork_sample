@@ -8,8 +8,16 @@ import {
 	Image,
 	Pressable,
 	TouchableOpacity,
+	Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
+import { removeAppToken } from '@/util/helper/helper';
+import { useAuthStoreAction } from '@/store/auth/authStore';
+import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
+import { useState } from 'react';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import customColor from '@/util/constant/color';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -19,44 +27,93 @@ type Props = {
 const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
+	const { clearAuthState } = useAuthStoreAction();
+	const [isMenuOpen, setMenuVisibility] = useState(false);
+	const [isAlertOpen, setAlert] = useState(false);
+
+	const handleLogout = async () => {
+		setMenuVisibility(false);
+		Alert.alert(
+			'Confirmation',
+			'Are you sure you want to logout?',
+			[
+				{
+					text: 'Cancel',
+					onPress: () => {},
+					style: 'cancel',
+				},
+				{
+					text: 'OK',
+					onPress: async () => {
+						await removeAppToken();
+						clearAuthState();
+					},
+				},
+			],
+			{ cancelable: false },
+		);
+	};
+
 	return (
 		<View className="mt-4">
 			<View className="flex flex-row items-center mx-6 pb-2">
 				<TouchableOpacity
 					activeOpacity={0.8}
 					className="flex-row flex-1 items-center"
-					disabled
-					// onPress={
-					// 	() =>
-					// 		navigation.navigate('Profile', {
-					// 			id: account.id ?? '113087366884543068',
-					// 		}) //temp
-					// }
+					onPress={() =>
+						navigation.navigate('Profile', {
+							id: account.id,
+						})
+					}
 				>
-					<Image
-						source={account.avatar as ImageProps}
-						className="w-[60] h-[60] rounded-full"
+					<FastImage
+						className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"
+						source={{
+							uri: account.avatar,
+							priority: FastImage.priority.normal,
+						}}
+						resizeMode={FastImage.resizeMode.cover}
 					/>
 					<View className="flex flex-1 mx-3">
 						<ThemeText className="font-bold" size="md_16">
 							Welcome Back
 						</ThemeText>
 						<ThemeText variant="textGrey" size="xs_12">
-							Account Name
+							{account.display_name}
 						</ThemeText>
 					</View>
 				</TouchableOpacity>
-				{/* <Pressable
-					className="p-3 border border-slate-200 rounded-full active:opacity-80 mr-2"
-					onPress={() => navigation.navigate('ChannelCreate')}
+				<Menu
+					visible={isMenuOpen}
+					anchor={
+						<Pressable
+							className="p-3 border border-slate-200 rounded-full active:opacity-80"
+							onPress={() => setMenuVisibility(true)}
+						>
+							<SettingIcon colorScheme={colorScheme} />
+						</Pressable>
+					}
+					style={{ marginTop: 50 }}
+					onRequestClose={() => setMenuVisibility(false)}
 				>
-					<AddCommunityIcon colorScheme={colorScheme} />
-				</Pressable> */}
-				<Pressable className="p-3 border border-slate-200 rounded-full active:opacity-80">
-					<SettingIcon colorScheme={colorScheme} />
-				</Pressable>
+					<MenuItem onPress={handleLogout} textStyle={{ color: '#000' }}>
+						Logout
+					</MenuItem>
+					<MenuDivider />
+				</Menu>
 			</View>
 			{showUnderLine && <Underline className="mt-2" />}
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Are u sure you want to logout'}
+					title="Logout"
+					hasCancel
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={() => {}}
+				/>
+			)}
 		</View>
 	);
 };

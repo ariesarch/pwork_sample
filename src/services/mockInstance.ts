@@ -1,7 +1,8 @@
+import { DEFAULT_API_URL } from '@/util/constant';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 
-const baseURL = `${process.env.API_URL ?? 'https://patchwork.online'}/`;
+const baseURL = `${process.env.API_URL ?? DEFAULT_API_URL}/`;
 
 const mockInstance = axios.create({
 	baseURL,

@@ -13,6 +13,7 @@ export const useSearchUsers = ({
 	const queryKey: SearchUsersQueryKey = ['users', queryParam];
 	return useQuery({
 		queryKey,
+		//@ts-expect-error
 		queryFn: searchUsers,
 		...options,
 	});

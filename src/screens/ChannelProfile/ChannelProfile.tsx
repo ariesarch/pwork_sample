@@ -51,7 +51,7 @@ import {
 } from 'react-native-collapsible-tab-view';
 import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader/CollapsibleFeedHeader';
 import FeedTitleHeader from '@/components/atoms/feed/FeedTitleHeader/FeedTitleHeader';
-import { ScrollProvider } from '@/context/sharedScrollContext';
+import { ScrollProvider } from '@/context/sharedScrollContext/sharedScroll.context';
 import customColor from '@/util/constant/color';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';

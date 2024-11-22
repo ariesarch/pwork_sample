@@ -8,7 +8,10 @@ import {
 	NotificationMentionIcon,
 } from '@/util/svg/icon.notification';
 import Image from '@/components/atoms/common/Image/Image';
-import { NotificationItem } from '@/services/notification.service';
+import {
+	INotificationResponse,
+	NotificationItem,
+} from '@/services/notification.service';
 import { timelineDateFormatter } from '@/util/helper/helper';
 import dayjs from 'dayjs';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
@@ -33,8 +36,8 @@ const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
 		poll: <NotificationPeopleFollowIcon />,
 	};
 
-const NotificationTabItem = ({ item }: { item: NotificationItem }) => {
-	const { account, type, status, latest_page_notification_at } = item;
+const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
+	const { account, status, type, created_at } = item;
 
 	const navigation = useNavigation<NotificationScreenNavigationProp>();
 
@@ -57,9 +60,7 @@ const NotificationTabItem = ({ item }: { item: NotificationItem }) => {
 						/>
 						<View className="flex-1 items-end">
 							<ThemeText size={'fs_13'} variant={'textGrey'}>
-								{timelineDateFormatter(
-									dayjs(latest_page_notification_at).fromNow(),
-								)}
+								{timelineDateFormatter(dayjs(created_at).fromNow())}
 							</ThemeText>
 						</View>
 					</View>
@@ -77,7 +78,7 @@ const NotificationTabItem = ({ item }: { item: NotificationItem }) => {
 							<StatusContent
 								status={status}
 								isFromNotiStatusImage
-								handleOnPress={() => handleOnPressStatus(status.id)}
+								// handleOnPress={() => handleOnPressStatus(status.id)}
 							/>
 						</View>
 					)}

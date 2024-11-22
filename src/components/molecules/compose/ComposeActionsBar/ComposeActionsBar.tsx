@@ -25,6 +25,7 @@ import { usePollStore } from '@/store/compose/poll/pollStore';
 
 const ComposeActionsBar = () => {
 	const { colorScheme } = useColorScheme();
+	const [isLongPost, setLongPost] = useState(false);
 
 	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
 	const { onToggleMediaModal } = useManageAttachmentActions();
@@ -75,7 +76,11 @@ const ComposeActionsBar = () => {
 				<View className="flex-1 items-end">
 					<View className="flex-row items-center">
 						<ComposePlusIcon />
-						<ThemeText className="ml-2 text-white">Long Post</ThemeText>
+						<Pressable onPress={() => setLongPost(true)}>
+							<ThemeText className="ml-2 text-white">
+								{isLongPost ? '4000' : 'Long Post'}
+							</ThemeText>
+						</Pressable>
 					</View>
 				</View>
 			</View>

@@ -46,6 +46,7 @@ export const useGetChannelFeed = ({
 	const queryKey: GetChannelFeedQueryKey = ['channel-feed', queryParam];
 	return useInfiniteQuery({
 		queryKey,
+		//@ts-expect-error
 		queryFn: getChannelFeed,
 		...options,
 		...infinitePageParam,

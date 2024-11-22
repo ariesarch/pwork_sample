@@ -227,7 +227,7 @@ export const ComposeRepostSendIcon = ({
 	</Svg>
 );
 
-export const ComposeRepostInputExplorer = ({
+export const ComposeRepostInputExplorerIcon = ({
 	colorScheme,
 	...props
 }: SvgProps & ColorSchemeType) => (

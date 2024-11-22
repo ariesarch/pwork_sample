@@ -11,12 +11,11 @@ import { AccountDetailFeedQueryKey } from './queries/feed.type';
 import { SearchUsersQueryKey } from './queries/conversations.type';
 
 export type RootStackParamList = {
-	Login: undefined;
-	Register: undefined;
-	Welcome: undefined;
 	AboutYou: undefined;
 	Profile: { id: string };
+	ProfileOther: { id: string };
 	Index: NavigatorScreenParams<BottomStackParamList>;
+	Guest: NavigatorScreenParams<GuestStackParamList>;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
 	WebViewer: { url: string };
@@ -24,6 +23,7 @@ export type RootStackParamList = {
 		imageUrls: Pathchwork.ImageUrl[];
 		id: Pathchwork.Attachment['id'];
 	};
+	EditProfile: undefined;
 };
 
 export type BottomStackParamList = {
@@ -58,6 +58,7 @@ export type HomeStackParamList = {
 		};
 	};
 	Profile: { id: string };
+	ProfileOther: { id: string };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 };
 
@@ -104,6 +105,13 @@ export type ConversationsStackParamList = {
 	Chat: { id: string; queryKey: SearchUsersQueryKey };
 };
 
+export type GuestStackParamList = {
+	Login: undefined;
+	Register: undefined;
+	Welcome: undefined;
+	ForgotPassword: undefined;
+};
+
 export type RootScreenProps<
 	S extends keyof RootStackParamList = keyof RootStackParamList,
 > = StackScreenProps<RootStackParamList, S>;
@@ -117,6 +125,9 @@ export type SearchStackScreenProps<S extends keyof SearchStackParamList> =
 export type ConversationsStackScreenProps<
 	S extends keyof ConversationsStackParamList,
 > = StackScreenProps<ConversationsStackParamList, S>;
+
+export type GuestStackScreenProps<S extends keyof GuestStackParamList> =
+	StackScreenProps<GuestStackParamList, S>;
 
 export type TabBarScreenProps<
 	S extends keyof BottomStackParamList = keyof BottomStackParamList,

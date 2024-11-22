@@ -25,13 +25,7 @@ const AccountAvatar = ({
 }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 	return (
-		<Pressable
-			className="flex flex-row"
-			{...props}
-			onPress={() => {
-				navigation.navigate('Profile', { id: '113087366884543068' }); //temp
-			}}
-		>
+		<Pressable className="flex flex-row" {...props} onPress={() => {}}>
 			<View className="items-center ">
 				<Image
 					uri={account.avatar}

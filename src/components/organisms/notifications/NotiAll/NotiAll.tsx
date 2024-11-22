@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react';
-import { Dimensions, FlatList } from 'react-native';
+import { Dimensions } from 'react-native';
 import { useNotifications } from '@/hooks/queries/notifications.queries';
 import NotificationTabItem from '@/components/molecules/notifications/NotificationTabItem/NotificationTabItem';
-import { NotificationItem } from '@/services/notification.service';
-import { transformNotifications } from '@/util/helper/notifications';
+import { INotificationResponse } from '@/services/notification.service';
 import Underline from '@/components/atoms/common/Underline/Underline';
 import NotificationLoading from '@/components/atoms/loading/NotificationLoading';
 import { FlashList } from '@shopify/flash-list';
@@ -13,7 +12,7 @@ const NotiAll = () => {
 	const { data, isSuccess } = useNotifications();
 
 	const renderItem = useCallback(
-		({ item }: { item: NotificationItem }) => (
+		({ item }: { item: INotificationResponse }) => (
 			<NotificationTabItem item={item} />
 		),
 		[],
@@ -22,7 +21,7 @@ const NotiAll = () => {
 
 	return (
 		<FlashList
-			data={transformNotifications(data, 'all')}
+			data={data}
 			renderItem={renderItem}
 			ItemSeparatorComponent={Underline}
 			ListEmptyComponent={<NotificationListEmpty />}

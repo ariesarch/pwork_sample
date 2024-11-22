@@ -127,6 +127,19 @@ declare namespace Pathchwork {
 		updated_at: string;
 	};
 
+	type LinkPreview = {
+		url: string;
+		favicon: string;
+		title: string;
+		description: string;
+		images: {
+			src: string;
+			size: Array<number>;
+			type: string;
+		}[];
+		videos: [];
+	};
+
 	// type Channel = {
 	// 	id: string;
 	// 	type: string;
@@ -191,7 +204,7 @@ declare namespace Pathchwork {
 		account: Account;
 		media_attachments: Attachment[];
 		mentions: Mention[];
-		tags: any;
+		tags: Tags[];
 		emojis: any;
 		card?: Card;
 		poll?: Poll;
@@ -354,39 +367,27 @@ declare namespace Pathchwork {
 		height?: number;
 	};
 
-	type AccountField = {
-		name: string;
-		value: string;
-		verified_at: string | null;
-	};
-
-	// type Account = {
-	// 	id: string;
-	// 	username: string;
-	// 	acct: string;
-	// 	display_name: string;
-	// 	locked: boolean;
-	// 	bot: boolean;
-	// 	discoverable: boolean | null;
-	// 	group: boolean;
-	// 	created_at: string;
-	// 	note: string;
-	// 	url: string;
-	// 	uri: string;
-	// 	avatar: string;
-	// 	avatar_static: string;
-	// 	header: string;
-	// 	header_static: string;
-	// 	followers_count: number;
-	// 	following_count: number;
-	// 	statuses_count: number;
-	// 	last_status_at: string;
-	// 	emojis: [];
-	// 	fields: AccountField[];
-	// 	indexable?: boolean;
-	// 	hide_collections?: null;
-	// 	noindex?: boolean;
+	// type Field = {
+	// 	name: string;
+	// 	value: string;
+	// 	// verified_at?: string | null;
 	// };
+
+	type FieldName =
+		| 'Patreon'
+		| 'Twitter'
+		| 'TikTok'
+		| 'Youtube'
+		| 'Linkedin'
+		| 'Instagram'
+		| 'Reddit'
+		| 'Facebook'
+		| 'Twitch';
+
+	type Field = {
+		name: FieldName;
+		value: string;
+	};
 
 	type NotificatioinGroups = {
 		group_key: string;
@@ -398,5 +399,31 @@ declare namespace Pathchwork {
 		sample_account_ids: string[];
 		status_id: string;
 		type: 'favourite' | 'mention' | 'follow' | 'reblog' | 'poll';
+	};
+
+	type ProfileDetail = {
+		account_data: {
+			account: Account;
+			is_requested: boolean;
+			is_my_account: boolean;
+			is_followed: boolean;
+		};
+		community_images_url: string[];
+		following_images_url: string[];
+		is_admin: boolean;
+		community_slug: string;
+		account_type: string;
+	};
+
+	type Tags = {
+		name: string;
+		url: string;
+	};
+
+	type LoginRespone = {
+		access_token: string;
+		token_type: string;
+		scope: string;
+		created_at: string;
 	};
 }

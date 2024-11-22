@@ -1,14 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
-
-type ScrollContextType = {
-	channelScrollYOffset: SharedValue<number>;
-	profileScrollYOffest: SharedValue<number>;
-};
-
-type ScrollProviderProps = {
-	children: ReactNode;
-};
+import { ScrollContextType, ScrollProviderProps } from './sharedScroll.type';
 
 const ScrollContext = createContext<ScrollContextType | undefined>(undefined);
 

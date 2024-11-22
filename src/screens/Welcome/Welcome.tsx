@@ -3,12 +3,14 @@ import AlreadyHaveAcc from '@/components/molecules/login/AlreadyHaveAcc/AlreadyH
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { RootScreenProps } from '@/types/navigation';
+import { GuestStackScreenProps, RootScreenProps } from '@/types/navigation';
 import { MastodonIcon, PatchworkLogo } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import { View } from 'react-native';
 
-const Welcome: React.FC<RootScreenProps<'Welcome'>> = ({ navigation }) => {
+const Welcome: React.FC<GuestStackScreenProps<'Welcome'>> = ({
+	navigation,
+}) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<SafeScreen>

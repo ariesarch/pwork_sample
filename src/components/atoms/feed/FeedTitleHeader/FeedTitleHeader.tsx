@@ -6,7 +6,7 @@ import {
 import { Platform, TouchableOpacity, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSharedScrollY } from '@/context/sharedScrollContext';
+import { useSharedScrollY } from '@/context/sharedScrollContext/sharedScroll.context';
 import Animated, {
 	interpolate,
 	useAnimatedStyle,

@@ -1,6 +1,5 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
-import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackScreenProps } from '@/types/navigation';
@@ -35,7 +34,7 @@ const FeedDetail = ({
 	const domain_name = useSelectedDomain();
 	const { id, selectedFeedIndex, queryKey } = route.params;
 	const { height, progress } = useGradualAnimation();
-	const [reply, setReply] = useState('');
+
 	const inputBarActiveBgColor = useAppropiateColorHash(
 		'patchwork-dark-400',
 		'patchwork-light-50',
@@ -69,6 +68,7 @@ const FeedDetail = ({
 			enabled: !selectedFeedIndex,
 		},
 	});
+
 	const { data: statusReplies, isLoading: isLoadingReplies } =
 		useFeedRepliesQuery({
 			domain_name,

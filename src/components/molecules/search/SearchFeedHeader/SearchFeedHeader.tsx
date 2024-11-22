@@ -9,6 +9,7 @@ import { useColorScheme } from 'nativewind';
 import { View, ImageProps, Image, Pressable } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -21,9 +22,13 @@ const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	return (
 		<View>
 			<View className="flex flex-row items-center mx-6">
-				<Image
-					source={account.avatar as ImageProps}
-					className="w-[60] h-[60] rounded-full"
+				<FastImage
+					className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"
+					source={{
+						uri: account.avatar,
+						priority: FastImage.priority.normal,
+					}}
+					resizeMode={FastImage.resizeMode.cover}
 				/>
 				<View className="flex flex-1 mx-3">
 					<ThemeText className="font-bold" size="lg_18">

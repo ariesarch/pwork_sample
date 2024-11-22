@@ -1,6 +1,5 @@
 import Card from '@/components/atoms/card/Card';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import AccountAvatar from '@/components/molecules/feed/AccountAvatar/AccountAvatar';
 import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -18,6 +17,7 @@ import {
 	useRecommendedChannels,
 } from '@/hooks/queries/channel.queries';
 import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -25,10 +25,14 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { data: recommendedChannels } = useRecommendedChannels();
 
 	const { data: myChannels } = useGetMyChannels();
+	const { userInfo } = useAuthStore();
 
 	return (
 		<SafeScreen>
-			<HomeFeedHeader account={mockUserList[0]} showUnderLine={false} />
+			<HomeFeedHeader
+				account={userInfo ?? mockUserList[0]}
+				showUnderLine={false}
+			/>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View className="mx-6 my-2">
 					{myChannels ? (
