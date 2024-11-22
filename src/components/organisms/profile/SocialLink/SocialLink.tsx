@@ -146,7 +146,13 @@ const SocialLink: React.FC<Props> = ({
 						/>
 						<Button
 							onPress={() => {
-								if (username) onPressAdd(selectedLink, username);
+								if (username) {
+									onPressAdd(selectedLink, username);
+									setTimeout(() => {
+										setUsername('');
+										setSelectedLink(null);
+									}, 1000);
+								}
 							}}
 							className=" mt-5 w-full"
 							variant={'outline'}

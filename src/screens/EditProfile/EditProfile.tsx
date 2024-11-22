@@ -48,9 +48,9 @@ const EditProfile = () => {
 		if (userInfo) {
 			setProfile({
 				display_name: userInfo.display_name,
-				bio: cleanText(userInfo?.note),
-				avatar: userInfo.avatar,
-				header: userInfo.header,
+				bio: cleanText(userInfo?.note) || '',
+				avatar: userInfo.avatar || '',
+				header: userInfo.header || '',
 			});
 		}
 	}, [userInfo]);
@@ -113,7 +113,10 @@ const EditProfile = () => {
 					<ThemeModal
 						hasNotch={false}
 						openThemeModal={header.mediaModal}
-						onCloseThemeModal={() => actions.onToggleMediaModal('header')}
+						onCloseThemeModal={() => {
+							actions.onToggleMediaModal('header');
+							actions.onSelectMedia('header', []);
+						}}
 						modalPositionStyle={{
 							justifyContent: 'flex-end',
 						}}
@@ -129,7 +132,10 @@ const EditProfile = () => {
 					<ThemeModal
 						hasNotch={false}
 						openThemeModal={avatar.mediaModal}
-						onCloseThemeModal={() => actions.onToggleMediaModal('avatar')}
+						onCloseThemeModal={() => {
+							actions.onToggleMediaModal('avatar');
+							actions.onSelectMedia('avatar', []);
+						}}
 						modalPositionStyle={{
 							justifyContent: 'flex-end',
 						}}
