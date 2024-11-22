@@ -31,7 +31,7 @@ export function composeReducer(
 		case 'currentMention':
 			return { ...state, currentMention: action.payload };
 		case 'replaceMentionText':
-			return { ...state, text: action.payload, currentMention: undefined };
+			return { ...state, text: action.payload };
 		default:
 			throw new Error(`Unhandled action type:`);
 	}

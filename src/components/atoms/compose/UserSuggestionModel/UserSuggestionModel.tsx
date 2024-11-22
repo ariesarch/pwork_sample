@@ -22,6 +22,7 @@ import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { text } from 'stream/consumers';
 import { count } from 'console';
+import { Match } from 'linkify-it';
 
 const UserSuggestionModal = () => {
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -29,6 +30,7 @@ const UserSuggestionModal = () => {
 	const startDebounce = useDebounce();
 	const [openModal, setModal] = useState(false);
 	const bottomSheetRef = useRef<BottomSheet>(null);
+	const previousCurrentMentionStr = useRef('');
 
 	const {
 		data: searchedUsers,
@@ -42,11 +44,15 @@ const UserSuggestionModal = () => {
 	});
 
 	useEffect(() => {
+		console.log('currentMention::', composeState.currentMention);
+		console.log('previousMention::', previousCurrentMentionStr.current);
+		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
+			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
 			startDebounce(() => {
 				setModal(true);
 				setDebounceVal(composeState.currentMention?.raw || '');
-			}, 500);
+			}, 1200);
 		}
 	}, [composeState.currentMention?.raw]);
 
@@ -84,7 +90,7 @@ const UserSuggestionModal = () => {
 											composeState.currentMention?.index ?? 0,
 											item.acct,
 										);
-										console.log('aa::', newString);
+										previousCurrentMentionStr.current = '@' + item.acct;
 
 										composeDispatch({
 											type: 'replaceMentionText',
