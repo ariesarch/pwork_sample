@@ -1,31 +1,19 @@
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useCurrentTabScrollY } from 'react-native-collapsible-tab-view';
-import {
-	EllipsisIcon,
-	ProfileBackIcon,
-	SearchIconInProfile,
-} from '@/util/svg/icon.profile';
-import AccountName from '../../profile/AccountName';
 import { cn } from '@/util/helper/twutil';
 import { Button } from '../../common/Button/Button';
-import ProfileInfo from '@/components/organisms/profile/ProfileInfo';
 import VerticalInfo from '@/components/molecules/common/VerticalInfo/VerticalInfo';
 import dayjs from 'dayjs';
-import Animated, {
-	interpolate,
-	SharedValue,
-	useAnimatedReaction,
-	useAnimatedStyle,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedReaction } from 'react-native-reanimated';
 import { useSharedScrollY } from '@/context/sharedScrollContext/sharedScroll.context';
-import { SolidHeaderDepth } from '../FeedTitleHeader/FeedTitleHeader';
-import { channel } from 'diagnostics_channel';
 import SocialSection from '@/components/molecules/profile/SocialSection/SocialSection';
 import UserStats from '@/components/molecules/profile/UserStats/UserStats';
 import Underline from '../../common/Underline/Underline';
+import { useNavigation } from '@react-navigation/native';
+import { cleanText } from '@/util/helper/cleanText';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -47,10 +35,10 @@ type ProfileProps = {
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	const { top } = useSafeAreaInsets();
+	const navigation = useNavigation();
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const scrollY = useCurrentTabScrollY();
 	const isChannel = props.type == 'Channel';
-
 	useAnimatedReaction(
 		() => scrollY.value,
 		() => (sharedScrollYOffset.value = scrollY.value),
@@ -64,7 +52,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 					source={{
 						uri: isChannel
 							? props.channelInfo?.banner_image_url
-							: props.profile.header,
+							: props.profile?.header,
 						priority: FastImage.priority.normal,
 					}}
 					resizeMode={FastImage.resizeMode.cover}
@@ -90,6 +78,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							variant="default"
 							size="sm"
 							className="bg-transparent border-white border rounded-3xl px-6 mt-5"
+							onPress={() => navigation.navigate('EditProfile')}
 						>
 							<ThemeText size={'fs_13'}>Edit account</ThemeText>
 						</Button>
@@ -124,9 +113,12 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
 							userBio={props.profile?.about_me}
 						/>
+						<ThemeText className="mx-3">
+							{cleanText(props.profile?.note)}
+						</ThemeText>
 						<SocialSection
 							isMyAccount={props.is_my_account}
-							fields={props.profile?.fields}
+							fields={props.profile.fields}
 							onPressEditIcon={props.onPressEditIcon}
 							onPressPlusIcon={props.onPressPlusIcon}
 						/>

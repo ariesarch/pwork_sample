@@ -95,39 +95,35 @@ const FeedDetail = ({
 		<SafeScreen>
 			{feedDetail ? (
 				<View className="flex-1">
-					<View className="flex-1">
-						<Header title="Post" leftCustomComponent={<BackButton />} />
-						<FlatList
-							data={statusReplies?.ancestors}
-							renderItem={({ item }) => (
-								<StatusItem handleOnPress={() => {}} status={item} />
-							)}
-							keyExtractor={item => item.id.toString()}
-							ListHeaderComponent={() => (
-								<FeedDetailStatus
-									feedDetail={feedDetail as Pathchwork.Status}
-								/>
-							)}
-						/>
-						<Animated.View className={'p-2'} style={inputBarBgColorStyle}>
-							<Animated.View className={'flex-row'} style={replyActionBarStyle}>
-								<ThemeText className="mb-2 ml-1 normal-case text-xs opacity-80">
-									Replying to ▸
-								</ThemeText>
-								<ThemeText variant="textOrange" className="mb-2 ml-1 text-xs">
-									@{feedDetail.account.username}
-								</ThemeText>
-							</Animated.View>
-							<FeedReplyTextInput
-								username={feedDetail.account.username}
-								progress={progress}
-							/>
-							<Animated.View style={replyActionBarStyle}>
-								<ReplyActionBar />
-							</Animated.View>
+					<Header title="Post" leftCustomComponent={<BackButton />} />
+					<FlatList
+						data={statusReplies?.ancestors}
+						renderItem={({ item }) => (
+							<StatusItem handleOnPress={() => {}} status={item} />
+						)}
+						keyExtractor={item => item.id.toString()}
+						ListHeaderComponent={() => (
+							<FeedDetailStatus feedDetail={feedDetail as Pathchwork.Status} />
+						)}
+					/>
+					<Animated.View className={'p-2'} style={inputBarBgColorStyle}>
+						<Animated.View className={'flex-row'} style={replyActionBarStyle}>
+							<ThemeText className="mb-2 ml-1 normal-case text-xs opacity-80">
+								Replying to ▸
+							</ThemeText>
+							<ThemeText variant="textOrange" className="mb-2 ml-1 text-xs">
+								@{feedDetail.account.username}
+							</ThemeText>
 						</Animated.View>
-						<Animated.View style={virtualKeyboardContainerStyle} />
-					</View>
+						<FeedReplyTextInput
+							username={feedDetail.account.username}
+							progress={progress}
+						/>
+						<Animated.View style={replyActionBarStyle}>
+							<ReplyActionBar />
+						</Animated.View>
+					</Animated.View>
+					<Animated.View style={virtualKeyboardContainerStyle} />
 				</View>
 			) : (
 				<View className="flex items-center justify-center flex-1">

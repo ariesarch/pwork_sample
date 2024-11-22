@@ -1,4 +1,7 @@
-import { View, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import { memo, useCallback } from 'react';
+import { View, Pressable, ScrollView } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
@@ -8,7 +11,6 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { RouteProp } from '@react-navigation/native';
 import { BottomStackParamList } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
-import { memo, useCallback } from 'react';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
 import {
 	ComposeStatusProvider,
@@ -17,17 +19,17 @@ import {
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
 
-const PLATFORM_KEYBOARD_OFFSET = Platform.select({
-	android: 42,
-	ios: 0,
-});
+import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
 
 const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 	return isRepost ? (
 		<ComposeRepostButton onPress={() => {}} />
 	) : (
 		<Pressable className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full">
-			<ThemeText>Post</ThemeText>
+			<ThemeText size={'fs_13'} className="leading-5">
+				Post
+			</ThemeText>
 		</Pressable>
 	);
 });
@@ -36,6 +38,8 @@ type ComposeScreenRouteProp = RouteProp<BottomStackParamList, 'Compose'>;
 const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
+
+	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 
 	const renderComposeHeaderTitle = useCallback(() => {
 		switch (composeParams?.type) {
@@ -48,18 +52,31 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 		}
 	}, [composeParams?.type]);
 
+	// ****** Compose Action Toolbar ****** //
+	const { height } = useGradualAnimation();
+
+	const toolbarAnimatedViewStyle = useAnimatedStyle(() => {
+		return {
+			height: Math.abs(height.value),
+		};
+	});
+	// ****** Compose Action Toolbar ****** //
+
 	return (
 		<SafeScreen>
-			<ComposeStatusProvider type={composeParams?.type}>
+			<View style={{ flex: 1 }}>
+				{/* Header */}
 				<Header
 					title={renderComposeHeaderTitle()}
 					leftCustomComponent={<BackButton />}
 					rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
 				/>
-				<KeyboardAvoidingView
-					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-					keyboardVerticalOffset={PLATFORM_KEYBOARD_OFFSET}
-					style={{ flexGrow: 1 }}
+
+				{/* Scrollable Content */}
+				<ScrollView
+					keyboardShouldPersistTaps="always"
+					contentContainerStyle={{ paddingBottom: 100 }}
+					showsVerticalScrollIndicator={false}
 				>
 					{composeParams.type !== 'repost' && (
 						<View className="px-4">
@@ -67,16 +84,32 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 							<LinkCard />
 						</View>
 					)}
-					{/****** Re-post Status Rendering ******/}
-					{composeParams.type === 'repost' && (
-						<RepostStatus status={composeParams.incomingStatus} />
-					)}
-					{/****** Re-post Status Rendering ******/}
-					<UserSuggestionModal />
-					<View className="flex-1" />
-					<ComposeActionsBar />
-				</KeyboardAvoidingView>
-			</ComposeStatusProvider>
+					<>
+						{/* Compose Text Input */}
+						<ComposeTextInput />
+
+						{/* Additional Components */}
+						<View className="my-5">
+							{selectedMedia.length > 0 && (
+								<FastImage
+									className="w-full h-56 rounded-md"
+									source={{
+										uri: selectedMedia[0].uri,
+										priority: FastImage.priority.high,
+										cache: FastImage.cacheControl.immutable,
+									}}
+									resizeMode={'cover'}
+								/>
+							)}
+						</View>
+					</>
+				</ScrollView>
+				{/* Compose Action Tool Bar */}
+				<UserSuggestionModal />
+				<ComposeActionsBar />
+				<Animated.View style={toolbarAnimatedViewStyle} />
+				{/* Compose Action Tool Bar */}
+			</View>
 		</SafeScreen>
 	);
 };

@@ -17,7 +17,9 @@ const AlreadyHaveAcc = ({ ...props }: ViewProps) => {
 				className={styles.signInBtn}
 				onPress={() => navigation.navigate('Login')}
 			>
-				<ThemeText size={'fs_13'}>Sign In</ThemeText>
+				<ThemeText size={'fs_13'} className="leading-5">
+					Sign In
+				</ThemeText>
 			</Button>
 		</View>
 	);

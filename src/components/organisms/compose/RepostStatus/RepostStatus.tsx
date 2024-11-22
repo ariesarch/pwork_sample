@@ -11,7 +11,7 @@ import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { colorScheme } = useColorScheme();
 	return (
-		<ScrollView className="px-4" showsVerticalScrollIndicator={false}>
+		<ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
 			<View className="flex-row justify-between">
 				<ThemeText size={'xs_12'} className="opacity-80">
 					Re-posting <ThemeText>▸</ThemeText>{' '}

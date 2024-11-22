@@ -22,6 +22,7 @@ export type RootStackParamList = {
 		imageUrls: Pathchwork.ImageUrl[];
 		id: Pathchwork.Attachment['id'];
 	};
+	EditProfile: undefined;
 };
 
 export type BottomStackParamList = {
@@ -72,6 +73,11 @@ export type SearchStackParamList = {
 			banner_image_url: string;
 			channel_name: string;
 		};
+	};
+	FeedDetail: {
+		id: string;
+		selectedFeedIndex?: number;
+		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 	};
 };
 

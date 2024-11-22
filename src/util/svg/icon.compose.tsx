@@ -219,3 +219,66 @@ export const ComposeRepostInputExplorer = ({
 		/>
 	</Svg>
 );
+
+export const ComposeCameraIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="25" height="24" viewBox="0 0 25 24" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={2}
+			d="M9.65 6H6.197c-1.382 0-2.073 0-2.6.19-.465.169-.842.436-1.078.765-.269.375-.269.865-.269 1.845v8.4c0 .98 0 1.47.269 1.844.236.33.613.597 1.077.765.527.19 1.218.19 2.596.19L18.308 20c1.378 0 2.067 0 2.595-.19.464-.168.842-.437 1.078-.766.269-.374.269-.863.269-1.841V14.75"
+		/>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={2}
+			d="M14.85 20h3.454c1.38 0 2.072 0 2.6-.19.464-.168.84-.436 1.077-.765.269-.375.269-.865.269-1.845V8.8c0-.98 0-1.47-.269-1.844-.236-.33-.613-.597-1.077-.765C20.377 6 19.686 6 18.308 6L6.192 6c-1.378 0-2.067 0-2.595.19-.464.168-.842.437-1.078.766-.269.374-.269.863-.269 1.841v2.453"
+		/>
+		<Circle
+			cx={12.25}
+			cy={13}
+			r={3}
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeWidth={2}
+		/>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeWidth={2}
+			d="M14.25 5a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v1h-5V5Z"
+		/>
+	</Svg>
+);
+
+export const ComposeOpenGalleryIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="25" height="24" viewBox="0 0 25 24" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeWidth={2}
+			d="M6.25 12h12M12.148 18V6"
+		/>
+	</Svg>
+);
+
+export const ComposeAddFileIcon = ({
+	colorScheme,
+	...props
+}: SvgProps & ColorSchemeType) => (
+	<Svg width="25" height="24" viewBox="0 0 25 24" fill="none" {...props}>
+		<Path
+			stroke={colorScheme == 'dark' ? '#fff' : '#000'}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			strokeWidth={2}
+			d="M3.5 9v10.4c0 .56 0 .84.109 1.054a1 1 0 0 0 .437.437C4.26 21 4.54 21 5.098 21H15.5m-1-8v-3m0 0V7m0 3h-3m3 0h3m-10 3.8V6.2c0-1.12 0-1.68.218-2.108.192-.377.497-.682.874-.874C9.02 3 9.58 3 10.7 3h7.6c1.12 0 1.68 0 2.108.218a2 2 0 0 1 .874.874c.218.428.218.988.218 2.108v7.6c0 1.12 0 1.68-.218 2.108a2.001 2.001 0 0 1-.874.874c-.428.218-.986.218-2.104.218h-7.607c-1.118 0-1.678 0-2.105-.218a2 2 0 0 1-.874-.874C7.5 15.48 7.5 14.92 7.5 13.8Z"
+		/>
+	</Svg>
+);

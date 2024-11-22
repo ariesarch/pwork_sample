@@ -31,10 +31,8 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 			autoFocus
 			spellCheck
 			{...textInputProps}
-			className="text-white font-SourceSans3_Regular text-base opacity-80"
-		>
-			<FormattedText text={composeState.text.raw} />
-		</TextInput>
+			className="text-white font-SourceSans3_Regular text-base opacity-80 p-3"
+		/>
 	);
 };
 

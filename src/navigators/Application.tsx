@@ -19,6 +19,7 @@ import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { useEffect } from 'react';
 import Guest from './GuestStackNavigator';
 import { getAppToken } from '@/util/helper/helper';
+import EditProfile from '@/screens/EditProfile/EditProfile';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -57,6 +58,7 @@ function ApplicationNavigator() {
 							/>
 							<Stack.Screen name="WebViewer" component={WebViewer} />
 							<Stack.Screen name="ImageViewer" component={ImageViewer} />
+							<Stack.Screen name="EditProfile" component={EditProfile} />
 						</>
 					)}
 				</Stack.Navigator>
