@@ -158,7 +158,10 @@ export const showLinkCardIfNotManuallyClose = (
 };
 
 export const findFirstLink = (matches: Match[]) => {
-	const firstMatch = matches.find(item => item.schema === '' || 'https:');
+	console.log('findFirstLink::', matches);
+	const firstMatch = matches.find(
+		item => item.schema === '' || item.schema === 'https:',
+	);
 	return firstMatch ? firstMatch.url : '';
 };
 
