@@ -91,6 +91,7 @@ export type GuestStackParamList = {
 	Login: undefined;
 	Register: undefined;
 	Welcome: undefined;
+	ForgotPassword: undefined;
 };
 
 export type RootScreenProps<

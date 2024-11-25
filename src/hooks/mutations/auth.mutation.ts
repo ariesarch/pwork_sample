@@ -1,4 +1,4 @@
-import { login } from '@/services/auth.service';
+import { login, requestForgotPassword } from '@/services/auth.service';
 import { LoginMutationPayload } from '@/types/queries/auth.type';
 import {
 	MutationOptions,
@@ -15,4 +15,14 @@ export const useLoginEmailMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: login, ...options });
+};
+
+export const useForgotPWMutation = (
+	options: UseMutationOptions<
+		{ message: string },
+		AxiosError,
+		{ email: string }
+	>,
+) => {
+	return useMutation({ mutationFn: requestForgotPassword, ...options });
 };

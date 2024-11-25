@@ -8,11 +8,16 @@ import {
 	Image,
 	Pressable,
 	TouchableOpacity,
+	Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { removeAppToken } from '@/util/helper/helper';
 import { useAuthStoreAction } from '@/store/auth/authStore';
+import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
+import { useState } from 'react';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import customColor from '@/util/constant/color';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -23,10 +28,30 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const navigation = useNavigation();
 	const { colorScheme } = useColorScheme();
 	const { clearAuthState } = useAuthStoreAction();
+	const [isMenuOpen, setMenuVisibility] = useState(false);
+	const [isAlertOpen, setAlert] = useState(false);
 
 	const handleLogout = async () => {
-		await removeAppToken();
-		clearAuthState();
+		setMenuVisibility(false);
+		Alert.alert(
+			'Confirmation',
+			'Are you sure you want to logout?',
+			[
+				{
+					text: 'Cancel',
+					onPress: () => {},
+					style: 'cancel',
+				},
+				{
+					text: 'OK',
+					onPress: async () => {
+						await removeAppToken();
+						clearAuthState();
+					},
+				},
+			],
+			{ cancelable: false },
+		);
 	};
 
 	return (
@@ -58,14 +83,37 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 						</ThemeText>
 					</View>
 				</TouchableOpacity>
-				<Pressable
-					className="p-3 border border-slate-200 rounded-full active:opacity-80"
-					onPress={handleLogout}
+				<Menu
+					visible={isMenuOpen}
+					anchor={
+						<Pressable
+							className="p-3 border border-slate-200 rounded-full active:opacity-80"
+							onPress={() => setMenuVisibility(true)}
+						>
+							<SettingIcon colorScheme={colorScheme} />
+						</Pressable>
+					}
+					style={{ marginTop: 50 }}
+					onRequestClose={() => setMenuVisibility(false)}
 				>
-					<SettingIcon colorScheme={colorScheme} />
-				</Pressable>
+					<MenuItem onPress={handleLogout} textStyle={{ color: '#000' }}>
+						Logout
+					</MenuItem>
+					<MenuDivider />
+				</Menu>
 			</View>
 			{showUnderLine && <Underline className="mt-2" />}
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Are u sure you want to logout'}
+					title="Logout"
+					hasCancel
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={() => {}}
+				/>
+			)}
 		</View>
 	);
 };
