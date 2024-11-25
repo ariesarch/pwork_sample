@@ -4279,21 +4279,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:5.60.6":
-  version: 5.60.6
-  resolution: "@tanstack/query-core@npm:5.60.6"
-  checksum: 4c165d495bc1d182028d75eeef281866f9466d51316ba137da8b868e843ba47e614065a0b80d7b71636fd356bd87a7f458ebb0e201defb1a1b07bb2215fa7a8b
+"@tanstack/query-core@npm:5.60.5":
+  version: 5.60.5
+  resolution: "@tanstack/query-core@npm:5.60.5"
+  checksum: 7fe1b85c2582d076f9662fdef9b6b486856c9fe79f3bb69710db129ab21db44f3c90c2e65db5c95dbc01a6a36cf9c8d9b9ba3fae704d1008899442e9b142a1a3
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:^5.31.0":
-  version: 5.61.0
-  resolution: "@tanstack/react-query@npm:5.61.0"
+"@tanstack/react-query@npm:latest":
+  version: 5.60.5
+  resolution: "@tanstack/react-query@npm:5.60.5"
   dependencies:
-    "@tanstack/query-core": 5.60.6
+    "@tanstack/query-core": 5.60.5
   peerDependencies:
     react: ^18 || ^19
-  checksum: e63e5676aa6afe262845f064fd2c1624393511f027aa04a41f204966f677f37a268979dde212cf145b7827b527b2d444ec1bb245b6079ac757e4522bf6f09e6f
+  checksum: 25ff97faa74a0efff004d56674115c68d003040756914ca881060611a1ac246300deacc22309277cb0d012c2aee92b34a02089fb028f4e6a1818b8c247640674
   languageName: node
   linkType: hard
 
@@ -4514,20 +4514,6 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
-  languageName: node
-  linkType: hard
-
-"@types/linkify-it@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@types/linkify-it@npm:5.0.0"
-  checksum: ec98e03aa883f70153a17a1e6ed9e28b39a604049b485daeddae3a1482ec65cac0817520be6e301d99fd1a934b3950cf0f855655aae6ec27da2bb676ba4a148e
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:4.14.194":
-  version: 4.14.194
-  resolution: "@types/lodash@npm:4.14.194"
-  checksum: 113f34831c461469d91feca2dde737f88487732898b4d25e9eb23b087bb193985f864d1e1e0f3b777edc5022e460443588b6000a3b2348c966f72d17eedc35ea
   languageName: node
   linkType: hard
 
@@ -9728,15 +9714,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"linkify-it@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "linkify-it@npm:5.0.0"
-  dependencies:
-    uc.micro: ^2.0.0
-  checksum: b0b86cadaf816b64c947a83994ceaad1c15f9fe7e079776ab88699fb71afd7b8fc3fd3d0ae5ebec8c92c1d347be9ba257b8aef338c0ebf81b0d27dcf429a765a
-  languageName: node
-  linkType: hard
-
 "loader-utils@npm:^2.0.0":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
@@ -10976,12 +10953,10 @@ __metadata:
     "@storybook/addon-ondevice-actions": ^7.6.20
     "@storybook/addon-ondevice-controls": ^7.6.20
     "@storybook/react-native": ^7.6.20
-    "@tanstack/react-query": ^5.31.0
+    "@tanstack/react-query": latest
     "@testing-library/jest-native": ^5.4.2
     "@testing-library/react-native": ^12.1.2
     "@types/jest": ^29.4.0
-    "@types/linkify-it": ^5.0.0
-    "@types/lodash": 4.14.194
     "@types/node": ^18.14.1
     "@types/react": ^18.2.6
     "@types/react-test-renderer": ^18.0.0
@@ -11008,7 +10983,6 @@ __metadata:
     i18next: ^23.11.2
     jest: ^29.6.3
     ky: ^1.2.4
-    linkify-it: ^5.0.0
     moment: ^2.30.1
     nativewind: ^2.0.11
     prettier: 2.8.8
@@ -11028,7 +11002,6 @@ __metadata:
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-keyboard-controller: ^1.14.4
     react-native-linear-gradient: ^2.8.3
-    react-native-material-menu: ^2.0.0
     react-native-mmkv: ^2.12.2
     react-native-pager-view: ^6.4.1
     react-native-progress: ^5.0.1
@@ -11800,16 +11773,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: f980d324e551bbc475c6406bdc5250a08242020cbe653412fa169bbdf51e28a502e225de105b4d696d6a1a1b733d44782469020f4936d8b3ce0e2c78e51cf58f
-  languageName: node
-  linkType: hard
-
-"react-native-material-menu@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "react-native-material-menu@npm:2.0.0"
-  peerDependencies:
-    react: "*"
-    react-native: "*"
-  checksum: 6aaf1f53f41c03803b37c84bde5d4b4994f76092e992a91523ab09879e042d0df931c0ba8d5f7ef24074ca5cb88fdd7defbfabb68aef209e1a0ad8202562aab1
   languageName: node
   linkType: hard
 
@@ -13679,13 +13642,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 6f0a9dca6bf4ce9dcaf4e282aade55ef4c56ecb5fb98d0a4a5c0113398815aea66d871b5611e83353e5953a19ed9ef103cf5a76ac0f276d550d1e7cd5344f61e
-  languageName: node
-  linkType: hard
-
-"uc.micro@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "uc.micro@npm:2.1.0"
-  checksum: 37197358242eb9afe367502d4638ac8c5838b78792ab218eafe48287b0ed28aaca268ec0392cc5729f6c90266744de32c06ae938549aee041fc93b0f9672d6b2
   languageName: node
   linkType: hard
 

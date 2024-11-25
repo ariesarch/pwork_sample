@@ -2,7 +2,6 @@ import { TextInput, TextInputProps } from 'react-native';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
-import { FormattedText } from '../FormattedText/FormattedText';
 
 const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 	const inputColor = useAppropiateColorHash('patchwork-light-900');

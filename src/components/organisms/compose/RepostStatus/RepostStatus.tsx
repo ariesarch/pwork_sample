@@ -6,7 +6,6 @@ import ComposeTextInput from '@/components/atoms/compose/ComposeTextInput/Compos
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import { ComposeRepostInputExplorer } from '@/util/svg/icon.compose';
-import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 
 const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { colorScheme } = useColorScheme();
@@ -22,7 +21,6 @@ const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 				<ComposeRepostInputExplorer colorScheme={colorScheme} />
 			</View>
 			<ComposeTextInput />
-			{/* <LinkCard link="https://www.bbc.com/news/articles/cn0dpdx420lo" /> */}
 			<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl">
 				<StatusHeader status={status} showAvatarIcon />
 				<StatusContent status={status} />

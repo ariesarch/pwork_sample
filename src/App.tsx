@@ -20,6 +20,7 @@ export const storage = new MMKV();
 function App() {
 	const { setColorScheme } = useColorScheme();
 	const { setAuthToken, setUserInfo } = useAuthStoreAction();
+	const { access_token } = useAuthStore();
 	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -31,8 +32,8 @@ function App() {
 	}, []);
 
 	const retrieveToken = async () => {
-		//refactor_later
 		const token = await getAppToken();
+		console.log('bb::', token);
 
 		if (token) {
 			await verifyAuthToken()

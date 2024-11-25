@@ -21,7 +21,7 @@ const ChannelGuidelines = ({ channelAbout }: Props) => {
 											{idx + 1}
 										</ThemeText>
 									</View>
-									<ThemeText className="flex-1">{item.text}</ThemeText>
+									<ThemeText>{item.text}</ThemeText>
 								</View>
 							);
 						})}

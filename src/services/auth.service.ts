@@ -29,6 +29,7 @@ export const login = async (params: LoginMutationPayload) => {
 		client_secret: process.env.CLIENT_SECRET_TOKEN,
 		scope: 'read write follow push',
 	};
+	console.log('CLIENT_ID::', process.env.CLIENT_ID);
 
 	try {
 		const { data }: AxiosResponse<Pathchwork.LoginRespone> =
@@ -43,25 +44,6 @@ export const verifyAuthToken = async () => {
 	try {
 		const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
 			appendApiVersion('accounts/verify_credentials', 'v1'),
-		);
-		return resp.data;
-	} catch (error) {
-		return handleError(error);
-	}
-};
-
-export const requestForgotPassword = async (params: { email: string }) => {
-	try {
-		const resp: AxiosResponse<{ message: string }> = await instance.get(
-			appendApiVersion('custom_passwords', 'v1'),
-			{
-				params: {
-					email: params.email,
-				},
-				headers: {
-					Accept: '*/*',
-				},
-			},
 		);
 		return resp.data;
 	} catch (error) {

@@ -6,7 +6,7 @@ import {
 } from '@/types/queries/feed.type';
 import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
 import { QueryFunctionContext } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import instance from './instance';
 
 export const getFeedDetail = async (
@@ -95,19 +95,5 @@ export const getHashtagDetailFeed = async (
 		};
 	} catch (e) {
 		return handleError(e);
-	}
-};
-
-export const fetchLinkPreview = async (link: string) => {
-	try {
-		const response: AxiosResponse<Pathchwork.LinkPreview> = await axios.get(
-			`https://backend.newsmast.org/api/v1/community_statuses/link_preview`,
-			{
-				params: { url: link },
-			},
-		);
-		return response.data;
-	} catch (error) {
-		return handleError(error);
 	}
 };
