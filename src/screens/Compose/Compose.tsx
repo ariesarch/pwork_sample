@@ -21,6 +21,10 @@ import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/
 
 import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
+import { useCallToActionStore } from '@/store/compose/callToAction/callToActionStore';
+import Chip from '@/components/atoms/common/Chip/Chip';
+import { useColorScheme } from 'nativewind';
+import { LinkIcon } from '@/util/svg/icon.profile';
 
 const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
 	return isRepost ? (
@@ -39,7 +43,10 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
 
+	const { colorScheme } = useColorScheme();
+
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
+	const ctaText = useCallToActionStore(state => state.ctaText);
 
 	const renderComposeHeaderTitle = useCallback(() => {
 		switch (composeParams?.type) {
@@ -85,6 +92,7 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 							<View className="px-4">
 								<ComposeTextInput />
 								<LinkCard />
+
 								{/* Additional Components */}
 								<View className="my-5">
 									{selectedMedia.length > 0 && (
@@ -99,6 +107,15 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 										/>
 									)}
 								</View>
+								{/* Call To Action View */}
+								<View>
+									<Chip
+										startIcon={<LinkIcon {...{ colorScheme }} />}
+										title={ctaText}
+										className="absolute"
+									/>
+								</View>
+								{/* Call To Action View */}
 							</View>
 						)}
 					</ScrollView>
