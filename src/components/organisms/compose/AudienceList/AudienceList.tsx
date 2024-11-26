@@ -32,7 +32,11 @@ const communities = [
 	// Add more communities as needed
 ];
 
-const AudienceList = ({ selectedCommunities, onSelectCommunity, onClose }: AudienceListProps) => {
+const AudienceList = ({
+	selectedCommunities,
+	onSelectCommunity,
+	onClose,
+}: AudienceListProps) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedCommunity, setSelectedCommunity] = useState<string | null>(
 		null,
@@ -53,15 +57,19 @@ const AudienceList = ({ selectedCommunities, onSelectCommunity, onClose }: Audie
 				<ThemeText size={'md_16'} className="text-center font-bold">
 					Choose audience
 				</ThemeText>
-				<TouchableOpacity activeOpacity={0.8} className=" absolute right-0" onPress={onClose}>
+				<TouchableOpacity
+					activeOpacity={0.8}
+					className=" absolute right-0"
+					onPress={onClose}
+				>
 					<CloseIcon />
 				</TouchableOpacity>
 			</View>
 			<TextInput
 				placeholder="Search ..."
-				styleNW="h-11 my-3 mx-1"
+				extraContainerStyle="h-11 my-3 mx-1"
 				value={searchQuery}
-				onChangeText={(val) => setSearchQuery(val)}
+				onChangeText={val => setSearchQuery(val)}
 				startIcon={<SearchIcon />}
 			/>
 			<FlatList
@@ -71,7 +79,7 @@ const AudienceList = ({ selectedCommunities, onSelectCommunity, onClose }: Audie
 					<Pressable
 						className="flex-row items-center py-3"
 						onPress={() => onSelectCommunity(item)}
-						>
+					>
 						{selectedCommunities.includes(item) ? (
 							<CheckboxSolid />
 						) : (

@@ -7,7 +7,6 @@ import {
 import axios from 'axios';
 
 const baseURL = `${process.env.API_URL ?? DEFAULT_API_URL}`;
-const tempAuthToken = 'ShLWbMQmYtXX1M7_vc3kG6gTx6sAWsk2zpq9lsHLPpE';
 
 const instance = axios.create({
 	baseURL,

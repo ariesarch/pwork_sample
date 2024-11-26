@@ -73,7 +73,7 @@ const EmailLoginForm = () => {
 							value={value}
 							onBlur={onBlur}
 							maxLength={40}
-							styleNW="mb-6 mt-8"
+							extraContainerStyle="mb-6 mt-8"
 						/>
 						{errors.email && (
 							<ThemeText
@@ -121,7 +121,7 @@ const EmailLoginForm = () => {
 									)}
 								</Pressable>
 							}
-							styleNW="mb-4"
+							extraContainerStyle="mb-4"
 						/>
 						{errors.password && (
 							<ThemeText

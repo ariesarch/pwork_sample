@@ -20,7 +20,11 @@ const StatusContent = ({
 	const isImageMissing = status?.media_attachments?.length !== 0;
 	return (
 		<View>
-			<Pressable onPress={handleOnPress}>
+			<Pressable
+				onPress={() => {
+					handleOnPress && handleOnPress();
+				}}
+			>
 				<HTMLParser status={status} />
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
@@ -49,9 +53,7 @@ const StatusContent = ({
 									url: status?.rss_link,
 								},
 							}}
-							overrideStyle={{
-								marginTop: 16,
-							}}
+							extraStyle="mt-4"
 						/>
 					)}
 				{!isImageMissing && !status?.is_rss_content && status?.card && (
@@ -66,9 +68,7 @@ const StatusContent = ({
 										blurhash: status?.card?.blurhash,
 									},
 								}}
-								overrideStyle={{
-									marginTop: 16,
-								}}
+								extraStyle="mt-4"
 							/>
 						)}
 					</View>

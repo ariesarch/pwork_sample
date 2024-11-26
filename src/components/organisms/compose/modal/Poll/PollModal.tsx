@@ -74,7 +74,7 @@ const PollModal = ({ visible, onClose }: PollModalProps) => {
 							renderItem={({ item, index }) => (
 								<View className="flex-row items-center mb-3">
 									<TextInput
-										styleNW="w-10/12"
+										extraContainerStyle="w-10/12"
 										placeholder={`Option ${item.id}`}
 										value={item.text}
 										onChangeText={text => updateOption(item.id, text)}

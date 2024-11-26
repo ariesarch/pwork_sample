@@ -14,33 +14,30 @@ import { Flow } from 'react-native-animated-spinkit';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import useDebounce from '@/hooks/custom/useDebounce';
 import { fetchLinkPreview } from '@/services/feed.service';
+import { useLinkPreviewQueries } from '@/hooks/queries/feed.queries';
+import FastImage from 'react-native-fast-image';
 
 export const LinkCard = () => {
-	const [previewData, setPreviewData] = useState<Pathchwork.LinkPreview>();
 	const [loading, setLoading] = useState(true);
 	const [isLinkError, setLinkError] = useState(false);
 	const { composeState, composeDispatch } = useComposeStatus();
+	const [debounceLinkRes, setDebounceVal] = useState('');
 	const startDebounce = useDebounce();
+
+	const {
+		data: previewData,
+		isFetching,
+		isError,
+	} = useLinkPreviewQueries({
+		url: debounceLinkRes,
+		enabled: !!debounceLinkRes,
+	});
 
 	useEffect(() => {
 		if (composeState.link.firstLinkUrl) {
-			startDebounce(() => getLinkPreview(), 500);
+			startDebounce(() => setDebounceVal(composeState.link.firstLinkUrl), 500);
 		}
 	}, [composeState.link.firstLinkUrl]);
-
-	const getLinkPreview = async () => {
-		//refactor_later
-		await fetchLinkPreview(composeState.link.firstLinkUrl)
-			.then(res => {
-				setPreviewData(res);
-				setLoading(false);
-				setLinkError(false);
-			})
-			.catch(() => {
-				setLoading(false);
-				setLinkError(true);
-			});
-	};
 
 	const handleLinkCardClose = () => {
 		composeDispatch({
@@ -57,17 +54,17 @@ export const LinkCard = () => {
 		return <></>;
 	}
 
-	if (loading || isLinkError) {
+	if (isFetching || isError || previewData === undefined) {
 		return (
 			<View className="mt-8 pb-2 rounded-xl border-slate-600 border">
-				<View className="w-full h-[220] bg-patchwork-dark-50 rounded-tl-xl rounded-tr-xl items-center justify-center">
-					{loading && (
+				<View className="w-full h-[200] bg-patchwork-dark-50 rounded-tl-xl rounded-tr-xl items-center justify-center">
+					{isFetching && (
 						<Flow size={25} color={customColor['patchwork-red-50']} />
 					)}
 				</View>
 				<View className="p-3">
 					<ThemeText>
-						{isLinkError ? 'Failed to Fetch Link Preview' : '....'}
+						{isError ? 'Failed to Fetch Link Preview' : '....'}
 					</ThemeText>
 					<ThemeText size="xs_12" className="mt-1 underline">
 						{composeState.link.firstLinkUrl}
@@ -79,11 +76,12 @@ export const LinkCard = () => {
 
 	return (
 		<View className="mt-8 pb-2 rounded-xl border-slate-600 border">
-			{previewData && (
+			{previewData && !isFetching && !isError && (
 				<View>
-					<Image
+					<FastImage
 						source={{ uri: previewData.images[0].src }}
-						className="w-full h-[220] bg-patchwork-dark-50 rounded-tl-xl rounded-tr-xl"
+						resizeMode={'cover'}
+						className="w-full h-[200] bg-patchwork-dark-50 rounded-tl-xl rounded-tr-xl"
 					/>
 					<View className="p-3">
 						<ThemeText>{previewData.title}</ThemeText>

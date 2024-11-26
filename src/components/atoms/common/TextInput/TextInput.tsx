@@ -9,7 +9,7 @@ import styles from './TextInput.style';
 type InputProps = {
 	startIcon?: React.ReactElement;
 	endIcon?: React.ReactElement;
-	styleNW?: ClassValue;
+	extraContainerStyle?: ClassValue;
 	extraInputStyle?: ClassValue;
 	showUnderLine?: boolean;
 	textArea?: boolean;
@@ -19,7 +19,7 @@ const TextInput = ({
 	endIcon = undefined,
 	startIcon = undefined,
 	placeholder,
-	styleNW = '',
+	extraContainerStyle = '',
 	extraInputStyle = '',
 	showUnderLine = false,
 	textArea = false,
@@ -31,17 +31,12 @@ const TextInput = ({
 
 	return (
 		<View
-			// className={`${styles.textInputWrapper} ${styleNW} ${
-			// 	startIcon ? 'pl-9' : 'pl-5'
-			// } ${showUnderLine ? 'border-b border-b-patchwork-red-50' : ''} ${
-			// 	textArea ? 'h-32' : 'h-12'
-			// }`}
 			className={cn(
 				styles.textInputWrapper,
 				startIcon ? 'pl-9' : 'pl-5',
 				showUnderLine ? 'border-b border-b-patchwork-red-50' : '',
 				textArea ? 'h-32' : 'h-12',
-				styleNW,
+				extraContainerStyle,
 			)}
 		>
 			{startIcon && (

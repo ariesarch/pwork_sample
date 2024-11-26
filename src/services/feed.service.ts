@@ -1,8 +1,11 @@
 import {
 	AccountDetailFeedQueryKey,
+	ComposeMutationPayload,
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
+	LinkPreviewQueryKey,
+	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
 import { QueryFunctionContext } from '@tanstack/react-query';
@@ -98,15 +101,42 @@ export const getHashtagDetailFeed = async (
 	}
 };
 
-export const fetchLinkPreview = async (link: string) => {
+export const fetchLinkPreview = async (
+	qfContext: QueryFunctionContext<LinkPreviewQueryKey>,
+) => {
 	try {
+		const { url } = qfContext.queryKey[1];
 		const response: AxiosResponse<Pathchwork.LinkPreview> = await axios.get(
 			`https://backend.newsmast.org/api/v1/community_statuses/link_preview`,
 			{
-				params: { url: link },
+				params: { url },
 			},
 		);
 		return response.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const composeStatus = async (params: ComposeMutationPayload) => {
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+			appendApiVersion('statuses', 'v1'),
+			params,
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const repostStatus = async (params: RepostMutationPayload) => {
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+			appendApiVersion(`statuses/${params.id}/reblog`, 'v1'),
+			params,
+		);
+		return resp.data;
 	} catch (error) {
 		return handleError(error);
 	}

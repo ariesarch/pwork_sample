@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useEffect, useReducer } from 'react';
 import { composeReducer, initialState } from './composeStatus.reducer';
 import {
 	ComposeContextType,
 	ComposeStateProviderProps,
 } from './composeStatus.type';
+import { useNavigation } from '@react-navigation/native';
 
 const ComposeContext = createContext<ComposeContextType | undefined>(undefined);
 
@@ -14,6 +15,15 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 		composeReducer,
 		initialState,
 	);
+	const navigation = useNavigation();
+
+	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			composeDispatch({ type: 'clear' });
+		});
+
+		return () => unsubscribe();
+	}, [navigation]);
 
 	return (
 		<ComposeContext.Provider value={{ composeState, composeDispatch }}>

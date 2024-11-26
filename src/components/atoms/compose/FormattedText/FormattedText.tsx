@@ -2,14 +2,14 @@ import LinkifyIt, { Match } from 'linkify-it';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { Linking } from 'react-native';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
-import { debounce, differenceWith, isEqual } from 'lodash';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { isEqual } from 'lodash';
 import {
 	findFirstLink,
 	findMentionChanges,
 	showLinkCardIfNotManuallyClose,
-} from '@/util/helper/helper';
-import { useSSR } from 'react-i18next';
+} from '@/util/helper/compose';
+
 const linkify = new LinkifyIt();
 
 linkify
@@ -54,23 +54,26 @@ linkify
 	});
 
 export const FormattedText = ({ text }: { text: string }) => {
-	const matches = useMemo(() => linkify.match(text), [text]);
+	const matches = useMemo(() => linkify.match(text) || [], [text]);
+	const previousMatches = useRef<Match[]>();
 	const mentionList = matches?.filter(item => item.schema == '@');
 	const prevMentionList = useRef<Match[]>();
-	const mentionRegex = /@(\w+)/g;
 	const { composeState, composeDispatch } = useComposeStatus();
 	const elements = [];
 	let lastIndex = 0;
 
 	useEffect(() => {
-		const firstLink = !!matches ? findFirstLink(matches) : '';
-		const mentionChanges = findMentionChanges(
-			mentionList,
-			prevMentionList.current,
-		);
-		prevMentionList.current = mentionList;
-		dispatchMentionChanges(mentionChanges);
-		dispatchFirstLink(firstLink);
+		if (!isEqual(matches, previousMatches.current)) {
+			const firstLink = !!matches ? findFirstLink(matches) : '';
+			const mentionChanges = findMentionChanges(
+				mentionList,
+				prevMentionList.current,
+			);
+			prevMentionList.current = mentionList;
+			previousMatches.current = matches;
+			dispatchMentionChanges(mentionChanges);
+			dispatchFirstLink(firstLink);
+		}
 	}, [matches]);
 
 	const dispatchFirstLink = (firstLink: string) => {

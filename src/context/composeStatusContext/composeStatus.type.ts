@@ -30,7 +30,8 @@ export type ComposeAction =
 	| { type: 'maxCount'; payload: number }
 	| { type: 'link'; payload: ComposeState['link'] }
 	| { type: 'currentMention'; payload: ComposeState['currentMention'] }
-	| { type: 'replaceMentionText'; payload: ComposeState['text'] };
+	| { type: 'replaceMentionText'; payload: ComposeState['text'] }
+	| { type: 'clear' };
 
 export type ComposeContextType = {
 	composeState: ComposeState;

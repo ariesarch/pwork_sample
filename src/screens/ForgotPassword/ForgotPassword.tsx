@@ -60,7 +60,7 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 								value={value}
 								onBlur={onBlur}
 								maxLength={40}
-								styleNW="mb-6 mt-8"
+								extraContainerStyle="mb-6 mt-8"
 							/>
 							{errors.email && (
 								<ThemeText

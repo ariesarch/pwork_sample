@@ -1,15 +1,14 @@
-import { memo, useCallback } from 'react';
+import { useCallback } from 'react';
 import { View, Pressable, ScrollView } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Header from '@/components/atoms/common/Header/Header';
 import ComposeTextInput from '@/components/atoms/compose/ComposeTextInput/ComposeTextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { RouteProp } from '@react-navigation/native';
-import { BottomStackParamList } from '@/types/navigation';
+import { BottomStackParamList, TabBarScreenProps } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
 import {
@@ -21,24 +20,12 @@ import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/
 
 import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
+import ComposeButton from '@/components/atoms/compose/ComposeButton/ComposeButton';
 
-const RightCustomComponent = memo(({ isRepost }: { isRepost: boolean }) => {
-	return isRepost ? (
-		<ComposeRepostButton onPress={() => {}} />
-	) : (
-		<Pressable className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full">
-			<ThemeText size={'fs_13'} className="leading-5">
-				Post
-			</ThemeText>
-		</Pressable>
-	);
-});
-
-type ComposeScreenRouteProp = RouteProp<BottomStackParamList, 'Compose'>;
-const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
+const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
-
+	const { height } = useGradualAnimation();
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 
 	const renderComposeHeaderTitle = useCallback(() => {
@@ -52,15 +39,11 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 		}
 	}, [composeParams?.type]);
 
-	// ****** Compose Action Toolbar ****** //
-	const { height } = useGradualAnimation();
-
 	const toolbarAnimatedViewStyle = useAnimatedStyle(() => {
 		return {
 			height: Math.abs(height.value),
 		};
 	});
-	// ****** Compose Action Toolbar ****** //
 
 	return (
 		<SafeScreen>
@@ -70,7 +53,13 @@ const Compose = ({ route }: { route: ComposeScreenRouteProp }) => {
 					<Header
 						title={renderComposeHeaderTitle()}
 						leftCustomComponent={<BackButton />}
-						rightCustomComponent={<RightCustomComponent {...{ isRepost }} />}
+						rightCustomComponent={
+							isRepost ? (
+								<ComposeRepostButton id={composeParams.incomingStatus.id} />
+							) : (
+								<ComposeButton />
+							)
+						}
 					/>
 
 					{/* Scrollable Content */}

@@ -74,6 +74,7 @@
 		"react-native-skeleton-placeholder": "^5.2.4",
 		"react-native-svg": "^15.3.0",
 		"react-native-tab-view": "^3.5.2",
+		"react-native-toast-message": "^2.2.1",
 		"react-native-walkthrough-tooltip": "^1.6.0",
 		"react-native-webview": "^13.12.3",
 		"tailwind-merge": "^2.4.0",

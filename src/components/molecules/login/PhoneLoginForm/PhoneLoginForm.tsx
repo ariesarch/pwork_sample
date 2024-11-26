@@ -25,7 +25,7 @@ const PhoneLoginForm = () => {
 				onChangeText={email => setFormData(prev => ({ ...prev, email }))}
 				value={formData.email}
 				maxLength={40}
-				styleNW="mb-6 mt-8"
+				extraContainerStyle="mb-6 mt-8"
 			/>
 
 			<TextInput
@@ -56,7 +56,7 @@ const PhoneLoginForm = () => {
 						/>
 					)
 				}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 			/>
 
 			<View className="flex flex-row justify-end mb-6">

@@ -39,7 +39,7 @@ const SearchFeedHeader = ({ account, showUnderLine = true }: Props) => {
 			</View>
 			<TextInput
 				placeholder="Search ..."
-				styleNW="h-11 w-100 mt-5 mb-2 mx-6"
+				extraContainerStyle="h-11 w-100 mt-5 mb-2 mx-6"
 				startIcon={<SearchIcon />}
 				onPress={() => navigation.navigate('SearchResults')}
 			/>

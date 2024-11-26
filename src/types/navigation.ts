@@ -1,3 +1,4 @@
+import { ChannelProfile } from '@/screens';
 /* eslint-disable @typescript-eslint/no-namespace */
 import {
 	CompositeScreenProps,
@@ -39,6 +40,7 @@ export type BottomStackParamList = {
 				incomingStatus: Pathchwork.Status;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
+	HomeFeed: undefined;
 };
 
 export type HomeStackParamList = {

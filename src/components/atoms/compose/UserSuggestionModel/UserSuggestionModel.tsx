@@ -17,7 +17,7 @@ import BottomSheet, {
 import FastImage from 'react-native-fast-image';
 import ThemeModal from '../../common/Modal/Modal';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
-import { getReplacedMentionText } from '@/util/helper/helper';
+import { getReplacedMentionText } from '@/util/helper/compose';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { text } from 'stream/consumers';
@@ -44,8 +44,6 @@ const UserSuggestionModal = () => {
 	});
 
 	useEffect(() => {
-		console.log('currentMention::', composeState.currentMention);
-		console.log('previousMention::', previousCurrentMentionStr.current);
 		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
 			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
