@@ -5,7 +5,7 @@ const styles = {
 	startIcon:
 		/* tw */ 'absolute left-0 bg-patchwork-light-100 dark:bg-patchwork-dark-50 h-full pt-3 pl-2 rounded-md',
 	endIcon:
-		/* tw */ 'absolute right-0 bg-patchwork-light-100 dark:bg-patchwork-dark-50 h-full pt-4 pr-2 rounded-md',
+		/* tw */ 'absolute right-3 bg-patchwork-light-100 dark:bg-patchwork-dark-50 h-full pt-4 pr-2 rounded-md',
 };
 
 export default styles;
