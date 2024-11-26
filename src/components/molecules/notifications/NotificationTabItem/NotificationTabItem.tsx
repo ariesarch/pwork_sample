@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import {
 	NotificationFavoriteIcon,
@@ -53,7 +53,14 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 			<View className="flex-auto">
 				<View>
 					{/* Notification Account and Types */}
-					<View className="flex-row items-center">
+					<Pressable
+						className="flex-row items-center"
+						onPress={() => {
+							console.log('aa::', account.id);
+
+							navigation.navigate('ProfileOther', { id: account.id });
+						}}
+					>
 						<Image
 							source={{ uri: account.avatar }}
 							className="w-9 h-9 rounded-full mx-[2px]"
@@ -63,7 +70,7 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 								{timelineDateFormatter(dayjs(created_at).fromNow())}
 							</ThemeText>
 						</View>
-					</View>
+					</Pressable>
 					<View>
 						<ThemeText size={'md_16'} className="opacity-80 my-1">
 							{account.display_name} {notificationMessages[type]}

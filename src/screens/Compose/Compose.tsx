@@ -98,13 +98,15 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 									)}
 								</View>
 								{/* Call To Action View */}
-								<View>
-									<Chip
-										startIcon={<LinkIcon {...{ colorScheme }} />}
-										title={ctaText}
-										className="absolute"
-									/>
-								</View>
+								{ctaText && (
+									<View>
+										<Chip
+											startIcon={<LinkIcon {...{ colorScheme }} />}
+											title={ctaText}
+											className="absolute"
+										/>
+									</View>
+								)}
 								{/* Call To Action View */}
 							</View>
 						)}

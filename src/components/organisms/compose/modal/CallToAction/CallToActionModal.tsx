@@ -49,12 +49,13 @@ const CallToActionModal = ({ visible, onClose }: CallToActionModalProps) => {
 
 				<TextInput
 					placeholder="Enter your button text here"
-					styleNW="h-11 my-3"
+					extraInputStyle="h-11 my-3"
 					onChangeText={setButtonText}
 				/>
+				<View className="my-2" />
 				<TextInput
 					placeholder="Enter link URL here"
-					styleNW="h-11 my-3"
+					extraInputStyle="h-11 my-3"
 					endIcon={<LinkIcon {...{ colorScheme }} />}
 				/>
 

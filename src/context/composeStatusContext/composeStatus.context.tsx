@@ -5,6 +5,8 @@ import {
 	ComposeStateProviderProps,
 } from './composeStatus.type';
 import { useNavigation } from '@react-navigation/native';
+import { useCTAactions } from '@/store/compose/callToAction/callToActionStore';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 
 const ComposeContext = createContext<ComposeContextType | undefined>(undefined);
 
@@ -16,10 +18,14 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 		initialState,
 	);
 	const navigation = useNavigation();
+	const { onChangeCTAText } = useCTAactions();
+	const { onSelectMedia } = useManageAttachmentActions();
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			composeDispatch({ type: 'clear' });
+			onChangeCTAText('');
+			onSelectMedia([]);
 		});
 
 		return () => unsubscribe();
