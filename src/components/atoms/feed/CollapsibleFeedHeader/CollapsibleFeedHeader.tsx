@@ -115,7 +115,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 						/>
 						<SocialSection
 							isMyAccount={props.is_my_account}
-							fields={props.profile.fields}
+							fields={props.profile?.fields}
 							onPressEditIcon={props.onPressEditIcon}
 							onPressPlusIcon={props.onPressPlusIcon}
 						/>
