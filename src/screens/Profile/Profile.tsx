@@ -84,7 +84,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		username: string,
 	) => {
 		setSocialLinkAction({ visible: false, formType: 'add' });
-		if (timelineList.length > 0) {
+		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
 				fields_attributes: {
 					0: {
@@ -92,81 +92,69 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 						value:
 							link.title === 'Twitter' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Twitter',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Twitter')?.value ||
+								  '',
 					},
 					1: {
 						name: 'Instagram',
 						value:
 							link.title === 'Instagram' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Instagram',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Instagram')?.value ||
+								  '',
 					},
 					2: {
 						name: 'Linkedin',
 						value:
 							link.title === 'Linkedin' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Linkedin',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Linkedin')?.value ||
+								  '',
 					},
 					3: {
 						name: 'Youtube',
 						value:
 							link.title === 'Youtube' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Youtube',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Youtube')?.value ||
+								  '',
 					},
 					4: {
 						name: 'Facebook',
 						value:
 							link.title === 'Facebook' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Facebook',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Facebook')?.value ||
+								  '',
 					},
 					5: {
 						name: 'Reddit',
 						value:
 							link.title === 'Reddit' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Reddit',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Reddit')?.value || '',
 					},
 					6: {
 						name: 'TikTok',
 						value:
 							link.title === 'TikTok' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'TikTok',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'TikTok')?.value || '',
 					},
 					7: {
 						name: 'Twitch',
 						value:
 							link.title === 'Twitch' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Twitch',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Twitch')?.value || '',
 					},
 					8: {
 						name: 'Patreon',
 						value:
 							link.title === 'Patreon' && username
 								? username
-								: timelineList[0]?.account?.fields?.find(
-										v => v.name === 'Patreon',
-								  )?.value || '',
+								: userInfo?.fields?.find(v => v.name === 'Patreon')?.value ||
+								  '',
 					},
 				},
 			};
