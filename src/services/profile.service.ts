@@ -89,7 +89,6 @@ export const updateProfile = async (
 ): Promise<Pathchwork.Account> => {
 	try {
 		const formData = new FormData();
-
 		if (params.avatar && typeof params.avatar !== 'string') {
 			const avatar = {
 				uri: params.avatar?.uri,
@@ -98,7 +97,6 @@ export const updateProfile = async (
 			};
 			formData.append('avatar', avatar);
 		}
-
 		if (params.header && typeof params.header !== 'string') {
 			const header = {
 				uri: params.header?.uri,
@@ -107,10 +105,12 @@ export const updateProfile = async (
 			};
 			formData.append('header', header);
 		}
-
-		formData.append('display_name', params.display_name);
-		formData.append('note', params.note);
-
+		if (params.display_name) {
+			formData.append('display_name', params.display_name);
+		}
+		if (params.note) {
+			formData.append('note', params.note);
+		}
 		if (params.fields_attributes) {
 			formData.append(
 				'fields_attributes[0][name]',

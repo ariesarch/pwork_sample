@@ -11026,7 +11026,7 @@ __metadata:
     react-native-gesture-handler: ^2.16.0
     react-native-image-picker: ^7.1.2
     react-native-keyboard-aware-scroll-view: ^0.9.5
-    react-native-keyboard-controller: ^1.14.4
+    react-native-keyboard-controller: ^1.14.5
     react-native-linear-gradient: ^2.8.3
     react-native-material-menu: ^2.0.0
     react-native-mmkv: ^2.12.2
@@ -11781,16 +11781,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-keyboard-controller@npm:^1.14.4":
-  version: 1.14.4
-  resolution: "react-native-keyboard-controller@npm:1.14.4"
+"react-native-keyboard-controller@npm:^1.14.5":
+  version: 1.14.5
+  resolution: "react-native-keyboard-controller@npm:1.14.5"
   dependencies:
     react-native-is-edge-to-edge: ^1.1.6
   peerDependencies:
     react: "*"
     react-native: "*"
     react-native-reanimated: ">=3.0.0"
-  checksum: 373252bc62b4d37f3d8a9fea2dfb0f71a973b17c1eda2419c5f607a2b0e9eb02a5fadbfdd0abc0ccf49b7fd657f2f25a65913b2a390929e862e4760487ac44a2
+  checksum: 324bfa0f2b132d142bb84b8cf9682a7064746b2eb461f83ebf62ee12f8382daf7cbc58a958b6ec9a6dd4858ec98473cce846ffd88056c26de20930fd1f2b1d49
   languageName: node
   linkType: hard
 

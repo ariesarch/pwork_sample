@@ -85,25 +85,19 @@ const SocialLink: React.FC<Props> = ({
 		icon: Icons[item.name],
 		title: item.name,
 	}));
+
 	const links =
 		formType === 'edit'
 			? LinksToEdit
-			: SOCIAL_MEDIA_LINKS.filter(link => {
-					const fieldValue = data?.find(
-						field => field.name === link.title,
-					)?.value;
-					return !fieldValue || !fieldValue.includes(link.title.toLowerCase());
-			  });
+			: SOCIAL_MEDIA_LINKS.filter(
+					link => !data?.some(item => item.name === link.title),
+			  );
+
 	useEffect(() => {
 		if (formType === 'edit' && data && selectedLink) {
 			const relatedData = data.find(item => item.name === selectedLink.title);
-			if (relatedData && relatedData.value) {
-				if (selectedLink.title === 'Twitch') {
-					setUsername(relatedData.value?.split('.tv/')[1].split('"')[0]);
-				} else {
-					setUsername(relatedData.value?.split('.com/')[1].split('"')[0]);
-				}
-				console.log(relatedData.value);
+			if (relatedData) {
+				setUsername(relatedData.value);
 			}
 		}
 	}, [formType, data, selectedLink]);
@@ -128,7 +122,7 @@ const SocialLink: React.FC<Props> = ({
 							colorScheme={'dark'}
 						/>
 					)}
-					<CloseIcon onPress={onClose} />
+					<CloseIcon className="p-1" onPress={onClose} />
 				</View>
 				<ThemeText size="md_16" className="self-center">
 					{formType === 'edit' ? 'Edit Link' : 'Add new link'}
@@ -153,10 +147,6 @@ const SocialLink: React.FC<Props> = ({
 							onPress={() => {
 								if (username) {
 									onPressAdd(selectedLink, username);
-									setTimeout(() => {
-										setUsername('');
-										setSelectedLink(null);
-									}, 1000);
 								}
 							}}
 							className=" mt-5 w-full"
@@ -168,7 +158,7 @@ const SocialLink: React.FC<Props> = ({
 					</View>
 				) : (
 					<View className="flex-row flex-wrap mt-3">
-						{links.map((link, index) => (
+						{links?.map((link, index) => (
 							<Chip
 								variant={'white'}
 								key={index}
