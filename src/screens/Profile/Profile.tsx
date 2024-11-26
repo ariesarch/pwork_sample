@@ -306,7 +306,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									handleAddSocialLink(link, username)
 								}
 								formType={socialLinkAction.formType}
-								data={timelineList[0]?.account?.fields?.filter(v => v.value)}
+								data={userInfo?.fields?.filter(v => v.value)}
 							/>
 						</>
 					) : (
