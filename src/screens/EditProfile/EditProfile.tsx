@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -16,16 +16,12 @@ import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { queryClient } from '@/App';
 import { DEFAULT_API_URL } from '@/util/constant';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
-
 import { useProfileMediaStore } from '@/store/profile/useProfileMediaStore';
 import ManageAttachmentModal from '@/components/organisms/profile/ManageAttachment/MakeAttachmentModal';
 import { ComposeCameraIcon } from '@/util/svg/icon.compose';
-import { Flow } from 'react-native-animated-spinkit';
-import customColor from '@/util/constant/color';
-import {
-	KeyboardAvoidingView,
-	KeyboardAwareScrollView,
-} from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import Toast from 'react-native-toast-message';
+import LoadingModal from '@/components/atoms/common/LoadingModal/LoadingModal';
 import { cleanText } from '@/util/helper/cleanText';
 
 type ProfileType = {
@@ -42,15 +38,15 @@ const EditProfile = () => {
 	} = useAuthStore();
 	const navigation = useNavigation();
 	const [profile, setProfile] = useState<ProfileType>();
-
 	const { header, avatar, actions } = useProfileMediaStore();
+
 	useEffect(() => {
 		if (userInfo) {
 			setProfile({
 				display_name: userInfo.display_name,
-				bio: cleanText(userInfo?.note),
-				avatar: userInfo.avatar,
-				header: userInfo.header,
+				bio: cleanText(userInfo?.note) || '',
+				avatar: userInfo.avatar || '',
+				header: userInfo.header || '',
 			});
 		}
 	}, [userInfo]);
@@ -67,7 +63,19 @@ const EditProfile = () => {
 				],
 			});
 			setUserInfo(response);
-			navigation.goBack();
+			Toast.show({
+				text1: 'Your profile has been updated successfully!',
+				position: 'bottom',
+				visibilityTime: 1000,
+				bottomOffset: 10,
+				onHide: () =>
+					navigation.navigate('Index', {
+						screen: 'Home',
+						params: {
+							screen: 'HomeFeed',
+						},
+					}),
+			});
 		},
 		onError: error => {
 			handleError(error);
@@ -75,12 +83,16 @@ const EditProfile = () => {
 	});
 	const handleUpdateProfile = async () => {
 		try {
-			const payload: UpdateProfilePayload = {
+			let payload: UpdateProfilePayload = {
 				display_name: profile?.display_name,
 				note: profile?.bio,
-				avatar: avatar.selectedMedia.length > 0 ? avatar.selectedMedia[0] : '',
-				header: header.selectedMedia.length > 0 ? header.selectedMedia[0] : '',
 			};
+			if (avatar?.selectedMedia?.length > 0) {
+				payload.avatar = avatar.selectedMedia[0];
+			}
+			if (header?.selectedMedia?.length > 0) {
+				payload.header = header.selectedMedia[0];
+			}
 			await mutateAsync(payload);
 		} catch (error) {
 			handleError(error);
@@ -88,82 +100,84 @@ const EditProfile = () => {
 	};
 
 	if (!userInfo) return null;
-
 	return (
 		<SafeScreen>
 			<Header
 				hideUnderline
-				title="Edit Profile"
-				leftCustomComponent={<BackButton />}
+				title="Edit Your Profile"
+				leftCustomComponent={
+					<BackButton
+						customOnPress={() => {
+							actions.onSelectMedia('header', []);
+							actions.onSelectMedia('avatar', []);
+							navigation.goBack();
+						}}
+					/>
+				}
 			/>
-			{isPending ? (
-				<View
-					style={{
-						backgroundColor: customColor['patchwork-dark-100'],
-						flex: 1,
-						alignItems: 'center',
-						justifyContent: 'center',
+			<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
+				{/* Header Media Modal */}
+				<ThemeModal
+					hasNotch={false}
+					openThemeModal={header.mediaModal}
+					onCloseThemeModal={() => {
+						actions.onToggleMediaModal('header');
+						actions.onSelectMedia('header', []);
 					}}
+					modalPositionStyle={{
+						justifyContent: 'flex-end',
+					}}
+					containerStyle={{ borderRadius: 0 }}
 				>
-					<Flow size={50} color={customColor['patchwork-red-50']} />
-				</View>
-			) : (
-				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
-					{/* Header Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={header.mediaModal}
-						onCloseThemeModal={() => actions.onToggleMediaModal('header')}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
+					<ManageAttachmentModal
+						type="header"
+						onToggleMediaModal={() => actions.onToggleMediaModal('header')}
+					/>
+				</ThemeModal>
+
+				{/* Avatar Media Modal */}
+				<ThemeModal
+					hasNotch={false}
+					openThemeModal={avatar.mediaModal}
+					onCloseThemeModal={() => {
+						actions.onToggleMediaModal('avatar');
+						actions.onSelectMedia('avatar', []);
+					}}
+					modalPositionStyle={{
+						justifyContent: 'flex-end',
+					}}
+					containerStyle={{ borderRadius: 0 }}
+				>
+					<ManageAttachmentModal
+						type="avatar"
+						onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
+					/>
+				</ThemeModal>
+
+				{/* Header Image */}
+				<Pressable onPress={() => actions.onToggleMediaModal('header')}>
+					<FastImage
+						className="bg-patchwork-dark-50 h-[100]"
+						source={{
+							uri: header.selectedMedia[0]?.uri || profile?.header,
+							priority: FastImage.priority.normal,
 						}}
-						containerStyle={{ borderRadius: 0 }}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				</Pressable>
+
+				{/* Avatar Image */}
+				<View className="mx-auto">
+					<Pressable
+						className="p-1 "
+						onPress={() => actions.onToggleMediaModal('avatar')}
 					>
-						<ManageAttachmentModal
-							type="header"
-							onToggleMediaModal={() => actions.onToggleMediaModal('header')}
-						/>
-					</ThemeModal>
-
-					{/* Avatar Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={avatar.mediaModal}
-						onCloseThemeModal={() => actions.onToggleMediaModal('avatar')}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
-						}}
-						containerStyle={{ borderRadius: 0 }}
-					>
-						<ManageAttachmentModal
-							type="avatar"
-							onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
-						/>
-					</ThemeModal>
-
-					{/* Header Image */}
-					<Pressable onPress={() => actions.onToggleMediaModal('header')}>
-						<FastImage
-							className="bg-patchwork-dark-50 h-[140]"
-							source={{
-								uri: header.selectedMedia[0]?.uri || profile?.header,
-								priority: FastImage.priority.normal,
-							}}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
-					</Pressable>
-
-					{/* Avatar Image */}
-					<View className="mx-auto">
-						<Pressable
-							className="p-1 z-10 absolute -bottom-1 -right-1 rounded-full bg-slate-50"
-							onPress={() => actions.onToggleMediaModal('avatar')}
-						>
+						<View className="z-10 absolute bottom-2 right-2 rounded-full bg-slate-50 p-1">
 							<ComposeCameraIcon className="" />
-						</Pressable>
+						</View>
 						<FastImage
 							className={cn(
-								'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50 border-patchwork-dark-100 border-4 rounded-full',
+								'w-[100] h-[100] mt-[-25] bg-patchwork-dark-50 border-patchwork-dark-100 border-4 rounded-full',
 							)}
 							source={{
 								uri: avatar.selectedMedia[0]?.uri || profile?.avatar,
@@ -171,51 +185,48 @@ const EditProfile = () => {
 							}}
 							resizeMode={FastImage.resizeMode.cover}
 						/>
-					</View>
-					{/* Profile Form */}
-					<KeyboardAwareScrollView
-						contentContainerStyle={{ flex: 1 }}
-						className="flex-1 mx-3 -mt-5"
-					>
-						<ThemeText variant={'textOrange'} size={'md_16'}>
-							Public Info
-						</ThemeText>
-						<ThemeText className="mt-1" variant={'textOrange'}>
-							Display Name
-						</ThemeText>
-						<TextInput
-							value={profile?.display_name || ''}
-							onChangeText={name =>
-								setProfile(prev => ({
-									...prev,
-									display_name: name,
-								}))
-							}
-						/>
-						<ThemeText className="mt-1" variant={'textOrange'}>
-							Bio
-						</ThemeText>
-						<TextInput
-							multiline
-							textArea
-							value={profile?.bio || ''}
-							onChangeText={bio =>
-								setProfile(prev => ({
-									...prev,
-									bio: bio,
-								}))
-							}
-						/>
-						<Button
-							disabled={!profile?.display_name}
-							className="absolute bottom-0 left-0 right-0 mb-5"
-							onPress={handleUpdateProfile}
-						>
-							<ThemeText>Save</ThemeText>
-						</Button>
-					</KeyboardAwareScrollView>
+					</Pressable>
 				</View>
-			)}
+				<ThemeText className="mx-auto">{userInfo.display_name}</ThemeText>
+				{/* Profile Form */}
+				<KeyboardAwareScrollView
+					contentContainerStyle={{ flex: 1 }}
+					className="flex-1 mx-7"
+				>
+					<ThemeText size={'md_16'}>Public Info</ThemeText>
+					<ThemeText className="mt-3 mb-1">Display Name</ThemeText>
+					<TextInput
+						placeholder="Your display name"
+						value={profile?.display_name || ''}
+						onChangeText={name =>
+							setProfile(prev => ({
+								...prev,
+								display_name: name,
+							}))
+						}
+					/>
+					<ThemeText className="mt-2 mb-1">Bio</ThemeText>
+					<TextInput
+						multiline
+						textArea
+						value={profile?.bio || ''}
+						onChangeText={bio =>
+							setProfile(prev => ({
+								...prev,
+								bio: bio,
+							}))
+						}
+					/>
+					<Button
+						className="absolute bottom-0 left-0 right-0 mb-5"
+						onPress={handleUpdateProfile}
+					>
+						<ThemeText>Save</ThemeText>
+					</Button>
+				</KeyboardAwareScrollView>
+			</View>
+			<LoadingModal isVisible={isPending} />
+			<Toast />
 		</SafeScreen>
 	);
 };

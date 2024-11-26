@@ -85,20 +85,19 @@ const SocialLink: React.FC<Props> = ({
 		icon: Icons[item.name],
 		title: item.name,
 	}));
+
 	const links =
 		formType === 'edit'
 			? LinksToEdit
-			: SOCIAL_MEDIA_LINKS.filter(link => {
-					const fieldValue = data?.find(
-						field => field.name === link.title,
-					)?.value;
-					return !fieldValue || !fieldValue.includes(link.title.toLowerCase());
-			  });
+			: SOCIAL_MEDIA_LINKS.filter(
+					link => !data?.some(item => item.name === link.title),
+			  );
+
 	useEffect(() => {
 		if (formType === 'edit' && data && selectedLink) {
 			const relatedData = data.find(item => item.name === selectedLink.title);
 			if (relatedData) {
-				setUsername(relatedData.value.split('.com/')[1].split('"')[0]);
+				setUsername(relatedData.value);
 			}
 		}
 	}, [formType, data, selectedLink]);
@@ -123,7 +122,7 @@ const SocialLink: React.FC<Props> = ({
 							colorScheme={'dark'}
 						/>
 					)}
-					<CloseIcon onPress={onClose} />
+					<CloseIcon className="p-1" onPress={onClose} />
 				</View>
 				<ThemeText size="md_16" className="self-center">
 					{formType === 'edit' ? 'Edit Link' : 'Add new link'}
@@ -146,7 +145,9 @@ const SocialLink: React.FC<Props> = ({
 						/>
 						<Button
 							onPress={() => {
-								if (username) onPressAdd(selectedLink, username);
+								if (username) {
+									onPressAdd(selectedLink, username);
+								}
 							}}
 							className=" mt-5 w-full"
 							variant={'outline'}

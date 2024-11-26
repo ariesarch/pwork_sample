@@ -61,32 +61,28 @@ const SocialSection = ({
 				// Default: <GlobeIcon {...{ colorScheme }} />,
 			};
 
-			const getTitle = (name: string, value: string) => {
-				if (name === 'Reddit') {
-					return `${value?.split('/u/')[1]?.split('"')[0]}`;
-				}
-				if (name === 'Email' || name === 'Website') {
-					return value;
-				}
-				if (name === 'Blog') {
-					return value?.split('//')[1];
-				}
-				return value?.split('.com/')[1]?.split('"')[0];
-			};
-
 			const Icon = SocialIcons[name];
 
-			const decodedStr = value
-				.replace(/&quot;/g, '"')
-				.replace(/&lt;/g, '<')
-				.replace(/&gt;/g, '>');
-			const hrefPart = decodedStr?.split('href="')[1];
-			const hrefValue = hrefPart?.split('"')[0];
+			let hrefValue = `https://www.${name.toLocaleLowerCase()}.com/${value}`;
+			if (name === 'Reddit') {
+				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/u/${value}`;
+			}
+			if (name === 'Linkedin') {
+				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/in/${value}`;
+			}
+
+			if (name === 'Youtube' || name === 'TikTok') {
+				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/@${value}`;
+			}
+			if (name === 'Twitch') {
+				hrefValue = `https://www.${name.toLocaleLowerCase()}.tv/${value}`;
+			}
 
 			return (
 				<Chip
+					className="mx-1"
 					startIcon={Icon}
-					title={getTitle(name, value)}
+					title={value}
 					onPress={() => Linking.openURL(hrefValue)}
 				/>
 			);
@@ -117,9 +113,7 @@ const SocialSection = ({
 					</>
 				)}
 				{fields?.map((field, i) => (
-					<View className="mr-1" key={field.value + i}>
-						{renderSocialIcons(field)}
-					</View>
+					<View key={field.name}>{renderSocialIcons(field)}</View>
 				))}
 			</ScrollView>
 		);
@@ -131,7 +125,7 @@ const SocialSection = ({
 				<ThemeText className="ml-1" size="fs_13">
 					Links{' '}
 					<ThemeText variant="textGrey" size="fs_13">
-						({fields?.length})
+						({fields?.filter(v => v.value)?.length})
 					</ThemeText>
 				</ThemeText>
 			</View>

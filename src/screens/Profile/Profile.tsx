@@ -24,16 +24,14 @@ import customColor from '@/util/constant/color';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 
 import { SocialMediaLink } from '@/components/organisms/profile/SocialLink/SocialLink';
-import { updateProfile } from '@/services/profile.service';
 import { useAuthStore } from '@/store/auth/authStore';
-import { DEFAULT_API_URL, HTTP_ERROR_MESSAGE } from '@/util/constant';
+import { DEFAULT_API_URL } from '@/util/constant';
 import { CircleFade, Flow } from 'react-native-animated-spinkit';
 import SocialLink from '@/components/organisms/profile/SocialLink/SocialLink';
 import { useProfileMutation } from '@/hooks/mutations/profile.mutation';
 import { queryClient } from '@/App';
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
-import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -45,12 +43,10 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
-	const { id } = route.params;
 	const domain_name = useSelectedDomain();
 	const {
 		userInfo,
 		actions: { setUserInfo },
-		access_token,
 	} = useAuthStore();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
@@ -58,150 +54,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		'patchwork-dark-100',
 	);
 
-	const handleAddSocialLink = async (
-		link: SocialMediaLink,
-		username: string,
-	) => {
-		setSocialLinkAction({ visible: false, formType: 'add' });
-		if (userInfo && access_token) {
-			const updatedProfile: UpdateProfilePayload = {
-				display_name: userInfo.display_name,
-				note: userInfo.note,
-				avatar: userInfo.avatar,
-				header: userInfo.header,
-				locked: userInfo.locked,
-				bot: userInfo.bot,
-				discoverable: userInfo.discoverable,
-				hide_collections: userInfo.hide_collections,
-				indexable: false,
-				fields_attributes: {
-					0: {
-						name: 'Twitter',
-						value:
-							link.title === 'Twitter' && username
-								? `https://twitter.com/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Twitter')
-										?.value?.includes('twitter')
-								? userInfo.fields?.find(v => v.name === 'Twitter')?.value
-								: '',
-					},
-					1: {
-						name: 'Instagram',
-						value:
-							link.title === 'Instagram' && username
-								? `https://instagram.com/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Instagram')
-										?.value?.includes('instagram')
-								? userInfo.fields?.find(v => v.name === 'Instagram')?.value
-								: '',
-					},
-					2: {
-						name: 'Linkedin',
-						value:
-							link.title === 'Linkedin' && username
-								? `https://www.linkedin.com/in/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Linkedin')
-										?.value?.includes('linkedin')
-								? userInfo.fields?.find(v => v.name === 'Linkedin')?.value
-								: '',
-					},
-					3: {
-						name: 'Youtube',
-						value:
-							link.title === 'Youtube' && username
-								? `https://www.youtube.com/@${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Youtube')
-										?.value?.includes('youtube')
-								? userInfo.fields?.find(v => v.name === 'Youtube')?.value
-								: '',
-					},
-					4: {
-						name: 'Facebook',
-						value:
-							link.title === 'Facebook' && username
-								? `https://facebook.com/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Facebook')
-										?.value?.includes('facebook')
-								? userInfo.fields?.find(v => v.name === 'Facebook')?.value
-								: '',
-					},
-					5: {
-						name: 'Reddit',
-						value:
-							link.title === 'Reddit' && username
-								? `https://reddit.com/u/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Reddit')
-										?.value?.includes('reddit')
-								? userInfo.fields?.find(v => v.name === 'Reddit')?.value
-								: '',
-					},
-					6: {
-						name: 'TikTok',
-						value:
-							link.title === 'TikTok' && username
-								? `https://tiktok.com/@${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'TikTok')
-										?.value?.includes('tiktok')
-								? userInfo.fields?.find(v => v.name === 'TikTok')?.value
-								: '',
-					},
-					7: {
-						name: 'Twitch',
-						value:
-							link.title === 'Twitch' && username
-								? `https://twitch.tv/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Twitch')
-										?.value?.includes('twitch')
-								? userInfo.fields?.find(v => v.name === 'Twitch')?.value
-								: '',
-					},
-					8: {
-						name: 'Patreon',
-						value:
-							link.title === 'Patreon' && username
-								? `https://patreon.com/${username}`
-								: userInfo.fields
-										?.find(v => v.name === 'Patreon')
-										?.value?.includes('patreon')
-								? userInfo.fields?.find(v => v.name === 'Patreon')?.value
-								: '',
-					},
-				},
-				source: {
-					privacy: '',
-					sensitive: false,
-					language: '',
-				},
-			};
-			mutateAsync(updatedProfile);
-		}
-	};
-
-	const { mutateAsync, isPending } = useProfileMutation({
-		onSuccess: async response => {
-			queryClient.invalidateQueries({
-				queryKey: [
-					'account-detail-feed',
-					{
-						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
-						account_id: userInfo?.id,
-					},
-				],
-			});
-			setUserInfo(response);
-		},
-		onError: error => {
-			handleError(error);
-		},
-	});
 	const {
 		data: timeline,
 		hasNextPage,
@@ -226,6 +78,119 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 			return fetchNextPage();
 		}
 	};
+
+	const handleAddSocialLink = async (
+		link: SocialMediaLink,
+		username: string,
+	) => {
+		setSocialLinkAction({ visible: false, formType: 'add' });
+		if (timelineList.length > 0) {
+			const updatedProfile: UpdateProfilePayload = {
+				fields_attributes: {
+					0: {
+						name: 'Twitter',
+						value:
+							link.title === 'Twitter' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Twitter',
+								  )?.value || '',
+					},
+					1: {
+						name: 'Instagram',
+						value:
+							link.title === 'Instagram' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Instagram',
+								  )?.value || '',
+					},
+					2: {
+						name: 'Linkedin',
+						value:
+							link.title === 'Linkedin' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Linkedin',
+								  )?.value || '',
+					},
+					3: {
+						name: 'Youtube',
+						value:
+							link.title === 'Youtube' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Youtube',
+								  )?.value || '',
+					},
+					4: {
+						name: 'Facebook',
+						value:
+							link.title === 'Facebook' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Facebook',
+								  )?.value || '',
+					},
+					5: {
+						name: 'Reddit',
+						value:
+							link.title === 'Reddit' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Reddit',
+								  )?.value || '',
+					},
+					6: {
+						name: 'TikTok',
+						value:
+							link.title === 'TikTok' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'TikTok',
+								  )?.value || '',
+					},
+					7: {
+						name: 'Twitch',
+						value:
+							link.title === 'Twitch' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Twitch',
+								  )?.value || '',
+					},
+					8: {
+						name: 'Patreon',
+						value:
+							link.title === 'Patreon' && username
+								? username
+								: timelineList[0]?.account?.fields?.find(
+										v => v.name === 'Patreon',
+								  )?.value || '',
+					},
+				},
+			};
+			mutateAsync(updatedProfile);
+		}
+	};
+	const { mutateAsync, isPending } = useProfileMutation({
+		onSuccess: async response => {
+			queryClient.invalidateQueries({
+				queryKey: [
+					'account-detail-feed',
+					{
+						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
+						account_id: userInfo?.id,
+					},
+				],
+			});
+			setUserInfo(response);
+		},
+		onError: error => {
+			handleError(error);
+		},
+	});
+
 	return (
 		<ScrollProvider>
 			{isPending ? (
@@ -241,9 +206,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				</View>
 			) : (
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-					{userInfo && timeline ? (
+					{timeline ? (
 						<>
-							<FeedTitleHeader title={'Severus'} />
+							<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
 							<Tabs.Container
 								renderHeader={() => {
 									return (
@@ -353,7 +318,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									handleAddSocialLink(link, username)
 								}
 								formType={socialLinkAction.formType}
-								data={userInfo.fields.filter(v => v.value)}
+								data={timelineList[0]?.account?.fields?.filter(v => v.value)}
 							/>
 						</>
 					) : (
