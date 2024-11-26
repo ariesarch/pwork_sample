@@ -158,7 +158,7 @@ const SocialLink: React.FC<Props> = ({
 					</View>
 				) : (
 					<View className="flex-row flex-wrap mt-3">
-						{links.map((link, index) => (
+						{links?.map((link, index) => (
 							<Chip
 								variant={'white'}
 								key={index}

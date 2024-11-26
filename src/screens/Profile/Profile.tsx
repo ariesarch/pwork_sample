@@ -190,7 +190,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 			handleError(error);
 		},
 	});
-
 	return (
 		<ScrollProvider>
 			{isPending ? (
@@ -206,7 +205,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				</View>
 			) : (
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-					{timeline ? (
+					{timeline && userInfo ? (
 						<>
 							<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
 							<Tabs.Container
@@ -215,7 +214,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										<CollapsibleFeedHeader
 											type="Profile"
 											is_my_account={true}
-											profile={timelineList[0]?.account}
+											// profile={timelineList[0]?.account}
+											profile={userInfo}
 											onPressPlusIcon={() =>
 												setSocialLinkAction({ visible: true, formType: 'add' })
 											}
