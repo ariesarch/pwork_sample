@@ -13,7 +13,7 @@ import { flattenPages } from '@/util/helper/timeline';
 import { FlashList } from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, RefreshControl, View } from 'react-native';
 import { CircleFade, Flow } from 'react-native-animated-spinkit';
 
 const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
@@ -27,15 +27,17 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
+		refetch: refetchHashTagFeed,
 	} = useHashtagDetailFeedQuery({
 		domain_name,
 		hashtag,
 	});
 
-	const { data: hashtagDetail } = useHashTagDetailQuery({
-		domain_name,
-		hashtag,
-	});
+	const { data: hashtagDetail, refetch: refetchHashTagDetail } =
+		useHashTagDetailQuery({
+			domain_name,
+			hashtag,
+		});
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage) {
@@ -61,6 +63,11 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 			return hashtag.uses;
 		}
 		return 0;
+	};
+
+	const handleRefresh = () => {
+		refetchHashTagFeed();
+		refetchHashTagDetail();
 	};
 
 	return (
@@ -116,6 +123,13 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 							</View>
 						);
 					}}
+					refreshControl={
+						<RefreshControl
+							refreshing={isFetching}
+							tintColor={customColor['patchwork-light-900']}
+							onRefresh={handleRefresh}
+						/>
+					}
 					estimatedItemSize={500}
 					estimatedListSize={{
 						height: Dimensions.get('screen').height,

@@ -31,6 +31,7 @@ import customColor from '@/util/constant/color';
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
+import { RefreshControl } from 'react-native';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -54,6 +55,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		data: timeline,
 		hasNextPage,
 		fetchNextPage,
+		refetch: refreshProfileTimeline,
 		isFetching,
 	} = useAccountDetailFeed(queryParams);
 
@@ -70,6 +72,10 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		if (hasNextPage && activeTab === 0) {
 			return fetchNextPage();
 		}
+	};
+
+	const handleRefresh = () => {
+		refreshProfileTimeline();
 	};
 
 	return (
@@ -156,6 +162,13 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										) : (
 											<></>
 										)
+									}
+									refreshControl={
+										<RefreshControl
+											refreshing={isFetching}
+											tintColor={customColor['patchwork-light-900']}
+											onRefresh={handleRefresh}
+										/>
 									}
 								/>
 							</Tabs.Tab>

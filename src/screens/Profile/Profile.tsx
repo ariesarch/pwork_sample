@@ -1,5 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { View, TouchableOpacity, Platform, Dimensions } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	Platform,
+	Dimensions,
+	RefreshControl,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
@@ -59,6 +65,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
+		refetch: refetchProfileFeed,
 	} = useAccountDetailFeed({
 		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 		account_id: userInfo?.id!,
@@ -161,6 +168,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 			mutateAsync(updatedProfile);
 		}
 	};
+
 	const { mutateAsync, isPending } = useProfileMutation({
 		onSuccess: async response => {
 			queryClient.invalidateQueries({
@@ -178,6 +186,11 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 			handleError(error);
 		},
 	});
+
+	const handleRefresh = () => {
+		refetchProfileFeed();
+	};
+
 	return (
 		<ScrollProvider>
 			{isPending ? (
@@ -270,6 +283,14 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 												/>
 											);
 										}}
+										refreshControl={
+											<RefreshControl
+												className="mt-1"
+												refreshing={isFetching}
+												tintColor={customColor['patchwork-light-900']}
+												onRefresh={handleRefresh}
+											/>
+										}
 										estimatedItemSize={500}
 										estimatedListSize={{
 											height: Dimensions.get('screen').height,

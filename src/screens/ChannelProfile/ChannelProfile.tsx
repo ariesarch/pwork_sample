@@ -6,6 +6,7 @@ import {
 	Dimensions,
 	NativeSyntheticEvent,
 	NativeScrollEvent,
+	RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
@@ -78,11 +79,13 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 		hasNextPage,
 		fetchNextPage,
 		isFetching,
+		refetch: refetchChannelFeed,
 	} = useGetChannelFeed(queryParams);
 
-	const { data: channelAbout } = useGetChannelAbout(domain_name);
+	const { data: channelAbout, refetch: refetchChannelAbout } =
+		useGetChannelAbout(domain_name);
 
-	const { data: chanelAdditionalInfo } =
+	const { data: chanelAdditionalInfo, refetch: refetchAdditionalInfo } =
 		useGetChannelAdditionalInfo(domain_name);
 
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
@@ -112,6 +115,12 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			}
 		}, [barColor]),
 	);
+
+	const handleRefresh = () => {
+		refetchChannelFeed();
+		refetchChannelAbout();
+		refetchAdditionalInfo();
+	};
 
 	return (
 		<ScrollProvider>
@@ -182,6 +191,13 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 											status={item}
 										/>
 									)}
+									refreshControl={
+										<RefreshControl
+											refreshing={isFetching}
+											tintColor={customColor['patchwork-light-900']}
+											onRefresh={handleRefresh}
+										/>
+									}
 									estimatedItemSize={500}
 									estimatedListSize={{
 										height: Dimensions.get('screen').height,
