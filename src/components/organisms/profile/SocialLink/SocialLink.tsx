@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { BackIcon, CloseIcon } from '@/util/svg/icon.common';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Pressable, View } from 'react-native';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import {
 	TwitterIcon,
@@ -24,6 +24,7 @@ import {
 } from '@/util/svg/icon.profile';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
+import BackButton from '@/components/atoms/common/BackButton/BackButton';
 
 const { height } = Dimensions.get('window');
 
@@ -114,15 +115,25 @@ const SocialLink: React.FC<Props> = ({
 			<>
 				<View className="flex-row justify-between items-center">
 					{selectedLink && (
-						<BackIcon
-							onPress={() => {
+						<BackButton
+							extraClass="border-0"
+							customOnPress={() => {
 								setSelectedLink(null);
 								setUsername(null);
+								onClose();
 							}}
-							colorScheme={'dark'}
 						/>
 					)}
-					<CloseIcon className="p-1" onPress={onClose} />
+					<Pressable
+						className="h-10 w-10 bg-amber-600 items-center justify-center rounded-full"
+						onPress={() => {
+							setSelectedLink(null);
+							setUsername(null);
+							onClose();
+						}}
+					>
+						<CloseIcon />
+					</Pressable>
 				</View>
 				<ThemeText size="md_16" className="self-center">
 					{formType === 'edit' ? 'Edit Link' : 'Add new link'}
