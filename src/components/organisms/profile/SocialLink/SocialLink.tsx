@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { BackIcon, CloseIcon } from '@/util/svg/icon.common';
-import { Dimensions, View } from 'react-native';
+import { CloseIcon, DeleteIcon } from '@/util/svg/icon.common';
+import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import {
 	TwitterIcon,
@@ -24,13 +24,15 @@ import {
 } from '@/util/svg/icon.profile';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
+import BackButton from '@/components/atoms/common/BackButton/BackButton';
 
 const { height } = Dimensions.get('window');
 
 type Props = {
 	openThemeModal: boolean;
 	onClose: () => void;
-	onPressAdd: (link: SocialMediaLink, username: string) => void;
+	onPressAdd: (linkTitle: string, username: string) => void;
+	onPressDelete: (linkTitle: string) => void;
 	data: Pathchwork.Field[];
 	formType: 'add' | 'edit';
 };
@@ -65,6 +67,7 @@ const SocialLink: React.FC<Props> = ({
 	onPressAdd,
 	formType = 'add',
 	data,
+	onPressDelete,
 }) => {
 	const [selectedLink, setSelectedLink] = useState<SocialMediaLink | null>(
 		null,
@@ -114,19 +117,31 @@ const SocialLink: React.FC<Props> = ({
 			<>
 				<View className="flex-row justify-between items-center">
 					{selectedLink && (
-						<BackIcon
-							onPress={() => {
+						<BackButton
+							extraClass="border-0"
+							customOnPress={() => {
 								setSelectedLink(null);
 								setUsername(null);
+								setSelectedLink(null);
 							}}
-							colorScheme={'dark'}
 						/>
 					)}
-					<CloseIcon className="p-1" onPress={onClose} />
+					<Pressable
+						className="h-10 w-10 items-center justify-center rounded-full"
+						onPress={() => {
+							setSelectedLink(null);
+							setUsername(null);
+							onClose();
+						}}
+					>
+						<CloseIcon />
+					</Pressable>
 				</View>
-				<ThemeText size="md_16" className="self-center">
-					{formType === 'edit' ? 'Edit Link' : 'Add new link'}
-				</ThemeText>
+				{links.length > 0 ? (
+					<ThemeText size="md_16" className="self-center">
+						{formType === 'edit' ? 'Edit Link' : 'Add new link'}
+					</ThemeText>
+				) : null}
 				{selectedLink ? (
 					<View className="items-start">
 						<Chip
@@ -138,7 +153,7 @@ const SocialLink: React.FC<Props> = ({
 						/>
 						<TextInput
 							value={username || ''}
-							onChangeText={setUsername}
+							onChangeText={text => setUsername(text.replace(/\s/g, '_'))}
 							className="flex-1 text-patchwork-light-50"
 							placeholder="@username"
 							autoCapitalize={'none'}
@@ -146,7 +161,7 @@ const SocialLink: React.FC<Props> = ({
 						<Button
 							onPress={() => {
 								if (username) {
-									onPressAdd(selectedLink, username);
+									onPressAdd(selectedLink.title, username);
 								}
 							}}
 							className=" mt-5 w-full"
@@ -158,16 +173,35 @@ const SocialLink: React.FC<Props> = ({
 					</View>
 				) : (
 					<View className="flex-row flex-wrap mt-3">
-						{links?.map((link, index) => (
-							<Chip
-								variant={'white'}
-								key={index}
-								className="bg-slate-50 m-1"
-								startIcon={link.icon}
-								title={link.title}
-								onPress={() => setSelectedLink(link)}
-							/>
-						))}
+						{links.length > 0 ? (
+							links.map((link, index) => (
+								<View
+									className={`flex-row ${formType === 'edit' ? 'mr-3' : ''}`}
+								>
+									<Chip
+										variant={'white'}
+										key={index}
+										className="bg-slate-50 m-1"
+										startIcon={link.icon}
+										title={link.title}
+										onPress={() => setSelectedLink(link)}
+									/>
+									{formType === 'edit' && (
+										<TouchableOpacity
+											onPress={() => onPressDelete(link.title)}
+											className="absolute -right-2 -top-3 bg-slate-50 rounded-full justify-center items-center w-7 h-7"
+											activeOpacity={0.7}
+										>
+											<DeleteIcon />
+										</TouchableOpacity>
+									)}
+								</View>
+							))
+						) : (
+							<ThemeText size={'lg_18'} className="mx-auto">
+								All social links have been added!
+							</ThemeText>
+						)}
 					</View>
 				)}
 			</>
