@@ -13,32 +13,61 @@ import { useColorScheme } from 'nativewind';
 import styles from './ComposeActionsBar.style';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
-import CallToAction from '@/components/organisms/compose/CallToAction/CallToAction';
-import VisibilitySettings from '@/components/organisms/compose/VisibilitySettings/VisibilitySettings';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import PollModal from '@/components/organisms/compose/modal/Poll/PollModal';
+import { usePollStore } from '@/store/compose/poll/pollStore';
+import CallToActionModal from '@/components/organisms/compose/modal/CallToAction/CallToActionModal';
+import {
+	useCTAactions,
+	useCallToActionStore,
+} from '@/store/compose/callToAction/callToActionStore';
+import {
+	useVisibilitySettingsActions,
+	useVisibilitySettingsStore,
+} from '@/store/compose/visibilitySettings/visibilitySettingsStore';
+import VisibilitySettingsModal from '@/components/organisms/compose/modal/VisibilitySettings/VisibilitySettingsModal';
 
 const ComposeActionsBar = () => {
 	const { colorScheme } = useColorScheme();
+	const [isLongPost, setLongPost] = useState(false);
 
+	// ****** Media Store ****** //
 	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
 	const { onToggleMediaModal } = useManageAttachmentActions();
+	// ****** Media Store ****** //
 
-	const [ctaModalVisible, setCTAModalVisible] = useState(false);
-	const [postVisibilityModalVisible, setPostVisibilityModalVisible] =
-		useState(false);
+	// ****** Poll Store ****** //
+	const isPollCreated = usePollStore(state => state.isPollCreated);
+	const [isPollModalVisible, setPollModalVisible] = useState(false);
+	// ****** Poll Store ****** //
+
+	// ****** Visibility Store ****** //
+	const visibilityModalVisible = useVisibilitySettingsStore(
+		state => state.visibilityModalVisible,
+	);
+	const { onToggleVisibilityModal } = useVisibilitySettingsActions();
+	// ****** Visibility Store ****** //
+
+	// ****** CTA Store ****** //
+	const ctaModalVisible = useCallToActionStore(state => state.ctaModalVisible);
+	const { onToggleCTAModal } = useCTAactions();
+	// ****** CTA Store ****** //
 
 	return (
 		<View>
 			<View className={styles.container}>
+				{/****** Media Upload Action ******/}
 				<Pressable
 					onPress={onToggleMediaModal}
 					className={'mr-3'}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
+				{/****** Media Upload Action ******/}
+
 				<Pressable
 					className={'mr-3'}
 					children={<ComposeGifIcon {...{ colorScheme }} />}
@@ -47,29 +76,50 @@ const ComposeActionsBar = () => {
 					className={'mr-3'}
 					children={<ComposeLocationIcon {...{ colorScheme }} />}
 				/>
+				{/****** Poll Action ******/}
 				<Pressable
+					onPress={() => setPollModalVisible(true)}
 					className={'mr-3'}
-					children={<ComposePollIcon {...{ colorScheme }} />}
+					children={
+						<ComposePollIcon
+							{...{ colorScheme }}
+							stroke={isPollCreated ? '#FF3C26' : '#FFFFFF'}
+						/>
+					}
 				/>
+				{/****** Poll Action ******/}
+
+				{/****** Visibility Settings Action ******/}
 				<Pressable
-					onPress={() => setPostVisibilityModalVisible(true)}
+					onPress={onToggleVisibilityModal}
 					className={'mr-3'}
 					children={<ComposeGlobeIcon forceLight />}
 				/>
+				{/****** Visibility Settings Action ******/}
+
+				{/****** CTA Action ******/}
 				<Pressable
-					onPress={() => setCTAModalVisible(true)}
+					onPress={onToggleCTAModal}
 					className={'mr-3'}
 					children={<ComposeLinkIcon {...{ colorScheme }} />}
 				/>
+				{/****** CTA Action ******/}
+
+				{/****** Long Post Action ******/}
 				<View className="flex-1 items-end">
 					<View className="flex-row items-center">
-						<ComposePlusIcon />
-						<ThemeText className="ml-2 text-white">Long Post</ThemeText>
+						{!isLongPost && <ComposePlusIcon />}
+						<Pressable onPress={() => setLongPost(true)}>
+							<ThemeText className="ml-2 text-white">
+								{isLongPost ? '4000' : 'Long Post'}
+							</ThemeText>
+						</Pressable>
 					</View>
 				</View>
+				{/****** Long Post Action ******/}
 			</View>
 
-			{/****** Manage Attachments ( Photos and Videos ) ******/}
+			{/****** Manage Attachments ( Photos and Videos ) Modal ******/}
 			<ThemeModal
 				hasNotch={false}
 				{...{
@@ -83,40 +133,25 @@ const ComposeActionsBar = () => {
 			>
 				<ManageAttachmentModal {...{ onToggleMediaModal }} />
 			</ThemeModal>
-			{/****** Manage Attachments ( Photos and Videos ) ******/}
+			{/****** Manage Attachments ( Photos and Videos ) Modal ******/}
 
-			{/****** Visibility Settings ******/}
-			<ThemeModal
-				hasNotch={false}
-				parentPaddingEnabled={false}
-				containerStyle={{
-					marginHorizontal: 16,
-					marginBottom: 20,
-				}}
-				{...{
-					openThemeModal: postVisibilityModalVisible,
-					onCloseThemeModal: () => setPostVisibilityModalVisible(false),
-				}}
-			>
-				<VisibilitySettings
-					onClose={() => setPostVisibilityModalVisible(false)}
-				/>
-			</ThemeModal>
-			{/****** Visibility Settings ******/}
+			{/****** Poll Modal ******/}
+			<PollModal
+				visible={isPollModalVisible}
+				onClose={() => setPollModalVisible(false)}
+			/>
+			{/****** Poll Modal ******/}
 
-			{/****** CallToAction ******/}
-			<ThemeModal
-				isFlex
-				hasNotch={false}
-				{...{
-					openThemeModal: ctaModalVisible,
-					onCloseThemeModal: () => setCTAModalVisible(false),
-				}}
-				containerStyle={{ borderRadius: 24 }}
-			>
-				<CallToAction onClose={() => setCTAModalVisible(false)} />
-			</ThemeModal>
-			{/****** CallToAction ******/}
+			{/****** Visibility Settings Modal ******/}
+			<VisibilitySettingsModal
+				visible={visibilityModalVisible}
+				onClose={onToggleVisibilityModal}
+			/>
+			{/****** Visibility Settings Modal ******/}
+
+			{/****** CTA Modal ******/}
+			<CallToActionModal visible={ctaModalVisible} onClose={onToggleCTAModal} />
+			{/****** CTA Modal ******/}
 		</View>
 	);
 };

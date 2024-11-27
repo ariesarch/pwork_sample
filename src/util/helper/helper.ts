@@ -4,8 +4,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Dimensions } from 'react-native';
-import { PagedResponse } from './timeline';
-import { Axios, AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import {
 	QueryKey,
 	UseInfiniteQueryOptions,

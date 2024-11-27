@@ -21,6 +21,15 @@ export function composeReducer(
 			return { ...state, tag: action.payload };
 		case 'maxCount':
 			return { ...state, maxCount: action.payload };
+		case 'link':
+			return { ...state, link: action.payload };
+		case 'currentMention':
+			return { ...state, currentMention: action.payload };
+		case 'replaceMentionText':
+			return { ...state, text: action.payload };
+		case 'clear': {
+			return initialState;
+		}
 		default:
 			throw new Error(`Unhandled action type:`);
 	}

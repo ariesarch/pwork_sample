@@ -111,16 +111,11 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							accountName={props.profile?.display_name}
 							username={props.profile?.acct}
 							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
-							userBio={props.profile?.about_me}
+							userBio={cleanText(props.profile?.note)}
 						/>
-						<ThemeText className="mx-3">
-							{props.profile?.note?.includes('<p>')
-								? cleanText(props.profile?.note)
-								: props.profile?.note}
-						</ThemeText>
 						<SocialSection
 							isMyAccount={props.is_my_account}
-							fields={props.profile?.fields?.filter(v => v.value)}
+							fields={props.profile?.fields}
 							onPressEditIcon={props.onPressEditIcon}
 							onPressPlusIcon={props.onPressPlusIcon}
 						/>

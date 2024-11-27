@@ -30,7 +30,7 @@ const PhoneRegisterForm = () => {
 				placeholder="Phone Number"
 				onChangeText={phone => setFormData(prev => ({ ...prev, phone }))}
 				value={formData.phone}
-				styleNW="mb-6 mt-8"
+				extraContainerStyle="mb-6 mt-8"
 			/>
 			<TextInput
 				placeholder="User Name"
@@ -38,13 +38,13 @@ const PhoneRegisterForm = () => {
 					setFormData(prev => ({ ...prev, user_name }))
 				}
 				value={formData.user_name}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 			/>
 			<TextInput
 				placeholder="Password"
 				onChangeText={password => setFormData(prev => ({ ...prev, password }))}
 				value={formData.password}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 				secureTextEntry={!pwVisibility.password}
 				endIcon={
 					pwVisibility.password ? (
@@ -77,7 +77,7 @@ const PhoneRegisterForm = () => {
 				}
 				value={formData.confirm_password}
 				secureTextEntry={!pwVisibility.confirmPassword}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 				endIcon={
 					pwVisibility.confirmPassword ? (
 						<PasswordEyeIcon

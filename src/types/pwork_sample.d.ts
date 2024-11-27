@@ -376,6 +376,18 @@ declare namespace Pathchwork {
 		value: string;
 	};
 
+	type NotificatioinGroups = {
+		group_key: string;
+		latest_page_notification_at: string;
+		most_recent_notification_id: string;
+		notifications_count: number;
+		page_max_id: string;
+		page_min_id: string;
+		sample_account_ids: string[];
+		status_id: string;
+		type: 'favourite' | 'mention' | 'follow' | 'reblog' | 'poll';
+	};
+
 	type ProfileDetail = {
 		account_data: {
 			account: Account;

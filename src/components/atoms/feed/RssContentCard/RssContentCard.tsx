@@ -8,6 +8,7 @@ import {
 	StyleProp,
 	StyleSheet,
 	View,
+	ViewProps,
 	ViewStyle,
 } from 'react-native';
 import ThemeImage from '../../common/ThemeImage/ThemeImage';
@@ -15,12 +16,13 @@ import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '@/types/navigation';
+import { cn } from '@/util/helper/twutil';
 
 type Props = {
 	meta: any;
-	overrideStyle?: StyleProp<ViewStyle>;
+	extraStyle?: string;
 };
-const RssContentCard = ({ meta, overrideStyle }: Props) => {
+const RssContentCard = ({ meta, extraStyle }: Props) => {
 	const navigation =
 		useNavigation<StackNavigationProp<RootStackParamList, 'WebViewer'>>();
 	const regex = /(<([^>]+)>)/gi;
@@ -31,15 +33,21 @@ const RssContentCard = ({ meta, overrideStyle }: Props) => {
 	};
 
 	return (
-		<View style={[styles.metaRoot, overrideStyle]}>
-			<Pressable onPress={() => navigateToWebView(meta?.url ?? '')}>
+		<View className={cn('border border-gray-800 rounded-lg', extraStyle)}>
+			<Pressable
+				onPress={() => navigateToWebView(meta?.url ?? '')}
+				className="rounded-xl"
+			>
 				<ThemeImage
 					url={meta?.image}
-					imageStyle={styles.metaImage}
+					imageStyle={{
+						height: 180,
+						width: '100%',
+					}}
 					blurHash={meta?.blurhash}
 				/>
 
-				<View style={styles.metaContent}>
+				<View className="p-3">
 					<ThemeText size="fs_13">{metaCardTitle || meta?.title}</ThemeText>
 					<ThemeText numberOfLines={1} className="mt-1 underline">
 						{meta?.url?.split('/')?.slice(0, 3)?.join('/')}
@@ -49,22 +57,5 @@ const RssContentCard = ({ meta, overrideStyle }: Props) => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	metaRoot: {
-		borderWidth: 1,
-		borderColor: '#222',
-		borderRadius: 5,
-	},
-	metaContent: {
-		padding: 12,
-	},
-	metaImage: {
-		width: '100%',
-		height: 180,
-		borderTopRightRadius: 2,
-		borderTopLeftRadius: 2,
-	},
-});
 
 export default RssContentCard;

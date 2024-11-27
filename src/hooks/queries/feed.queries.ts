@@ -1,4 +1,5 @@
 import {
+	fetchLinkPreview,
 	getAccountDetailFeed,
 	getFeedDetail,
 	getFeedReplies,
@@ -9,6 +10,7 @@ import {
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
+	LinkPreviewQueryKey,
 } from '@/types/queries/feed.type';
 import {
 	InfiniteQueryOptionHelper,
@@ -25,6 +27,7 @@ import {
 	UseQueryOptions,
 } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+import { boolean } from 'yup';
 
 export const useFeedDetailQuery = ({
 	options,
@@ -89,4 +92,15 @@ export const useHashtagDetailFeedQuery = ({
 		...options,
 		...infinitePageParam,
 	});
+};
+
+export const useLinkPreviewQueries = ({
+	url,
+	enabled = false,
+}: {
+	url: string;
+	enabled?: boolean;
+}) => {
+	const queryKey: LinkPreviewQueryKey = ['link-preview', { url }];
+	return useQuery({ queryKey, queryFn: fetchLinkPreview, enabled, retry: 0 });
 };

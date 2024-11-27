@@ -24,7 +24,7 @@ const ChannelAdditionalInfoForm = () => {
 					<View className="flex-1">
 						<TextInput
 							extraInputStyle="w-fill"
-							styleNW="w-fill"
+							extraContainerStyle="w-fill"
 							placeholder="This is some text for a channel rule"
 						/>
 					</View>

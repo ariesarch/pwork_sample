@@ -40,7 +40,7 @@ const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 					</Pressable>
 					<Pressable className="ml-2 flex-1" {...props} onPress={handleOnPress}>
 						<StatusHeader status={status} />
-						<StatusContent status={status} />
+						<StatusContent status={status} handleOnPress={handleOnPress} />
 						{/* {status.reblogedStatus && (
 						<Pressable
 							className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl"

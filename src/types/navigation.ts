@@ -1,6 +1,8 @@
+import { ChannelProfile } from '@/screens';
 /* eslint-disable @typescript-eslint/no-namespace */
 import {
 	CompositeScreenProps,
+	NavigationProp,
 	NavigatorScreenParams,
 } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
@@ -27,7 +29,7 @@ export type RootStackParamList = {
 
 export type BottomStackParamList = {
 	Home: NavigatorScreenParams<HomeStackParamList>;
-	Notification: undefined;
+	Notification: NavigatorScreenParams<NotiStackParamList>;
 	Search: NavigatorScreenParams<SearchStackParamList>;
 	Compose:
 		| {
@@ -38,6 +40,7 @@ export type BottomStackParamList = {
 				incomingStatus: Pathchwork.Status;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
+	HomeFeed: undefined;
 };
 
 export type HomeStackParamList = {
@@ -81,6 +84,23 @@ export type SearchStackParamList = {
 	};
 };
 
+// ********** Notification Stack ********** //
+
+export type NotiStackParamList = {
+	NotificationList: undefined;
+	FeedDetail: {
+		id: string;
+		selectedFeedIndex?: number;
+		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
+	};
+};
+
+export type NotificationScreenNavigationProp = NavigationProp<
+	NotiStackParamList,
+	'NotificationList'
+>;
+// ********** Notification Stack ********** //
+
 export type ConversationsStackParamList = {
 	StartConversation: undefined;
 	NewMessage: undefined;
@@ -116,6 +136,7 @@ export type TabBarScreenProps<
 	BottomTabScreenProps<BottomStackParamList, S>,
 	RootScreenProps<keyof RootStackParamList>
 >;
+
 declare global {
 	namespace ReactNavigation {
 		interface RootParamList extends RootStackParamList {}

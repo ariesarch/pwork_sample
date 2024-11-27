@@ -4,6 +4,7 @@ import FastImage from 'react-native-fast-image';
 import { Blurhash } from 'react-native-blurhash';
 import type { ImageStyle } from 'react-native-fast-image';
 import type { StyleProp } from 'react-native';
+import customColor from '@/util/constant/color';
 
 export interface Props {
 	url: string;
@@ -49,12 +50,15 @@ const ThemeImage = ({
 	};
 
 	return (
-		<View>
+		<View className="rounded-tl-lg rounded-tr-lg overflow-hidden">
 			<FastImage
 				source={{
 					uri: url,
 				}}
-				style={[imageStyle]}
+				style={[
+					imageStyle,
+					{ backgroundColor: customColor['patchwork-dark-50'] },
+				]}
 				onLoad={imageOnLoad}
 			/>
 			{blurhashView()}

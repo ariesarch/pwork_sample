@@ -16,7 +16,6 @@ import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { queryClient } from '@/App';
 import { DEFAULT_API_URL } from '@/util/constant';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
-
 import { useProfileMediaStore } from '@/store/profile/useProfileMediaStore';
 import ManageAttachmentModal from '@/components/organisms/profile/ManageAttachment/MakeAttachmentModal';
 import { ComposeCameraIcon } from '@/util/svg/icon.compose';
@@ -39,8 +38,8 @@ const EditProfile = () => {
 	} = useAuthStore();
 	const navigation = useNavigation();
 	const [profile, setProfile] = useState<ProfileType>();
-
 	const { header, avatar, actions } = useProfileMediaStore();
+
 	useEffect(() => {
 		if (userInfo) {
 			setProfile({
@@ -64,7 +63,19 @@ const EditProfile = () => {
 				],
 			});
 			setUserInfo(response);
-			navigation.goBack();
+			Toast.show({
+				text1: 'Your profile has been updated successfully!',
+				position: 'bottom',
+				visibilityTime: 1000,
+				bottomOffset: 10,
+				onHide: () =>
+					navigation.navigate('Index', {
+						screen: 'Home',
+						params: {
+							screen: 'HomeFeed',
+						},
+					}),
+			});
 		},
 		onError: error => {
 			handleError(error);
@@ -72,12 +83,16 @@ const EditProfile = () => {
 	});
 	const handleUpdateProfile = async () => {
 		try {
-			const payload: UpdateProfilePayload = {
+			let payload: UpdateProfilePayload = {
 				display_name: profile?.display_name,
 				note: profile?.bio,
-				avatar: avatar.selectedMedia.length > 0 ? avatar.selectedMedia[0] : '',
-				header: header.selectedMedia.length > 0 ? header.selectedMedia[0] : '',
 			};
+			if (avatar?.selectedMedia?.length > 0) {
+				payload.avatar = avatar.selectedMedia[0];
+			}
+			if (header?.selectedMedia?.length > 0) {
+				payload.header = header.selectedMedia[0];
+			}
 			await mutateAsync(payload);
 		} catch (error) {
 			handleError(error);
@@ -85,7 +100,6 @@ const EditProfile = () => {
 	};
 
 	if (!userInfo) return null;
-
 	return (
 		<SafeScreen>
 			<Header

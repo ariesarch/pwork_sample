@@ -20,7 +20,11 @@ export type ComposeState = {
 export type ComposeAction =
 	| { type: 'text'; payload: ComposeState['text'] }
 	| { type: 'tag'; payload: ComposeState['tag'] }
-	| { type: 'maxCount'; payload: number };
+	| { type: 'maxCount'; payload: number }
+	| { type: 'link'; payload: ComposeState['link'] }
+	| { type: 'currentMention'; payload: ComposeState['currentMention'] }
+	| { type: 'replaceMentionText'; payload: ComposeState['text'] }
+	| { type: 'clear' };
 
 export type ComposeContextType = {
 	composeState: ComposeState;

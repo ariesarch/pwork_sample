@@ -47,7 +47,7 @@ const CountryModel = ({
 				</ThemeText>
 				<TextInput
 					placeholder="Search ..."
-					styleNW="h-11 mt-3 mx-3"
+					extraContainerStyle="h-11 mt-3 mx-3"
 					startIcon={<SearchIcon />}
 				/>
 				<View className="mx-3">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useColorScheme } from 'nativewind';
@@ -26,11 +25,11 @@ const CallToAction = ({ onClose }: { onClose: () => void }) => {
 
 			<TextInput
 				placeholder="Enter your button text here"
-				styleNW="h-11 my-3 mx-1"
+				extraContainerStyle="h-11 my-3 mx-1"
 			/>
 			<TextInput
 				placeholder="Enter link URL here"
-				styleNW="h-11 my-3 mx-1"
+				extraContainerStyle="h-11 my-3 mx-1"
 				endIcon={<LinkIcon {...{ colorScheme }} />}
 			/>
 		</View>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useWindowDimensions } from 'react-native';
-import { TabView, SceneMap } from 'react-native-tab-view';
+import { TabView } from 'react-native-tab-view';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
@@ -8,14 +8,12 @@ import { useColorScheme } from 'nativewind';
 import NotiTabBarItemLabel from '@/components/atoms/notifications/NotiTabBarItemLabel/NotiTabBarItemLabel';
 import TabBar from '@/components/molecules/common/TabBar/TabBar';
 import NotiAll from '@/components/organisms/notifications/NotiAll/NotiAll';
+import NotiMentions from '@/components/organisms/notifications/NotiMentions/NotiMentions';
 
-const renderScene = SceneMap({
-	all: NotiAll,
-	metions: NotiAll,
-	// comments: NotiAll,
-	// shares: NotiAll,
-	// follows: NotiAll,
-});
+type TabViewRoute = {
+	key: string;
+	title: string;
+};
 
 const Notification = () => {
 	const { colorScheme } = useColorScheme();
@@ -23,13 +21,21 @@ const Notification = () => {
 	const layout = useWindowDimensions();
 	const [index, setIndex] = useState(0);
 
-	const [routes] = useState([
+	const [routes] = useState<TabViewRoute[]>([
 		{ key: 'all', title: 'All' },
-		{ key: 'metions', title: 'Metions' },
-		// { key: 'comments', title: 'Comments' },
-		// { key: 'shares', title: 'Shares' },
-		// { key: 'follows', title: 'Follows' },
+		{ key: 'mentions', title: 'Mentions' },
 	]);
+
+	const renderScene = ({ route }: { route: TabViewRoute }) => {
+		switch (route.key) {
+			case 'all':
+				return <NotiAll />;
+			case 'mentions':
+				return <NotiMentions />;
+			default:
+				return <></>;
+		}
+	};
 
 	return (
 		<SafeScreen>

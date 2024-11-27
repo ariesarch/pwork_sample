@@ -31,7 +31,7 @@ const EmailRegisterForm = () => {
 				onChangeText={email => setFormData(prev => ({ ...prev, email }))}
 				value={formData.email}
 				maxLength={40}
-				styleNW="mb-6 mt-8"
+				extraContainerStyle="mb-6 mt-8"
 			/>
 			<TextInput
 				placeholder="User Name"
@@ -39,7 +39,7 @@ const EmailRegisterForm = () => {
 					setFormData(prev => ({ ...prev, user_name }))
 				}
 				value={formData.user_name}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 			/>
 			<TextInput
 				placeholder="Password"
@@ -69,7 +69,7 @@ const EmailRegisterForm = () => {
 						/>
 					)
 				}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 			/>
 			<TextInput
 				placeholder="Confirm Password"
@@ -78,7 +78,7 @@ const EmailRegisterForm = () => {
 				}
 				secureTextEntry={!pwVisibility.confirmPassword}
 				value={formData.confirm_password}
-				styleNW="mb-6"
+				extraContainerStyle="mb-6"
 				endIcon={
 					pwVisibility.confirmPassword ? (
 						<PasswordEyeIcon

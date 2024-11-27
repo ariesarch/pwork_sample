@@ -67,7 +67,7 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 									<Pressable
 										onPress={() => handleHashTahPress(children)}
 										key={index}
-										className="active:opacity-80"
+										className="active:opacity-80 -mt-[2]"
 									>
 										<ThemeText
 											className="font-bold"
@@ -85,25 +85,11 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 										`@${mention.username}` === mentionedText,
 								);
 
-								// const sameAccount = currentUserId === matchedMention?.id;
-								// const onRouteToUserProfile = () => {
-								// 	return matchedMention && sameAccount
-								// 		? navigation.navigate('Profile-Me-Root')
-								// 		: navigation.navigate('Profile-User-Root', {
-								// 				id: matchedMention?.id,
-								// 				...('status?.is_rss_content' in status && {
-								// 					queryKey: 'Following',
-								// 				}),
-								// 				queryKey: 'Following',
-								// 		  });
-								// };
-
 								return (
 									<ThemeText
 										key={index}
 										variant={matchedMention ? 'textOrange' : 'textGrey'}
 										size={isMainStatus ? 'default' : 'fs_13'}
-										onPress={() => {}}
 										children={`${mentionedText} `}
 									/>
 								);
@@ -121,7 +107,6 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 									variant="textOrange"
 									size="fs_13"
 									children={`${contentNode} `}
-									onPress={() => () => {}}
 								/>
 							);
 						}

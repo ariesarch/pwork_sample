@@ -35,6 +35,8 @@ const FeedDetail = ({
 	const { id, selectedFeedIndex, queryKey } = route.params;
 	const { height, progress } = useGradualAnimation();
 
+	console.log('id::', id);
+
 	const inputBarActiveBgColor = useAppropiateColorHash(
 		'patchwork-dark-400',
 		'patchwork-light-50',
