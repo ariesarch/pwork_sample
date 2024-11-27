@@ -1,12 +1,18 @@
 import { Linking, ScrollView, View } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import { PenIcon, LinkIcon, PlusIcon } from '@/util/svg/icon.profile';
+import {
+	PenIcon,
+	LinkIcon,
+	PlusIcon,
+	GlobeIcon,
+} from '@/util/svg/icon.profile';
 import { useColorScheme } from 'nativewind';
 import { scale } from '@/util/helper/helper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icons } from '@/util/constant/socialMediaLinks';
 import { generateSocialLinkURL } from '@/util/helper/generateSocialLinkURL';
+import { cleanText } from '@/util/helper/cleanText';
 
 type SocialSectionProps = {
 	fields: Pathchwork.Field[];
@@ -27,13 +33,15 @@ const SocialSection = ({
 		const renderSocialIcons = (field: Pathchwork.Field) => {
 			const { name, value } = field;
 			if (!value) return null;
-			const Icon = Icons[name];
+			const Icon = Icons[name] || <GlobeIcon colorScheme={colorScheme} />;
 			const hrefValue = generateSocialLinkURL(name, value);
+			const link = value.includes('href') ? cleanText(value) : value;
+
 			return (
 				<Chip
 					className="mx-1"
 					startIcon={Icon}
-					title={value}
+					title={link}
 					onPress={() => Linking.openURL(hrefValue)}
 				/>
 			);
