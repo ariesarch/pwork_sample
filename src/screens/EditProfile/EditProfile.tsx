@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAuthStore } from '@/store/auth/authStore';
 import { cn } from '@/util/helper/twutil';

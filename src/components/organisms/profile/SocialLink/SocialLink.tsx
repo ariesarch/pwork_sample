@@ -4,27 +4,10 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { CloseIcon, DeleteIcon } from '@/util/svg/icon.common';
 import { Dimensions, Pressable, TouchableOpacity, View } from 'react-native';
 import Chip from '@/components/atoms/common/Chip/Chip';
-import {
-	TwitterIcon,
-	FacebookIcon,
-	InstagramIcon,
-	LinkedinIcon,
-	RedditIcon,
-	YoutubeIcon,
-	TiktokIcon,
-	TwitchIcon,
-	PatreonIcon,
-	PenIcon,
-	GlobeIcon,
-	PodcastIcon,
-	NewsletterIcon,
-	ForumIcon,
-	AppIcon,
-	LinkIcon,
-} from '@/util/svg/icon.profile';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
+import { Icons, SOCIAL_MEDIA_LINKS } from '@/util/constant/socialMediaLinks';
 
 const { height } = Dimensions.get('window');
 
@@ -42,25 +25,6 @@ export type SocialMediaLink = {
 	title: string;
 };
 
-const SOCIAL_MEDIA_LINKS: SocialMediaLink[] = [
-	{ icon: <TwitterIcon />, title: 'Twitter' },
-	{ icon: <FacebookIcon />, title: 'Facebook' },
-	{ icon: <InstagramIcon />, title: 'Instagram' },
-	{ icon: <LinkedinIcon />, title: 'Linkedin' },
-	{ icon: <RedditIcon />, title: 'Reddit' },
-	{ icon: <YoutubeIcon />, title: 'Youtube' },
-	{ icon: <TiktokIcon />, title: 'TikTok' },
-	{ icon: <TwitchIcon />, title: 'Twitch' },
-	{ icon: <PatreonIcon />, title: 'Patreon' },
-	// { icon: <PenIcon colorScheme="light" />, title: 'Blog' },
-	// { icon: <GlobeIcon colorScheme="light" />, title: 'Website' },
-	// { icon: <PodcastIcon />, title: 'Podcast' },
-	// { icon: <NewsletterIcon />, title: 'Newsletter' },
-	// { icon: <ForumIcon />, title: 'Forum' },
-	// { icon: <AppIcon />, title: 'App' },
-	// { icon: <LinkIcon colorScheme="light" />, title: 'Custom URL' },
-];
-
 const SocialLink: React.FC<Props> = ({
 	openThemeModal,
 	onClose,
@@ -73,37 +37,38 @@ const SocialLink: React.FC<Props> = ({
 		null,
 	);
 	const [username, setUsername] = useState<string | null>(null);
-	const Icons: Record<string, JSX.Element> = {
-		Twitter: <TwitterIcon />,
-		Youtube: <YoutubeIcon />,
-		Instagram: <InstagramIcon />,
-		Linkedin: <LinkedinIcon />,
-		Facebook: <FacebookIcon />,
-		Reddit: <RedditIcon />,
-		TikTok: <TiktokIcon />,
-		Twitch: <TwitchIcon />,
-		Patreon: <PatreonIcon />,
-	};
-	const LinksToEdit: SocialMediaLink[] = data?.map(item => ({
-		icon: Icons[item.name],
-		title: item.name,
-	}));
 
-	const links =
-		formType === 'edit'
-			? LinksToEdit
-			: SOCIAL_MEDIA_LINKS.filter(
-					link => !data?.some(item => item.name === link.title),
-			  );
+	const getLinks = (): SocialMediaLink[] => {
+		if (formType === 'edit') {
+			return data.map(item => ({
+				icon: Icons[item.name],
+				title: item.name,
+			}));
+		}
+		return SOCIAL_MEDIA_LINKS.filter(
+			link => !data.some(item => item.name === link.title),
+		);
+	};
 
 	useEffect(() => {
 		if (formType === 'edit' && data && selectedLink) {
 			const relatedData = data.find(item => item.name === selectedLink.title);
-			if (relatedData) {
-				setUsername(relatedData.value);
-			}
+			setUsername(relatedData?.value || null);
 		}
 	}, [formType, data, selectedLink]);
+
+	const handleBack = () => {
+		setSelectedLink(null);
+		setUsername(null);
+	};
+
+	const handleAdd = () => {
+		if (username && selectedLink) {
+			onPressAdd(selectedLink.title, username);
+		}
+	};
+
+	const links = getLinks();
 
 	return (
 		<ThemeModal
@@ -117,35 +82,27 @@ const SocialLink: React.FC<Props> = ({
 			<>
 				<View className="flex-row justify-between items-center">
 					{selectedLink && (
-						<BackButton
-							extraClass="border-0"
-							customOnPress={() => {
-								setSelectedLink(null);
-								setUsername(null);
-								setSelectedLink(null);
-							}}
-						/>
+						<BackButton extraClass="border-0" customOnPress={handleBack} />
 					)}
 					<Pressable
 						className="h-10 w-10 items-center justify-center rounded-full"
 						onPress={() => {
-							setSelectedLink(null);
-							setUsername(null);
+							handleBack();
 							onClose();
 						}}
 					>
 						<CloseIcon />
 					</Pressable>
 				</View>
-				{links.length > 0 ? (
+				{links.length > 0 && (
 					<ThemeText size="md_16" className="self-center">
 						{formType === 'edit' ? 'Edit Link' : 'Add new link'}
 					</ThemeText>
-				) : null}
+				)}
 				{selectedLink ? (
 					<View className="items-start">
 						<Chip
-							variant={'white'}
+							variant="white"
 							className="bg-slate-50 m-1 w-auto mb-3"
 							startIcon={selectedLink.icon}
 							title={selectedLink.title}
@@ -156,31 +113,29 @@ const SocialLink: React.FC<Props> = ({
 							onChangeText={text => setUsername(text.replace(/\s/g, '_'))}
 							className="flex-1 text-patchwork-light-50"
 							placeholder="@username"
-							autoCapitalize={'none'}
+							autoCapitalize="none"
 						/>
 						<Button
-							onPress={() => {
-								if (username) {
-									onPressAdd(selectedLink.title, username);
-								}
-							}}
-							className=" mt-5 w-full"
-							variant={'outline'}
+							onPress={handleAdd}
+							className="mt-5 w-full"
+							variant="outline"
 							disabled={!username}
 						>
 							<ThemeText>{formType === 'edit' ? 'Edit' : 'Add'}</ThemeText>
 						</Button>
 					</View>
 				) : (
-					<View className="flex-row flex-wrap mt-3">
+					<View className={`flex-row flex-wrap mt-3`}>
 						{links.length > 0 ? (
-							links.map((link, index) => (
+							links.map(link => (
 								<View
-									className={`flex-row ${formType === 'edit' ? 'mr-3' : ''}`}
+									key={link.title}
+									className={`flex-row ${
+										formType === 'edit' ? 'mr-2 mb-4' : ''
+									}`}
 								>
 									<Chip
-										variant={'white'}
-										key={index}
+										variant="white"
 										className="bg-slate-50 m-1"
 										startIcon={link.icon}
 										title={link.title}
@@ -198,7 +153,7 @@ const SocialLink: React.FC<Props> = ({
 								</View>
 							))
 						) : (
-							<ThemeText size={'lg_18'} className="mx-auto">
+							<ThemeText size="lg_18" className="mx-auto">
 								All social links have been added!
 							</ThemeText>
 						)}
