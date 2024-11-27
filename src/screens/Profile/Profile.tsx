@@ -28,8 +28,6 @@ import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
 import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
-
-import { SocialMediaLink } from '@/components/organisms/profile/SocialLink/SocialLink';
 import { useAuthStore } from '@/store/auth/authStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { CircleFade, Flow } from 'react-native-animated-spinkit';
@@ -40,6 +38,7 @@ import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import { verifyAuthToken } from '@/services/auth.service';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -76,7 +75,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 		account_id: userInfo?.id!,
 	});
-	const timelineList = timeline ? flattenPages(timeline) : [];
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
 	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
 		'account-detail-feed',
@@ -129,8 +127,10 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		},
 	});
 
-	const handleRefresh = () => {
+	const handleRefresh = async () => {
 		refetchProfileFeed();
+		const res = await verifyAuthToken();
+		setUserInfo(res);
 	};
 
 	return (
@@ -150,14 +150,13 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 					{timeline && userInfo ? (
 						<>
-							<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
+							<FeedTitleHeader title={userInfo.display_name} />
 							<Tabs.Container
 								renderHeader={() => {
 									return (
 										<CollapsibleFeedHeader
 											type="Profile"
 											is_my_account={true}
-											// profile={timelineList[0]?.account}
 											profile={userInfo}
 											onPressPlusIcon={() =>
 												setSocialLinkAction({ visible: true, formType: 'add' })
