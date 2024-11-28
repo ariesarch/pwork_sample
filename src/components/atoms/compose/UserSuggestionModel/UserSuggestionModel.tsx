@@ -20,7 +20,7 @@ const UserSuggestionModal = () => {
 	const startDebounce = useDebounce();
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const previousCurrentMentionStr = useRef('');
-	const snapPoints = useMemo(() => ['30%', '50%'], []);
+	const snapPoints = useMemo(() => ['80%'], []);
 
 	const {
 		data: searchedUsers,
@@ -37,7 +37,6 @@ const UserSuggestionModal = () => {
 		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
 			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
-			console.log('start debounce');
 			startDebounce(() => {
 				bottomSheetRef.current?.expand();
 				setDebounceVal(composeState.currentMention?.raw || '');
@@ -49,14 +48,16 @@ const UserSuggestionModal = () => {
 		) {
 			startDebounce(() => {
 				bottomSheetRef.current?.close();
-				// setDebounceVal('');
+				setDebounceVal('');
 			}, 300);
 		}
 	}, [composeState.currentMention?.raw]);
-	console.log(searchedUsers?.data.length);
 	return (
-		<GestureHandlerRootView className="flex-1">
+		<GestureHandlerRootView className="flex-1 z-10">
 			<BottomSheet
+				enableDynamicSizing={false}
+				enablePanDownToClose
+				enableContentPanningGesture
 				index={-1}
 				ref={bottomSheetRef}
 				snapPoints={snapPoints}
@@ -71,14 +72,13 @@ const UserSuggestionModal = () => {
 					) : searchedUsers?.data?.length > 0 ? (
 						<BottomSheetScrollView
 							contentContainerStyle={{
-								flexGrow: 1,
 								backgroundColor: 'rgba(64, 75, 82, 1)',
 							}}
 						>
 							{searchedUsers.data.map(item => (
 								<TouchableOpacity
 									key={item.id}
-									className="h-10"
+									className="pb-1"
 									onPress={() => {
 										bottomSheetRef.current?.close();
 										const newString = getReplacedMentionText(
@@ -93,9 +93,9 @@ const UserSuggestionModal = () => {
 										});
 									}}
 								>
-									<View className="p-3 flex-row">
+									<View className="px-3 flex-row items-center">
 										<FastImage
-											className="w-10 h-10 rounded-full mr-3"
+											className="w-8 h-8 rounded-full mr-3"
 											source={{ uri: item.avatar }}
 											resizeMode={FastImage.resizeMode.contain}
 										/>
