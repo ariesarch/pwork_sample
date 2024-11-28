@@ -71,6 +71,7 @@ const UserSuggestionModal = () => {
 						</View>
 					) : searchedUsers?.data?.length > 0 ? (
 						<BottomSheetScrollView
+							keyboardShouldPersistTaps="handled"
 							contentContainerStyle={{
 								backgroundColor: 'rgba(64, 75, 82, 1)',
 							}}
