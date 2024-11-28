@@ -78,7 +78,23 @@ const EditProfile = () => {
 			});
 		},
 		onError: error => {
-			handleError(error);
+			Toast.show({
+				type: 'error',
+				text1: error?.message || 'Something went wrong!',
+				position: 'top',
+				visibilityTime: 1000,
+				bottomOffset: 10,
+				onHide: () => {
+					actions.onSelectMedia('header', []);
+					actions.onSelectMedia('avatar', []);
+					navigation.navigate('Index', {
+						screen: 'Home',
+						params: {
+							screen: 'HomeFeed',
+						},
+					});
+				},
+			});
 		},
 	});
 	const handleUpdateProfile = async () => {
