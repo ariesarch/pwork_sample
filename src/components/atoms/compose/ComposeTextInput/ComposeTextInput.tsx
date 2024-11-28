@@ -31,7 +31,7 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 			autoCapitalize="none"
 			spellCheck
 			{...textInputProps}
-			className="text-white font-SourceSans3_Regular text-base opacity-80 p-3"
+			className="text-white font-SourceSans3_Regular text-base opacity-80 py-3 px-2"
 		>
 			<FormattedText text={composeState.text.raw} />
 		</TextInput>

@@ -13,6 +13,7 @@ export const initialState: ComposeState = {
 		showLinkCard: false,
 	},
 	maxCount: 500,
+	poll: null,
 };
 
 export function composeReducer(
@@ -32,6 +33,8 @@ export function composeReducer(
 			return { ...state, currentMention: action.payload };
 		case 'replaceMentionText':
 			return { ...state, text: action.payload };
+		case 'poll':
+			return { ...state, poll: action.payload };
 		case 'clear': {
 			return initialState;
 		}

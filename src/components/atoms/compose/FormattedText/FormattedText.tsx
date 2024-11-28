@@ -102,13 +102,17 @@ export const FormattedText = ({ text }: { text: string }) => {
 	};
 
 	if (!matches) {
-		return <ThemeText>{text}</ThemeText>;
+		return (
+			<ThemeText variant={'textRedUnderline'} size={'md_16'}>
+				{text}
+			</ThemeText>
+		);
 	}
 	matches.forEach((match, index) => {
 		// push plain text that comes before each link or hashtag or mention
 		if (match.index > lastIndex) {
 			elements.push(
-				<ThemeText key={`text-${index}`}>
+				<ThemeText key={`text-${index}`} size={'md_16'}>
 					{text.slice(lastIndex, match.index)}
 				</ThemeText>,
 			);
@@ -116,7 +120,12 @@ export const FormattedText = ({ text }: { text: string }) => {
 
 		// push each link or hashtag or mention
 		elements.push(
-			<ThemeText key={`link-${index}`} onPress={() => {}} variant="textOrange">
+			<ThemeText
+				key={`link-${index}`}
+				onPress={() => {}}
+				variant="textOrange"
+				size={'md_16'}
+			>
 				{match.raw}
 			</ThemeText>,
 		);
@@ -127,9 +136,11 @@ export const FormattedText = ({ text }: { text: string }) => {
 	// add remaining plain text after all link or mention or hashtag are rendered
 	if (lastIndex < text.length) {
 		elements.push(
-			<ThemeText key="remaining-text">{text.slice(lastIndex)}</ThemeText>,
+			<ThemeText key="remaining-text" size={'md_16'}>
+				{text.slice(lastIndex)}
+			</ThemeText>,
 		);
 	}
 
-	return <ThemeText>{elements}</ThemeText>;
+	return <ThemeText size={'md_16'}>{elements}</ThemeText>;
 };

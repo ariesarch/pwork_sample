@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { View, Pressable, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
@@ -7,17 +7,12 @@ import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
 import ComposeTextInput from '@/components/atoms/compose/ComposeTextInput/ComposeTextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { RouteProp } from '@react-navigation/native';
-import { BottomStackParamList, TabBarScreenProps } from '@/types/navigation';
+import { TabBarScreenProps } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
-import {
-	ComposeStatusProvider,
-	useComposeStatus,
-} from '@/context/composeStatusContext/composeStatus.context';
+import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
-
 import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
 import ComposeButton from '@/components/atoms/compose/ComposeButton/ComposeButton';
@@ -25,6 +20,7 @@ import { useCallToActionStore } from '@/store/compose/callToAction/callToActionS
 import Chip from '@/components/atoms/common/Chip/Chip';
 import { useColorScheme } from 'nativewind';
 import { LinkIcon } from '@/util/svg/icon.profile';
+import PollForm from '@/components/organisms/compose/PollForm/PollForm';
 
 const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 	const composeParams = route.params;
@@ -81,6 +77,9 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						) : (
 							<View className="px-4">
 								<ComposeTextInput />
+
+								<PollForm />
+
 								<LinkCard />
 
 								{/* Additional Components */}

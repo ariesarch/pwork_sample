@@ -55,7 +55,8 @@ export const prepareComposePayload: CPPayloadCreatorType = state => {
 		spoiler_text: '',
 		status: state.text.raw,
 		visibility: 'private',
-		media_ids: [''],
+		media_ids: [],
+		poll: state.poll,
 	};
 };
 

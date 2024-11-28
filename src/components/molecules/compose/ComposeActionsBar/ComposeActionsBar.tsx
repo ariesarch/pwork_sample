@@ -18,8 +18,6 @@ import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
-import PollModal from '@/components/organisms/compose/modal/Poll/PollModal';
-import { usePollStore } from '@/store/compose/poll/pollStore';
 import CallToActionModal from '@/components/organisms/compose/modal/CallToAction/CallToActionModal';
 import {
 	useCTAactions,
@@ -30,9 +28,13 @@ import {
 	useVisibilitySettingsStore,
 } from '@/store/compose/visibilitySettings/visibilitySettingsStore';
 import VisibilitySettingsModal from '@/components/organisms/compose/modal/VisibilitySettings/VisibilitySettingsModal';
+import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { POLL_INITIAL } from '@/util/constant/pollOption';
 
 const ComposeActionsBar = () => {
+	const { composeState, composeDispatch } = useComposeStatus();
 	const { colorScheme } = useColorScheme();
+
 	const [isLongPost, setLongPost] = useState(false);
 
 	// ****** Media Store ****** //
@@ -41,8 +43,17 @@ const ComposeActionsBar = () => {
 	// ****** Media Store ****** //
 
 	// ****** Poll Store ****** //
-	const isPollCreated = usePollStore(state => state.isPollCreated);
-	const [isPollModalVisible, setPollModalVisible] = useState(false);
+	// const [isPollModalVisible, setPollModalVisible] = useState(false);
+	const onPressPoll = () => {
+		if (composeState.poll) {
+			composeDispatch({ type: 'poll', payload: null });
+		} else {
+			composeDispatch({
+				type: 'poll',
+				payload: POLL_INITIAL,
+			});
+		}
+	};
 	// ****** Poll Store ****** //
 
 	// ****** Visibility Store ****** //
@@ -62,28 +73,38 @@ const ComposeActionsBar = () => {
 			<View className={styles.container}>
 				{/****** Media Upload Action ******/}
 				<Pressable
+					disabled={composeState.poll ? true : false}
 					onPress={onToggleMediaModal}
 					className={'mr-3'}
-					children={<ComposeGalleryIcon {...{ colorScheme }} />}
+					children={
+						<ComposeGalleryIcon
+							{...{ colorScheme }}
+							stroke={composeState.poll ? '#6D7276' : '#FFFFFF'}
+						/>
+					}
 				/>
 				{/****** Media Upload Action ******/}
 
 				<Pressable
+					disabled
 					className={'mr-3'}
-					children={<ComposeGifIcon {...{ colorScheme }} />}
+					children={<ComposeGifIcon {...{ colorScheme }} stroke={'#6D7276'} />}
 				/>
 				<Pressable
 					className={'mr-3'}
-					children={<ComposeLocationIcon {...{ colorScheme }} />}
+					children={
+						<ComposeLocationIcon {...{ colorScheme }} stroke={'#6D7276'} />
+					}
 				/>
+
 				{/****** Poll Action ******/}
 				<Pressable
-					onPress={() => setPollModalVisible(true)}
+					onPress={onPressPoll}
 					className={'mr-3'}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
-							stroke={isPollCreated ? '#FF3C26' : '#FFFFFF'}
+							stroke={composeState.poll ? '#FF3C26' : '#FFFFFF'}
 						/>
 					}
 				/>
@@ -136,10 +157,10 @@ const ComposeActionsBar = () => {
 			{/****** Manage Attachments ( Photos and Videos ) Modal ******/}
 
 			{/****** Poll Modal ******/}
-			<PollModal
+			{/* <PollModal
 				visible={isPollModalVisible}
 				onClose={() => setPollModalVisible(false)}
-			/>
+			/> */}
 			{/****** Poll Modal ******/}
 
 			{/****** Visibility Settings Modal ******/}

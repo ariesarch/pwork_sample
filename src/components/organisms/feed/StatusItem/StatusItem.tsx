@@ -17,7 +17,7 @@ const StatusItem = ({ status, handleOnPress, ...props }: Props) => {
 
 	return (
 		<View>
-			<View className="flex-1 m-4" {...props}>
+			<View className="m-4" {...props}>
 				{/* {status.replyedStatus && (
 					<View className="absolute border-l  border-slate-200 dark:border-patchwork-grey-70 left-[15] top-[30] h-full" />
 				)} */}

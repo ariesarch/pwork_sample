@@ -426,4 +426,23 @@ declare namespace Pathchwork {
 		scope: string;
 		created_at: string;
 	};
+
+	type PollOptions = {
+		id: string;
+		title: string;
+		votes_count: number;
+	};
+
+	type Poll = {
+		id: string;
+		options: PollOptions[];
+		expires_at: Date | null;
+		expired: boolean;
+		multiple: boolean;
+		votes_count: number;
+		voters_count: number;
+		voted: boolean;
+		own_votes?: number[];
+		emojis?: string[];
+	};
 }
