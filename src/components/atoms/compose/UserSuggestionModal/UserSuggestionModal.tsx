@@ -73,7 +73,6 @@ const UserSuggestionModal = () => {
 					className="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black/60"
 				/>
 				<BottomSheet
-					enableDynamicSizing={false}
 					snapPoints={['60%']}
 					index={0}
 					backgroundStyle={{ backgroundColor: 'rgba(64, 75, 82, 1)' }}
@@ -81,7 +80,7 @@ const UserSuggestionModal = () => {
 				>
 					<BottomSheetView style={{ flexGrow: 1 }}>
 						<Pressable
-							className="px-3 self-start rounded-md py-1 mb-1"
+							className="px-3 self-start rounded-md py-1 mb-3"
 							onPress={closeDrawer}
 						>
 							<ThemeText variant="textGrey">Cancel</ThemeText>
@@ -101,7 +100,7 @@ const UserSuggestionModal = () => {
 								{searchedUsers.data.map(item => (
 									<TouchableOpacity
 										key={item.id}
-										className="pb-1"
+										className="p-1"
 										onPress={() => {
 											closeDrawer();
 											const newString = getReplacedMentionText(
