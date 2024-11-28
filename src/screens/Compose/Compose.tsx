@@ -12,7 +12,7 @@ import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
-import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
+import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModal/UserSuggestionModal';
 
 import { useManageAttachmentStore } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
