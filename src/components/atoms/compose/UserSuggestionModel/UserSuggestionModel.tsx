@@ -2,7 +2,7 @@ import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.c
 import useDebounce from '@/hooks/custom/useDebounce';
 import { useSearchUsers } from '@/hooks/queries/conversations.queries';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import BottomSheet, {
 	BottomSheetScrollView,
@@ -53,7 +53,7 @@ const UserSuggestionModal = () => {
 		}
 	}, [composeState.currentMention?.raw]);
 	return (
-		<GestureHandlerRootView className="flex-1 z-10">
+		<GestureHandlerRootView className="flex-1">
 			<BottomSheet
 				enableDynamicSizing={false}
 				enablePanDownToClose
@@ -65,6 +65,12 @@ const UserSuggestionModal = () => {
 				handleIndicatorStyle={{ backgroundColor: '#fff' }}
 			>
 				<BottomSheetView style={{ flexGrow: 1 }}>
+					<Pressable
+						className="px-3 self-start rounded-md py-1 mb-1"
+						onPress={() => bottomSheetRef?.current?.close()}
+					>
+						<ThemeText variant="textGrey">Cancel</ThemeText>
+					</Pressable>
 					{isLoading ? (
 						<View className="flex-1 items-center justify-center">
 							<Flow size={30} color={customColor['patchwork-red-50']} />
@@ -112,7 +118,9 @@ const UserSuggestionModal = () => {
 								</TouchableOpacity>
 							))}
 						</BottomSheetScrollView>
-					) : null}
+					) : (
+						<ThemeText className="mx-auto mt-5">No user is found!</ThemeText>
+					)}
 				</BottomSheetView>
 			</BottomSheet>
 		</GestureHandlerRootView>
