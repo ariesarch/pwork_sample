@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { View, Pressable, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
@@ -7,14 +7,10 @@ import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
 import ComposeTextInput from '@/components/atoms/compose/ComposeTextInput/ComposeTextInput';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { RouteProp } from '@react-navigation/native';
-import { BottomStackParamList, TabBarScreenProps } from '@/types/navigation';
+import { TabBarScreenProps } from '@/types/navigation';
 import ComposeRepostButton from '@/components/atoms/compose/ComposeRepostButton/ComposeRepostButton';
 import RepostStatus from '@/components/organisms/compose/RepostStatus/RepostStatus';
-import {
-	ComposeStatusProvider,
-	useComposeStatus,
-} from '@/context/composeStatusContext/composeStatus.context';
+import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
 
@@ -72,8 +68,9 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 
 					{/* Scrollable Content */}
 					<ScrollView
+						nestedScrollEnabled
 						keyboardShouldPersistTaps="always"
-						contentContainerStyle={{ paddingBottom: 100 }}
+						contentContainerStyle={{ flexGrow: 1 }}
 						showsVerticalScrollIndicator={false}
 					>
 						{composeParams.type === 'repost' ? (
@@ -110,12 +107,11 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 								{/* Call To Action View */}
 							</View>
 						)}
+
+						{/* UserSuggestionModal */}
+						<UserSuggestionModal />
+						{/* UserSuggestionModal */}
 					</ScrollView>
-
-					{/* UserSuggestionModal */}
-					<UserSuggestionModal />
-					{/* UserSuggestionModal */}
-
 					{/* Compose Action Tool Bar */}
 					<ComposeActionsBar />
 					<Animated.View style={toolbarAnimatedViewStyle} />
