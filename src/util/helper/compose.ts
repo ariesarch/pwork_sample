@@ -56,6 +56,7 @@ export const prepareComposePayload: CPPayloadCreatorType = state => {
 		status: state.text.raw,
 		visibility: 'private',
 		media_ids: [''],
+		max_length: state.maxCount,
 	};
 };
 

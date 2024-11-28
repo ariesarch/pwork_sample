@@ -30,10 +30,12 @@ import {
 	useVisibilitySettingsStore,
 } from '@/store/compose/visibilitySettings/visibilitySettingsStore';
 import VisibilitySettingsModal from '@/components/organisms/compose/modal/VisibilitySettings/VisibilitySettingsModal';
+import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { initialState } from '@/context/composeStatusContext/composeStatus.reducer';
 
 const ComposeActionsBar = () => {
 	const { colorScheme } = useColorScheme();
-	const [isLongPost, setLongPost] = useState(false);
+	const { composeState, composeDispatch } = useComposeStatus();
 
 	// ****** Media Store ****** //
 	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
@@ -56,6 +58,8 @@ const ComposeActionsBar = () => {
 	const ctaModalVisible = useCallToActionStore(state => state.ctaModalVisible);
 	const { onToggleCTAModal } = useCTAactions();
 	// ****** CTA Store ****** //
+
+	const MAX_CHAR = 4000;
 
 	return (
 		<View>
@@ -106,16 +110,43 @@ const ComposeActionsBar = () => {
 				{/****** CTA Action ******/}
 
 				{/****** Long Post Action ******/}
-				<View className="flex-1 items-end">
-					<View className="flex-row items-center">
-						{!isLongPost && <ComposePlusIcon />}
-						<Pressable onPress={() => setLongPost(true)}>
+				{composeState?.maxCount === 500 ? (
+					<View className="flex-1 items-end">
+						<View className="flex-row items-center">
+							<ThemeText className="mr-3 text-white">
+								{composeState.text.count ? 500 - composeState.text.count : 500}
+							</ThemeText>
+							<Pressable
+								className="flex-row items-center"
+								onPress={() =>
+									composeDispatch({ type: 'maxCount', payload: MAX_CHAR })
+								}
+							>
+								<ComposePlusIcon />
+								<ThemeText className="ml-2 text-white">Long Post</ThemeText>
+							</Pressable>
+						</View>
+					</View>
+				) : (
+					<View className="flex-1 items-end">
+						<Pressable
+							className="flex-row items-center"
+							onPress={() =>
+								composeDispatch({
+									type: 'maxCount',
+									payload: 500,
+								})
+							}
+						>
 							<ThemeText className="ml-2 text-white">
-								{isLongPost ? '4000' : 'Long Post'}
+								{composeState.text.count
+									? MAX_CHAR - composeState.text.count
+									: MAX_CHAR}
 							</ThemeText>
 						</Pressable>
 					</View>
-				</View>
+				)}
+
 				{/****** Long Post Action ******/}
 			</View>
 

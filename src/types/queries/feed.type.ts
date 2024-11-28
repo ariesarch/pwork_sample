@@ -35,6 +35,7 @@ export type ComposeMutationPayload = {
 	spoiler_text?: string;
 	status: string;
 	visibility: 'public' | 'unlisted' | 'private' | 'direct';
+	max_length?: number;
 } & MediaOrPoll;
 
 export type RepostMutationPayload = {

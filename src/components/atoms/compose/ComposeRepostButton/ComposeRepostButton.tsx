@@ -44,7 +44,7 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 	});
 
 	const handleRepostStatus = () => {
-		if (composeState.text.count < composeState.maxCount) {
+		if (composeState.text.count <= composeState.maxCount) {
 			const payload = prepareRepostPayload(composeState, id);
 			mutate(payload);
 		}

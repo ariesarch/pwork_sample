@@ -31,6 +31,7 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 			onSelectMedia([]);
 			setPollCreate(false);
 			updateOption(1, '');
+			composeDispatch({ type: 'maxCount', payload: 500 });
 		});
 
 		return () => unsubscribe();

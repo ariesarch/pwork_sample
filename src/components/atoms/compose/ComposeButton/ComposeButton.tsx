@@ -1,5 +1,4 @@
 import { Pressable } from 'react-native';
-import ComposeRepostButton from '../ComposeRepostButton/ComposeRepostButton';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
@@ -35,7 +34,7 @@ const ComposeButton = () => {
 	});
 
 	const handleComposeStatus = () => {
-		if (composeState.text.count < composeState.maxCount) {
+		if (composeState.text.count <= composeState.maxCount) {
 			const payload = prepareComposePayload(composeState);
 			mutate(payload);
 		}
