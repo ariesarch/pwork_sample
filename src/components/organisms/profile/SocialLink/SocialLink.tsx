@@ -142,12 +142,12 @@ const SocialLink: React.FC<Props> = ({
 										onPress={() => setSelectedLink(link)}
 									/>
 									{formType === 'edit' && (
-										<Pressable
+										<TouchableOpacity
 											onPress={() => onPressDelete(link.title)}
 											className="absolute -right-2 -top-3 bg-slate-50 rounded-full justify-center items-center w-7 h-7 active:opacity-80"
 										>
 											<DeleteIcon />
-										</Pressable>
+										</TouchableOpacity>
 									)}
 								</View>
 							))

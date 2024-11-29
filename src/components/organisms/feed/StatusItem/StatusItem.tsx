@@ -50,7 +50,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 						<StatusContent status={status} />
 					</Pressable>
 				</View>
-				<View className="flex-1 ml-10">
+				<View className="ml-10">
 					<StatusActionBar status={status} />
 				</View>
 			</View>
