@@ -45,6 +45,7 @@ export type ComposeMutationPayload = {
 	spoiler_text?: string;
 	status: string;
 	visibility: Pathchwork.ComposeVisibility;
+	max_length?: number;
 	poll: Poll | null;
 	media_ids: string[];
 };

@@ -59,6 +59,7 @@ export const prepareComposePayload: CPPayloadCreatorType = state => {
 		visibility: state.visibility == 'local' ? 'public' : state.visibility,
 		media_ids: state.media_ids.length > 0 ? state.media_ids : [],
 		poll: state.poll,
+		max_length: state.maxCount,
 	};
 };
 

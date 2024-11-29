@@ -36,7 +36,7 @@ const ComposeButton = () => {
 	});
 
 	const handleComposeStatus = () => {
-		if (composeState.text.count < composeState.maxCount) {
+		if (composeState.text.count <= composeState.maxCount) {
 			const payload = prepareComposePayload(composeState);
 			mutate(payload);
 		}

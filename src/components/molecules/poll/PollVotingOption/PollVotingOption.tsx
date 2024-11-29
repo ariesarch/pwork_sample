@@ -28,7 +28,7 @@ const PollVotingOption = ({
 	optionIndex,
 }: PollVotingOptionProps) => {
 	const pollVotesCount = poll.voters_count || poll.votes_count;
-	const hasOwnVotes = poll.own_votes.includes(optionIndex);
+	const hasOwnVotes = poll.own_votes && poll.own_votes?.includes(optionIndex);
 
 	const percentage =
 		pollVotesCount === 0 ? 0 : (votesCount / pollVotesCount) * 100;
