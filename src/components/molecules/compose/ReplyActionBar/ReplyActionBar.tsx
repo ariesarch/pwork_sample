@@ -61,13 +61,13 @@ const ReplyActionBar = ({ currentStatus }: Props) => {
 	});
 
 	const handlePublish = () => {
-		if (
-			composeState.text.count < composeState.maxCount ||
-			composeState.in_reply_to_id !== undefined
-		) {
-			const payload = prepareComposePayload(composeState);
-			mutate(payload);
-		}
+		// if (
+		// 	composeState.text.count < composeState.maxCount ||
+		// 	composeState.in_reply_to_id !== undefined
+		// ) {
+		// 	const payload = prepareComposePayload(composeState);
+		// 	mutate(payload);
+		// }
 	};
 
 	return (
