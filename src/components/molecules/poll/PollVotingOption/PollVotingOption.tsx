@@ -45,17 +45,17 @@ const PollVotingOption = ({
 	if (showResults) {
 		return (
 			<View className="py-1">
-				<View className="relative justify-center overflow-hidden py-2 rounded-full bg-patchwork-dark-50">
+				<View className="relative justify-center overflow-hidden py-2 rounded-lg bg-patchwork-dark-50">
 					<Animated.View
 						className={`absolute top-0 left-0 bottom-0 bg-patchwork-red-50`}
 						style={progressStyle}
 					/>
 					<View className="flex-row items-center justify-between px-3">
-						<View className="flex-row items-center">
+						<View className="flex-row items-center w-11/12">
 							{hasOwnVotes && (
 								<PollRadioCheckedIcon fill="#FFFFFF" className="mr-2" />
 							)}
-							<ThemeText>{title}</ThemeText>
+							<ThemeText className="ml-1 flex-1">{title}</ThemeText>
 						</View>
 						<ThemeText size={'fs_13'}>{Math.round(percentage)}%</ThemeText>
 					</View>
@@ -67,7 +67,7 @@ const PollVotingOption = ({
 	return (
 		<Pressable onPress={onPressOptionSelect}>
 			<View className="py-1">
-				<View className="relative overflow-hidden py-1">
+				<View className="relative py-1">
 					<View className="flex-row items-center">
 						<PollVotingOptionIcon
 							type={
@@ -80,7 +80,7 @@ const PollVotingOption = ({
 									: 'radioOutline'
 							}
 						/>
-						<ThemeText className="ml-2">{title}</ThemeText>
+						<ThemeText className="ml-2 flex-1">{title}</ThemeText>
 					</View>
 				</View>
 			</View>
