@@ -26,20 +26,26 @@ export const ComposeGalleryIcon = ({
 }: SvgProps & ColorSchemeType) => (
 	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
 		<Path
-			stroke="#fff"
+			stroke={props.stroke ?? '#FFFFFF'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
 			d="M10 4H7.2c-1.12 0-1.68 0-2.108.218a1.999 1.999 0 0 0-.874.874C4 5.52 4 6.08 4 7.2v9.6c0 1.12 0 1.68.218 2.108a2 2 0 0 0 .874.874c.427.218.987.218 2.105.218h9.824c1.118 0 1.677 0 2.104-.218.377-.191.683-.498.875-.874.218-.428.218-.987.218-2.105V14"
 		/>
 		<Path
-			stroke="#fff"
+			stroke={props.stroke ?? '#FFFFFF'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
 			d="m5 18 2.5-2.438c.066-.064.098-.096.128-.12a1.289 1.289 0 0 1 1.795.12 1.288 1.288 0 0 0 1.795.121c.03-.024.063-.056.128-.12l2.152-2.064c.848-.813 2.205-.863 3.002.001v0c1.432 1.552 3 4.5 3 4.5M20.195 14.5V7.2c0-1.12 0-1.68-.218-2.108a2 2 0 0 0-.873-.874C18.675 4 18.116 4 16.998 4H8"
 		/>
-		<Circle cx={10} cy={9} r={2} stroke="#fff" strokeWidth={2} />
+		<Circle
+			cx={10}
+			cy={9}
+			r={2}
+			stroke={props.stroke ?? '#FFFFFF'}
+			strokeWidth={2}
+		/>
 	</Svg>
 );
 
@@ -49,18 +55,18 @@ export const ComposeGifIcon = ({
 }: SvgProps & ColorSchemeType) => (
 	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
 		<Path
-			fill="#fff"
+			fill={props.stroke ?? '#FFFFFF'}
 			d="M11.5 15V9H13v6h-1.5ZM6 15a.92.92 0 0 1-.725-.312A1.02 1.02 0 0 1 5 14v-4c0-.25.092-.48.275-.688A.92.92 0 0 1 6 9h3c.3 0 .542.104.725.312.183.209.275.438.275.688v.5H6.5v3h2V12H10v2c0 .25-.092.48-.275.688A.92.92 0 0 1 9 15H6Zm8.5 0V9H19v1.5h-3v1h2V13h-2v2h-1.5Z"
 		/>
 		<Path
-			stroke="#fff"
+			stroke={props.stroke ?? '#FFFFFF'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
 			d="M9.53 4H6.25c-1.313 0-1.97 0-2.47.218-.442.192-.8.497-1.025.874C2.5 5.52 2.5 6.08 2.5 7.2v9.6c0 1.12 0 1.68.255 2.108.225.376.583.682 1.024.874.5.218 1.157.218 2.466.218h11.51c1.31 0 1.964 0 2.465-.218.44-.192.8-.498 1.025-.874.255-.428.255-.987.255-2.105V14"
 		/>
 		<Path
-			stroke="#fff"
+			stroke={props.stroke ?? '#FFFFFF'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
@@ -75,13 +81,19 @@ export const ComposeLocationIcon = ({
 }: SvgProps & ColorSchemeType) => (
 	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
 		<Path
-			stroke="#fff"
+			stroke={props.stroke || '#FFFFFF'}
 			strokeLinejoin="round"
 			strokeWidth={2}
 			d="M13.75 19.624C16.144 16.036 20 13.812 20 9.5a7.5 7.5 0 0 0-15 0c0 4.312 3.857 6.536 6.25 10.124L12.5 21.5l1.25-1.876Z"
 			clipRule="evenodd"
 		/>
-		<Circle cx={12.5} cy={9.5} r={2.5} stroke="#fff" strokeWidth={2} />
+		<Circle
+			cx={12.5}
+			cy={9.5}
+			r={2.5}
+			stroke={props.stroke || '#FFFFFF'}
+			strokeWidth={2}
+		/>
 	</Svg>
 );
 
@@ -138,7 +150,7 @@ export const ComposeLinkIcon = ({
 }: SvgProps & ColorSchemeType) => (
 	<Svg width="22" height="17" viewBox="0 0 22 17" fill="none" {...props}>
 		<Path
-			fill="#fff"
+			fill={props.fill || '#fff'}
 			d="m19.66 9.023-3.719 3.72a4.75 4.75 0 0 1-6.773 0 4.791 4.791 0 0 1-.531-6.177l.033-.033c.365-.498 1.03-.597 1.494-.265.465.332.598.996.232 1.494l-.033.033a2.676 2.676 0 0 0 .3 3.453c1.028 1.063 2.722 1.063 3.784 0l3.719-3.719c1.063-1.062 1.063-2.756 0-3.785a2.676 2.676 0 0 0-3.453-.299l-.033.034a1.06 1.06 0 0 1-1.495-.233c-.332-.465-.232-1.129.233-1.494l.066-.033a4.791 4.791 0 0 1 6.176.531 4.75 4.75 0 0 1 0 6.773ZM2.428 8.26l3.718-3.752a4.85 4.85 0 0 1 6.807 0c1.66 1.66 1.86 4.283.498 6.209l-.033.033c-.332.498-1.03.598-1.494.266a1.06 1.06 0 0 1-.233-1.495l.034-.033a2.673 2.673 0 0 0-.3-3.453c-1.029-1.062-2.722-1.062-3.784 0L3.92 9.754c-1.028 1.03-1.028 2.723 0 3.785.93.93 2.392 1.063 3.454.299l.033-.033a1.06 1.06 0 0 1 1.494.232c.332.465.233 1.129-.232 1.494l-.066.034c-1.893 1.36-4.516 1.128-6.176-.532a4.75 4.75 0 0 1 0-6.773Z"
 		/>
 	</Svg>
@@ -308,7 +320,7 @@ export const ComposeAddFileIcon = ({
 export const DeletePollOptionIcon = (props: SvgProps) => (
 	<Svg width="25" height="25" fill="none" viewBox="0 0 24 24" {...props}>
 		<Path
-			stroke={props.stroke || '#fff'}
+			stroke={props.stroke || '#FF3C26'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={1.5}
@@ -321,7 +333,7 @@ export const PollDropperIcon = (props: SvgProps) => (
 	<Svg width="16" height="16" viewBox="0 0 16 16" fill="none" {...props}>
 		<Path
 			d={'m12 6-4 4-4-4'}
-			stroke={'#FF3C26'}
+			stroke={props.stroke ?? '#FF3C26'}
 			strokeWidth={1.5}
 			strokeLinecap="round"
 			strokeLinejoin="round"

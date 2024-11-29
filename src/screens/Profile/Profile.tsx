@@ -326,12 +326,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											// return item.in_reply_to_id ? (
-											// 	<StatusWrapper status={item} />
-											// ) : (
-											// 	<></>
-											// );
-											return <StatusWrapper status={item} />;
+											return item.in_reply_to_id ? (
+												<StatusWrapper status={item} />
+											) : (
+												<></>
+											);
+											// return <StatusWrapper status={item} />;
 										}}
 										refreshControl={
 											<RefreshControl

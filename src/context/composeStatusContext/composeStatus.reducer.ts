@@ -16,6 +16,7 @@ export const initialState: ComposeState = {
 	maxCount: 500,
 	visibility: 'public',
 	in_reply_to_id: undefined,
+	poll: null,
 };
 
 export function composeReducer(
@@ -48,6 +49,8 @@ export function composeReducer(
 			return { ...state, visibility: action.payload };
 		case 'reply_id_change':
 			return { ...state, in_reply_to_id: action.payload };
+		case 'poll':
+			return { ...state, poll: action.payload };
 		case 'clear': {
 			return initialState;
 		}

@@ -7,7 +7,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { useCTAactions } from '@/store/compose/callToAction/callToActionStore';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
-import { usePollStore } from '@/store/compose/poll/pollStore';
 
 const ComposeContext = createContext<ComposeContextType | undefined>(undefined);
 
@@ -21,16 +20,13 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 	const navigation = useNavigation();
 	const { onChangeCTAText } = useCTAactions();
 	const { resetAttachmentStore } = useManageAttachmentActions();
-	const setPollCreate = usePollStore(state => state.setPollCreate);
-	const updateOption = usePollStore(state => state.updateOption);
+	const { onSelectMedia } = useManageAttachmentActions();
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			composeDispatch({ type: 'clear' });
 			onChangeCTAText('');
 			resetAttachmentStore();
-			setPollCreate(false);
-			updateOption(1, '');
 		});
 
 		return () => unsubscribe();

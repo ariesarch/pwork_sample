@@ -977,7 +977,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-keyboard-controller (1.14.4):
+  - react-native-keyboard-controller (1.14.5):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1693,7 +1693,7 @@ SPEC CHECKSUMS:
   react-native-blurhash: a59e6bf8117a0304488ed576abd440f4b0777a8c
   react-native-encrypted-storage: db300a3f2f0aba1e818417c1c0a6be549038deb7
   react-native-image-picker: c3afe5472ef870d98a4b28415fc0b928161ee5f7
-  react-native-keyboard-controller: 411952ecd9d57f3c0c07c04c1e541a0ab3cad76e
+  react-native-keyboard-controller: fee70dd6ee930b9aa6901b25f49273398ffeb93b
   react-native-mmkv: 8c9a677e64a1ac89b0c6cf240feea528318b3074
   react-native-pager-view: bc6cf48ea4f08ea5c5a74e19c6579e9b86d8729c
   react-native-safe-area-context: 422017db8bcabbada9ad607d010996c56713234c
@@ -1734,8 +1734,8 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
-  Yoga: ae3c32c514802d30f687a04a6a35b348506d411f
+  Yoga: 2f71ecf38d934aecb366e686278102a51679c308
 
 PODFILE CHECKSUM: ebe632fed9cfc42d21be3045ab4037fa77f2ac7a
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.14.3

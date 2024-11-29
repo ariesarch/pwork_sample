@@ -1,5 +1,4 @@
 import { Pressable } from 'react-native';
-import ComposeRepostButton from '../ComposeRepostButton/ComposeRepostButton';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
@@ -7,8 +6,9 @@ import { prepareComposePayload } from '@/util/helper/compose';
 import { Flow } from 'react-native-animated-spinkit';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
-import { BottomStackParamList, TabBarScreenProps } from '@/types/navigation';
+import { BottomStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { POLL_LIMITS } from '@/util/constant/pollOption';
 
 const ComposeButton = () => {
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -23,6 +23,7 @@ const ComposeButton = () => {
 				topOffset: 50,
 			});
 			navigation.navigate('HomeFeed');
+			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
 			Toast.show({
@@ -41,16 +42,32 @@ const ComposeButton = () => {
 		}
 	};
 
+	const disabledComposeButton = () => {
+		const { text, poll } = composeState;
+		const hasEmptyPollOptions = poll?.options?.some(
+			option => option.trim() === '',
+		);
+		const insufficientPollOptions =
+			poll && poll.options?.length < POLL_LIMITS.MIN_OPTIONS;
+
+		return (
+			isPending || !text.raw || insufficientPollOptions || hasEmptyPollOptions
+		);
+	};
+
 	return (
 		<Pressable
 			className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full"
-			disabled={isPending}
+			disabled={disabledComposeButton()}
 			onPress={handleComposeStatus}
 		>
 			{isPending ? (
 				<Flow size={20} color={'#fff'} className="my-2" />
 			) : (
-				<ThemeText size={'fs_13'} className="leading-5">
+				<ThemeText
+					size={'fs_13'}
+					className={`${disabledComposeButton() && 'opacity-40'} leading-5`}
+				>
 					Post
 				</ThemeText>
 			)}

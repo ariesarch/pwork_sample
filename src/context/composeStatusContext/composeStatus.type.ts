@@ -1,3 +1,4 @@
+import { Poll } from '@/types/queries/feed.type';
 import { Match } from 'linkify-it';
 import { Dispatch, ReactNode } from 'react';
 import { tags } from 'react-native-svg/lib/typescript/xml';
@@ -25,6 +26,7 @@ export type ComposeState = {
 	media_ids: string[];
 	visibility: Pathchwork.ComposeVisibility;
 	in_reply_to_id?: string;
+	poll: Poll | null;
 };
 
 export type ComposeAction =
@@ -38,6 +40,7 @@ export type ComposeAction =
 	| { type: 'media_remove'; payload: number }
 	| { type: 'visibility_change'; payload: ComposeState['visibility'] }
 	| { type: 'reply_id_change'; payload: string }
+	| { type: 'poll'; payload: ComposeState['poll'] }
 	| { type: 'clear' };
 
 export type ComposeContextType = {

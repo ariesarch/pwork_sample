@@ -28,13 +28,15 @@ export type HashtagDetailFeedQueryKey = [
 
 export type LinkPreviewQueryKey = ['link-preview', { url: string }];
 
-export type MediaOrPoll =
-	| {
-			media_ids: string[];
-	  }
-	| {
-			poll: string[];
-	  };
+export type Poll = {
+	options: string[];
+	expires_in: number;
+	multiple: boolean;
+};
+
+type Media = {
+	media_ids: string[];
+};
 
 export type ComposeMutationPayload = {
 	in_reply_to_id: string | undefined;
@@ -43,7 +45,9 @@ export type ComposeMutationPayload = {
 	spoiler_text?: string;
 	status: string;
 	visibility: Pathchwork.ComposeVisibility;
-} & MediaOrPoll;
+	poll: Poll | null;
+	media_ids: string[];
+};
 
 export type RepostMutationPayload = {
 	id: string;

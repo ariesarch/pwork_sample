@@ -23,7 +23,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 
 	return (
 		<>
-			<View className="flex-1 m-4" {...props}>
+			<View className="m-4" {...props}>
 				<View className="flex-row">
 					<Pressable
 						onPress={() =>

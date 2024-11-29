@@ -1,7 +1,6 @@
 import { ComposeState } from '@/context/composeStatusContext/composeStatus.type';
 import {
 	ComposeMutationPayload,
-	MediaOrPoll,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { Match } from 'linkify-it';
@@ -51,9 +50,6 @@ export const getReplacedMentionText = (
 
 type CPPayloadCreatorType = (state: ComposeState) => ComposeMutationPayload;
 export const prepareComposePayload: CPPayloadCreatorType = state => {
-	const pollOrMedia: MediaOrPoll =
-		state.media_ids.length > 0 ? { media_ids: state.media_ids } : { poll: [] };
-
 	return {
 		in_reply_to_id: state.in_reply_to_id,
 		language: 'en',
@@ -61,7 +57,8 @@ export const prepareComposePayload: CPPayloadCreatorType = state => {
 		spoiler_text: '',
 		status: state.text.raw,
 		visibility: state.visibility == 'local' ? 'public' : state.visibility,
-		...pollOrMedia,
+		media_ids: state.media_ids.length > 0 ? state.media_ids : [],
+		poll: state.poll,
 	};
 };
 

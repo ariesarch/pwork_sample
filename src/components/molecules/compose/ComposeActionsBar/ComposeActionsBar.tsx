@@ -22,8 +22,6 @@ import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
-import PollModal from '@/components/organisms/compose/modal/Poll/PollModal';
-import { usePollStore } from '@/store/compose/poll/pollStore';
 import CallToActionModal from '@/components/organisms/compose/modal/CallToAction/CallToActionModal';
 import {
 	useCTAactions,
@@ -36,11 +34,13 @@ import {
 import VisibilitySettingsModal from '@/components/organisms/compose/modal/VisibilitySettings/VisibilitySettingsModal';
 import { cn } from '@/util/helper/twutil';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { POLL_INITIAL } from '@/util/constant/pollOption';
 
 const ComposeActionsBar = () => {
+	const { composeState, composeDispatch } = useComposeStatus();
 	const { colorScheme } = useColorScheme();
+
 	const [isLongPost, setLongPost] = useState(false);
-	const { composeState } = useComposeStatus();
 
 	// ****** Media Store ****** //
 	const { mediaModal, selectedMedia, progress } = useManageAttachmentStore();
@@ -49,8 +49,17 @@ const ComposeActionsBar = () => {
 	// ****** Media Store ****** //
 
 	// ****** Poll Store ****** //
-	const isPollCreated = usePollStore(state => state.isPollCreated);
-	const [isPollModalVisible, setPollModalVisible] = useState(false);
+	// const [isPollModalVisible, setPollModalVisible] = useState(false);
+	const onPressPoll = () => {
+		if (composeState.poll) {
+			composeDispatch({ type: 'poll', payload: null });
+		} else {
+			composeDispatch({
+				type: 'poll',
+				payload: POLL_INITIAL,
+			});
+		}
+	};
 	// ****** Poll Store ****** //
 
 	// ****** Visibility Store ****** //
@@ -85,7 +94,9 @@ const ComposeActionsBar = () => {
 			<View className={styles.container}>
 				{/****** Media Upload Action ******/}
 				<Pressable
-					disabled={selectedMedia.length == 4 || isMediaUploading}
+					disabled={
+						selectedMedia.length == 4 || isMediaUploading || composeState.poll
+					}
 					onPress={onToggleMediaModal}
 					className={cn(
 						'mr-3',
@@ -96,22 +107,26 @@ const ComposeActionsBar = () => {
 				{/****** Media Upload Action ******/}
 
 				<Pressable
+					disabled
 					className={'mr-3'}
-					children={<ComposeGifIcon {...{ colorScheme }} />}
+					children={<ComposeGifIcon {...{ colorScheme }} stroke={'#6D7276'} />}
 				/>
 				<Pressable
 					className={'mr-3'}
-					children={<ComposeLocationIcon {...{ colorScheme }} />}
+					children={
+						<ComposeLocationIcon {...{ colorScheme }} stroke={'#6D7276'} />
+					}
 				/>
+
 				{/****** Poll Action ******/}
 				<Pressable
 					disabled={selectedMedia.length > 0}
-					onPress={() => setPollModalVisible(true)}
+					onPress={onPressPoll}
 					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-40')}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
-							stroke={isPollCreated ? '#FF3C26' : '#FFFFFF'}
+							stroke={composeState.poll ? '#FF3C26' : '#FFFFFF'}
 						/>
 					}
 				/>
@@ -127,9 +142,10 @@ const ComposeActionsBar = () => {
 
 				{/****** CTA Action ******/}
 				<Pressable
+					disabled={true}
 					onPress={onToggleCTAModal}
 					className={'mr-3'}
-					children={<ComposeLinkIcon {...{ colorScheme }} />}
+					children={<ComposeLinkIcon {...{ colorScheme }} fill={'#6D7276'} />}
 				/>
 				{/****** CTA Action ******/}
 
@@ -164,10 +180,10 @@ const ComposeActionsBar = () => {
 			{/****** Manage Attachments ( Photos and Videos ) Modal ******/}
 
 			{/****** Poll Modal ******/}
-			<PollModal
+			{/* <PollModal
 				visible={isPollModalVisible}
 				onClose={() => setPollModalVisible(false)}
-			/>
+			/> */}
 			{/****** Poll Modal ******/}
 
 			{/****** Visibility Settings Modal ******/}

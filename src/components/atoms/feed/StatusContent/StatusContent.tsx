@@ -9,6 +9,7 @@ import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
+import PollVotingStatus from '@/components/organisms/poll/PollVotingStatus/PollVotingStatus';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -29,6 +30,13 @@ const StatusContent = ({ status, isFromNotiStatusImage }: Props) => {
 				}}
 			>
 				<HTMLParser status={status} />
+				{status?.poll && (
+					<PollVotingStatus
+						poll={status.poll}
+						accountId={status.account.id}
+						statusId={status.id}
+					/>
+				)}
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
 					(!isFromNotiStatusImage ? (
