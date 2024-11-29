@@ -4,6 +4,7 @@ import {
 	AccountDetailFeedQueryKey,
 	FeedDetailQueryKey,
 } from '@/types/queries/feed.type';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 type QueryFnData = IFeedQueryFnData | IFeedDetailQueryFnData;
 
@@ -98,10 +99,19 @@ export const getPollCacheQueryKeys = (
 	accountId: string,
 	statusId: string,
 ): PollCacheQueryKeys[] => {
-	const domain_name = 'channel.org';
+	const domain_name = process.env.API_URL || DEFAULT_API_URL;
 	return [
 		['channel-feed', { domain_name, remote: false, only_media: false }],
-		['account-detail-feed', { domain_name, account_id: accountId }],
+		[
+			'account-detail-feed',
+			{
+				domain_name,
+				account_id: accountId,
+				exclude_replies: true,
+				exclude_reblogs: false,
+				exclude_original_statuses: false,
+			},
+		],
 		['feed-detail', { id: statusId, domain_name }],
 	];
 };
