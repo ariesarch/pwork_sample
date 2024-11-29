@@ -136,7 +136,7 @@ const EditProfile = () => {
 			/>
 			<KeyboardAwareScrollView
 				enableOnAndroid
-				extraScrollHeight={85}
+				extraScrollHeight={30}
 				contentContainerStyle={{ flexGrow: 1 }}
 			>
 				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
