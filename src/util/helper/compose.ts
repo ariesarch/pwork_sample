@@ -80,7 +80,7 @@ export const prepareReplyPayload: ReplyPayloadCreatorType = (state, id) => {
 };
 
 export const calculateImageWidth = (selectedMedia: Asset[], index: number) => {
-	if (selectedMedia.length == 1) return 'w-full h-[220]';
+	if (selectedMedia.length == 1) return 'w-full h-56';
 	if (selectedMedia.length > 1) {
 		return index === 2 && selectedMedia.length == 3
 			? 'w-full h-[140]'
