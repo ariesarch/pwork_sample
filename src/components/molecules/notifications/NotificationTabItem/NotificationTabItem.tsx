@@ -52,7 +52,7 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					<Pressable
 						className="flex-row items-center"
 						onPress={() => {
-							navigation.navigate('ProfileOther', { id: account.id });
+							// navigation.navigate('ProfileOther', { id: account.id });
 						}}
 					>
 						<Image
