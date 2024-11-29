@@ -32,7 +32,6 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	const { colorScheme } = useColorScheme();
 	const { chatHistory, setChatHistory } = useChatHistoryStore();
 	const [_message, setMessage] = useState<string>('');
-
 	const cachedUserInfo: AxiosResponse<Pathchwork.Account[]> | undefined =
 		queryKey ? queryClient.getQueryData(queryKey) : undefined;
 
@@ -100,7 +99,11 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 						source={{ uri: userInfo.avatar }}
 						resizeMode={FastImage.resizeMode.contain}
 					/>
-					<ThemeText className="font-bold mx-3">
+					<ThemeText
+						numberOfLines={1}
+						ellipsizeMode="tail"
+						className="font-bold mx-3"
+					>
 						{userInfo.display_name}
 					</ThemeText>
 					<VerifyIcon colorScheme={colorScheme} />
@@ -111,7 +114,8 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 				<View />
 			</View>
 			<KeyboardAwareScrollView
-				ref={scrollViewRef}
+				enableOnAndroid
+				extraScrollHeight={85}
 				contentContainerStyle={{ flexGrow: 1 }}
 			>
 				{/* profile info */}
@@ -207,7 +211,13 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 					onPress={sendMessage}
 					className="ml-2 rounded-full p-3"
 				>
-					<ThemeText className="border-[1] border-[1px] border-patchwork-grey-100 py-[6] px-3 rounded-full text-patchwork-grey-100">
+					<ThemeText
+						className={`border-[1] border-[1px]  py-[6] px-3 rounded-full  ${
+							_message
+								? 'text-patchwork-red-50 border-patchwork-red-50'
+								: 'border-patchwork-grey-100 text-patchwork-grey-100'
+						}`}
+					>
 						Send
 					</ThemeText>
 				</TouchableOpacity>

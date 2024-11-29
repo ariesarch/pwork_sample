@@ -3,26 +3,16 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Chip from '@/components/atoms/common/Chip/Chip';
 import {
 	PenIcon,
-	GlobeIcon,
 	LinkIcon,
-	RedditIcon,
-	TwitterIcon,
-	FacebookIcon,
-	InstagramIcon,
-	LinkedinIcon,
-	YoutubeIcon,
-	TiktokIcon,
-	TwitchIcon,
-	PatreonIcon,
-	PodcastIcon,
-	NewsletterIcon,
-	ForumIcon,
-	AppIcon,
 	PlusIcon,
+	GlobeIcon,
 } from '@/util/svg/icon.profile';
 import { useColorScheme } from 'nativewind';
 import { scale } from '@/util/helper/helper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Icons } from '@/util/constant/socialMediaLinks';
+import { generateSocialLinkURL } from '@/util/helper/generateSocialLinkURL';
+import { cleanText } from '@/util/helper/cleanText';
 
 type SocialSectionProps = {
 	fields: Pathchwork.Field[];
@@ -43,46 +33,15 @@ const SocialSection = ({
 		const renderSocialIcons = (field: Pathchwork.Field) => {
 			const { name, value } = field;
 			if (!value) return null;
-			const SocialIcons = {
-				Twitter: <TwitterIcon />,
-				Reddit: <RedditIcon />,
-				Facebook: <FacebookIcon />,
-				Instagram: <InstagramIcon />,
-				Linkedin: <LinkedinIcon />,
-				Youtube: <YoutubeIcon />,
-				TikTok: <TiktokIcon />,
-				Twitch: <TwitchIcon />,
-				Patreon: <PatreonIcon />,
-				// Podcast: <PodcastIcon />,
-				// Forum: <ForumIcon />,
-				// Newsletter: <NewsletterIcon />,
-				// App: <AppIcon />,
-				// Blog: <PenIcon {...{ colorScheme }} />,
-				// Default: <GlobeIcon {...{ colorScheme }} />,
-			};
-
-			const Icon = SocialIcons[name];
-
-			let hrefValue = `https://www.${name.toLocaleLowerCase()}.com/${value}`;
-			if (name === 'Reddit') {
-				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/u/${value}`;
-			}
-			if (name === 'Linkedin') {
-				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/in/${value}`;
-			}
-
-			if (name === 'Youtube' || name === 'TikTok') {
-				hrefValue = `https://www.${name.toLocaleLowerCase()}.com/@${value}`;
-			}
-			if (name === 'Twitch') {
-				hrefValue = `https://www.${name.toLocaleLowerCase()}.tv/${value}`;
-			}
+			const Icon = Icons[name] || <GlobeIcon colorScheme={colorScheme} />;
+			const hrefValue = generateSocialLinkURL(name, value);
+			const link = value.includes('href') ? cleanText(value) : value;
 
 			return (
 				<Chip
 					className="mx-1"
 					startIcon={Icon}
-					title={value}
+					title={link}
 					onPress={() => Linking.openURL(hrefValue)}
 				/>
 			);

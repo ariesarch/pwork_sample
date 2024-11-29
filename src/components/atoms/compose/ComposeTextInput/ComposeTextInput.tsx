@@ -12,7 +12,7 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 		<TextInput
 			placeholder="Start Typing here.."
 			multiline
-			maxLength={4000}
+			maxLength={composeState.maxCount}
 			placeholderTextColor={inputColor}
 			scrollEnabled={false}
 			selectionColor={selectionColor}

@@ -27,6 +27,7 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 			composeDispatch({ type: 'clear' });
 			onChangeCTAText('');
 			resetAttachmentStore();
+			// composeDispatch({ type: 'maxCount', payload: 500 });
 		});
 
 		return () => unsubscribe();

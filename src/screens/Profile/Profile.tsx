@@ -29,6 +29,7 @@ import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
 
 import { SocialMediaLink } from '@/components/organisms/profile/SocialLink/SocialLink';
+import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 import { useAuthStore } from '@/store/auth/authStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { CircleFade, Flow } from 'react-native-animated-spinkit';
@@ -38,6 +39,9 @@ import { queryClient } from '@/App';
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
+import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import { verifyAuthToken } from '@/services/auth.service';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -49,6 +53,10 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
+	const [showDelConf, setShowDelConf] = useState<{
+		visible: boolean;
+		title: string;
+	}>({ visible: false, title: '' });
 	const domain_name = useSelectedDomain();
 	const {
 		userInfo,
@@ -102,86 +110,22 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		}
 	};
 
-	const handleAddSocialLink = async (
-		link: SocialMediaLink,
+	const handleSocialLinkChange = async (
+		link: string,
 		username: string,
+		type: 'edit' | 'delete',
 	) => {
 		setSocialLinkAction({ visible: false, formType: 'add' });
 		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
-				fields_attributes: {
-					0: {
-						name: 'Twitter',
-						value:
-							link.title === 'Twitter' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Twitter')?.value ||
-								  '',
-					},
-					1: {
-						name: 'Instagram',
-						value:
-							link.title === 'Instagram' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Instagram')?.value ||
-								  '',
-					},
-					2: {
-						name: 'Linkedin',
-						value:
-							link.title === 'Linkedin' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Linkedin')?.value ||
-								  '',
-					},
-					3: {
-						name: 'Youtube',
-						value:
-							link.title === 'Youtube' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Youtube')?.value ||
-								  '',
-					},
-					4: {
-						name: 'Facebook',
-						value:
-							link.title === 'Facebook' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Facebook')?.value ||
-								  '',
-					},
-					5: {
-						name: 'Reddit',
-						value:
-							link.title === 'Reddit' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Reddit')?.value || '',
-					},
-					6: {
-						name: 'TikTok',
-						value:
-							link.title === 'TikTok' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'TikTok')?.value || '',
-					},
-					7: {
-						name: 'Twitch',
-						value:
-							link.title === 'Twitch' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Twitch')?.value || '',
-					},
-					8: {
-						name: 'Patreon',
-						value:
-							link.title === 'Patreon' && username
-								? username
-								: userInfo?.fields?.find(v => v.name === 'Patreon')?.value ||
-								  '',
-					},
-				},
+				fields_attributes: generateFieldsAttributes(
+					userInfo,
+					link,
+					username,
+					type,
+				),
 			};
-			mutateAsync(updatedProfile);
+			await mutateAsync(updatedProfile);
 		}
 	};
 
@@ -203,8 +147,10 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		},
 	});
 
-	const handleRefresh = () => {
+	const handleRefresh = async () => {
 		refetchProfileFeed();
+		const res = await verifyAuthToken();
+		setUserInfo(res);
 	};
 
 	return (
@@ -224,7 +170,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
 					{timeline && userInfo ? (
 						<>
-							<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
+							<FeedTitleHeader title={userInfo.display_name} />
 							<Tabs.Container
 								renderHeader={() => {
 									return (
@@ -369,11 +315,30 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									setSocialLinkAction({ visible: false, formType: 'add' })
 								}
 								onPressAdd={(link, username) =>
-									handleAddSocialLink(link, username)
+									handleSocialLinkChange(link, username, 'edit')
+								}
+								onPressDelete={link =>
+									setShowDelConf({ visible: true, title: link })
 								}
 								formType={socialLinkAction.formType}
 								data={userInfo?.fields?.filter(v => v.value)}
 							/>
+							{showDelConf.visible && (
+								<>
+									<CustomAlert
+										message={`Are u sure you want to delete the ${showDelConf.title} link?`}
+										title="Delete Confirmation"
+										hasCancel
+										handleCancel={() =>
+											setShowDelConf({ visible: false, title: '' })
+										}
+										handleOk={() => {
+											setShowDelConf({ visible: false, title: '' });
+											handleSocialLinkChange(showDelConf.title, '', 'delete');
+										}}
+									/>
+								</>
+							)}
 						</>
 					) : (
 						<View className="flex-1">
