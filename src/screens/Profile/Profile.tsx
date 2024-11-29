@@ -37,8 +37,8 @@ import { queryClient } from '@/App';
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
-import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import { verifyAuthToken } from '@/services/auth.service';
+import { Alert } from 'react-native';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -105,6 +105,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					type,
 				),
 			};
+			console.log(username);
 			await mutateAsync(updatedProfile);
 		}
 	};
@@ -268,25 +269,32 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									handleSocialLinkChange(link, username, 'edit')
 								}
 								onPressDelete={link =>
-									setShowDelConf({ visible: true, title: link })
+									Alert.alert(
+										'Confirmation',
+										`Are u sure you want to delete the ${link} link?`,
+										[
+											{
+												text: 'Cancel',
+												onPress: () => {},
+												style: 'cancel',
+											},
+											{
+												text: 'OK',
+												onPress: async () => {
+													handleSocialLinkChange(
+														showDelConf.title,
+														' ',
+														'delete',
+													);
+												},
+											},
+										],
+										{ cancelable: false },
+									)
 								}
 								formType={socialLinkAction.formType}
 								data={userInfo?.fields?.filter(v => v.value)}
 							/>
-							{showDelConf.visible && (
-								<CustomAlert
-									message={`Are u sure you want to delete the ${showDelConf.title} link?`}
-									title="Delete Confirmation"
-									hasCancel
-									handleCancel={() =>
-										setShowDelConf({ visible: false, title: '' })
-									}
-									handleOk={() => {
-										setShowDelConf({ visible: false, title: '' });
-										handleSocialLinkChange(showDelConf.title, '', 'delete');
-									}}
-								/>
-							)}
 						</>
 					) : (
 						<View className="flex-1">
