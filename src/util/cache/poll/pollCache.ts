@@ -107,8 +107,8 @@ export const getPollCacheQueryKeys = (
 			{
 				domain_name,
 				account_id: accountId,
-				exclude_reblogs: false,
 				exclude_replies: true,
+				exclude_reblogs: false,
 				exclude_original_statuses: false,
 			},
 		],
