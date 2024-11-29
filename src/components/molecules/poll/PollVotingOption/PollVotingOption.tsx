@@ -34,7 +34,7 @@ const PollVotingOption = ({
 		pollVotesCount === 0 ? 0 : (votesCount / pollVotesCount) * 100;
 
 	const progressStyle = useAnimatedStyle(() => ({
-		width: withSpring(`${percentage}%`, { damping: 10 }),
+		width: withSpring(`${percentage}%`, { damping: 8 }),
 	}));
 
 	const onPressOptionSelect = () => {
@@ -47,8 +47,17 @@ const PollVotingOption = ({
 			<View className="py-1">
 				<View className="relative justify-center overflow-hidden py-2 rounded-lg bg-patchwork-dark-50">
 					<Animated.View
-						className={`absolute top-0 left-0 bottom-0 bg-patchwork-red-50`}
-						style={progressStyle}
+						// className={`absolute top-0 left-0 bottom-0 bg-patchwork-red-50`}
+						style={[
+							progressStyle,
+							{
+								position: 'absolute',
+								left: 0,
+								top: 0,
+								bottom: 0,
+								backgroundColor: '#FF3C26',
+							},
+						]}
 					/>
 					<View className="flex-row items-center justify-between px-3">
 						<View className="flex-row items-center w-11/12">
@@ -88,4 +97,4 @@ const PollVotingOption = ({
 	);
 };
 
-export default memo(PollVotingOption);
+export default PollVotingOption;
