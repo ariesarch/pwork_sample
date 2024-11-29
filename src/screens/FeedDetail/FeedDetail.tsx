@@ -30,7 +30,6 @@ import RebloggedStatus from '@/components/organisms/feed/RebloggedStatus/Reblogg
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
-import UserSuggestionModal from '@/components/atoms/compose/UserSuggestionModel/UserSuggestionModel';
 
 const FeedDetail = ({
 	navigation,

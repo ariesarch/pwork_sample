@@ -125,14 +125,12 @@ const SocialLink: React.FC<Props> = ({
 						</Button>
 					</View>
 				) : (
-					<View className={`flex-row flex-wrap mt-3`}>
+					<View className={`flex-row flex-wrap`}>
 						{links.length > 0 ? (
 							links.map(link => (
 								<View
 									key={link.title}
-									className={`flex-row ${
-										formType === 'edit' ? 'mr-2 mb-4' : ''
-									}`}
+									className={`flex-row ${formType === 'edit' ? ' mb-1' : ''}`}
 								>
 									<Chip
 										variant="white"
@@ -141,14 +139,14 @@ const SocialLink: React.FC<Props> = ({
 										title={link.title}
 										onPress={() => setSelectedLink(link)}
 									/>
-									{formType === 'edit' && (
-										<Pressable
+									{/* {formType === 'edit' && (
+										<TouchableOpacity
 											onPress={() => onPressDelete(link.title)}
 											className="absolute -right-2 -top-3 bg-slate-50 rounded-full justify-center items-center w-7 h-7 active:opacity-80"
 										>
 											<DeleteIcon />
-										</Pressable>
-									)}
+										</TouchableOpacity>
+									)} */}
 								</View>
 							))
 						) : (
