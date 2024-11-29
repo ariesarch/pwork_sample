@@ -73,7 +73,7 @@ const UserSuggestionModal = () => {
 					className="absolute top-0 left-0 right-0 bottom-0 w-full h-full bg-black/60"
 				/>
 				<BottomSheet
-					snapPoints={['60%']}
+					snapPoints={['50%']}
 					index={0}
 					backgroundStyle={{ backgroundColor: 'rgba(64, 75, 82, 1)' }}
 					handleIndicatorStyle={{ backgroundColor: '#fff' }}
