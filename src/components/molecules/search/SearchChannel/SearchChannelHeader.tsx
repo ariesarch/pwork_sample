@@ -2,6 +2,7 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { useRecommendedChannels } from '@/hooks/queries/channel.queries';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { SearchStackParamList } from '@/types/navigation';
+import { ensureHttp } from '@/util/helper/helper';
 import { ChevronRightIcon } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -17,7 +18,7 @@ const SearchChannelHeader = () => {
 	const handleChannelClick = (item: Pathchwork.ChannelList) => {
 		setDomain(item.attributes.domain_name);
 		navigation.navigate('ChannelProfile', {
-			domain_name: item.attributes.domain_name,
+			domain_name: ensureHttp(item.attributes.domain_name),
 			channel_info: {
 				avatar_image_url: item.attributes.avatar_image_url,
 				banner_image_url: item.attributes.banner_image_url,

@@ -87,6 +87,7 @@ const FeedDetail = ({
 									feedDetail={feedDetail as Pathchwork.Status}
 								/>
 							)}
+							showsVerticalScrollIndicator={false}
 						/>
 						<Animated.View className={'p-2'} style={inputBarBgColorStyle}>
 							<Animated.View className={'flex-row'} style={replyActionBarStyle}>

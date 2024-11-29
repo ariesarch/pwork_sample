@@ -1,4 +1,5 @@
 import { DEFAULT_API_URL } from '@/util/constant';
+import { ensureHttp } from '@/util/helper/helper';
 import { create } from 'zustand';
 
 // type ActiveDomain = {
@@ -16,7 +17,10 @@ type ActiveDomainComposeState = {
 export const useActiveDomainStore = create<ActiveDomainComposeState>()(set => ({
 	domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 	actions: {
-		setDomain: domain => set(state => ({ ...state, domain_name: domain })),
+		setDomain: domain =>
+			set(state => {
+				return { ...state, domain_name: ensureHttp(domain) };
+			}),
 		clearDomain: () => set(state => ({ ...state, domain_name: '' })),
 	},
 }));

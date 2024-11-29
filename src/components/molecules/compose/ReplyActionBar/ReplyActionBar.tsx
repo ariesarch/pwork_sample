@@ -74,20 +74,27 @@ const ReplyActionBar = ({ currentStatus }: Props) => {
 		<View className="flex-row items-center pt-2">
 			<View className="flex-row flex-1">
 				<Pressable
+					disabled={true}
 					className={'mr-3'}
-					children={<ComposeGalleryIcon {...{ colorScheme }} />}
+					children={
+						<ComposeGalleryIcon {...{ colorScheme }} stroke={'#6D7276'} />
+					}
+				/>
+				<Pressable
+					disabled
+					className={'mr-3'}
+					children={<ComposeGifIcon {...{ colorScheme }} stroke={'#6D7276'} />}
 				/>
 				<Pressable
 					className={'mr-3'}
-					children={<ComposeGifIcon {...{ colorScheme }} />}
+					children={
+						<ComposeLocationIcon {...{ colorScheme }} stroke={'#6D7276'} />
+					}
 				/>
 				<Pressable
+					disabled={true}
 					className={'mr-3'}
-					children={<ComposeLocationIcon {...{ colorScheme }} />}
-				/>
-				<Pressable
-					className={'mr-3'}
-					children={<ComposePollIcon {...{ colorScheme }} />}
+					children={<ComposePollIcon {...{ colorScheme }} stroke={'#6D7276'} />}
 				/>
 			</View>
 			<Button
