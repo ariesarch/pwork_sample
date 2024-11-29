@@ -68,8 +68,9 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 
 					{/* Scrollable Content */}
 					<ScrollView
+						nestedScrollEnabled
 						keyboardShouldPersistTaps="always"
-						contentContainerStyle={{ paddingBottom: 100 }}
+						contentContainerStyle={{ flexGrow: 1 }}
 						showsVerticalScrollIndicator={false}
 					>
 						{composeParams.type === 'repost' ? (
@@ -106,10 +107,12 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 								{/* Call To Action View */}
 							</View>
 						)}
+
+						{/* UserSuggestionModal */}
+						<UserSuggestionModal />
+						{/* UserSuggestionModal */}
 					</ScrollView>
-					{/* UserSuggestionModal */}
-					<UserSuggestionModal />
-					{/* UserSuggestionModal */}
+
 					{/* Compose Action Tool Bar */}
 					<ComposeActionsBar />
 					<Animated.View style={toolbarAnimatedViewStyle} />
