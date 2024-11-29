@@ -21,6 +21,7 @@ import { useAuthStore } from '@/store/auth/authStore';
 import { FlashList } from '@shopify/flash-list';
 import { FlatList } from 'react-native-gesture-handler';
 import customColor from '@/util/constant/color';
+import { ensureHttp } from '@/util/helper/helper';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -59,7 +60,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 											handlePress={() => {
 												setDomain(item.attributes.domain_name);
 												navigation.navigate('ChannelProfile', {
-													domain_name: item.attributes.domain_name,
+													domain_name: ensureHttp(item.attributes.domain_name),
 													channel_info: {
 														avatar_image_url: item.attributes.avatar_image_url,
 														banner_image_url: item.attributes.banner_image_url,
@@ -86,7 +87,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 							handlePress={() => {
 								setDomain(item.attributes.domain_name);
 								navigation.navigate('ChannelProfile', {
-									domain_name: item.attributes.domain_name,
+									domain_name: ensureHttp(item.attributes.domain_name),
 									channel_info: {
 										avatar_image_url: item.attributes.avatar_image_url,
 										banner_image_url: item.attributes.banner_image_url,

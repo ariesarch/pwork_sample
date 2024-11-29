@@ -45,6 +45,8 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
+	console.log('domain_name::', domain_name);
+
 	const {
 		data: timeline,
 		hasNextPage,

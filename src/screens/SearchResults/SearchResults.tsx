@@ -28,7 +28,7 @@ import Card from '@/components/atoms/card/Card';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
-import { scale } from '@/util/helper/helper';
+import { ensureHttp, scale } from '@/util/helper/helper';
 import {
 	useRecommendedChannels,
 	useSearchChannel,
@@ -117,7 +117,7 @@ const SearchResults = ({
 											handlePress={() => {
 												setDomain(item.attributes.domain_name);
 												navigation.navigate('ChannelProfile', {
-													domain_name: item.attributes.domain_name,
+													domain_name: ensureHttp(item.attributes.domain_name),
 													channel_info: {
 														avatar_image_url: item.attributes.avatar_image_url,
 														banner_image_url: item.attributes.banner_image_url,
