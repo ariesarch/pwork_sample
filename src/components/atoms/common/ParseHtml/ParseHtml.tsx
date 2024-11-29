@@ -70,7 +70,8 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 										className="active:opacity-80 -mt-[2]"
 									>
 										<ThemeText
-											className="font-bold"
+											size={'fs_13'}
+											className=" font-SourceSans3_SemiBold"
 											children={`${children} `}
 										/>
 									</Pressable>
