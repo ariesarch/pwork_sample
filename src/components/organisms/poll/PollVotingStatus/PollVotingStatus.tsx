@@ -53,11 +53,13 @@ const PollVotingStatus = ({
 	// ******** Poll Vote Mutation ******** //
 	const { mutate, isPending } = useVoteMutation({
 		onSuccess: response => {
-			const updateFeedDatailData = updatePollStatus(
-				currentFeed!,
-				selectedIndices,
-			);
-			setActiveFeed(updateFeedDatailData);
+			if (currentFeed) {
+				const updateFeedDatailData = updatePollStatus(
+					currentFeed,
+					selectedIndices,
+				);
+				setActiveFeed(updateFeedDatailData);
+			}
 
 			const queryKeys = getPollCacheQueryKeys(accountId);
 			updatePollCacheData({

@@ -38,7 +38,6 @@ const PollVotingControls = ({
 				size="sm"
 				disabled={!canVote || checkResults || isPending}
 				onPress={handleVote}
-				className="w-3/12"
 			>
 				{isPending ? (
 					<Flow size={20} color={'#fff'} className="my-2" />
