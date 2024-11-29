@@ -8,17 +8,23 @@ import PollVotingControls from '@/components/molecules/poll/PollVotingControls/P
 import {
 	getPollCacheQueryKeys,
 	updatePollCacheData,
+	updatePollStatus,
 } from '@/util/cache/poll/pollCache';
+import {
+	useActiveFeedAction,
+	useCurrentActiveFeed,
+} from '@/store/feed/activeFeed';
 
 const PollVotingStatus = ({
 	poll,
 	accountId,
-	statusId,
 }: {
 	poll: Pathchwork.Poll;
 	accountId: string;
-	statusId: string;
 }) => {
+	const currentFeed = useCurrentActiveFeed();
+	const { setActiveFeed } = useActiveFeedAction();
+
 	const [checkResults, setCheckResults] = useState(false);
 	const onToggleCheckResults = () => setCheckResults(prevState => !prevState);
 
@@ -47,8 +53,18 @@ const PollVotingStatus = ({
 	// ******** Poll Vote Mutation ******** //
 	const { mutate, isPending } = useVoteMutation({
 		onSuccess: response => {
-			const queryKeys = getPollCacheQueryKeys(accountId, statusId);
-			updatePollCacheData({ response, selectedIndices, queryKeys });
+			const updateFeedDatailData = updatePollStatus(
+				currentFeed!,
+				selectedIndices,
+			);
+			setActiveFeed(updateFeedDatailData);
+
+			const queryKeys = getPollCacheQueryKeys(accountId);
+			updatePollCacheData({
+				response,
+				selectedIndices,
+				queryKeys,
+			});
 		},
 		onError: e => {
 			Toast.show({

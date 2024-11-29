@@ -1,17 +1,9 @@
 import { queryClient } from '@/App';
 import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
-import {
-	AccountDetailFeedQueryKey,
-	FeedDetailQueryKey,
-} from '@/types/queries/feed.type';
+import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { DEFAULT_API_URL } from '@/util/constant';
 
-type QueryFnData = IFeedQueryFnData | IFeedDetailQueryFnData;
-
-type PollCacheQueryKeys =
-	| GetChannelFeedQueryKey
-	| AccountDetailFeedQueryKey
-	| FeedDetailQueryKey;
+type PollCacheQueryKeys = GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 
 type UpdatePollCacheParams = {
 	response: Pathchwork.Status['poll'];
@@ -56,36 +48,24 @@ const updateFeedQueryCache = (
 	})),
 });
 
-const updateFeedDetailCache = (
-	data: IFeedDetailQueryFnData,
-	response: Pathchwork.Status['poll'],
-	selectedIndices: Set<number>,
-) => {
-	return data.poll?.id === response.id
-		? updatePollStatus(data, selectedIndices)
-		: data;
-};
-
-const isFeedQueryData = (data: QueryFnData): data is IFeedQueryFnData => {
-	return 'pages' in data;
-};
-
 const updateQueryCache = (
 	queryKey: PollCacheQueryKeys,
 	response: Pathchwork.Status['poll'],
 	selectedIndices: Set<number>,
 ) => {
-	const previousData = queryClient.getQueryData<QueryFnData>(queryKey);
+	const previousData = queryClient.getQueryData<IFeedQueryFnData>(queryKey);
 	if (!previousData) return;
 
-	const updatedData = isFeedQueryData(previousData)
-		? updateFeedQueryCache(previousData, response, selectedIndices)
-		: updateFeedDetailCache(previousData, response, selectedIndices);
+	const updatedData = updateFeedQueryCache(
+		previousData,
+		response,
+		selectedIndices,
+	);
 
 	queryClient.setQueryData(queryKey, updatedData);
 };
 
-export const updatePollCacheData = ({
+const updatePollCacheData = ({
 	response,
 	selectedIndices,
 	queryKeys,
@@ -95,10 +75,7 @@ export const updatePollCacheData = ({
 	});
 };
 
-export const getPollCacheQueryKeys = (
-	accountId: string,
-	statusId: string,
-): PollCacheQueryKeys[] => {
+const getPollCacheQueryKeys = (accountId: string): PollCacheQueryKeys[] => {
 	const domain_name = process.env.API_URL || DEFAULT_API_URL;
 	return [
 		['channel-feed', { domain_name, remote: false, only_media: false }],
@@ -112,6 +89,7 @@ export const getPollCacheQueryKeys = (
 				exclude_original_statuses: false,
 			},
 		],
-		['feed-detail', { id: statusId, domain_name }],
 	];
 };
+
+export { updatePollStatus, updatePollCacheData, getPollCacheQueryKeys };
