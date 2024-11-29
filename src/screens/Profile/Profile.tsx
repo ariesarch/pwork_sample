@@ -115,7 +115,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		username: string,
 		type: 'edit' | 'delete',
 	) => {
-		setSocialLinkAction({ visible: false, formType: 'add' });
 		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
 				fields_attributes: generateFieldsAttributes(
@@ -125,8 +124,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					type,
 				),
 			};
-			console.log(username);
 			await mutateAsync(updatedProfile);
+			setSocialLinkAction({ visible: false, formType: 'add' });
 		}
 	};
 
@@ -330,12 +329,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 											},
 											{
 												text: 'OK',
-												onPress: async () => {
-													handleSocialLinkChange(
-														showDelConf.title,
-														' ',
-														'delete',
-													);
+												onPress: () => {
+													handleSocialLinkChange(link, ' ', 'delete');
 												},
 											},
 										],
