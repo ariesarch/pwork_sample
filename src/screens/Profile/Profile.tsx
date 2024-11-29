@@ -137,6 +137,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					{
 						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 						account_id: userInfo?.id,
+						exclude_reblogs: false,
+						exclude_replies: true,
+						exclude_original_statuses: false,
 					},
 				],
 			});
