@@ -207,7 +207,7 @@ declare namespace Pathchwork {
 		tags: Tags[];
 		emojis: any;
 		card?: Card;
-		poll?: Poll;
+		poll: Poll;
 		is_rss_content: boolean;
 		rss_link: string | null;
 		is_meta_preview: boolean;
@@ -436,13 +436,13 @@ declare namespace Pathchwork {
 	type Poll = {
 		id: string;
 		options: PollOptions[];
-		expires_at: Date | null;
+		expires_at: string | null;
 		expired: boolean;
 		multiple: boolean;
 		votes_count: number;
 		voters_count: number;
 		voted: boolean;
-		own_votes?: number[];
-		emojis?: string[];
+		own_votes: number[];
+		emojis: string[];
 	};
 }

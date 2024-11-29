@@ -110,7 +110,7 @@ export const PatchworkLogo = ({
 
 export const CheckboxSolid = (props: SvgProps) => (
 	<Svg width={22} height={22} viewBox="0 0 22 22" fill="none" {...props}>
-		<Rect width={22} height={22} rx={6} fill="#D24A34" />
+		<Rect width={22} height={22} rx={6} fill="#FF3C26" />
 		<Path
 			d="M16.025 7.4c-.3-.3-.75-.3-1.05 0L9.35 13.025 7.025 10.7c-.3-.3-.75-.3-1.05 0-.3.3-.3.75 0 1.05l2.85 2.85c.15.15.3.225.525.225a.68.68 0 0 0 .525-.225l6.15-6.15c.3-.3.3-.75 0-1.05Z"
 			fill="#fff"
@@ -235,13 +235,39 @@ export const RadioOutlined = (props: SvgProps) => (
 			cx={12}
 			cy={12}
 			r={11.038}
-			fill="#fff"
+			fill={props.fill ?? '#fff'}
 			stroke="#DCE0EB"
 			strokeWidth={1.925}
 		/>
 		<Path
 			d="m16.616 10.495-4.75 4.75a.86.86 0 0 1-.62.25c-.22 0-.44-.08-.61-.25l-2.38-2.37a.881.881 0 0 1 0-1.24c.34-.34.9-.34 1.24 0l1.75 1.75 4.13-4.13c.34-.34.9-.34 1.24 0 .34.35.34.9 0 1.24Z"
-			fill="#fff"
+			fill={props.fill ?? '#fff'}
+		/>
+	</Svg>
+);
+
+export const PollRadioOutlined = (props: SvgProps) => (
+	<Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+		<Circle
+			cx={12}
+			cy={12}
+			r={11.038}
+			fill={'none'}
+			stroke="#96A6C2"
+			strokeWidth={1.925}
+		/>
+		<Path
+			d="m16.616 10.495-4.75 4.75a.86.86 0 0 1-.62.25c-.22 0-.44-.08-.61-.25l-2.38-2.37a.881.881 0 0 1 0-1.24c.34-.34.9-.34 1.24 0l1.75 1.75 4.13-4.13c.34-.34.9-.34 1.24 0 .34.35.34.9 0 1.24Z"
+			fill={'none'}
+		/>
+	</Svg>
+);
+
+export const PollRadioCheckedIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			fill={props.fill || '#FF3C26'}
+			d="M12 24C5.344 24 0 18.656 0 12 0 5.39 5.344 0 12 0c6.61 0 12 5.39 12 12 0 6.656-5.39 12-12 12Zm5.297-14.203h-.047c.469-.422.469-1.125 0-1.594a1.104 1.104 0 0 0-1.547 0l-5.203 5.25-2.203-2.203c-.469-.469-1.172-.469-1.594 0a1.027 1.027 0 0 0 0 1.547l3 3c.422.469 1.125.469 1.594 0l6-6Z"
 		/>
 	</Svg>
 );

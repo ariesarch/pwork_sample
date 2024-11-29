@@ -50,6 +50,7 @@ const TextInput = ({
 				placeholderTextColor={inputColor}
 				style={[{ color: inputColor }]}
 				autoCorrect
+				autoCapitalize="none"
 				spellCheck
 				editable
 				placeholder={placeholder}
@@ -59,8 +60,9 @@ const TextInput = ({
 				textAlignVertical={textArea ? 'top' : 'bottom'}
 				{...textInputProps}
 				className={cn(
-					'w-full font-SourceSans3_Regular',
+					'font-SourceSans3_Regular',
 					textArea ? 'h-32' : 'h-10',
+					endIcon ? 'w-10/12' : 'w-full',
 					extraInputStyle,
 				)}
 			/>

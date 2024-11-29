@@ -5,6 +5,7 @@ import HTMLParser from '../../common/ParseHtml/ParseHtml';
 import StatusImage from '../StatusImage/StatusImage';
 import RssContentCard from '../RssContentCard/RssContentCard';
 import NotiStatusImageView from '../../notifications/NotiStatusImageView/NotiStatusImageView';
+import PollVotingStatus from '@/components/organisms/poll/PollVotingStatus/PollVotingStatus';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -26,6 +27,13 @@ const StatusContent = ({
 				}}
 			>
 				<HTMLParser status={status} />
+				{status?.poll && (
+					<PollVotingStatus
+						poll={status.poll}
+						accountId={status.account.id}
+						statusId={status.id}
+					/>
+				)}
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
 					(!isFromNotiStatusImage ? (
