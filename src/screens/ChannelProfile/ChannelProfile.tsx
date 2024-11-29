@@ -44,7 +44,6 @@ import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoadin
 import ChannelListHeaderTabs from '@/components/organisms/channel/ChannelListHeaderTabs/ChannelListHeaderTabs';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
-import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 import {
 	MaterialTabBar,
 	MaterialTabItem,
@@ -56,6 +55,7 @@ import { ScrollProvider } from '@/context/sharedScrollContext/sharedScroll.conte
 import customColor from '@/util/constant/color';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 
 type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
@@ -95,11 +95,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	);
 
 	const feed = useMemo(() => flattenPages(timeline), [timeline]);
-
-	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
-		'channel-feed',
-		queryParams,
-	]);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage) {
@@ -185,12 +180,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 									}}
 									ListHeaderComponent={<HorizontalScrollMenu />}
 									keyExtractor={item => item.id.toString()}
-									renderItem={({ item }) => (
-										<StatusItem
-											handleOnPress={() => handleOnPressStatus(item.id)}
-											status={item}
-										/>
-									)}
+									renderItem={({ item }) => <StatusWrapper status={item} />}
 									refreshControl={
 										<RefreshControl
 											refreshing={isFetching}

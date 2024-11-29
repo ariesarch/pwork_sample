@@ -27,7 +27,6 @@ import {
 import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader/CollapsibleFeedHeader';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
-import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 
 import { SocialMediaLink } from '@/components/organisms/profile/SocialLink/SocialLink';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -38,6 +37,7 @@ import { useProfileMutation } from '@/hooks/mutations/profile.mutation';
 import { queryClient } from '@/App';
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -69,20 +69,36 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	} = useAccountDetailFeed({
 		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 		account_id: userInfo?.id!,
+		exclude_replies: true,
+		exclude_reblogs: false,
+		exclude_original_statuses: false,
 	});
+
+	const {
+		data: replies,
+		hasNextPage: hasNextReplies,
+		fetchNextPage: fetchReplies,
+		isFetching: isFetchingReplies,
+		refetch: refetchReplies,
+	} = useAccountDetailFeed({
+		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
+		account_id: userInfo?.id!,
+		exclude_replies: false,
+		exclude_reblogs: true,
+		exclude_original_statuses: true,
+	});
+
 	const timelineList = timeline ? flattenPages(timeline) : [];
-	const feed = useMemo(() => flattenPages(timeline), [timeline]);
-	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
-		'account-detail-feed',
-		{
-			domain_name,
-			account_id: userInfo?.id!,
-		},
-	]);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
 			return fetchNextPage();
+		}
+	};
+
+	const onReplyFeedLoadMore = () => {
+		if (hasNextReplies && activeTab == 1) {
+			return fetchReplies();
 		}
 	};
 
@@ -215,7 +231,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										<CollapsibleFeedHeader
 											type="Profile"
 											is_my_account={true}
-											// profile={timelineList[0]?.account}
 											profile={userInfo}
 											onPressPlusIcon={() =>
 												setSocialLinkAction({ visible: true, formType: 'add' })
@@ -272,16 +287,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return item.reblog ? (
-												<></>
-											) : (
-												<StatusItem
-													handleOnPress={() => {
-														handleOnPressStatus(item.id);
-													}}
-													status={item}
-												/>
-											);
+											return <StatusWrapper status={item} />;
 										}}
 										refreshControl={
 											<RefreshControl
@@ -311,11 +317,50 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									/>
 								</Tabs.Tab>
 								<Tabs.Tab name="Replies">
-									<Tabs.ScrollView>
-										<View className="flex-1 items-center justify-center">
-											<ThemeText>No Status Found</ThemeText>
-										</View>
-									</Tabs.ScrollView>
+									<Tabs.FlashList
+										data={flattenPages(replies)}
+										contentContainerStyle={{
+											paddingBottom: bottom,
+											backgroundColor:
+												colorScheme === 'dark' ? '#2E363B' : '#ffffff',
+										}}
+										keyExtractor={item => item.id.toString()}
+										renderItem={({ item }) => {
+											// return item.in_reply_to_id ? (
+											// 	<StatusWrapper status={item} />
+											// ) : (
+											// 	<></>
+											// );
+											return <StatusWrapper status={item} />;
+										}}
+										refreshControl={
+											<RefreshControl
+												className="mt-1"
+												refreshing={isFetchingReplies}
+												tintColor={customColor['patchwork-light-900']}
+												onRefresh={() => {
+													refetchReplies();
+												}}
+											/>
+										}
+										estimatedItemSize={500}
+										estimatedListSize={{
+											height: Dimensions.get('screen').height,
+											width: Dimensions.get('screen').width,
+										}}
+										onEndReachedThreshold={0.15}
+										onEndReached={onReplyFeedLoadMore}
+										showsVerticalScrollIndicator={false}
+										ListFooterComponent={
+											isFetchingReplies ? (
+												<View className="my-3 items-center">
+													<CircleFade size={25} color="white" />
+												</View>
+											) : (
+												<></>
+											)
+										}
+									/>
 								</Tabs.Tab>
 							</Tabs.Container>
 							<SocialLink

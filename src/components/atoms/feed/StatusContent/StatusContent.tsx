@@ -5,24 +5,27 @@ import HTMLParser from '../../common/ParseHtml/ParseHtml';
 import StatusImage from '../StatusImage/StatusImage';
 import RssContentCard from '../RssContentCard/RssContentCard';
 import NotiStatusImageView from '../../notifications/NotiStatusImageView/NotiStatusImageView';
+import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 type Props = {
 	status: Pathchwork.Status;
-	isFromNotiStatusImage?: boolean; // To Hide image view in notifications
-	handleOnPress?: () => void;
+	isFromNotiStatusImage?: boolean;
 } & ViewProps;
 
-const StatusContent = ({
-	status,
-	isFromNotiStatusImage,
-	handleOnPress,
-}: Props) => {
+const StatusContent = ({ status, isFromNotiStatusImage }: Props) => {
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const isImageMissing = status?.media_attachments?.length !== 0;
+	const { setActiveFeed } = useActiveFeedAction();
+
 	return (
 		<View>
 			<Pressable
 				onPress={() => {
-					handleOnPress && handleOnPress();
+					setActiveFeed(status);
+					navigation.navigate('FeedDetail', { id: status.id });
 				}}
 			>
 				<HTMLParser status={status} />

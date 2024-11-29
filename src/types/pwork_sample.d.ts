@@ -353,6 +353,7 @@ declare namespace Pathchwork {
 		description?: string;
 		blurhash?: string;
 	};
+
 	type ImageUrl = {
 		id: Pathchwork.Attachment['id'];
 		preview_url?: Pathchwork.Attachment['preview_url'];
@@ -366,6 +367,13 @@ declare namespace Pathchwork {
 		width?: number;
 		height?: number;
 	};
+
+	type ComposeVisibility =
+		| 'public'
+		| 'unlisted'
+		| 'private'
+		| 'direct'
+		| 'local';
 
 	// type Field = {
 	// 	name: string;

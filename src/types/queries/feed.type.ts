@@ -1,3 +1,5 @@
+import { Asset } from 'react-native-image-picker';
+
 export type FeedDetailQueryKey = [
 	'feed-detail',
 	{ id: string; domain_name: string },
@@ -10,7 +12,13 @@ export type FeedRepliesQueryKey = [
 
 export type AccountDetailFeedQueryKey = [
 	'account-detail-feed',
-	{ domain_name: string; account_id: string },
+	{
+		domain_name: string;
+		account_id: string;
+		exclude_reblogs: boolean;
+		exclude_replies: boolean;
+		exclude_original_statuses: boolean;
+	},
 ];
 
 export type HashtagDetailFeedQueryKey = [
@@ -20,7 +28,7 @@ export type HashtagDetailFeedQueryKey = [
 
 export type LinkPreviewQueryKey = ['link-preview', { url: string }];
 
-type MediaOrPoll =
+export type MediaOrPoll =
 	| {
 			media_ids: string[];
 	  }
@@ -34,9 +42,14 @@ export type ComposeMutationPayload = {
 	sensitive?: boolean;
 	spoiler_text?: string;
 	status: string;
-	visibility: 'public' | 'unlisted' | 'private' | 'direct';
+	visibility: Pathchwork.ComposeVisibility;
 } & MediaOrPoll;
 
 export type RepostMutationPayload = {
 	id: string;
 } & ComposeMutationPayload;
+
+export type ComposeImagePayload = {
+	image: Asset;
+	onProgressChange: (progress: number) => void;
+};

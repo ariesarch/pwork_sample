@@ -1,3 +1,4 @@
+import { DEFAULT_API_URL } from '@/util/constant';
 import { create } from 'zustand';
 
 // type ActiveDomain = {
@@ -13,7 +14,7 @@ type ActiveDomainComposeState = {
 };
 
 export const useActiveDomainStore = create<ActiveDomainComposeState>()(set => ({
-	domain_name: '',
+	domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 	actions: {
 		setDomain: domain => set(state => ({ ...state, domain_name: domain })),
 		clearDomain: () => set(state => ({ ...state, domain_name: '' })),

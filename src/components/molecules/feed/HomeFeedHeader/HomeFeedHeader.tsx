@@ -18,6 +18,7 @@ import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import { useState } from 'react';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import customColor from '@/util/constant/color';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -30,6 +31,7 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const { clearAuthState } = useAuthStoreAction();
 	const [isMenuOpen, setMenuVisibility] = useState(false);
 	const [isAlertOpen, setAlert] = useState(false);
+	const { setDomain } = useActiveDomainAction();
 
 	const handleLogout = async () => {
 		setMenuVisibility(false);
@@ -60,11 +62,12 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				<TouchableOpacity
 					activeOpacity={0.8}
 					className="flex-row flex-1 items-center"
-					onPress={() =>
+					onPress={() => {
+						setDomain('channel.org');
 						navigation.navigate('Profile', {
 							id: account.id,
-						})
-					}
+						});
+					}}
 				>
 					<FastImage
 						className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"

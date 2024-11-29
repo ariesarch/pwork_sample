@@ -3,6 +3,7 @@ import { Button } from '@/components/atoms/common/Button/Button';
 import Header from '@/components/atoms/common/Header/Header';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { useHashtagDetailFeedQuery } from '@/hooks/queries/feed.queries';
 import { useHashTagDetailQuery } from '@/hooks/queries/hashtag.queries';
@@ -87,7 +88,7 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 					data={flattenPages(timeline)}
 					keyExtractor={item => item.id}
 					renderItem={({ item }) => {
-						return <StatusItem status={item} />;
+						return <StatusWrapper status={item} />;
 					}}
 					ListHeaderComponent={() => {
 						return (

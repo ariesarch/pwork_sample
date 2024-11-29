@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, RefreshControl } from 'react-native';
 import { useMentionsNotifications } from '@/hooks/queries/notifications.queries';
 import { INotificationResponse } from '@/services/notification.service';
 import NotificationTabItem from '@/components/molecules/notifications/NotificationTabItem/NotificationTabItem';
@@ -7,9 +7,15 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import NotificationLoading from '@/components/atoms/loading/NotificationLoading';
 import { FlashList } from '@shopify/flash-list';
 import NotificationListEmpty from '@/components/atoms/notifications/NotificationListEmpty/NotificationListEmpty';
+import customColor from '@/util/constant/color';
 
 const NotiMentions = () => {
-	const { data, isSuccess } = useMentionsNotifications();
+	const {
+		data,
+		isSuccess,
+		isFetching,
+		refetch: refetchMentionNoti,
+	} = useMentionsNotifications();
 
 	const renderItem = useCallback(
 		({ item }: { item: INotificationResponse }) => (
@@ -30,6 +36,13 @@ const NotiMentions = () => {
 				height: Dimensions.get('screen').height,
 				width: Dimensions.get('screen').width,
 			}}
+			refreshControl={
+				<RefreshControl
+					refreshing={isFetching}
+					tintColor={customColor['patchwork-light-900']}
+					onRefresh={refetchMentionNoti}
+				/>
+			}
 		/>
 	);
 };

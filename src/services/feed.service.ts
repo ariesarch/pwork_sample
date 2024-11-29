@@ -1,5 +1,6 @@
 import {
 	AccountDetailFeedQueryKey,
+	ComposeImagePayload,
 	ComposeMutationPayload,
 	FeedDetailQueryKey,
 	FeedRepliesQueryKey,
@@ -42,7 +43,8 @@ export const getAccountDetailFeed = async (
 	qfContext: QueryFunctionContext<AccountDetailFeedQueryKey>,
 ) => {
 	try {
-		const { domain_name, account_id } = qfContext.queryKey[1];
+		const { domain_name, account_id, exclude_reblogs, exclude_replies } =
+			qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
 		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
@@ -52,6 +54,8 @@ export const getAccountDetailFeed = async (
 					domain_name,
 					isDynamicDomain: true,
 					max_id,
+					exclude_reblogs,
+					exclude_replies,
 				},
 			},
 		);
@@ -135,6 +139,38 @@ export const repostStatus = async (params: RepostMutationPayload) => {
 		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
 			appendApiVersion(`statuses/${params.id}/reblog`, 'v1'),
 			params,
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const uploadComposeImage = async (params: ComposeImagePayload) => {
+	const { image, onProgressChange } = params;
+	const formData = new FormData();
+	formData.append('file', {
+		uri: image.uri,
+		name: image.uri?.split('/').pop(),
+		type: image.type,
+	});
+
+	try {
+		const resp: AxiosResponse<Pathchwork.Attachment> = await instance.post(
+			appendApiVersion('media', 'v2'),
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+				onUploadProgress: progressEvent => {
+					const actualProgress = Math.round(
+						(progressEvent.loaded * 100) / (progressEvent?.total ?? 0),
+					);
+					const upmostProgress = Math.min(actualProgress, 85);
+					onProgressChange(upmostProgress);
+				},
+			},
 		);
 		return resp.data;
 	} catch (error) {

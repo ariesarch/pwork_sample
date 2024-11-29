@@ -20,7 +20,7 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 	);
 	const navigation = useNavigation();
 	const { onChangeCTAText } = useCTAactions();
-	const { onSelectMedia } = useManageAttachmentActions();
+	const { resetAttachmentStore } = useManageAttachmentActions();
 	const setPollCreate = usePollStore(state => state.setPollCreate);
 	const updateOption = usePollStore(state => state.updateOption);
 
@@ -28,7 +28,7 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 		const unsubscribe = navigation.addListener('focus', () => {
 			composeDispatch({ type: 'clear' });
 			onChangeCTAText('');
-			onSelectMedia([]);
+			resetAttachmentStore();
 			setPollCreate(false);
 			updateOption(1, '');
 		});

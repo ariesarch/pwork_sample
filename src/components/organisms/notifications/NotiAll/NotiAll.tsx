@@ -7,9 +7,16 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import NotificationLoading from '@/components/atoms/loading/NotificationLoading';
 import { FlashList } from '@shopify/flash-list';
 import NotificationListEmpty from '@/components/atoms/notifications/NotificationListEmpty/NotificationListEmpty';
+import { RefreshControl } from 'react-native';
+import customColor from '@/util/constant/color';
 
 const NotiAll = () => {
-	const { data, isSuccess } = useNotifications();
+	const {
+		data,
+		isSuccess,
+		isFetching,
+		refetch: refetchNotification,
+	} = useNotifications();
 
 	const renderItem = useCallback(
 		({ item }: { item: INotificationResponse }) => (
@@ -24,6 +31,13 @@ const NotiAll = () => {
 			data={data}
 			renderItem={renderItem}
 			ItemSeparatorComponent={Underline}
+			refreshControl={
+				<RefreshControl
+					refreshing={isFetching}
+					tintColor={customColor['patchwork-light-900']}
+					onRefresh={refetchNotification}
+				/>
+			}
 			ListEmptyComponent={<NotificationListEmpty />}
 			estimatedItemSize={100}
 			estimatedListSize={{

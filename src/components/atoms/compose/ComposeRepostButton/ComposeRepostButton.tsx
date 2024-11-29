@@ -36,7 +36,7 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 		onError: e => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Something went wrong',
+				text1: 'Currently, reposting is available only for main channel',
 				position: 'top',
 				topOffset: 50,
 			});

@@ -48,8 +48,6 @@ export type HomeStackParamList = {
 	PeopleFollowing: undefined;
 	FeedDetail: {
 		id: string;
-		selectedFeedIndex?: number;
-		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 	};
 	ChannelProfile: {
 		domain_name: string;
@@ -79,8 +77,6 @@ export type SearchStackParamList = {
 	};
 	FeedDetail: {
 		id: string;
-		selectedFeedIndex?: number;
-		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 	};
 };
 
@@ -90,8 +86,6 @@ export type NotiStackParamList = {
 	NotificationList: undefined;
 	FeedDetail: {
 		id: string;
-		selectedFeedIndex?: number;
-		queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
 	};
 };
 

@@ -6,6 +6,8 @@ import {
 	SharedValue,
 	useAnimatedReaction,
 } from 'react-native-reanimated';
+import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { FormattedText } from '../FormattedText/FormattedText';
 
 type Props = {
 	username: string;
@@ -15,6 +17,7 @@ type Props = {
 const FeedReplyTextInput = ({ username, progress }: Props) => {
 	const [replyMsg, setReply] = useState('');
 	const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+	const { composeState, composeDispatch } = useComposeStatus();
 
 	useAnimatedReaction(
 		() => progress.value,
@@ -30,13 +33,26 @@ const FeedReplyTextInput = ({ username, progress }: Props) => {
 	return (
 		<>
 			<TextInput
-				selectionColor={customColor['patchwork-red-50']}
-				value={replyMsg}
 				placeholder={
 					isKeyboardOpen ? 'Type your reply' : `Reply To ${username}`
 				}
-				onChangeText={setReply}
-			/>
+				multiline
+				maxLength={4000}
+				onChangeText={text => {
+					composeDispatch({
+						type: 'text',
+						payload: {
+							count: text.length,
+							raw: text,
+						},
+					});
+				}}
+				autoCapitalize="none"
+				spellCheck
+				className="text-white font-SourceSans3_Regular text-base opacity-80"
+			>
+				<FormattedText text={composeState.text.raw} />
+			</TextInput>
 		</>
 	);
 };

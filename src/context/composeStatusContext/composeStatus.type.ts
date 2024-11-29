@@ -22,6 +22,9 @@ export type ComposeState = {
 	};
 	currentMention?: Match;
 	maxCount: number;
+	media_ids: string[];
+	visibility: Pathchwork.ComposeVisibility;
+	in_reply_to_id?: string;
 };
 
 export type ComposeAction =
@@ -31,6 +34,10 @@ export type ComposeAction =
 	| { type: 'link'; payload: ComposeState['link'] }
 	| { type: 'currentMention'; payload: ComposeState['currentMention'] }
 	| { type: 'replaceMentionText'; payload: ComposeState['text'] }
+	| { type: 'media_add'; payload: string }
+	| { type: 'media_remove'; payload: number }
+	| { type: 'visibility_change'; payload: ComposeState['visibility'] }
+	| { type: 'reply_id_change'; payload: string }
 	| { type: 'clear' };
 
 export type ComposeContextType = {

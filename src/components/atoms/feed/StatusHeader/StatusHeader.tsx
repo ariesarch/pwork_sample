@@ -1,4 +1,4 @@
-import { Image, ImageProps, View, ViewProps } from 'react-native';
+import { Image, ImageProps, Pressable, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -26,12 +26,11 @@ const StatusHeader = ({
 	const navigation = useNavigation();
 	return (
 		<View className="flex flex-row items-center mb-2" {...props}>
-			<TouchableOpacity
-				activeOpacity={0.8}
+			<Pressable
 				onPress={() => {
 					navigation.navigate('ProfileOther', { id: status.account.id });
 				}}
-				className="flex-row items-center"
+				className="flex-row items-center active:opacity-80"
 			>
 				{showAvatarIcon === true && (
 					<Image
@@ -40,7 +39,7 @@ const StatusHeader = ({
 					/>
 				)}
 				<ThemeText className="font-bold">{status.account.username}</ThemeText>
-			</TouchableOpacity>
+			</Pressable>
 			<ThemeText variant="textGrey" className="ml-2 mt-[2]" size="xs_12">
 				{timelineDateFormatter(dayjs(status.created_at).fromNow())}
 			</ThemeText>

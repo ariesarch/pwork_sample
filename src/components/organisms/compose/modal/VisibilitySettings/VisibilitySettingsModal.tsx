@@ -12,6 +12,7 @@ import {
 	useVisibilitySettingsActions,
 	useVisibilitySettingsStore,
 } from '@/store/compose/visibilitySettings/visibilitySettingsStore';
+import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 
 interface VisibilitySettingsModalProps {
 	visible: boolean;
@@ -23,9 +24,12 @@ const VisibilitySettingsModal = ({
 }: VisibilitySettingsModalProps) => {
 	const visibility = useVisibilitySettingsStore(state => state.visibility);
 	const { setVisibility } = useVisibilitySettingsActions();
+	const { composeState, composeDispatch } = useComposeStatus();
 
 	const onPressVisibilitySettings = (item: VisibilitySettingsProps) => {
 		setVisibility(item.label);
+		console.log('item::', item.icon);
+		composeDispatch({ type: 'visibility_change', payload: item.icon });
 		onClose();
 	};
 

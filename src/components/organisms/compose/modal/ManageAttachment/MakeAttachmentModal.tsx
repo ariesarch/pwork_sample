@@ -7,7 +7,10 @@ import {
 } from 'react-native-image-picker';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import {
+	useManageAttachmentActions,
+	useManageAttachmentStore,
+} from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { mediaUploadAction } from '@/util/helper/mediaUploadActions';
 import {
 	hasCameraPermission,
@@ -27,17 +30,20 @@ const ManageAttachmentModal = ({
 	onToggleMediaModal,
 }: ManageAttachmentModalProps) => {
 	const { colorScheme } = useColorScheme();
-
-	const { onSelectMedia } = useManageAttachmentActions();
+	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
+	const { onSelectMedia, onAddMedia } = useManageAttachmentActions();
 
 	const onPressCamera = async () => {
 		if (Platform.OS === 'android' && !(await hasCameraPermission())) {
 			return;
 		}
+
 		await launchCamera(mediaUploadAction.options, response => {
 			if (response.assets) {
 				onToggleMediaModal();
-				onSelectMedia(response.assets as Asset[]);
+				selectedMedia.length > 0
+					? onAddMedia(response.assets)
+					: onSelectMedia(response.assets as Asset[]);
 			}
 		});
 	};
@@ -47,11 +53,17 @@ const ManageAttachmentModal = ({
 			return;
 		}
 		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'photo' },
+			{
+				...mediaUploadAction.options,
+				mediaType: 'photo',
+				selectionLimit: 4 - selectedMedia.length,
+			},
 			response => {
 				if (response.assets) {
 					onToggleMediaModal();
-					onSelectMedia(response.assets as Asset[]);
+					selectedMedia.length > 0
+						? onAddMedia(response.assets)
+						: onSelectMedia(response.assets as Asset[]);
 				}
 			},
 		);
@@ -62,11 +74,17 @@ const ManageAttachmentModal = ({
 			return;
 		}
 		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'video' },
+			{
+				...mediaUploadAction.options,
+				mediaType: 'video',
+				selectionLimit: 4 - selectedMedia.length,
+			},
 			response => {
 				if (response.assets) {
 					onToggleMediaModal();
-					onSelectMedia(response.assets as Asset[]);
+					selectedMedia.length > 0
+						? onAddMedia(response.assets)
+						: onSelectMedia(response.assets as Asset[]);
 				}
 			},
 		);

@@ -1,6 +1,6 @@
 export type VisibilitySettingsProps = {
 	label: string;
-	icon: React.ReactNode;
+	icon: Pathchwork.ComposeVisibility;
 };
 
 export const visibilitySettingsData: VisibilitySettingsProps[] = [
@@ -11,5 +11,5 @@ export const visibilitySettingsData: VisibilitySettingsProps[] = [
 		icon: 'unlisted',
 	},
 	{ label: 'Followers only', icon: 'private' },
-	{ label: 'People mentioned only', icon: 'mentioned' },
+	{ label: 'People mentioned only', icon: 'direct' },
 ];

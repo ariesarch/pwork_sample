@@ -1,10 +1,13 @@
 import { ComposeState } from '@/context/composeStatusContext/composeStatus.type';
 import {
 	ComposeMutationPayload,
+	MediaOrPoll,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { Match } from 'linkify-it';
 import { differenceWith, isEqual } from 'lodash';
+import { Asset } from 'react-native-image-picker';
+import { mediaUploadAction } from './mediaUploadActions';
 
 export const showLinkCardIfNotManuallyClose = (
 	currentUrl: string,
@@ -48,14 +51,17 @@ export const getReplacedMentionText = (
 
 type CPPayloadCreatorType = (state: ComposeState) => ComposeMutationPayload;
 export const prepareComposePayload: CPPayloadCreatorType = state => {
+	const pollOrMedia: MediaOrPoll =
+		state.media_ids.length > 0 ? { media_ids: state.media_ids } : { poll: [] };
+
 	return {
-		in_reply_to_id: undefined,
+		in_reply_to_id: state.in_reply_to_id,
 		language: 'en',
 		sensitive: false,
 		spoiler_text: '',
 		status: state.text.raw,
-		visibility: 'private',
-		media_ids: [''],
+		visibility: state.visibility == 'local' ? 'public' : state.visibility,
+		...pollOrMedia,
 	};
 };
 
@@ -65,4 +71,36 @@ type RPPayloadCreatorType = (
 ) => RepostMutationPayload;
 export const prepareRepostPayload: RPPayloadCreatorType = (state, id) => {
 	return { ...prepareComposePayload(state), id };
+};
+
+type ReplyPayloadCreatorType = (
+	state: ComposeState,
+	id: string,
+) => ComposeMutationPayload;
+export const prepareReplyPayload: ReplyPayloadCreatorType = (state, id) => {
+	return { ...prepareComposePayload(state), in_reply_to_id: id };
+};
+
+export const calculateImageWidth = (selectedMedia: Asset[], index: number) => {
+	if (selectedMedia.length == 1) return 'w-full h-[220]';
+	if (selectedMedia.length > 1) {
+		return index === 2 && selectedMedia.length == 3
+			? 'w-full h-[140]'
+			: 'w-1/2 h-[140]';
+	}
+};
+
+export const prepareMediaUploadOption = (
+	currentNoOfImage: number,
+	mediaType: 'photo' | 'video' | 'mixed' = 'mixed',
+) => {
+	const maxNoOfImage = 4;
+	return {
+		...mediaUploadAction,
+		options: {
+			selectionLimit: maxNoOfImage - currentNoOfImage,
+			mediaType: mediaType,
+			includeExtra: false,
+		},
+	};
 };

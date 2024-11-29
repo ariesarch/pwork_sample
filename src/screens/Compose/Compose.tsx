@@ -25,15 +25,13 @@ import { useCallToActionStore } from '@/store/compose/callToAction/callToActionS
 import Chip from '@/components/atoms/common/Chip/Chip';
 import { useColorScheme } from 'nativewind';
 import { LinkIcon } from '@/util/svg/icon.profile';
+import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 
 const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 	const composeParams = route.params;
 	const isRepost = composeParams?.type === 'repost';
 	const { height } = useGradualAnimation();
-
 	const { colorScheme } = useColorScheme();
-
-	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 	const ctaText = useCallToActionStore(state => state.ctaText);
 
 	const renderComposeHeaderTitle = useCallback(() => {
@@ -57,7 +55,6 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 		<SafeScreen>
 			<ComposeStatusProvider type={composeParams.type}>
 				<View style={{ flex: 1 }}>
-					{/* Header */}
 					<Header
 						title={renderComposeHeaderTitle()}
 						leftCustomComponent={<BackButton />}
@@ -69,8 +66,6 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 							)
 						}
 					/>
-
-					{/* Scrollable Content */}
 					<ScrollView
 						keyboardShouldPersistTaps="always"
 						contentContainerStyle={{ paddingBottom: 100 }}
@@ -82,22 +77,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 							<View className="px-4">
 								<ComposeTextInput />
 								<LinkCard />
-
-								{/* Additional Components */}
-								<View className="my-5">
-									{selectedMedia.length > 0 && (
-										<FastImage
-											className="w-full h-56 rounded-md"
-											source={{
-												uri: selectedMedia[0].uri,
-												priority: FastImage.priority.high,
-												cache: FastImage.cacheControl.immutable,
-											}}
-											resizeMode={'cover'}
-										/>
-									)}
-								</View>
-								{/* Call To Action View */}
+								<ImageCard />
 								{ctaText && (
 									<View>
 										<Chip
@@ -107,19 +87,12 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 										/>
 									</View>
 								)}
-								{/* Call To Action View */}
 							</View>
 						)}
 					</ScrollView>
-
-					{/* UserSuggestionModal */}
 					<UserSuggestionModal />
-					{/* UserSuggestionModal */}
-
-					{/* Compose Action Tool Bar */}
 					<ComposeActionsBar />
 					<Animated.View style={toolbarAnimatedViewStyle} />
-					{/* Compose Action Tool Bar */}
 				</View>
 			</ComposeStatusProvider>
 		</SafeScreen>

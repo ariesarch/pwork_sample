@@ -1,5 +1,10 @@
-import { composeStatus, repostStatus } from '@/services/feed.service';
 import {
+	composeStatus,
+	repostStatus,
+	uploadComposeImage,
+} from '@/services/feed.service';
+import {
+	ComposeImagePayload,
 	ComposeMutationPayload,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
@@ -24,4 +29,14 @@ export const useRepostMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: repostStatus, ...options });
+};
+
+export const useUploadComposeImageMutation = (
+	options: UseMutationOptions<
+		Pathchwork.Attachment,
+		AxiosError,
+		ComposeImagePayload
+	>,
+) => {
+	return useMutation({ mutationFn: uploadComposeImage, ...options });
 };

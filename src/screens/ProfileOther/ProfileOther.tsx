@@ -28,10 +28,8 @@ import {
 import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader/CollapsibleFeedHeader';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
-import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
-import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
-import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import { RefreshControl } from 'react-native';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -47,26 +45,35 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-	const queryParams = {
-		domain_name,
-		account_id: id,
-	};
 	const {
 		data: timeline,
 		hasNextPage,
 		fetchNextPage,
 		refetch: refreshProfileTimeline,
 		isFetching,
-	} = useAccountDetailFeed(queryParams);
+	} = useAccountDetailFeed({
+		domain_name,
+		account_id: id,
+		exclude_reblogs: false,
+		exclude_replies: true,
+		exclude_original_statuses: false,
+	});
+
+	const {
+		data: replies,
+		hasNextPage: hasNextReplies,
+		fetchNextPage: fetchReplies,
+		isFetching: isFetchingReplies,
+		refetch: refetchReplies,
+	} = useAccountDetailFeed({
+		domain_name,
+		account_id: id,
+		exclude_replies: false,
+		exclude_reblogs: true,
+		exclude_original_statuses: true,
+	});
 
 	const timelineList = timeline ? flattenPages(timeline) : [];
-
-	const feed = useMemo(() => flattenPages(timeline), [timeline]);
-
-	const handleOnPressStatus = useHandleOnPressStatus(feed, navigation, [
-		'account-detail-feed',
-		queryParams,
-	]);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
@@ -76,6 +83,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 
 	const handleRefresh = () => {
 		refreshProfileTimeline();
+	};
+
+	const onReplyFeedLoadMore = () => {
+		if (hasNextReplies && activeTab == 1) {
+			return fetchReplies();
+		}
 	};
 
 	return (
@@ -138,14 +151,9 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 											colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 									}}
 									keyExtractor={item => item.id.toString()}
-									renderItem={({ item }) => (
-										<StatusItem
-											handleOnPress={() => {
-												handleOnPressStatus(item.id);
-											}}
-											status={item}
-										/>
-									)}
+									renderItem={({ item }) => {
+										return <StatusWrapper status={item} />;
+									}}
 									estimatedItemSize={500}
 									estimatedListSize={{
 										height: Dimensions.get('screen').height,
@@ -173,11 +181,49 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 								/>
 							</Tabs.Tab>
 							<Tabs.Tab name="Replies">
-								<Tabs.ScrollView>
-									<View className="flex-1 items-center justify-center">
-										<ThemeText>No Status Found</ThemeText>
-									</View>
-								</Tabs.ScrollView>
+								<Tabs.FlashList
+									data={flattenPages(replies)}
+									contentContainerStyle={{
+										paddingBottom: bottom,
+										backgroundColor:
+											colorScheme === 'dark' ? '#2E363B' : '#ffffff',
+									}}
+									keyExtractor={item => item.id.toString()}
+									renderItem={({ item }) => {
+										return item.in_reply_to_id ? (
+											<StatusWrapper status={item} />
+										) : (
+											<></>
+										);
+									}}
+									refreshControl={
+										<RefreshControl
+											className="mt-1"
+											refreshing={isFetchingReplies}
+											tintColor={customColor['patchwork-light-900']}
+											onRefresh={() => {
+												refetchReplies();
+											}}
+										/>
+									}
+									estimatedItemSize={500}
+									estimatedListSize={{
+										height: Dimensions.get('screen').height,
+										width: Dimensions.get('screen').width,
+									}}
+									onEndReachedThreshold={0.15}
+									onEndReached={onReplyFeedLoadMore}
+									showsVerticalScrollIndicator={false}
+									ListFooterComponent={
+										isFetchingReplies ? (
+											<View className="my-3 items-center">
+												<CircleFade size={25} color="white" />
+											</View>
+										) : (
+											<></>
+										)
+									}
+								/>
 							</Tabs.Tab>
 						</Tabs.Container>
 					</>

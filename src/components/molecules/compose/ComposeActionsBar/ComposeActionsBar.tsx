@@ -8,6 +8,10 @@ import {
 	ComposeLocationIcon,
 	ComposePlusIcon,
 	ComposePollIcon,
+	ComposePinIcon,
+	ComposeUnlockIcon,
+	ComposeLockIcon,
+	ComposeMentionIcon,
 } from '@/util/svg/icon.compose';
 import { useColorScheme } from 'nativewind';
 import styles from './ComposeActionsBar.style';
@@ -30,14 +34,18 @@ import {
 	useVisibilitySettingsStore,
 } from '@/store/compose/visibilitySettings/visibilitySettingsStore';
 import VisibilitySettingsModal from '@/components/organisms/compose/modal/VisibilitySettings/VisibilitySettingsModal';
+import { cn } from '@/util/helper/twutil';
+import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 
 const ComposeActionsBar = () => {
 	const { colorScheme } = useColorScheme();
 	const [isLongPost, setLongPost] = useState(false);
+	const { composeState } = useComposeStatus();
 
 	// ****** Media Store ****** //
-	const mediaModal = useManageAttachmentStore(state => state.mediaModal);
+	const { mediaModal, selectedMedia, progress } = useManageAttachmentStore();
 	const { onToggleMediaModal } = useManageAttachmentActions();
+	const isMediaUploading = progress.currentIndex !== undefined;
 	// ****** Media Store ****** //
 
 	// ****** Poll Store ****** //
@@ -57,13 +65,32 @@ const ComposeActionsBar = () => {
 	const { onToggleCTAModal } = useCTAactions();
 	// ****** CTA Store ****** //
 
+	const getVisibilityIcon = () => {
+		switch (composeState.visibility) {
+			case 'public':
+				return <ComposeGlobeIcon {...{ colorScheme }} />;
+			case 'local':
+				return <ComposePinIcon {...{ colorScheme }} />;
+			case 'unlisted':
+				return <ComposeUnlockIcon {...{ colorScheme }} />;
+			case 'private':
+				return <ComposeLockIcon {...{ colorScheme }} />;
+			case 'direct':
+				return <ComposeMentionIcon {...{ colorScheme }} />;
+		}
+	};
+
 	return (
 		<View>
 			<View className={styles.container}>
 				{/****** Media Upload Action ******/}
 				<Pressable
+					disabled={selectedMedia.length == 4 || isMediaUploading}
 					onPress={onToggleMediaModal}
-					className={'mr-3'}
+					className={cn(
+						'mr-3',
+						(selectedMedia.length == 4 || isMediaUploading) && 'opacity-40',
+					)}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
 				{/****** Media Upload Action ******/}
@@ -78,8 +105,9 @@ const ComposeActionsBar = () => {
 				/>
 				{/****** Poll Action ******/}
 				<Pressable
+					disabled={selectedMedia.length > 0}
 					onPress={() => setPollModalVisible(true)}
-					className={'mr-3'}
+					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-40')}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
@@ -93,7 +121,7 @@ const ComposeActionsBar = () => {
 				<Pressable
 					onPress={onToggleVisibilityModal}
 					className={'mr-3'}
-					children={<ComposeGlobeIcon forceLight />}
+					children={getVisibilityIcon}
 				/>
 				{/****** Visibility Settings Action ******/}
 

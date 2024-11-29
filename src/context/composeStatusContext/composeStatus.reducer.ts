@@ -12,7 +12,10 @@ export const initialState: ComposeState = {
 		firstLinkUrl: '',
 		showLinkCard: false,
 	},
+	media_ids: [],
 	maxCount: 500,
+	visibility: 'public',
+	in_reply_to_id: undefined,
 };
 
 export function composeReducer(
@@ -32,6 +35,19 @@ export function composeReducer(
 			return { ...state, currentMention: action.payload };
 		case 'replaceMentionText':
 			return { ...state, text: action.payload };
+		case 'media_add':
+			return { ...state, media_ids: [...state.media_ids, action.payload] };
+		case 'media_remove':
+			return {
+				...state,
+				media_ids: state.media_ids.filter(
+					(_, index) => index !== action.payload,
+				),
+			};
+		case 'visibility_change':
+			return { ...state, visibility: action.payload };
+		case 'reply_id_change':
+			return { ...state, in_reply_to_id: action.payload };
 		case 'clear': {
 			return initialState;
 		}
