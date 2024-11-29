@@ -238,15 +238,15 @@ const EditProfile = () => {
 								}))
 							}
 						/>
-						<Button
-							className="absolute bottom-0 left-0 right-0 mb-5"
-							onPress={handleUpdateProfile}
-						>
-							<ThemeText>Save</ThemeText>
-						</Button>
 					</View>
 				</View>
 			</KeyboardAwareScrollView>
+			<Button
+				className="mx-6 bottom-0 left-0 right-0 mb-5"
+				onPress={handleUpdateProfile}
+			>
+				<ThemeText>Save</ThemeText>
+			</Button>
 			<LoadingModal isVisible={isPending} />
 		</SafeScreen>
 	);
