@@ -49,7 +49,7 @@ const ManageAttachmentModal = ({
 			return;
 		}
 		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'photo' },
+			{ ...mediaUploadAction.options, mediaType: 'photo', selectionLimit: 1 },
 			response => {
 				if (response.assets) {
 					onToggleMediaModal();
@@ -64,7 +64,7 @@ const ManageAttachmentModal = ({
 			return;
 		}
 		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'video' },
+			{ ...mediaUploadAction.options, mediaType: 'video', selectionLimit: 1 },
 			response => {
 				if (response.assets) {
 					onToggleMediaModal();
