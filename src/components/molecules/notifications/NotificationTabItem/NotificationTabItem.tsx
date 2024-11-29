@@ -49,12 +49,7 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 			<View className="flex-auto">
 				<View>
 					{/* Notification Account and Types */}
-					<Pressable
-						className="flex-row items-center"
-						onPress={() => {
-							navigation.navigate('ProfileOther', { id: account.id });
-						}}
-					>
+					<Pressable className="flex-row items-center" onPress={() => {}}>
 						<Image
 							source={{ uri: account.avatar }}
 							className="w-9 h-9 rounded-full mx-[2px]"
