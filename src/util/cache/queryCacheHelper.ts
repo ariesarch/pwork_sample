@@ -31,7 +31,10 @@ export const updateQueryCacheGeneric = <T>(
 	queryClient.setQueryData(queryKey, updatedData);
 };
 
-export const getCacheQueryKeys = <T>(accountId: string): T[] => {
+export const getCacheQueryKeys = <T>(
+	accountId: string,
+	inReplyToId?: string | null,
+): T[] => {
 	const domain_name = process.env.API_URL || DEFAULT_API_URL;
 
 	return [
@@ -41,9 +44,9 @@ export const getCacheQueryKeys = <T>(accountId: string): T[] => {
 			{
 				domain_name,
 				account_id: accountId,
-				exclude_replies: true,
-				exclude_reblogs: false,
-				exclude_original_statuses: false,
+				exclude_replies: inReplyToId ? false : true,
+				exclude_reblogs: inReplyToId ? true : false,
+				exclude_original_statuses: inReplyToId ? true : false,
 			},
 		],
 	] as T[];

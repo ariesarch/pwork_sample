@@ -30,6 +30,7 @@ const StatusFavourite = ({ status, ...props }: Props) => {
 			}
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
 				status.account.id,
+				status.in_reply_to_id,
 			);
 			updateFavouriteCacheData({
 				response: status,
