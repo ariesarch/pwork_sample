@@ -38,7 +38,9 @@ const StatusHeader = ({
 						className={`w-5 h-5 rounded-full bg-slate-300 mr-2 ${imageSize}`}
 					/>
 				)}
-				<ThemeText className="font-bold">{status.account.username}</ThemeText>
+				<ThemeText className="font-SourceSans3_Bold">
+					{status.account.username}
+				</ThemeText>
 			</Pressable>
 			<ThemeText variant="textGrey" className="ml-2 mt-[2]" size="xs_12">
 				{timelineDateFormatter(dayjs(status.created_at).fromNow())}

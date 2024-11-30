@@ -68,7 +68,9 @@ const FeedTitleHeader = ({ title }: Props) => {
 				className="flex-1 items-center justify-center"
 				style={animatedTitleStyle}
 			>
-				<ThemeText className="font-bold text-[16px]">{title}</ThemeText>
+				<ThemeText className="font-SourceSans3_Bold" size={'md_16'}>
+					{title}
+				</ThemeText>
 			</Animated.View>
 			<View className="flex-row items-center gap-2">
 				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50">

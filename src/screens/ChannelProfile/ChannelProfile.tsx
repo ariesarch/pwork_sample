@@ -162,8 +162,9 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 										)}
 										activeColor={tabBarTextColor}
 										labelStyle={{
-											textTransform: 'capitalize',
 											fontFamily: 'SourceSans3-Bold',
+											textTransform: 'capitalize',
+											fontSize: 15,
 										}}
 										inactiveColor={customColor['patchwork-grey-400']}
 									/>

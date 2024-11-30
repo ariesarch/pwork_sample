@@ -23,7 +23,10 @@ const Header = ({
 					<View className="absolute left-0 z-10">{leftCustomComponent}</View>
 				)}
 				<View className="flex-1 items-center justify-center">
-					<ThemeText size={'md_16'} className="font-bold">
+					<ThemeText
+						size={'md_16'}
+						className="font-SourceSans3_Bold tracking-wide"
+					>
 						{title}
 					</ThemeText>
 				</View>

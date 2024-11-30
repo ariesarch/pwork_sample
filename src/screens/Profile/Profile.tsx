@@ -218,8 +218,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 											)}
 											activeColor={tabBarTextColor}
 											labelStyle={{
-												fontWeight: 'bold',
+												fontFamily: 'SourceSans3-Bold',
 												textTransform: 'capitalize',
+												fontSize: 15,
 											}}
 											inactiveColor={customColor['patchwork-grey-400']}
 										/>

@@ -18,7 +18,9 @@ const ChannelInformation = ({ channelAbout, channelAdditionalInfo }: Props) => {
 	);
 	return (
 		<View className="p-4">
-			<ThemeText className="font-bold mb-2">Channel information</ThemeText>
+			<ThemeText className="font-SourceSans3_Bold mb-2" size={'fs_15'}>
+				Channel information
+			</ThemeText>
 			{/* <ThemeText className="my-3 leading-[18px]"></ThemeText> */}
 			<ParseHTMLString content={channelAdditionalInfo.content} />
 			<View className="flex-row items-center">

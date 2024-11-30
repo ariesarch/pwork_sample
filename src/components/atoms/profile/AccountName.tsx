@@ -16,9 +16,9 @@ const AccountName = ({
 	...props
 }: AccountNameProps & ViewProps) => {
 	return (
-		<View className="flex-row items-start" {...props}>
+		<View className="flex-row items-center" {...props}>
 			<ThemeText
-				className={`font-bold text-[17px] mr-2 mb-1 ${acctNameTextStyle}`}
+				className={`font-SourceSans3_Bold text-[17px] mr-2 leading-6 ${acctNameTextStyle}`}
 			>
 				{accountName}
 			</ThemeText>
