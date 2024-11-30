@@ -1,5 +1,5 @@
 import { View } from 'react-native';
-import StatusFavourtie from '@/components/atoms/feed/StatusFavourite/StatusFavourite';
+import StatusFavourite from '@/components/atoms/feed/StatusFavourite/StatusFavourite';
 import StatusReblog from '@/components/atoms/feed/StatusReblog/StatusReblog';
 import StatusReply from '@/components/atoms/feed/StatusReply/StatusReply';
 import { MoreBtn, ShareTo, Tranlsate } from '@/util/svg/icon.common';
@@ -26,7 +26,7 @@ const StatusActionBar = ({ status }: Props) => {
 						})
 					}
 				/>
-				<StatusFavourtie className="mr-3" count={status.favourites_count} />
+				<StatusFavourite className="mr-3" {...{ status }} />
 			</View>
 			<View className="flex flex-row ">
 				<Tranlsate className="mr-3" />

@@ -177,3 +177,19 @@ export const uploadComposeImage = async (params: ComposeImagePayload) => {
 		return handleError(error);
 	}
 };
+
+export const favouriteStatus = async ({
+	status,
+}: {
+	status: Pathchwork.Status;
+}) => {
+	const toggleFavourite = status.favourited ? 'unfavourite' : 'favourite';
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+			appendApiVersion(`statuses/${status.id}/${toggleFavourite}`, 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

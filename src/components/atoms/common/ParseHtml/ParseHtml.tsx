@@ -67,7 +67,6 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 									<Pressable
 										onPress={() => handleHashTahPress(children)}
 										key={index}
-										className="active:opacity-80 -mt-[2]"
 									>
 										<ThemeText
 											size={'fs_13'}
