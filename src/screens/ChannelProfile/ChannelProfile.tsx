@@ -153,7 +153,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 												{...props}
 												labelStyle={props.labelStyle}
 												pressColor="#fff0"
-												className="font-"
 												label={props.label}
 												android_ripple={{
 													color: '#fff0',
