@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAuthStore } from '@/store/auth/authStore';
 import { cn } from '@/util/helper/twutil';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import Header from '@/components/atoms/common/Header/Header';
@@ -20,9 +19,11 @@ import { useProfileMediaStore } from '@/store/profile/useProfileMediaStore';
 import ManageAttachmentModal from '@/components/organisms/profile/ManageAttachment/MakeAttachmentModal';
 import { ComposeCameraIcon } from '@/util/svg/icon.compose';
 import { cleanText } from '@/util/helper/cleanText';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingModal from '@/components/atoms/common/LoadingModal/LoadingModal';
 import Toast from 'react-native-toast-message';
+import { useGradualAnimation } from '@/hooks/custom/useGradualAnimation';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import TextInput from '@/components/atoms/common/TextInput/TextInput';
 
 type ProfileType = {
 	display_name?: string;
@@ -39,6 +40,13 @@ const EditProfile = () => {
 	const navigation = useNavigation();
 	const [profile, setProfile] = useState<ProfileType>();
 	const { header, avatar, actions } = useProfileMediaStore();
+	const { height } = useGradualAnimation();
+
+	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
+		return {
+			height: height.value > 0 ? Math.abs(height.value) : 0,
+		};
+	});
 
 	useEffect(() => {
 		if (userInfo) {
@@ -134,50 +142,44 @@ const EditProfile = () => {
 					/>
 				}
 			/>
-			<KeyboardAwareScrollView
-				enableOnAndroid
-				extraScrollHeight={30}
-				contentContainerStyle={{ flexGrow: 1 }}
-			>
-				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
-					{/* Header Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={header.mediaModal}
-						onCloseThemeModal={() => {
-							actions.onToggleMediaModal('header');
-							actions.onSelectMedia('header', []);
-						}}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
-						}}
-						containerStyle={{ borderRadius: 0 }}
-					>
-						<ManageAttachmentModal
-							type="header"
-							onToggleMediaModal={() => actions.onToggleMediaModal('header')}
-						/>
-					</ThemeModal>
-
-					{/* Avatar Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={avatar.mediaModal}
-						onCloseThemeModal={() => {
-							actions.onToggleMediaModal('avatar');
-							actions.onSelectMedia('avatar', []);
-						}}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
-						}}
-						containerStyle={{ borderRadius: 0 }}
-					>
-						<ManageAttachmentModal
-							type="avatar"
-							onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
-						/>
-					</ThemeModal>
-
+			<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
+				{/* Header Media Modal */}
+				<ThemeModal
+					hasNotch={false}
+					openThemeModal={header.mediaModal}
+					onCloseThemeModal={() => {
+						actions.onToggleMediaModal('header');
+						actions.onSelectMedia('header', []);
+					}}
+					modalPositionStyle={{
+						justifyContent: 'flex-end',
+					}}
+					containerStyle={{ borderRadius: 0 }}
+				>
+					<ManageAttachmentModal
+						type="header"
+						onToggleMediaModal={() => actions.onToggleMediaModal('header')}
+					/>
+				</ThemeModal>
+				{/* Avatar Media Modal */}
+				<ThemeModal
+					hasNotch={false}
+					openThemeModal={avatar.mediaModal}
+					onCloseThemeModal={() => {
+						actions.onToggleMediaModal('avatar');
+						actions.onSelectMedia('avatar', []);
+					}}
+					modalPositionStyle={{
+						justifyContent: 'flex-end',
+					}}
+					containerStyle={{ borderRadius: 0 }}
+				>
+					<ManageAttachmentModal
+						type="avatar"
+						onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
+					/>
+				</ThemeModal>
+				<ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
 					{/* Header Image */}
 					<Pressable onPress={() => actions.onToggleMediaModal('header')}>
 						<FastImage
@@ -189,7 +191,6 @@ const EditProfile = () => {
 							resizeMode={FastImage.resizeMode.cover}
 						/>
 					</Pressable>
-
 					{/* Avatar Image */}
 					<View className="mx-auto">
 						<Pressable
@@ -239,8 +240,9 @@ const EditProfile = () => {
 							}
 						/>
 					</View>
-				</View>
-			</KeyboardAwareScrollView>
+				</ScrollView>
+			</View>
+			<Animated.View style={virtualKeyboardContainerStyle} />
 			<Button
 				className="mx-6 bottom-0 left-0 right-0 mb-5"
 				onPress={handleUpdateProfile}
