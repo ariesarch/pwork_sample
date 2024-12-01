@@ -64,16 +64,13 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 								const children = node.children.map(unwrapNode).join('');
 
 								return (
-									<Pressable
-										onPress={() => handleHashTahPress(children)}
+									<ThemeText
 										key={index}
-									>
-										<ThemeText
-											size={'fs_13'}
-											className=" font-SourceSans3_SemiBold"
-											children={`${children} `}
-										/>
-									</Pressable>
+										size={'fs_13'}
+										className="font-SourceSans3_SemiBold"
+										children={`${children} `}
+										onPress={() => handleHashTahPress(children)}
+									/>
 								);
 							}
 
