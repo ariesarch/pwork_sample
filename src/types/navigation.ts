@@ -63,9 +63,7 @@ export type HomeStackParamList = {
 };
 
 export type SearchStackParamList = {
-	SearchResults: {
-		query: string | undefined;
-	};
+	SearchResults: undefined;
 	SearchFeed: undefined;
 	ChannelProfile: {
 		domain_name: string;
