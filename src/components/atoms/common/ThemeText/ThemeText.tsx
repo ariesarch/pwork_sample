@@ -45,6 +45,7 @@ const ThemeText = React.forwardRef<React.ElementRef<typeof Text>, TextProps>(
 				)}
 				ref={ref}
 				children={children}
+				suppressHighlighting
 				{...props}
 			/>
 		);

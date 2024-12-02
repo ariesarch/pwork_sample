@@ -2,8 +2,9 @@ import { View } from 'react-native';
 import StatusFavourite from '@/components/atoms/feed/StatusFavourite/StatusFavourite';
 import StatusReblog from '@/components/atoms/feed/StatusReblog/StatusReblog';
 import StatusReply from '@/components/atoms/feed/StatusReply/StatusReply';
-import { MoreBtn, ShareTo, Tranlsate } from '@/util/svg/icon.common';
+import { ShareTo, Tranlsate } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
+import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -31,7 +32,7 @@ const StatusActionBar = ({ status }: Props) => {
 			<View className="flex flex-row ">
 				<Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" />
-				<MoreBtn />
+				<StatusMenu {...{ status }} />
 			</View>
 		</View>
 	);
