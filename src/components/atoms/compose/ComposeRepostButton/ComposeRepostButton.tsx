@@ -1,8 +1,6 @@
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
-import {
-	useComposeMutation,
-	useRepostMutation,
-} from '@/hooks/mutations/feed.mutation';
+import { useRepostMutation } from '@/hooks/mutations/feed.mutation';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { BottomStackParamList } from '@/types/navigation';
 import { prepareRepostPayload } from '@/util/helper/compose';
 import { cn } from '@/util/helper/twutil';
@@ -23,6 +21,8 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
 
+	const { resetAttachmentStore } = useManageAttachmentActions();
+
 	const { mutate, isPending } = useRepostMutation({
 		onSuccess: (response: Pathchwork.Status) => {
 			Toast.show({
@@ -32,6 +32,8 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 				topOffset: 50,
 			});
 			navigation.goBack();
+			resetAttachmentStore();
+			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
 			Toast.show({
