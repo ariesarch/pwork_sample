@@ -23,6 +23,7 @@ import customColor from '@/util/constant/color';
 import { text } from 'stream/consumers';
 import { count } from 'console';
 import { Match } from 'linkify-it';
+import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 const UserSuggestionModal = () => {
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -31,6 +32,7 @@ const UserSuggestionModal = () => {
 	const [openModal, setModal] = useState(false);
 	const bottomSheetRef = useRef<BottomSheet>(null);
 	const previousCurrentMentionStr = useRef('');
+	const { setUserInfo } = useUserInfo();
 
 	const {
 		data: searchedUsers,
@@ -83,6 +85,7 @@ const UserSuggestionModal = () => {
 								<TouchableOpacity
 									onPress={() => {
 										setModal(false);
+										setUserInfo(item);
 										const newString = getReplacedMentionText(
 											composeState.text.raw,
 											composeState.currentMention?.index ?? 0,

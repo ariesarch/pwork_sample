@@ -6,19 +6,16 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import InfoButton from '@/components/atoms/conversations/InfoButton/InfoButton';
 import { VerifyIcon } from '@/util/svg/icon.conversations';
 import { useColorScheme } from 'nativewind';
+import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 type Props = {
-	displayName: string;
-	avatar: string;
 	onPressBackButton: () => void;
 };
 
-const ConversationsHeader = ({
-	displayName,
-	avatar,
-	onPressBackButton,
-}: Props) => {
+const ConversationsHeader = ({ onPressBackButton }: Props) => {
 	const { colorScheme } = useColorScheme();
+	const { userInfo, setUserInfo } = useUserInfo();
+
 	return (
 		<View className="flex-row justify-center items-center mx-4 mt-4 mb-5">
 			<View className="flex:1 absolute left-0 z-10">
@@ -27,7 +24,7 @@ const ConversationsHeader = ({
 			<View className="flex-1 flex-row ml-14 items-center">
 				<FastImage
 					className="w-10 h-10 rounded-full"
-					source={{ uri: avatar }}
+					source={{ uri: userInfo?.avatar }}
 					resizeMode={FastImage.resizeMode.contain}
 				/>
 				<ThemeText
@@ -35,7 +32,7 @@ const ConversationsHeader = ({
 					ellipsizeMode="tail"
 					className="font-bold mx-3"
 				>
-					{displayName}
+					{userInfo?.display_name}
 				</ThemeText>
 				<VerifyIcon colorScheme={colorScheme} />
 			</View>

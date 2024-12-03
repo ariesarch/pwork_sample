@@ -1,17 +1,21 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
+import HTMLParser from '@/components/atoms/common/ParseHtml/ParseHtml';
+import ParseHTMLString from '@/components/atoms/common/ParseHtml/ParseNormalHtmlStr';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
+import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { useChatHistoryStore } from '@/store/conversations/chatHistoryStore';
+import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
 import {
 	BottomStackParamList,
 	ConversationsStackParamList,
 } from '@/types/navigation';
-import { AtSignIcon } from '@/util/svg/icon.conversations';
+import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { Pressable, ScrollView, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 type MessageScreenNavigationProp = CompositeNavigationProp<
@@ -19,86 +23,67 @@ type MessageScreenNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<ConversationsStackParamList>
 >;
 
-const StartConversation = ({ onPress }: { onPress: () => void }) => {
-	return (
-		<View className="container mx-auto p-10 mt-8">
-			<AtSignIcon className="self-center" />
-			<ThemeText className="text-md font-bold text-center mt-3">
-				No Conversations
-			</ThemeText>
-			<ThemeText className="text-center mt-3 font-normal">
-				Here you can chat with other people around, share posts, discuss and
-				more
-			</ThemeText>
-			<View className="mt-5 flex-row justify-center">
-				<Pressable
-					onPress={onPress}
-					className="border border-patchwork-grey-100 py-1.5 px-4 rounded-full w-auto"
-				>
-					<ThemeText>Start a conversation</ThemeText>
-				</Pressable>
-			</View>
-		</View>
-	);
-};
-
 const Message = ({
 	navigation,
 }: {
 	navigation: MessageScreenNavigationProp;
 }) => {
-	const { chatHistory } = useChatHistoryStore();
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
+
+	const {
+		data: conversationsList,
+		isLoading,
+		error,
+	} = useGetConversationsList();
 
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			{chatHistory.length === 0 ? (
+			{conversationsList?.length === 0 && !isLoading ? (
 				<StartConversation onPress={handlePressNewChat} />
 			) : (
-				<ScrollView className="p-4">
-					{chatHistory.map((chat, index) => (
-						<Pressable
-							disabled
-							key={chat.id}
-							onPress={() => {
-								navigation.navigate('Chat', {
-									id: chat.id,
-									queryKey: [
-										'users',
-										{ query: chat.searchedText, resolve: false, limit: 4 },
-									],
-								});
-							}}
-							className={`py-4 flex-row ${
-								index < chatHistory.length - 1 ? 'border-b border-gray-300' : ''
-							}`}
-						>
-							<FastImage
-								className="w-10 h-10 rounded-full mr-3"
-								source={{ uri: chat.avatar }}
-								resizeMode={FastImage.resizeMode.contain}
-							/>
-							<View>
-								<ThemeText className="text-lg font-semibold">
-									{chat.name}
-								</ThemeText>
-								<ThemeText className="text-gray-500">
-									{chat.messages[chat.messages.length - 1]?.text}
-								</ThemeText>
-							</View>
-						</Pressable>
-					))}
-					<View className="mt-5 flex-row justify-center">
-						<Pressable
-							onPress={handlePressNewChat}
-							className="border border-patchwork-grey-100 py-1.5 px-4 rounded-full w-auto"
-						>
-							<ThemeText>New Chat</ThemeText>
-						</Pressable>
-					</View>
-				</ScrollView>
+				<FlatList
+					contentContainerStyle={{ paddingHorizontal: 10 }}
+					data={isLoading ? Array(8).fill({}) : conversationsList}
+					showsVerticalScrollIndicator={false}
+					keyExtractor={(_, index) => index.toString()}
+					renderItem={({ item }) =>
+						isLoading ? (
+							<ConversationsListLoading />
+						) : (
+							<Pressable
+								disabled
+								key={item.id}
+								className={`flex-row items-centerrounded-2xl p-3 mb-3`}
+							>
+								<FastImage
+									className="w-10 h-10 rounded-full mr-3"
+									source={{ uri: item.accounts[0].avatar }}
+									resizeMode={FastImage.resizeMode.contain}
+								/>
+								<View>
+									<ThemeText className="font-semibold">
+										{item.accounts[0].display_name}
+									</ThemeText>
+									<ThemeText
+										numberOfLines={1}
+										ellipsizeMode="tail"
+										className="mr-12"
+									>
+										<ParseHTMLString status={item.last_status} />
+									</ThemeText>
+								</View>
+							</Pressable>
+						)
+					}
+				/>
 			)}
+			<Pressable
+				onPress={handlePressNewChat}
+				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
+			>
+				<PlusIcon />
+			</Pressable>
 		</SafeScreen>
 	);
 };

@@ -1,8 +1,12 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
-import { SearchUsersQueryKey } from '@/types/queries/conversations.type';
+import {
+	ConversationsQueryKey,
+	SearchUsersQueryKey,
+} from '@/types/queries/conversations.type';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import instance from './instance';
+import { useConvertAnimatedToValue } from 'react-native-collapsible-tab-view/lib/typescript/src/hooks';
 
 export const searchUsers = async ({
 	queryKey,
@@ -26,6 +30,19 @@ export const searchUsers = async ({
 			},
 		);
 		return resp;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const getConversationsList = async ({
+	queryKey,
+}: QueryFunctionContext<ConversationsQueryKey>) => {
+	try {
+		const resp: AxiosResponse<Pathchwork.Conversations[]> = await instance.get(
+			appendApiVersion(`conversations`),
+		);
+		return resp.data;
 	} catch (e) {
 		return handleError(e);
 	}

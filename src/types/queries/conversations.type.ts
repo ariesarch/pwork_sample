@@ -5,3 +5,5 @@ export type SearchUsersQueryParam = {
 };
 
 export type SearchUsersQueryKey = ['users', SearchUsersQueryParam];
+
+export type ConversationsQueryKey = ['conversations'];
