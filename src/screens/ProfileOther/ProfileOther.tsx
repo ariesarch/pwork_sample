@@ -154,7 +154,11 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									}}
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
-										return <StatusWrapper status={item} />;
+										return item.in_reply_to_id ? (
+											<></>
+										) : (
+											<StatusWrapper status={item} />
+										);
 									}}
 									estimatedItemSize={500}
 									estimatedListSize={{
@@ -192,11 +196,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									}}
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
-										return item.in_reply_to_id ? (
-											<StatusWrapper status={item} />
-										) : (
-											<></>
-										);
+										return <StatusWrapper status={item} />;
 									}}
 									refreshControl={
 										<RefreshControl

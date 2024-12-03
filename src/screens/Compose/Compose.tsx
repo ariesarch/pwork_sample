@@ -71,11 +71,9 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						) : (
 							<View className="px-4">
 								<ComposeTextInput />
-
 								<PollForm />
-
-								<LinkCard />
-								<ImageCard />
+								<LinkCard composeType="create" />
+								<ImageCard composeType="create" />
 								{ctaText && (
 									<View>
 										<Chip

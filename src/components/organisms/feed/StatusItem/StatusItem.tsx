@@ -7,6 +7,7 @@ import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { View, Image, ViewProps, Pressable } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -32,7 +33,7 @@ const StatusItem = ({ status, ...props }: Props) => {
 							})
 						}
 					>
-						<Image
+						<FastImage
 							source={
 								status.account.avatar
 									? { uri: status.account.avatar }

@@ -1,6 +1,5 @@
-import customColor from '@/util/constant/color';
 import TextInput from '../../common/TextInput/TextInput';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
 	runOnJS,
 	SharedValue,
@@ -8,16 +7,32 @@ import {
 } from 'react-native-reanimated';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { FormattedText } from '../FormattedText/FormattedText';
+import {
+	useStatusReplyAction,
+	useStatusReplyStore,
+} from '@/store/compose/statusReply/statusReplyStore';
+import { TextInput as RNTextInput } from 'react-native';
 
-type Props = {
+type ReplyInputProps = {
 	username: string;
 	progress: SharedValue<number>;
+	autoFocus: boolean;
 };
 
-const FeedReplyTextInput = ({ username, progress }: Props) => {
-	const [replyMsg, setReply] = useState('');
+const FeedReplyTextInput = ({
+	username,
+	progress,
+	autoFocus,
+}: ReplyInputProps) => {
 	const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 	const { composeState, composeDispatch } = useComposeStatus();
+	const { currentFocusStatus } = useStatusReplyStore();
+	const { setTextInputRef } = useStatusReplyAction();
+	const inputRef = useRef<RNTextInput>(null);
+
+	useEffect(() => {
+		setTextInputRef(inputRef);
+	}, [setTextInputRef]);
 
 	useAnimatedReaction(
 		() => progress.value,
@@ -34,8 +49,11 @@ const FeedReplyTextInput = ({ username, progress }: Props) => {
 		<>
 			<TextInput
 				placeholder={
-					isKeyboardOpen ? 'Type your reply' : `Reply To ${username}`
+					isKeyboardOpen
+						? 'Type your reply'
+						: `Reply To ${currentFocusStatus?.account.acct}`
 				}
+				ref={inputRef}
 				multiline
 				maxLength={4000}
 				onChangeText={text => {
@@ -47,6 +65,7 @@ const FeedReplyTextInput = ({ username, progress }: Props) => {
 						},
 					});
 				}}
+				autoFocus={autoFocus}
 				autoCapitalize="none"
 				spellCheck
 				className="text-white font-SourceSans3_Regular text-base opacity-80"
@@ -56,5 +75,4 @@ const FeedReplyTextInput = ({ username, progress }: Props) => {
 		</>
 	);
 };
-
 export default FeedReplyTextInput;

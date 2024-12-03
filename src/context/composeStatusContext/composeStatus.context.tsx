@@ -20,14 +20,12 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 	const navigation = useNavigation();
 	const { onChangeCTAText } = useCTAactions();
 	const { resetAttachmentStore } = useManageAttachmentActions();
-	const { onSelectMedia } = useManageAttachmentActions();
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
 			composeDispatch({ type: 'clear' });
 			onChangeCTAText('');
 			resetAttachmentStore();
-			// composeDispatch({ type: 'maxCount', payload: 500 });
 		});
 
 		return () => unsubscribe();
@@ -46,4 +44,13 @@ export const useComposeStatus = () => {
 		throw new Error('useComposeStatus must be used within a Compose Provider');
 	}
 	return context;
+};
+
+export const safeUseComposeStatus = () => {
+	//only used for situation where this hook's component is sometimes used in pages that does not wrap with context provider
+	try {
+		return useComposeStatus();
+	} catch {
+		return null;
+	}
 };

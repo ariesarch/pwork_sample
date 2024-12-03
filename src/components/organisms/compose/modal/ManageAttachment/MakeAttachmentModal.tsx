@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Keyboard, Platform, View } from 'react-native';
 import {
 	Asset,
 	launchCamera,
@@ -22,6 +22,7 @@ import {
 	ComposeOpenGalleryIcon,
 } from '@/util/svg/icon.compose';
 import { useColorScheme } from 'nativewind';
+import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStore';
 
 type ManageAttachmentModalProps = {
 	onToggleMediaModal: () => void;
@@ -32,7 +33,7 @@ const ManageAttachmentModal = ({
 	const { colorScheme } = useColorScheme();
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 	const { onSelectMedia, onAddMedia } = useManageAttachmentActions();
-
+	const { textInputRef } = useStatusReplyStore();
 	const onPressCamera = async () => {
 		if (Platform.OS === 'android' && !(await hasCameraPermission())) {
 			return;
@@ -60,7 +61,6 @@ const ManageAttachmentModal = ({
 			},
 			response => {
 				if (response.assets) {
-					onToggleMediaModal();
 					selectedMedia.length > 0
 						? onAddMedia(response.assets)
 						: onSelectMedia(response.assets as Asset[]);

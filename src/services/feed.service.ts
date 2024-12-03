@@ -43,8 +43,13 @@ export const getAccountDetailFeed = async (
 	qfContext: QueryFunctionContext<AccountDetailFeedQueryKey>,
 ) => {
 	try {
-		const { domain_name, account_id, exclude_reblogs, exclude_replies } =
-			qfContext.queryKey[1];
+		const {
+			domain_name,
+			account_id,
+			exclude_reblogs,
+			exclude_replies,
+			exclude_original_statuses,
+		} = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
 		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
@@ -56,6 +61,7 @@ export const getAccountDetailFeed = async (
 					max_id,
 					exclude_reblogs,
 					exclude_replies,
+					exclude_original_statuses,
 				},
 			},
 		);

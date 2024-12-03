@@ -8,7 +8,7 @@ type Props = {
 	count: number;
 } & ViewProps;
 
-const StatusFavourtie = ({ count, ...props }: Props) => {
+const StatusFavourtieButton = ({ count, ...props }: Props) => {
 	const [isFavourite, setIsFavoruite] = useState(false);
 	return (
 		<TouchableOpacity
@@ -30,4 +30,4 @@ const StatusFavourtie = ({ count, ...props }: Props) => {
 	);
 };
 
-export default StatusFavourtie;
+export default StatusFavourtieButton;

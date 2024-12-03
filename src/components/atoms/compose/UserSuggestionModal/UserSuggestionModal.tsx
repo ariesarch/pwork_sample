@@ -71,9 +71,6 @@ const UserSuggestionModal = () => {
 						>
 							<ThemeText variant="textGrey">Cancel</ThemeText>
 						</Pressable>
-						{/* <Pressable onPress={() => {}}>
-              <ThemeText>Save</ThemeText>
-            </Pressable> */}
 					</View>
 					{searchedUsers?.data && (
 						<FlatList

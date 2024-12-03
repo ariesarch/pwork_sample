@@ -36,7 +36,9 @@ const StatusContent = ({ status, isFromNotiStatusImage }: Props) => {
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
 					(!isFromNotiStatusImage ? (
-						<StatusImage media_attachments={status?.media_attachments} />
+						<View className="h-[150]">
+							<StatusImage media_attachments={status?.media_attachments} />
+						</View>
 					) : (
 						<NotiStatusImageView {...{ status }} />
 					))}

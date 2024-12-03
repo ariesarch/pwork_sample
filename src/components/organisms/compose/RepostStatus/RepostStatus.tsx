@@ -24,8 +24,8 @@ const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 				<ComposeRepostInputExplorerIcon colorScheme={colorScheme} />
 			</View>
 			<ComposeTextInput />
-			<LinkCard />
-			<ImageCard />
+			<LinkCard composeType="reblog" />
+			<ImageCard composeType="reblog" />
 			<View className="border flex-1 border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl">
 				<StatusHeader status={status} showAvatarIcon />
 				<StatusContent status={status} />

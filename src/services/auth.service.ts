@@ -52,15 +52,40 @@ export const verifyAuthToken = async () => {
 
 export const requestForgotPassword = async (params: { email: string }) => {
 	try {
-		const resp: AxiosResponse<{ message: string }> = await instance.get(
-			appendApiVersion('custom_passwords', 'v1'),
+		const resp: AxiosResponse<{ reset_password_token: string }> =
+			await instance.post(appendApiVersion('custom_passwords', 'v1'), params);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const forgetPWVerifyOTP = async (params: {
+	id: string;
+	otp_secret: string;
+}) => {
+	try {
+		const resp: AxiosResponse<{ message: string }> = await instance.post(
+			appendApiVersion('custom_passwords/verify_otp', 'v1'),
+			params,
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const resetPassword = async (params: {
+	reset_password_token: string;
+	password: string;
+	password_confirmation: string;
+}) => {
+	try {
+		const resp: AxiosResponse<{ message: string }> = await instance.put(
+			appendApiVersion(`custom_passwords/${params.reset_password_token}`, 'v1'),
 			{
-				params: {
-					email: params.email,
-				},
-				headers: {
-					Accept: '*/*',
-				},
+				password: params.password,
+				password_confirmation: params.password_confirmation,
 			},
 		);
 		return resp.data;

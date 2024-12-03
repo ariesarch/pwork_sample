@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
@@ -42,6 +42,7 @@ import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapp
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
 import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -236,7 +237,11 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return <StatusWrapper status={item} />;
+											return item.in_reply_to_id ? (
+												<></>
+											) : (
+												<StatusWrapper status={item} />
+											);
 										}}
 										refreshControl={
 											<RefreshControl
@@ -275,12 +280,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return item.in_reply_to_id ? (
-												<StatusWrapper status={item} />
-											) : (
-												<></>
-											);
-											// return <StatusWrapper status={item} />;
+											return <StatusWrapper status={item} />;
 										}}
 										refreshControl={
 											<RefreshControl
