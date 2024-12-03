@@ -1,7 +1,7 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { parseDocument, ElementType } from 'htmlparser2';
 import type { ChildNode } from 'domhandler';
 import { Platform, Pressable, View } from 'react-native';
@@ -12,14 +12,20 @@ import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
+import { layoutAnimation } from '@/util/helper/timeline';
 
 type Props = {
 	status: Pathchwork.Status;
-	// numberOflines?: number;
+	numberOfLines?: number;
 	isMainStatus?: boolean;
 };
 
-const HTMLParser = ({ status, isMainStatus }: Props) => {
+const MAX_ALLOWED_LINES = 35;
+
+const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
+	const [totalLines, setTotalLines] = useState<number>();
+	const [expanded, setExpanded] = useState(false);
+
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
 	const document = useMemo(() => {
@@ -174,7 +180,48 @@ const HTMLParser = ({ status, isMainStatus }: Props) => {
 		return null;
 	};
 
-	return <ThemeText children={document.children.map(renderNode)} />;
+	return (
+		<>
+			<ThemeText
+				children={document.children.map(renderNode)}
+				onTextLayout={({ nativeEvent }) => {
+					if (
+						numberOfLines === 1 ||
+						nativeEvent.lines.length >= numberOfLines + 8
+					) {
+						setTotalLines(nativeEvent.lines.length);
+					}
+				}}
+				numberOfLines={
+					typeof totalLines === 'number'
+						? expanded
+							? 999
+							: numberOfLines
+						: Math.max(MAX_ALLOWED_LINES, numberOfLines)
+				}
+				style={{
+					height: numberOfLines === 1 && !expanded ? 0 : undefined,
+					lineHeight: adaptedLineheight,
+				}}
+			/>
+			{typeof totalLines === 'number' || numberOfLines === 1 ? (
+				<Pressable
+					onPress={() => {
+						layoutAnimation();
+						setExpanded(!expanded);
+					}}
+				>
+					<ThemeText
+						children={expanded ? 'See Less' : 'See More'}
+						variant={'textOrange'}
+						style={{
+							textDecorationLine: 'underline',
+						}}
+					/>
+				</Pressable>
+			) : null}
+		</>
+	);
 };
 
 export default HTMLParser;

@@ -39,6 +39,7 @@ type Media = {
 };
 
 export type ComposeMutationPayload = {
+	statusId?: string; // For Compose (Edit) Mutation //
 	in_reply_to_id: string | undefined;
 	language: string;
 	sensitive?: boolean;

@@ -14,25 +14,33 @@ import ImageProgressBar from '../ImageProgressBar/ImageProgressBar';
 import Toast from 'react-native-toast-message';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 
+// ***** Type Guard ***** //
+function isAsset(item: Asset | Pathchwork.Attachment): item is Asset {
+	return 'uri' in item && !!item.uri;
+}
+// ***** Type Guard ***** //
+
 const ImageCard = () => {
+	const { composeDispatch } = useComposeStatus();
+	const previousImageCount = useRef(0);
+
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 	const progressInfo = useManageAttachmentStore(state => state.progress);
-	const previousImageCount = useRef(0);
-	const { composeState, composeDispatch } = useComposeStatus();
+
 	const {
 		onremoveMedia,
 		onProgressIndexChange,
 		onProgressChange,
 		resetAttachmentStore,
 	} = useManageAttachmentActions();
+
 	const { mutateAsync, isPending } = useUploadComposeImageMutation({
 		onSuccess: async response => {
-			console.log('aa::');
 			onProgressChange(100);
 			onProgressIndexChange(undefined);
 			composeDispatch({
 				type: 'media_add',
-				payload: response.id,
+				payload: [response.id],
 			});
 		},
 		onError: error => {
@@ -61,10 +69,12 @@ const ImageCard = () => {
 	const startImageUploading = async (newImageList: Asset[]) => {
 		for (const image of newImageList) {
 			const currentIdx = selectedMedia.findIndex(
-				item => item.uri === image.uri,
+				(item): item is Asset => 'uri' in item && item.uri === image.uri,
 			);
-			onProgressIndexChange(currentIdx);
-			await mutateAsync({ image, onProgressChange });
+			if (currentIdx !== -1) {
+				onProgressIndexChange(currentIdx);
+				await mutateAsync({ image, onProgressChange });
+			}
 		}
 	};
 
@@ -80,6 +90,7 @@ const ImageCard = () => {
 		<View className="my-5">
 			<View className={cn('flex-row flex-wrap rounded-xl overflow-hidden')}>
 				{selectedMedia.map((item, index) => {
+					const imageUri = isAsset(item) ? item.uri : item.url;
 					return (
 						<View
 							key={index}
@@ -91,7 +102,7 @@ const ImageCard = () => {
 							<FastImage
 								className={cn('w-full h-full rounded-xl')}
 								source={{
-									uri: item.uri,
+									uri: imageUri,
 									priority: FastImage.priority.high,
 									cache: FastImage.cacheControl.immutable,
 								}}

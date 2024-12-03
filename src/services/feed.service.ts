@@ -124,8 +124,13 @@ export const fetchLinkPreview = async (
 
 export const composeStatus = async (params: ComposeMutationPayload) => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
-			appendApiVersion('statuses', 'v1'),
+		const method = params.statusId ? 'put' : 'post';
+		const url = appendApiVersion(
+			params.statusId ? `statuses/${params.statusId}` : 'statuses',
+			'v1',
+		);
+		const resp: AxiosResponse<Pathchwork.Status> = await instance[method](
+			url,
 			params,
 		);
 		return resp.data;

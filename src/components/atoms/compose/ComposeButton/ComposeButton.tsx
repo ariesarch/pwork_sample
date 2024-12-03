@@ -9,21 +9,59 @@ import { useNavigation } from '@react-navigation/native';
 import { BottomStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { POLL_LIMITS } from '@/util/constant/pollOption';
+import {
+	StatusCacheQueryKeys,
+	getCacheQueryKeys,
+} from '@/util/cache/queryCacheHelper';
+import {
+	createStatusAndCache,
+	editedStatusCacheData,
+} from '@/util/cache/statusActions/editStatusCache';
+import {
+	useActiveFeedAction,
+	useCurrentActiveFeed,
+} from '@/store/feed/activeFeed';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 
-const ComposeButton = () => {
+const ComposeButton = ({ statusId }: { statusId: string }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
 
+	const currentFeed = useCurrentActiveFeed();
+	const { setActiveFeed } = useActiveFeedAction();
+	const { resetAttachmentStore } = useManageAttachmentActions();
+
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (response: Pathchwork.Status) => {
+		onSuccess: (status: Pathchwork.Status) => {
+			if (currentFeed) {
+				setActiveFeed(status);
+			}
+
+			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+				status.account.id,
+				status.in_reply_to_id,
+			);
+
+			if (statusId) {
+				editedStatusCacheData({
+					status_id: status.id,
+					updatedStatus: status,
+					queryKeys,
+				});
+			} else {
+				createStatusAndCache({ newStatus: status, queryKeys });
+			}
+
 			Toast.show({
 				type: 'successToast',
-				text1: 'Created Successfully',
+				text1: `${statusId ? 'Updated' : 'Created'} Successfully`,
 				position: 'top',
 				topOffset: 50,
 			});
-			navigation.navigate('HomeFeed');
+			// navigation.navigate('HomeFeed');
 			composeDispatch({ type: 'clear' });
+			resetAttachmentStore();
+			navigation.goBack();
 		},
 		onError: e => {
 			Toast.show({
@@ -38,12 +76,12 @@ const ComposeButton = () => {
 	const handleComposeStatus = () => {
 		if (composeState.text.count <= composeState.maxCount) {
 			const payload = prepareComposePayload(composeState);
-			mutate(payload);
+			statusId ? mutate({ statusId, ...payload }) : mutate(payload);
 		}
 	};
 
 	const disabledComposeButton = () => {
-		const { text, poll } = composeState;
+		const { text, poll, maxCount } = composeState;
 		const hasEmptyPollOptions = poll?.options?.some(
 			option => option.trim() === '',
 		);
@@ -51,7 +89,11 @@ const ComposeButton = () => {
 			poll && poll.options?.length < POLL_LIMITS.MIN_OPTIONS;
 
 		return (
-			isPending || !text.raw || insufficientPollOptions || hasEmptyPollOptions
+			isPending ||
+			!text.raw ||
+			insufficientPollOptions ||
+			hasEmptyPollOptions ||
+			text.count >= maxCount
 		);
 	};
 

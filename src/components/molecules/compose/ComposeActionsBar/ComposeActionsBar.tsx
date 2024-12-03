@@ -152,7 +152,28 @@ const ComposeActionsBar = () => {
 				{/****** CTA Action ******/}
 
 				{/****** Long Post Action ******/}
-				{composeState?.maxCount === 500 ? (
+				<View className="flex-1 items-end">
+					<View className="flex-row items-center">
+						<ThemeText className="mr-2">
+							{composeState.maxCount - composeState.text.count <= 0
+								? 'Too many characters'
+								: composeState.maxCount - composeState.text.count}
+						</ThemeText>
+						{composeState.maxCount === 500 && (
+							<Pressable
+								className="flex-row items-center"
+								onPress={() =>
+									composeDispatch({ type: 'maxCount', payload: MAX_CHAR })
+								}
+							>
+								<ComposePlusIcon />
+								<ThemeText className="ml-2 text-white">Long Post</ThemeText>
+							</Pressable>
+						)}
+					</View>
+				</View>
+
+				{/* {composeState?.maxCount === 500 ? (
 					<View className="flex-1 items-end">
 						<View className="flex-row items-center">
 							<ThemeText className="mr-3 text-white">
@@ -187,7 +208,7 @@ const ComposeActionsBar = () => {
 							</ThemeText>
 						</Pressable>
 					</View>
-				)}
+				)} */}
 
 				{/****** Long Post Action ******/}
 			</View>

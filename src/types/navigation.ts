@@ -1,12 +1,19 @@
 import { ChannelProfile } from '@/screens';
 /* eslint-disable @typescript-eslint/no-namespace */
 import {
+	CompositeNavigationProp,
 	CompositeScreenProps,
 	NavigationProp,
 	NavigatorScreenParams,
 } from '@react-navigation/native';
-import type { StackScreenProps } from '@react-navigation/stack';
-import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import type {
+	StackNavigationProp,
+	StackScreenProps,
+} from '@react-navigation/stack';
+import type {
+	BottomTabNavigationProp,
+	BottomTabScreenProps,
+} from '@react-navigation/bottom-tabs';
 import { GetChannelFeedQueryKey } from './queries/channel.type';
 import { AccountDetailFeedQueryKey } from './queries/feed.type';
 import { SearchUsersQueryKey } from './queries/conversations.type';
@@ -36,7 +43,7 @@ export type BottomStackParamList = {
 				type: 'create';
 		  }
 		| {
-				type: 'repost';
+				type: 'repost' | 'edit';
 				incomingStatus: Pathchwork.Status;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
@@ -128,6 +135,13 @@ export type TabBarScreenProps<
 > = CompositeScreenProps<
 	BottomTabScreenProps<BottomStackParamList, S>,
 	RootScreenProps<keyof RootStackParamList>
+>;
+
+export type TabBarScreenNavigationProp<
+	S extends keyof BottomStackParamList = keyof BottomStackParamList,
+> = CompositeNavigationProp<
+	BottomTabNavigationProp<BottomStackParamList, S>,
+	StackNavigationProp<RootStackParamList>
 >;
 
 declare global {

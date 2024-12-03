@@ -5,7 +5,7 @@ type ActiveFeedState = {
 	activeFeed: Pathchwork.Status | undefined;
 	actions: {
 		setActiveFeed: (feed: Pathchwork.Status) => void;
-		clearFeed: (feed: Pathchwork.Status) => void;
+		clearFeed: () => void;
 	};
 };
 

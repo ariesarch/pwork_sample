@@ -26,6 +26,7 @@ import Toast from 'react-native-toast-message';
 import StatusDeleteModal from '../../common/StatusDeleteModal/StatusDeleteModal';
 import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
+import { getEditStatusSourceFn } from '@/services/statusActions.service';
 
 const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 	const navigation = useNavigation();
@@ -42,6 +43,7 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 		return userInfo?.id == status.account.id;
 	}, [status, userInfo?.id]);
 
+	//********** Delete Status **********//
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
 	const onPressShowDeleteModal = () => {
@@ -74,6 +76,35 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 		mutate({ status_id: status.id });
 		setDeleteModalVisible(false);
 	};
+	//********** Delete Status **********//
+
+	//********** Edit Status **********//
+	const onPressEditStatus = async () => {
+		try {
+			const { text } = await getEditStatusSourceFn({
+				status_id: status.id,
+			});
+			navigation.navigate('Index', {
+				screen: 'Compose',
+				params: {
+					type: 'edit',
+					incomingStatus: {
+						...status,
+						text,
+					},
+				},
+			});
+			hideMenu();
+		} catch (error: any) {
+			Toast.show({
+				type: 'error',
+				text1: error.message,
+				position: 'top',
+				topOffset: 50,
+			});
+		}
+	};
+	//********** Edit Status **********//
 
 	return (
 		<>
@@ -95,7 +126,7 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 				>
 					{isAuthor ? (
 						<>
-							<MenuOption>
+							<MenuOption onSelect={onPressEditStatus}>
 								<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />
 							</MenuOption>
 							<Underline className="border-patchwork-grey-400" />
