@@ -1,6 +1,12 @@
 import { queryClient } from '@/App';
 import { QueryKey } from '@tanstack/react-query';
 import { DEFAULT_API_URL } from '../constant';
+import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
+import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
+
+export type StatusCacheQueryKeys =
+	| GetChannelFeedQueryKey
+	| AccountDetailFeedQueryKey;
 
 export const updateFeedPage = (
 	data: IFeedQueryFnData,

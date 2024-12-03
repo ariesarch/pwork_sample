@@ -1,11 +1,5 @@
 import { queryClient } from '@/App';
-import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
-import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
-import { DEFAULT_API_URL } from '@/util/constant';
-
-export type StatusCacheQueryKeys =
-	| GetChannelFeedQueryKey
-	| AccountDetailFeedQueryKey;
+import { StatusCacheQueryKeys } from '../queryCacheHelper';
 
 type DeleteStatusCacheParams = {
 	status_id: Pathchwork.Status['id'];
@@ -44,22 +38,4 @@ const deleteStatusCacheData = ({
 	});
 };
 
-const getStatusCacheQueryKeys = (accountId: string): StatusCacheQueryKeys[] => {
-	const domain_name = process.env.API_URL || DEFAULT_API_URL;
-
-	return [
-		['channel-feed', { domain_name, remote: false, only_media: false }],
-		[
-			'account-detail-feed',
-			{
-				domain_name,
-				account_id: accountId,
-				exclude_replies: true,
-				exclude_reblogs: false,
-				exclude_original_statuses: false,
-			},
-		],
-	];
-};
-
-export { deleteStatusFromFeed, deleteStatusCacheData, getStatusCacheQueryKeys };
+export { deleteStatusFromFeed, deleteStatusCacheData };

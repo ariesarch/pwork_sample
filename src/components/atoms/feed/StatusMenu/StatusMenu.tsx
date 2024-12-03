@@ -17,11 +17,11 @@ import customColor from '@/util/constant/color';
 import { useAuthStore } from '@/store/auth/authStore';
 import Underline from '../../common/Underline/Underline';
 import { useStatusDeleteMutation } from '@/hooks/mutations/statusActions.mutation';
-import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import {
 	StatusCacheQueryKeys,
-	deleteStatusCacheData,
-} from '@/util/cache/statusActions/deleteStatusCache';
+	getCacheQueryKeys,
+} from '@/util/cache/queryCacheHelper';
+import { deleteStatusCacheData } from '@/util/cache/statusActions/deleteStatusCache';
 import Toast from 'react-native-toast-message';
 import StatusDeleteModal from '../../common/StatusDeleteModal/StatusDeleteModal';
 import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
