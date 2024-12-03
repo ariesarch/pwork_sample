@@ -47,8 +47,9 @@ const Message = ({
 }: {
 	navigation: MessageScreenNavigationProp;
 }) => {
-	const chatHistory = useChatHistoryStore(state => state.chatHistory);
+	const { chatHistory } = useChatHistoryStore();
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
+
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
@@ -58,13 +59,14 @@ const Message = ({
 				<ScrollView className="p-4">
 					{chatHistory.map((chat, index) => (
 						<Pressable
+							disabled
 							key={chat.id}
 							onPress={() => {
 								navigation.navigate('Chat', {
 									id: chat.id,
 									queryKey: [
 										'users',
-										{ query: chat.name, resolve: false, limit: 4 },
+										{ query: chat.searchedText, resolve: false, limit: 4 },
 									],
 								});
 							}}
@@ -74,7 +76,7 @@ const Message = ({
 						>
 							<FastImage
 								className="w-10 h-10 rounded-full mr-3"
-								source={require('../../../assets/images/mock/conversations/mockUserAvatar.png')}
+								source={{ uri: chat.avatar }}
 								resizeMode={FastImage.resizeMode.contain}
 							/>
 							<View>
