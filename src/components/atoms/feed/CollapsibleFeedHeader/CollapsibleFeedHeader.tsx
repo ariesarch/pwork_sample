@@ -120,7 +120,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							onPressPlusIcon={props.onPressPlusIcon}
 						/>
 						<UserStats
-							posts={props.profile?.collection_count}
+							posts={props.profile.statuses_count}
 							following={props.profile?.following_count}
 							followers={props.profile?.followers_count}
 						/>

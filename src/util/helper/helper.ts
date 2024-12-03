@@ -145,4 +145,14 @@ export const removeAppToken = async () => {
 	return await EncryptedStorage.clear();
 };
 
+export const formatUserStatsNumber = (num: number) => {
+	if (num >= 1000 && num < 1000000) {
+		return (num / 1000).toFixed(1) + 'K';
+	} else if (num >= 1000000) {
+		return (num / 1000000).toFixed(1) + 'M';
+	} else {
+		return num?.toString();
+	}
+};
+
 export { scale, keyExtractor };

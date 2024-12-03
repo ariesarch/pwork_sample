@@ -1,18 +1,10 @@
 import { Asset } from 'react-native-image-picker';
 
-export type ProfileDetailQueryParam = {
+export type AccountInfoQueryParam = {
 	id: string;
 };
 
-export type ProfileDetailQueryKey = [
-	'get_profile_detail_info_by_account',
-	ProfileDetailQueryParam,
-];
-
-export type ProfileDetailStatusQueryKey = [
-	'get_profile_detail_statuses_by_account',
-	ProfileDetailQueryParam,
-];
+export type AccountInfoQueryKey = ['get_account_info', AccountInfoQueryParam];
 
 export type UpdateProfileCredentialsQueryParam = {
 	display_name: string;

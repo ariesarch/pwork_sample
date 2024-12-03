@@ -30,6 +30,8 @@ import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
 import { RefreshControl } from 'react-native';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
+import { useAccountInfo } from '@/hooks/queries/profile.queries';
+import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -45,7 +47,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-	console.log('domain_name::', domain_name);
+
+	// ***** Get Account Info ***** //
+	const acctInfoQueryKey: AccountInfoQueryKey = ['get_account_info', { id }];
+
+	const { data: accountInfoData } = useAccountInfo(acctInfoQueryKey);
+	// ***** Get Account Info ***** //
 
 	const {
 		data: timeline,
@@ -96,15 +103,15 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	return (
 		<ScrollProvider>
 			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-				{timeline ? (
+				{timeline && accountInfoData ? (
 					<>
-						<FeedTitleHeader title={timelineList[0]?.account?.display_name} />
+						<FeedTitleHeader title={accountInfoData.display_name} />
 						<Tabs.Container
 							renderHeader={() => {
 								return (
 									<CollapsibleFeedHeader
 										type="Profile"
-										profile={timelineList[0]?.account}
+										profile={accountInfoData}
 									/>
 								);
 							}}
