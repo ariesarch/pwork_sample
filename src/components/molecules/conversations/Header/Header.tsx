@@ -6,23 +6,23 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import InfoButton from '@/components/atoms/conversations/InfoButton/InfoButton';
 import { VerifyIcon } from '@/util/svg/icon.conversations';
 import { useColorScheme } from 'nativewind';
-import { useNavigation } from '@react-navigation/native';
-import { ConversationsStackScreenProps } from '@/types/navigation';
 
 type Props = {
 	displayName: string;
 	avatar: string;
+	onPressBackButton: () => void;
 };
 
-const ConversationsHeader = ({ displayName, avatar }: Props) => {
-	const { navigation } = useNavigation<ConversationsStackScreenProps<'Chat'>>();
+const ConversationsHeader = ({
+	displayName,
+	avatar,
+	onPressBackButton,
+}: Props) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<View className="flex-row justify-center items-center mx-4 mt-4 mb-5">
 			<View className="flex:1 absolute left-0 z-10">
-				<BackButton
-					customOnPress={() => navigation.navigate('StartConversation')}
-				/>
+				<BackButton customOnPress={onPressBackButton} />
 			</View>
 			<View className="flex-1 flex-row ml-14 items-center">
 				<FastImage

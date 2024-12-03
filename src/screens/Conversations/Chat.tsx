@@ -112,6 +112,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 				<ConversationsHeader
 					displayName={userInfo.display_name}
 					avatar={userInfo.avatar}
+					onPressBackButton={() => navigation.navigate('StartConversation')}
 				/>
 				<ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
 					{/* profile info */}
