@@ -2,7 +2,7 @@ import { Poll } from '@/types/queries/feed.type';
 import { Match } from 'linkify-it';
 import { Dispatch, ReactNode } from 'react';
 import { tags } from 'react-native-svg/lib/typescript/xml';
-export type ComposeType = 'create' | 'repost' | 'reply' | 'edit';
+export type ComposeType = 'create' | 'repost' | 'reply' | 'edit' | 'chat';
 
 export type ComposeState = {
 	text: {

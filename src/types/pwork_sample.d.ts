@@ -449,4 +449,11 @@ declare namespace Pathchwork {
 		own_votes: number[];
 		emojis: string[];
 	};
+
+	type Conversations = {
+		id: string;
+		unread: boolean;
+		accounts: Pathchwork.Account[];
+		last_status: Pathchwork.Status;
+	};
 }
