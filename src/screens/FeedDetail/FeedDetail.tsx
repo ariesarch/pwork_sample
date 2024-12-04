@@ -142,16 +142,16 @@ const FeedDetail = ({
 								</ThemeText>
 							</Animated.View>
 							<Animated.View style={replyActionBarStyle}>
-								<LinkCard composeType="reply" />
-								<ImageCard composeType="reply" />
-								<UserSuggestionReply />
 								<ScrollView
-									className="max-h-[200] mb-4"
+									className="max-h-[200] mb-4 border border-patchwork-dark-50 rounded-lg"
 									showsVerticalScrollIndicator={false}
 									keyboardShouldPersistTaps="always"
 								>
-									<PollForm />
+									<PollForm composeType="reply" />
 								</ScrollView>
+								<LinkCard composeType="reply" />
+								<ImageCard composeType="reply" />
+								<UserSuggestionReply />
 							</Animated.View>
 							<FeedReplyTextInput
 								username={feedDetail.account.username}

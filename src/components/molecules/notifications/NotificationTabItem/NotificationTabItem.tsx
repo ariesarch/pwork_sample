@@ -24,7 +24,7 @@ const notificationMessages: Record<NotificationItem['type'], string> = {
 	favourite: 'favorited your post',
 	mention: 'Private mention',
 	reblog: 'boosted your post',
-	poll: 'polled in your post',
+	poll: 'polled has ended',
 };
 
 const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
@@ -52,7 +52,7 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					<Pressable
 						className="flex-row items-center"
 						onPress={() => {
-							// navigation.navigate('ProfileOther', { id: account.id });
+							navigation.navigate('ProfileOther', { id: account.id });
 						}}
 					>
 						<Image

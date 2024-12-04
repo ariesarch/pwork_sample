@@ -48,7 +48,10 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 					ListHeaderComponent={() => (
 						<>
 							<View className="flex-row items-center">
-								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+								<ThemeText
+									className="font-SourceSans3_Bold my-2 flex-1"
+									size="lg_18"
+								>
 									My Channels
 								</ThemeText>
 							</View>
@@ -72,7 +75,10 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									</View>
 								))}
 							<View className="flex-row items-center">
-								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+								<ThemeText
+									className="font-SourceSans3_Bold my-2 flex-1"
+									size="lg_18"
+								>
 									Explore Channels
 								</ThemeText>
 								<Pressable onPress={() => {}}>

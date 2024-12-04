@@ -16,9 +16,10 @@ import useDebounce from '@/hooks/custom/useDebounce';
 import { fetchLinkPreview } from '@/services/feed.service';
 import { useLinkPreviewQueries } from '@/hooks/queries/feed.queries';
 import FastImage from 'react-native-fast-image';
+import { ComposeType } from '@/context/composeStatusContext/composeStatus.type';
 
 type Props = {
-	composeType: 'create' | 'reblog' | 'reply';
+	composeType: ComposeType;
 };
 
 export const LinkCard = ({ composeType }: Props) => {

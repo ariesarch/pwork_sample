@@ -13,16 +13,22 @@ import { Asset } from 'react-native-image-picker';
 import ImageProgressBar from '../ImageProgressBar/ImageProgressBar';
 import Toast from 'react-native-toast-message';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { ComposeType } from '@/context/composeStatusContext/composeStatus.type';
 
 type Props = {
-	composeType: 'create' | 'reblog' | 'reply';
+	composeType: ComposeType;
 };
 
+function isAsset(item: Asset | Pathchwork.Attachment): item is Asset {
+	return 'uri' in item && !!item.uri;
+}
+
 const ImageCard = ({ composeType }: Props) => {
+	const { composeDispatch } = useComposeStatus();
+	const previousImageCount = useRef(0);
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 	const progressInfo = useManageAttachmentStore(state => state.progress);
-	const previousImageCount = useRef(0);
-	const { composeState, composeDispatch } = useComposeStatus();
+
 	const {
 		onremoveMedia,
 		onProgressIndexChange,
@@ -36,7 +42,7 @@ const ImageCard = ({ composeType }: Props) => {
 			onProgressIndexChange(undefined);
 			composeDispatch({
 				type: 'media_add',
-				payload: response.id,
+				payload: [response.id],
 			});
 		},
 		onError: error => {
@@ -66,10 +72,12 @@ const ImageCard = ({ composeType }: Props) => {
 		if (isPending) return;
 		for (const image of newImageList) {
 			const currentIdx = selectedMedia.findIndex(
-				item => item.uri === image.uri,
+				(item): item is Asset => 'uri' in item && item.uri === image.uri,
 			);
-			onProgressIndexChange(currentIdx);
-			await mutateAsync({ image, onProgressChange });
+			if (currentIdx !== -1) {
+				onProgressIndexChange(currentIdx);
+				await mutateAsync({ image, onProgressChange });
+			}
 		}
 	};
 
@@ -87,6 +95,7 @@ const ImageCard = ({ composeType }: Props) => {
 				<View>
 					<View className="flex-row flex-wrap rounded-xl overflow-hidden">
 						{selectedMedia.map((item, index) => {
+							const imageUri = isAsset(item) ? item.uri : item.url;
 							return (
 								<View
 									className="w-1/4 h-16 rounded-md border-patchwork-dark-400 border-2 mb-2"
@@ -95,7 +104,7 @@ const ImageCard = ({ composeType }: Props) => {
 									<FastImage
 										className={cn('w-full h-full rounded-xl')}
 										source={{
-											uri: item.uri,
+											uri: imageUri,
 											priority: FastImage.priority.high,
 											cache: FastImage.cacheControl.immutable,
 										}}
@@ -130,6 +139,7 @@ const ImageCard = ({ composeType }: Props) => {
 				<View className="my-5">
 					<View className="flex-row flex-wrap rounded-xl overflow-hidden">
 						{selectedMedia.map((item, index) => {
+							const imageUri = isAsset(item) ? item.uri : item.url;
 							return (
 								<View
 									key={index}
@@ -141,7 +151,7 @@ const ImageCard = ({ composeType }: Props) => {
 									<FastImage
 										className={cn('w-full h-full rounded-xl')}
 										source={{
-											uri: item.uri,
+											uri: imageUri,
 											priority: FastImage.priority.high,
 											cache: FastImage.cacheControl.immutable,
 										}}

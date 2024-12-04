@@ -14,7 +14,7 @@ const ChannelLoading = ({
 }) => {
 	return (
 		<View style={{ flex: 1 }}>
-			<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+			<ThemeText className="font-SourceSans3_Bold my-2 flex-1" size="lg_18">
 				{title}
 			</ThemeText>
 			<SkeletonPlaceholder

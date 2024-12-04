@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	View,
 	TouchableOpacity,
@@ -7,8 +7,6 @@ import {
 	RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import { useColorScheme } from 'nativewind';
 import { useAccountDetailFeed } from '@/hooks/queries/feed.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
@@ -28,8 +26,6 @@ import CollapsibleFeedHeader from '@/components/atoms/feed/CollapsibleFeedHeader
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
 
-import { SocialMediaLink } from '@/components/organisms/profile/SocialLink/SocialLink';
-import useHandleOnPressStatus from '@/hooks/custom/useHandleOnPressStatus';
 import { useAuthStore } from '@/store/auth/authStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { CircleFade, Flow } from 'react-native-animated-spinkit';
@@ -43,6 +39,7 @@ import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes'
 import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useActiveFeedAction } from '@/store/feed/activeFeed';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -68,6 +65,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
+
+	const { clearFeed } = useActiveFeedAction();
 
 	const {
 		data: timeline,
@@ -157,6 +156,14 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		setUserInfo(res);
 	};
 
+	useFocusEffect(
+		useCallback(() => {
+			setTimeout(() => {
+				clearFeed();
+			}, 300);
+		}, []),
+	);
+
 	return (
 		<ScrollProvider>
 			{isPending ? (
@@ -219,8 +226,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 											)}
 											activeColor={tabBarTextColor}
 											labelStyle={{
-												fontWeight: 'bold',
+												fontFamily: 'SourceSans3-Bold',
 												textTransform: 'capitalize',
+												fontSize: 15,
 											}}
 											inactiveColor={customColor['patchwork-grey-400']}
 										/>

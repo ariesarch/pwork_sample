@@ -10,14 +10,16 @@ const ChannelGuidelines = ({ channelAbout }: Props) => {
 	return (
 		<>
 			<View className="p-4">
-				<ThemeText className="font-bold">Channel guidelines</ThemeText>
+				<ThemeText className="font-SourceSans3_Bold" size={'fs_15'}>
+					Channel guidelines
+				</ThemeText>
 				<View>
 					{channelAbout?.rules &&
 						channelAbout.rules.map((item, idx) => {
 							return (
 								<View className="flex-row items-center my-2" key={idx}>
 									<View className="w-[30] h-[30] items-center justify-center bg-patchwork-red-50 rounded-full mr-2">
-										<ThemeText className="font-semibold text-white">
+										<ThemeText className="font-SourceSans3_SemiBold text-white">
 											{idx + 1}
 										</ThemeText>
 									</View>

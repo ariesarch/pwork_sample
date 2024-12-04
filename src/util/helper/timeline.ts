@@ -1,4 +1,5 @@
 import { InfiniteData } from '@tanstack/react-query';
+import { AccessibilityInfo, LayoutAnimation } from 'react-native';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type PagedResponse<T = unknown> = {
@@ -24,4 +25,11 @@ export const flattenPages = <T>(
 		return data?.pages.flatMap(page => page.data) || [];
 	}
 	return [];
+};
+
+export const layoutAnimation = async () => {
+	const disable = await AccessibilityInfo.isReduceMotionEnabled();
+	if (disable) return;
+
+	LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 };

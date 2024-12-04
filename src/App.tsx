@@ -14,6 +14,7 @@ import customColor from './util/constant/color';
 import { verifyAuthToken } from './services/auth.service';
 import { ThemeText } from './components/atoms/common/ThemeText/ThemeText';
 import Toast from 'react-native-toast-message';
+import { MenuProvider } from 'react-native-popup-menu';
 
 export const queryClient = new QueryClient();
 
@@ -76,8 +77,10 @@ function App() {
 		<View className="flex-1 bg-patchwork-dark-100">
 			<QueryClientProvider client={queryClient}>
 				<KeyboardProvider>
-					<ApplicationNavigator />
-					<Toast config={toastConfig} />
+					<MenuProvider>
+						<ApplicationNavigator />
+						<Toast config={toastConfig} />
+					</MenuProvider>
 				</KeyboardProvider>
 			</QueryClientProvider>
 		</View>

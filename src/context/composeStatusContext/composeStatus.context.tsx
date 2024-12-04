@@ -12,6 +12,7 @@ const ComposeContext = createContext<ComposeContextType | undefined>(undefined);
 
 export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 	children,
+	type,
 }) => {
 	const [composeState, composeDispatch] = useReducer(
 		composeReducer,
@@ -23,13 +24,15 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			composeDispatch({ type: 'clear' });
-			onChangeCTAText('');
-			resetAttachmentStore();
+			if (type === 'create') {
+				composeDispatch({ type: 'clear' });
+				onChangeCTAText('');
+				resetAttachmentStore();
+			}
 		});
 
 		return () => unsubscribe();
-	}, [navigation]);
+	}, [navigation, type]);
 
 	return (
 		<ComposeContext.Provider value={{ composeState, composeDispatch }}>

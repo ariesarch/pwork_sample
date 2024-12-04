@@ -1,50 +1,23 @@
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import React, { useEffect, useState } from 'react';
-import {
-	FlatList,
-	Pressable,
-	TouchableOpacity,
-	useWindowDimensions,
-	View,
-} from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { SearchIcon } from '@/util/svg/icon.common';
-import {
-	HomeStackParamList,
-	HomeStackScreenProps,
-	SearchStackScreenProps,
-} from '@/types/navigation';
-import { SceneMap, TabView } from 'react-native-tab-view';
-import TabBar from '@/components/molecules/common/TabBar/TabBar';
-import NotiTabBarItemLabel from '@/components/atoms/notifications/NotiTabBarItemLabel/NotiTabBarItemLabel';
-import NotiAll from '@/components/organisms/notifications/NotiAll/NotiAll';
-import { useColorScheme } from 'nativewind';
-import SearchResultsTabBarItemLabel from '@/components/atoms/search/SearchResultsTabBarItemLabel/SearchResultsTabBarItemLabel';
-import SearchResultsList from '@/components/organisms/search/SearchResultsList/SearchResultsList';
+import { SearchStackScreenProps } from '@/types/navigation';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { activeChannelData } from '@/mock/profile/activeChannels';
-import Card from '@/components/atoms/card/Card';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
-import { ensureHttp, scale } from '@/util/helper/helper';
-import {
-	useRecommendedChannels,
-	useSearchChannel,
-} from '@/hooks/queries/channel.queries';
+import { ensureHttp } from '@/util/helper/helper';
+import { useSearchChannel } from '@/hooks/queries/channel.queries';
 import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
-import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
 import { ScrollView } from 'react-native-gesture-handler';
 import useDebounce from '@/hooks/custom/useDebounce';
-import Keyword from '@/components/atoms/common/Keyword/Keyword';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 
 const SearchResults = ({
 	navigation,
 }: SearchStackScreenProps<'SearchResults'>) => {
-	const { colorScheme } = useColorScheme();
 	const [searchKeyword, setSearchKeyword] = useState('');
 	const [finalKeyword, setFinalKeyword] = useState('');
 	const { setDomain } = useActiveDomainAction();
@@ -102,7 +75,10 @@ const SearchResults = ({
 					{!isSearching && searchChannelRes && (
 						<>
 							<View className="flex-row items-center">
-								<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+								<ThemeText
+									className="font-SourceSans3_Bold my-2 flex-1"
+									size="lg_18"
+								>
 									{`Channels related to ${searchKeyword}`}
 								</ThemeText>
 							</View>

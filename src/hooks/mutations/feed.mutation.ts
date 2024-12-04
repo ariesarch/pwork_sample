@@ -1,5 +1,6 @@
 import {
 	composeStatus,
+	favouriteStatus,
 	repostStatus,
 	uploadComposeImage,
 } from '@/services/feed.service';
@@ -39,4 +40,14 @@ export const useUploadComposeImageMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: uploadComposeImage, ...options });
+};
+
+export const useFavouriteMutation = (
+	options: UseMutationOptions<
+		Pathchwork.Status,
+		AxiosError,
+		{ status: Pathchwork.Status }
+	>,
+) => {
+	return useMutation({ mutationFn: favouriteStatus, ...options });
 };

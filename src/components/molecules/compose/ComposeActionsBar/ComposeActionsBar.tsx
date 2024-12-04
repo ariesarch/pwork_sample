@@ -101,7 +101,10 @@ const ComposeActionsBar = () => {
 					onPress={onToggleMediaModal}
 					className={cn(
 						'mr-3',
-						(selectedMedia.length == 4 || isMediaUploading) && 'opacity-40',
+						(selectedMedia.length == 4 ||
+							isMediaUploading ||
+							!!composeState.poll) &&
+							'opacity-30',
 					)}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
@@ -109,21 +112,19 @@ const ComposeActionsBar = () => {
 
 				<Pressable
 					disabled
-					className={'mr-3'}
-					children={<ComposeGifIcon {...{ colorScheme }} stroke={'#6D7276'} />}
+					className={'mr-3 opacity-30'}
+					children={<ComposeGifIcon {...{ colorScheme }} />}
 				/>
 				<Pressable
-					className={'mr-3'}
-					children={
-						<ComposeLocationIcon {...{ colorScheme }} stroke={'#6D7276'} />
-					}
+					className={'mr-3 opacity-30'}
+					children={<ComposeLocationIcon {...{ colorScheme }} />}
 				/>
 
 				{/****** Poll Action ******/}
 				<Pressable
 					disabled={selectedMedia.length > 0}
 					onPress={onPressPoll}
-					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-40')}
+					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-30')}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
@@ -145,13 +146,34 @@ const ComposeActionsBar = () => {
 				<Pressable
 					disabled={true}
 					onPress={onToggleCTAModal}
-					className={'mr-3'}
-					children={<ComposeLinkIcon {...{ colorScheme }} fill={'#6D7276'} />}
+					className={'mr-3 opacity-30'}
+					children={<ComposeLinkIcon {...{ colorScheme }} />}
 				/>
 				{/****** CTA Action ******/}
 
 				{/****** Long Post Action ******/}
-				{composeState?.maxCount === 500 ? (
+				<View className="flex-1 items-end">
+					<View className="flex-row items-center">
+						<ThemeText className="mr-2">
+							{composeState.maxCount - composeState.text.count <= 0
+								? 'Too many characters'
+								: composeState.maxCount - composeState.text.count}
+						</ThemeText>
+						{composeState.maxCount === 500 && (
+							<Pressable
+								className="flex-row items-center"
+								onPress={() =>
+									composeDispatch({ type: 'maxCount', payload: MAX_CHAR })
+								}
+							>
+								<ComposePlusIcon />
+								<ThemeText className="ml-2 text-white">Long Post</ThemeText>
+							</Pressable>
+						)}
+					</View>
+				</View>
+
+				{/* {composeState?.maxCount === 500 ? (
 					<View className="flex-1 items-end">
 						<View className="flex-row items-center">
 							<ThemeText className="mr-3 text-white">
@@ -186,7 +208,7 @@ const ComposeActionsBar = () => {
 							</ThemeText>
 						</Pressable>
 					</View>
-				)}
+				)} */}
 
 				{/****** Long Post Action ******/}
 			</View>

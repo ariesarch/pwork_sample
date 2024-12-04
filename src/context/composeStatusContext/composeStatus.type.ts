@@ -5,7 +5,6 @@ import { tags } from 'react-native-svg/lib/typescript/xml';
 export type ComposeType = 'create' | 'repost' | 'reply' | 'edit';
 
 export type ComposeState = {
-	type: ComposeType;
 	text: {
 		count: number;
 		raw: string;
@@ -36,7 +35,7 @@ export type ComposeAction =
 	| { type: 'link'; payload: ComposeState['link'] }
 	| { type: 'currentMention'; payload: ComposeState['currentMention'] }
 	| { type: 'replaceMentionText'; payload: ComposeState['text'] }
-	| { type: 'media_add'; payload: string }
+	| { type: 'media_add'; payload: string[] }
 	| { type: 'media_remove'; payload: number }
 	| { type: 'visibility_change'; payload: ComposeState['visibility'] }
 	| { type: 'reply_id_change'; payload: string }

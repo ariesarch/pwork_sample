@@ -3,11 +3,11 @@ import { create } from 'zustand';
 
 type ManageAttachmentState = {
 	mediaModal: boolean;
-	selectedMedia: Asset[];
+	selectedMedia: Asset[] | Pathchwork.Attachment[];
 	progress: { currentIndex: number | undefined; progress: number };
 	actions: {
 		onToggleMediaModal: () => void;
-		onSelectMedia: (media: Asset[]) => void;
+		onSelectMedia: (media: Asset[] | Pathchwork.Attachment[]) => void;
 		onremoveMedia: (index: number) => void;
 		onAddMedia: (media: Asset | Asset[]) => void;
 		onProgressChange: (progress: number) => void;

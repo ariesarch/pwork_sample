@@ -130,8 +130,13 @@ export const fetchLinkPreview = async (
 
 export const composeStatus = async (params: ComposeMutationPayload) => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
-			appendApiVersion('statuses', 'v1'),
+		const method = params.statusId ? 'put' : 'post';
+		const url = appendApiVersion(
+			params.statusId ? `statuses/${params.statusId}` : 'statuses',
+			'v1',
+		);
+		const resp: AxiosResponse<Pathchwork.Status> = await instance[method](
+			url,
 			params,
 		);
 		return resp.data;
@@ -177,6 +182,22 @@ export const uploadComposeImage = async (params: ComposeImagePayload) => {
 					onProgressChange(upmostProgress);
 				},
 			},
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const favouriteStatus = async ({
+	status,
+}: {
+	status: Pathchwork.Status;
+}) => {
+	const toggleFavourite = status.favourited ? 'unfavourite' : 'favourite';
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+			appendApiVersion(`statuses/${status.id}/${toggleFavourite}`, 'v1'),
 		);
 		return resp.data;
 	} catch (error) {

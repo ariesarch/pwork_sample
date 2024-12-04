@@ -8,8 +8,10 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import PollDuration from '@/components/molecules/compose/Poll/PollDuration';
 import PollOption from '@/components/molecules/compose/Poll/PollOption';
 import PollType from '@/components/molecules/compose/Poll/PollType';
+import { ComposeType } from '@/context/composeStatusContext/composeStatus.type';
+import { cn } from '@/util/helper/twutil';
 
-const PollForm = () => {
+const PollForm = ({ composeType }: { composeType?: ComposeType }) => {
 	const { composeState } = useComposeStatus();
 
 	const {
@@ -26,7 +28,14 @@ const PollForm = () => {
 	if (!composeState.poll) return null;
 
 	return (
-		<View className="px-5 pt-2 pb-4 mt-4 border border-patchwork-dark-50 rounded-lg">
+		<View
+			className={cn(
+				'px-5',
+				composeType !== 'reply'
+					? 'border border-patchwork-dark-50 rounded-lg mt-4 '
+					: 'py-3',
+			)}
+		>
 			<View className="mt-3">
 				{options.map((option, index) => (
 					<PollOption

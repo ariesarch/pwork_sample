@@ -2,7 +2,6 @@ import { tags } from 'react-native-svg/lib/typescript/xml';
 import { ComposeAction, ComposeState } from './composeStatus.type';
 
 export const initialState: ComposeState = {
-	type: 'create',
 	text: {
 		count: 0,
 		raw: '',
@@ -37,7 +36,7 @@ export function composeReducer(
 		case 'replaceMentionText':
 			return { ...state, text: action.payload };
 		case 'media_add':
-			return { ...state, media_ids: [...state.media_ids, action.payload] };
+			return { ...state, media_ids: [...state.media_ids, ...action.payload] };
 		case 'media_remove':
 			return {
 				...state,

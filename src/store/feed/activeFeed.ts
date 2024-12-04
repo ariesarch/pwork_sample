@@ -8,11 +8,11 @@ type ActiveFeedState = {
 		changeActiveFeedReplyCount: (
 			operationType: 'increase' | 'decrease',
 		) => void;
-		clearFeed: (feed: Pathchwork.Status) => void;
+		clearFeed: () => void;
 	};
 };
 
-export const useActiveDomainStore = create<ActiveFeedState>()(set => ({
+export const useActiveFeedStore = create<ActiveFeedState>()(set => ({
 	activeFeed: undefined,
 	actions: {
 		setActiveFeed: feed => set(state => ({ ...state, activeFeed: feed })),
@@ -36,7 +36,7 @@ export const useActiveDomainStore = create<ActiveFeedState>()(set => ({
 }));
 
 export const useCurrentActiveFeed = () =>
-	useActiveDomainStore(state => state.activeFeed);
+	useActiveFeedStore(state => state.activeFeed);
 
 export const useActiveFeedAction = () =>
-	useActiveDomainStore(state => state.actions);
+	useActiveFeedStore(state => state.actions);

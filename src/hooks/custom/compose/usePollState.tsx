@@ -12,7 +12,11 @@ export const usePollState = () => {
 	const [isMultiple, setIsMultiple] = useState<boolean>(false);
 
 	useEffect(() => {
-		if (!composeState.poll) {
+		if (composeState.poll) {
+			setOptions(composeState.poll.options || ['', '']);
+			setDuration(composeState.poll.expires_in || DEFAULT_DURATION);
+			setIsMultiple(composeState.poll.multiple || false);
+		} else {
 			setOptions(['', '']);
 			setDuration(DEFAULT_DURATION);
 			setIsMultiple(false);
