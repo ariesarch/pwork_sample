@@ -1,6 +1,7 @@
 import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
 import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { updateFeedPage, updateQueryCacheGeneric } from '../queryCacheHelper';
+import { queryClient } from '@/App';
 
 export type FavouriteQueryKeys =
 	| GetChannelFeedQueryKey
@@ -44,4 +45,41 @@ const updateFavouriteCacheData = ({
 	});
 };
 
-export { updateFavouriteStatus, updateFavouriteCacheData };
+const updateFavouriteForDescendentReply = (
+	feedDetailId: string,
+	domain_name: string,
+	statusId: string,
+) => {
+	const feedDetailQueryKey = [
+		'feed-replies',
+		{ id: feedDetailId, domain_name: domain_name },
+	];
+
+	const previousData =
+		queryClient.getQueryData<Pathchwork.TimelineReplies>(feedDetailQueryKey);
+	if (!previousData) return;
+
+	const updatedData = previousData.descendants.map(item => {
+		if (item.id == statusId) {
+			return {
+				...item,
+				favourites_count: item.favourited
+					? item.favourites_count - 1
+					: item.favourites_count + 1,
+				favourited: !item.favourited,
+			};
+		}
+		return item;
+	});
+
+	queryClient.setQueryData(feedDetailQueryKey, {
+		...previousData,
+		descendants: updatedData,
+	});
+};
+
+export {
+	updateFavouriteStatus,
+	updateFavouriteCacheData,
+	updateFavouriteForDescendentReply,
+};

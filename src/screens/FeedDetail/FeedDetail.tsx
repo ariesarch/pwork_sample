@@ -3,13 +3,13 @@ import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { View } from 'react-native';
+import { RefreshControl, ScrollView, TextInput, View } from 'react-native';
 import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
+import { useMemo, useRef, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import {
 	BottomBarHeight,
@@ -24,15 +24,24 @@ import { ComposeStatusProvider } from '@/context/composeStatusContext/composeSta
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import { CheckRelationshipQueryKey } from '@/types/queries/profile.type';
 import { useCheckRelationships } from '@/hooks/queries/profile.queries';
+import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
+import UserSuggestionReply from '@/components/atoms/compose/UserSuggestionReply/UserSuggestionReply';
+import ReplyStatus from '@/components/organisms/feed/ReplyStatus/ReplyStatus';
+import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStore';
+import _ from 'lodash';
+import PollForm from '@/components/organisms/compose/PollForm/PollForm';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
 	const domain_name = useSelectedDomain();
-	const { id } = route.params;
+	const { id, openKeyboardAtMount } = route.params;
 	const { height, progress } = useGradualAnimation();
 	const feedDetail = useFeedItemResolver(id);
+	const inputRef = useRef<TextInput>(null);
+	const { currentFocusStatus } = useStatusReplyStore();
+	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	const inputBarActiveBgColor = useAppropiateColorHash(
 		'patchwork-dark-400',
@@ -60,11 +69,30 @@ const FeedDetail = ({
 			progress.value > 0.5 ? inputBarActiveBgColor : inputBarInactiveBgColor,
 	}));
 
-	const { data: statusReplies, isLoading: isLoadingReplies } =
-		useFeedRepliesQuery({
-			domain_name,
-			id,
-		});
+	const {
+		data: statusReplies,
+		isLoading: isLoadingReplies,
+		isFetching,
+		refetch: refetchReplies,
+	} = useFeedRepliesQuery({
+		domain_name,
+		id,
+	});
+
+	const isNestedNodeInclude = useMemo(() => {
+		return (
+			statusReplies &&
+			statusReplies.descendants.some(item => {
+				return item.in_reply_to_id && item.in_reply_to_id !== feedDetail.id;
+			})
+		);
+	}, [statusReplies]);
+
+	const handleRefresh = () => {
+		setIsRefreshing(true);
+		refetchReplies();
+		_.delay(() => setIsRefreshing(false), 1500);
+	};
 
 	// ***** Check Relationship To Other Accounts ***** //
 	const relationshipQueryKey: CheckRelationshipQueryKey = [
@@ -84,48 +112,79 @@ const FeedDetail = ({
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type={'reply'}>
-				{!!feedDetail && isSuccess ? (
+				{!!feedDetail && (
 					<View className="flex-1">
 						<Header title="Post" leftCustomComponent={<BackButton />} />
+
 						<FlatList
 							data={statusReplies?.descendants}
-							renderItem={({ item }) => <StatusItem status={item} />}
+							renderItem={({ item, index }) => {
+								const nextItem = statusReplies?.descendants[index + 1];
+								return (
+									<ReplyStatus
+										status={item}
+										feedDetailId={feedDetail.id}
+										nextStatus={nextItem}
+										isNestedNodeInclude={isNestedNodeInclude}
+									/>
+								);
+							}}
 							keyExtractor={item => item.id.toString()}
 							ListHeaderComponent={() => (
 								<FeedDetailStatus
 									feedDetail={feedDetail as Pathchwork.Status}
-									relationships={relationships}
+									relationships={isSuccess ? relationships : []}
 								/>
 							)}
 							showsVerticalScrollIndicator={false}
+							refreshControl={
+								<RefreshControl
+									refreshing={isRefreshing}
+									tintColor={customColor['patchwork-light-900']}
+									onRefresh={handleRefresh}
+								/>
+							}
 						/>
+						{!statusReplies && isLoadingReplies && (
+							<View className="flex items-center flex-1">
+								<Flow size={25} color={customColor['patchwork-red-50']} />
+							</View>
+						)}
 						<Animated.View className={'p-2'} style={inputBarBgColorStyle}>
 							<Animated.View className={'flex-row'} style={replyActionBarStyle}>
 								<ThemeText className="mb-2 ml-1 normal-case text-xs opacity-80">
 									Replying to ▸
 								</ThemeText>
 								<ThemeText variant="textOrange" className="mb-2 ml-1 text-xs">
-									@{feedDetail.account.username}
+									@{currentFocusStatus?.account?.acct}
 								</ThemeText>
 							</Animated.View>
 							<Animated.View style={replyActionBarStyle}>
-								<LinkCard />
-								{/* <ImageCard />
-								<UserSuggestionModal /> */}
+								<ScrollView
+									className="max-h-[200] mb-4 border border-patchwork-dark-50 rounded-lg"
+									showsVerticalScrollIndicator={false}
+									keyboardShouldPersistTaps="always"
+								>
+									<PollForm composeType="reply" />
+								</ScrollView>
+								<LinkCard composeType="reply" />
+								<ImageCard composeType="reply" />
+								<UserSuggestionReply />
 							</Animated.View>
 							<FeedReplyTextInput
 								username={feedDetail.account.username}
 								progress={progress}
+								autoFocus={!!openKeyboardAtMount}
 							/>
 							<Animated.View style={replyActionBarStyle}>
-								<ReplyActionBar currentStatus={feedDetail} />
+								<ReplyActionBar
+									currentStatus={feedDetail}
+									inputRef={inputRef}
+									feedDetailId={feedDetail.id}
+								/>
 							</Animated.View>
 						</Animated.View>
 						<Animated.View style={virtualKeyboardContainerStyle} />
-					</View>
-				) : (
-					<View className="flex items-center justify-center flex-1">
-						<Flow size={50} color={customColor['patchwork-red-50']} />
 					</View>
 				)}
 			</ComposeStatusProvider>

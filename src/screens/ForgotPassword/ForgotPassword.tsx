@@ -19,16 +19,20 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 	navigation,
 }) => {
 	const [alertState, setAlert] = useState({ isOpen: false, isSuccess: false });
+	const [token, setToken] = useState('');
+
 	const {
 		control,
 		handleSubmit,
 		formState: { errors },
+		getValues,
 	} = useForm({
 		resolver: yupResolver(forgetPWSchema),
 	});
 	const { mutate, isPending } = useForgotPWMutation({
 		onSuccess: async response => {
 			setAlert({ isOpen: true, isSuccess: true });
+			setToken(response.reset_password_token);
 		},
 		onError: error => {
 			setAlert({ isOpen: true, isSuccess: false });
@@ -39,6 +43,10 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 		if (!isPending) {
 			mutate({ email: data.email });
 		}
+		// navigation.navigate('ForgotPasswordOTP', {
+		// 	email: 'kgkg@gmail.com',
+		// 	reset_password_token: '44',
+		// });
 	};
 
 	return (
@@ -91,10 +99,21 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 						title={alertState.isSuccess ? 'Success' : 'Failed'}
 						handleCancel={() => {
 							setAlert(prev => ({ ...prev, isOpen: false }));
+							if (alertState.isSuccess) {
+								navigation.navigate('ForgotPasswordOTP', {
+									email: getValues('email'),
+									reset_password_token: token,
+								});
+							}
 						}}
 						handleOk={() => {
 							setAlert(prev => ({ ...prev, isOpen: false }));
-							alertState.isSuccess && navigation.navigate('Login');
+							if (alertState.isSuccess) {
+								navigation.navigate('ForgotPasswordOTP', {
+									email: getValues('email'),
+									reset_password_token: token,
+								});
+							}
 						}}
 					/>
 				)}

@@ -1,5 +1,6 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { useFavouriteMutation } from '@/hooks/mutations/feed.mutation';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
@@ -7,6 +8,7 @@ import {
 import {
 	FavouriteQueryKeys,
 	updateFavouriteCacheData,
+	updateFavouriteForDescendentReply,
 	updateFavouriteStatus,
 } from '@/util/cache/favourite/favouriteCache';
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
@@ -18,15 +20,16 @@ type Props = {
 	status: Pathchwork.Status;
 } & ViewProps;
 
-const StatusFavourite = ({ status, ...props }: Props) => {
+const StatusFavourtieButton = ({ status, ...props }: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
+	const { domain_name } = useActiveDomainStore();
 
 	const { mutate } = useFavouriteMutation({
 		onMutate: async ({ status }) => {
 			if (currentFeed) {
 				const updateFeedDatailData = updateFavouriteStatus(currentFeed);
-				setActiveFeed(updateFeedDatailData);
+				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
 				status.account.id,
@@ -36,6 +39,11 @@ const StatusFavourite = ({ status, ...props }: Props) => {
 				response: status,
 				queryKeys,
 			});
+			updateFavouriteForDescendentReply(
+				currentFeed?.id || '',
+				domain_name,
+				status.id,
+			);
 		},
 	});
 
@@ -63,4 +71,4 @@ const StatusFavourite = ({ status, ...props }: Props) => {
 	);
 };
 
-export default StatusFavourite;
+export default StatusFavourtieButton;

@@ -314,7 +314,7 @@ export const CaretRightIcon = (props: SvgProps) => (
 export const Reply = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
-			stroke="#828689"
+			stroke={props.stroke || '#828689'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}

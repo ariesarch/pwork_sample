@@ -72,6 +72,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						{composeParams.type === 'edit' && (
 							<EditComposeStatus status={composeParams.incomingStatus} />
 						)}
+
 						{composeParams.type === 'repost' && (
 							<RepostStatus status={composeParams.incomingStatus} />
 						)}

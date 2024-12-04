@@ -13,17 +13,19 @@ import { Asset } from 'react-native-image-picker';
 import ImageProgressBar from '../ImageProgressBar/ImageProgressBar';
 import Toast from 'react-native-toast-message';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { ComposeType } from '@/context/composeStatusContext/composeStatus.type';
 
-// ***** Type Guard ***** //
+type Props = {
+	composeType: ComposeType;
+};
+
 function isAsset(item: Asset | Pathchwork.Attachment): item is Asset {
 	return 'uri' in item && !!item.uri;
 }
-// ***** Type Guard ***** //
 
-const ImageCard = () => {
+const ImageCard = ({ composeType }: Props) => {
 	const { composeDispatch } = useComposeStatus();
 	const previousImageCount = useRef(0);
-
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
 	const progressInfo = useManageAttachmentStore(state => state.progress);
 
@@ -46,7 +48,7 @@ const ImageCard = () => {
 		onError: error => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Something went wrong',
+				text1: 'Image Upload Failed',
 				position: 'top',
 				topOffset: 50,
 			});
@@ -67,6 +69,7 @@ const ImageCard = () => {
 	}, [selectedMedia]);
 
 	const startImageUploading = async (newImageList: Asset[]) => {
+		if (isPending) return;
 		for (const image of newImageList) {
 			const currentIdx = selectedMedia.findIndex(
 				(item): item is Asset => 'uri' in item && item.uri === image.uri,
@@ -87,52 +90,100 @@ const ImageCard = () => {
 	};
 
 	return (
-		<View className="my-5">
-			<View className={cn('flex-row flex-wrap rounded-xl overflow-hidden')}>
-				{selectedMedia.map((item, index) => {
-					const imageUri = isAsset(item) ? item.uri : item.url;
-					return (
-						<View
-							key={index}
-							className={cn(
-								'border-patchwork-dark-100 border-4 rounded-xl',
-								calculateImageWidth(selectedMedia, index),
-							)}
-						>
-							<FastImage
-								className={cn('w-full h-full rounded-xl')}
-								source={{
-									uri: imageUri,
-									priority: FastImage.priority.high,
-									cache: FastImage.cacheControl.immutable,
-								}}
-								resizeMode={'cover'}
-							/>
-							<Pressable
-								disabled={isPending}
-								onPress={() => handleImageRemove(index)}
-								className="bg-black opacity-50 w-[20] h-[20] p-1 items-center rounded-full justify-center absolute right-2 top-2 active:opacity-40"
-							>
-								<CloseIcon />
-							</Pressable>
+		<View>
+			{composeType == 'reply' ? (
+				<View>
+					<View className="flex-row flex-wrap rounded-xl overflow-hidden">
+						{selectedMedia.map((item, index) => {
+							const imageUri = isAsset(item) ? item.uri : item.url;
+							return (
+								<View
+									className="w-1/4 h-16 rounded-md border-patchwork-dark-400 border-2 mb-2"
+									key={index}
+								>
+									<FastImage
+										className={cn('w-full h-full rounded-xl')}
+										source={{
+											uri: imageUri,
+											priority: FastImage.priority.high,
+											cache: FastImage.cacheControl.immutable,
+										}}
+										resizeMode={'cover'}
+									/>
+									<Pressable
+										disabled={isPending}
+										onPress={() => handleImageRemove(index)}
+										className="bg-black opacity-50 w-[16] h-[16] p-1 items-center rounded-full justify-center absolute right-2 top-2 active:opacity-40"
+									>
+										<CloseIcon width={17} height={17} />
+									</Pressable>
+									{progressInfo?.currentIndex != undefined && (
+										<>
+											{progressInfo?.currentIndex <= index && (
+												<View className="bg-slate-100 absolute opacity-50 top-0 bottom-0 right-0 left-0 rounded-xl" />
+											)}
 
-							{progressInfo?.currentIndex != undefined && (
-								<>
-									{progressInfo?.currentIndex <= index && (
-										<View className="bg-slate-100 absolute opacity-50 top-0 bottom-0 right-0 left-0 rounded-xl" />
+											{progressInfo?.currentIndex == index && (
+												<View className="absolute top-0 bottom-0 right-0 left-0 rounded-xl flex items-center justify-center">
+													<ImageProgressBar size={25} />
+												</View>
+											)}
+										</>
 									)}
+								</View>
+							);
+						})}
+					</View>
+				</View>
+			) : (
+				<View className="my-5">
+					<View className="flex-row flex-wrap rounded-xl overflow-hidden">
+						{selectedMedia.map((item, index) => {
+							const imageUri = isAsset(item) ? item.uri : item.url;
+							return (
+								<View
+									key={index}
+									className={cn(
+										'border-patchwork-dark-100 border-4 rounded-xl',
+										calculateImageWidth(selectedMedia, index),
+									)}
+								>
+									<FastImage
+										className={cn('w-full h-full rounded-xl')}
+										source={{
+											uri: imageUri,
+											priority: FastImage.priority.high,
+											cache: FastImage.cacheControl.immutable,
+										}}
+										resizeMode={'cover'}
+									/>
+									<Pressable
+										disabled={isPending}
+										onPress={() => handleImageRemove(index)}
+										className="bg-black opacity-50 w-[20] h-[20] p-1 items-center rounded-full justify-center absolute right-2 top-2 active:opacity-40"
+									>
+										<CloseIcon />
+									</Pressable>
 
-									{progressInfo?.currentIndex == index && (
-										<View className="absolute top-0 bottom-0 right-0 left-0 rounded-xl flex items-center justify-center">
-											<ImageProgressBar />
-										</View>
+									{progressInfo?.currentIndex != undefined && (
+										<>
+											{progressInfo?.currentIndex <= index && (
+												<View className="bg-slate-100 absolute opacity-50 top-0 bottom-0 right-0 left-0 rounded-xl" />
+											)}
+
+											{progressInfo?.currentIndex == index && (
+												<View className="absolute top-0 bottom-0 right-0 left-0 rounded-xl flex items-center justify-center">
+													<ImageProgressBar />
+												</View>
+											)}
+										</>
 									)}
-								</>
-							)}
-						</View>
-					);
-				})}
-			</View>
+								</View>
+							);
+						})}
+					</View>
+				</View>
+			)}
 		</View>
 	);
 };

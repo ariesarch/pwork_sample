@@ -70,10 +70,10 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 		<View className="px-4">
 			<ComposeTextInput />
 
-			<PollForm />
+			<PollForm composeType="create" />
 
-			<LinkCard />
-			<ImageCard />
+			<LinkCard composeType="edit" />
+			<ImageCard composeType="edit" />
 		</View>
 	);
 };

@@ -21,21 +21,32 @@ import {
 	StatusCacheQueryKeys,
 	getCacheQueryKeys,
 } from '@/util/cache/queryCacheHelper';
-import { deleteStatusCacheData } from '@/util/cache/statusActions/deleteStatusCache';
+import {
+	deleteDescendentReply,
+	deleteStatusCacheData,
+} from '@/util/cache/statusActions/deleteStatusCache';
 import Toast from 'react-native-toast-message';
 import StatusDeleteModal from '../../common/StatusDeleteModal/StatusDeleteModal';
 import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
 import { getEditStatusSourceFn } from '@/services/statusActions.service';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
 
-const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
+const StatusMenu = ({
+	status,
+	isFeedDetail,
+}: {
+	status: Pathchwork.Status;
+	isFeedDetail?: boolean;
+}) => {
 	const navigation = useNavigation();
-
+	const { domain_name } = useActiveDomainStore();
 	const currentFeed = useCurrentActiveFeed();
 
 	const [menuVisible, setMenuVisible] = useState(false);
 	const hideMenu = () => setMenuVisible(false);
 	const showMenu = () => setMenuVisible(true);
+	const showEditIcon = !isFeedDetail || currentFeed?.id == status.id;
 
 	const { userInfo } = useAuthStore();
 
@@ -61,6 +72,7 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 				status.in_reply_to_id,
 			);
 			deleteStatusCacheData({ status_id, queryKeys });
+			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
 		},
 		onError(error) {
 			Toast.show({
@@ -126,10 +138,14 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 				>
 					{isAuthor ? (
 						<>
-							<MenuOption onSelect={onPressEditStatus}>
-								<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />
-							</MenuOption>
-							<Underline className="border-patchwork-grey-400" />
+							{showEditIcon && (
+								<>
+									<MenuOption onSelect={onPressEditStatus}>
+										<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />
+									</MenuOption>
+									<Underline className="border-patchwork-grey-400" />
+								</>
+							)}
 							<MenuOption onSelect={onPressShowDeleteModal}>
 								<MenuOptionIcon icon={<StatusDeleteIcon />} name="Delete" />
 							</MenuOption>

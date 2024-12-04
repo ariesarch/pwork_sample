@@ -40,7 +40,6 @@ import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
-
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -246,7 +245,11 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return <StatusWrapper status={item} />;
+											return item.in_reply_to_id ? (
+												<></>
+											) : (
+												<StatusWrapper status={item} />
+											);
 										}}
 										refreshControl={
 											<RefreshControl
@@ -285,12 +288,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return item.in_reply_to_id ? (
-												<StatusWrapper status={item} />
-											) : (
-												<></>
-											);
-											// return <StatusWrapper status={item} />;
+											return <StatusWrapper status={item} />;
 										}}
 										refreshControl={
 											<RefreshControl

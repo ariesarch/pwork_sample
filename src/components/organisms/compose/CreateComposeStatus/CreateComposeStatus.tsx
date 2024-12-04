@@ -10,10 +10,10 @@ const CreateComposeStatus = () => {
 		<View className="px-4">
 			<ComposeTextInput />
 
-			<PollForm />
+			<PollForm composeType="create" />
 
-			<LinkCard />
-			<ImageCard />
+			<LinkCard composeType="create" />
+			<ImageCard composeType="create" />
 			{/* {ctaText && (
 				<View>
 					<Chip

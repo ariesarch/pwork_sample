@@ -28,7 +28,6 @@ const VisibilitySettingsModal = ({
 
 	const onPressVisibilitySettings = (item: VisibilitySettingsProps) => {
 		setVisibility(item.label);
-		console.log('item::', item.icon);
 		composeDispatch({ type: 'visibility_change', payload: item.icon });
 		onClose();
 	};

@@ -8,7 +8,6 @@ import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import { ComposeRepostInputExplorerIcon } from '@/util/svg/icon.compose';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
-import PollForm from '../PollForm/PollForm';
 
 const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { colorScheme } = useColorScheme();
@@ -24,8 +23,8 @@ const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 				<ComposeRepostInputExplorerIcon colorScheme={colorScheme} />
 			</View>
 			<ComposeTextInput />
-			<LinkCard />
-			<ImageCard />
+			<LinkCard composeType="repost" />
+			<ImageCard composeType="repost" />
 			<View className="border flex-1 border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl">
 				<StatusHeader status={status} showAvatarIcon />
 				<StatusContent status={status} />

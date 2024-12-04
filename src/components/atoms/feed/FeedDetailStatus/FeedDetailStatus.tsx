@@ -53,7 +53,7 @@ const FeedDetailStatus = ({
 						<StatusContent status={feedDetail.reblog} className="mt-2" />
 					</Pressable>
 				)}
-				<StatusActionBar status={feedDetail} />
+				<StatusActionBar status={feedDetail} isFeedDetail />
 			</View>
 			<Underline className="mt-3" />
 			<ThemeText className="font-semibold ml-4 my-2">Replies</ThemeText>

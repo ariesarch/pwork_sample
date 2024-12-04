@@ -55,6 +55,7 @@ export type HomeStackParamList = {
 	PeopleFollowing: undefined;
 	FeedDetail: {
 		id: string;
+		openKeyboardAtMount?: boolean;
 	};
 	ChannelProfile: {
 		domain_name: string;
@@ -82,6 +83,7 @@ export type SearchStackParamList = {
 	};
 	FeedDetail: {
 		id: string;
+		openKeyboardAtMount?: boolean;
 	};
 	Profile: { id: string };
 	ProfileOther: { id: string };
@@ -93,6 +95,7 @@ export type NotiStackParamList = {
 	NotificationList: undefined;
 	FeedDetail: {
 		id: string;
+		openKeyboardAtMount?: boolean;
 	};
 };
 
@@ -113,6 +116,8 @@ export type GuestStackParamList = {
 	Register: undefined;
 	Welcome: undefined;
 	ForgotPassword: undefined;
+	ForgotPasswordOTP: { email: string; reset_password_token: string };
+	ChangePassword: { reset_password_token: string };
 };
 
 export type RootScreenProps<
