@@ -5,6 +5,7 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
+import { useAuthStore } from '@/store/auth/authStore';
 import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
@@ -13,13 +14,17 @@ import {
 	useStatusReplyAction,
 	useStatusReplyStore,
 } from '@/store/compose/statusReply/statusReplyStore';
-import { useSelectedDomain } from '@/store/feed/activeDomain';
+import {
+	useActiveDomainStore,
+	useSelectedDomain,
+} from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import {
 	getCacheQueryKeys,
 	StatusCacheQueryKeys,
 } from '@/util/cache/queryCacheHelper';
 import { createStatusAndCache } from '@/util/cache/statusActions/editStatusCache';
+import { DEFAULT_API_URL } from '@/util/constant';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import {
 	prepareComposePayload,
@@ -56,6 +61,7 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 	const isMediaUploading = progress.currentIndex !== undefined;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
+	const { userInfo } = useAuthStore();
 
 	const { onToggleMediaModal, resetAttachmentStore } =
 		useManageAttachmentActions();
@@ -64,6 +70,33 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 		selectedMedia.length == 4 || isMediaUploading || !!composeState.poll;
 
 	const disabledPoll = selectedMedia.length > 0;
+
+	const accountDetailFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: true,
+			exclude_reblogs: false,
+			exclude_original_statuses: false,
+		},
+	];
+
+	const accountDetailReplyFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: false,
+			exclude_reblogs: true,
+			exclude_original_statuses: true,
+		},
+	];
+
+	const channelFeedQueryKey = [
+		'channel-feed',
+		{ domain_name, remote: false, only_media: false },
+	];
 
 	useEffect(() => {
 		if (composeState.in_reply_to_id === undefined) {
@@ -88,6 +121,12 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 				newStatus: newStatus,
 				queryKeys: feedListQueryKey,
 			});
+			//temp
+			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
+			queryClient.invalidateQueries({
+				queryKey: accountDetailReplyFeedQueryKey,
+			});
+			queryClient.invalidateQueries({ queryKey: channelFeedQueryKey });
 		},
 		onError: e => {
 			Toast.show({
