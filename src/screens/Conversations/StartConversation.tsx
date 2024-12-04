@@ -80,7 +80,7 @@ const Message = ({
 								source={{ uri: item.accounts[0].avatar }}
 								resizeMode={FastImage.resizeMode.contain}
 							/>
-							<View className="mr-6 ">
+							<View className="flex-1 mr-6">
 								<View className="flex-row items-center">
 									<ThemeText size={'fs_13'}>
 										{item.accounts[0].display_name}
@@ -99,8 +99,9 @@ const Message = ({
 									@{item.accounts[0].acct}
 								</ThemeText>
 								<View className="flex-row items-center">
-									<ThemeText size={'xs_12'}>You: </ThemeText>
+									{/* <ThemeText size={'xs_12'}>You: </ThemeText> */}
 									<ThemeText
+										className="w-full"
 										size={'xs_12'}
 										numberOfLines={1}
 										ellipsizeMode="tail"
