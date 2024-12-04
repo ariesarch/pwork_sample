@@ -13,6 +13,7 @@ import {
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
+import ConversationsActionsBar from '@/components/molecules/conversations/ConversationsActionsBar.tsx/ConversationsActionsBar';
 
 const NewMessage = () => {
 	const { height } = useGradualAnimation();
@@ -47,7 +48,7 @@ const NewMessage = () => {
 						</View>
 					</ScrollView>
 					<UserSuggestionModal />
-					<ComposeActionsBar />
+					<ConversationsActionsBar />
 					<Animated.View style={virtualKeyboardContainerStyle} />
 				</View>
 			</ComposeStatusProvider>

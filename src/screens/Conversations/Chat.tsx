@@ -15,7 +15,7 @@ import ConversationsHeader from '@/components/molecules/conversations/Header/Hea
 import MessageActionsBar from '@/components/molecules/conversations/MessageActionsBar/MessageActionsBar';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
-import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import { useConversationsList } from '@/hooks/queries/conversations.queries';
 
 const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	const scrollViewRef = useRef<ScrollView | null>(null);
@@ -60,11 +60,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 		// }
 	};
 
-	const {
-		data: conversationsList,
-		isLoading,
-		error,
-	} = useGetConversationsList();
+	const { data: conversationsList, isLoading, error } = useConversationsList();
 
 	useEffect(() => {
 		const handleBackPress = () => {
