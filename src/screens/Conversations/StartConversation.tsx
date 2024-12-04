@@ -11,12 +11,19 @@ import {
 	BottomStackParamList,
 	ConversationsStackParamList,
 } from '@/types/navigation';
+import customColor from '@/util/constant/color';
+import { cleanText } from '@/util/helper/cleanText';
+import { extractMessage } from '@/util/helper/extractMessage';
+import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
 import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FlatList, Pressable, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { Dimensions, Pressable, RefreshControl, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+
+const { width, height } = Dimensions.get('window');
 
 type MessageScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Conversations'>,
@@ -33,51 +40,87 @@ const Message = ({
 	const {
 		data: conversationsList,
 		isLoading,
+		isFetching,
+		refetch,
 		error,
 	} = useGetConversationsList();
 
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			{conversationsList?.length === 0 && !isLoading ? (
-				<StartConversation onPress={handlePressNewChat} />
-			) : (
-				<FlatList
-					contentContainerStyle={{ paddingHorizontal: 10 }}
-					data={isLoading ? Array(8).fill({}) : conversationsList}
-					showsVerticalScrollIndicator={false}
-					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ item }) =>
-						isLoading ? (
-							<ConversationsListLoading />
-						) : (
-							<Pressable
-								disabled
-								key={item.id}
-								className={`flex-row items-centerrounded-2xl p-3 mb-3`}
-							>
-								<FastImage
-									className="w-10 h-10 rounded-full mr-3"
-									source={{ uri: item.accounts[0].avatar }}
-									resizeMode={FastImage.resizeMode.contain}
-								/>
-								<View>
-									<ThemeText className="font-semibold">
+			<FlashList
+				refreshControl={
+					<RefreshControl
+						refreshing={isFetching}
+						tintColor={customColor['patchwork-light-900']}
+						onRefresh={refetch}
+					/>
+				}
+				ListEmptyComponent={<StartConversation onPress={handlePressNewChat} />}
+				estimatedItemSize={100}
+				estimatedListSize={{
+					width: width,
+					height: height,
+				}}
+				contentContainerStyle={{ paddingHorizontal: 10 }}
+				data={isLoading ? Array(8).fill({}) : conversationsList}
+				showsVerticalScrollIndicator={false}
+				keyExtractor={(_, index) => index.toString()}
+				renderItem={({ item }: { item: Pathchwork.Conversations }) =>
+					isLoading ? (
+						<ConversationsListLoading />
+					) : (
+						<Pressable
+							disabled
+							key={item.id}
+							className={`flex-row items-center rounded-2xl p-3 mr-2`}
+						>
+							<FastImage
+								className="w-10 h-10 rounded-full mr-3"
+								source={{ uri: item.accounts[0].avatar }}
+								resizeMode={FastImage.resizeMode.contain}
+							/>
+							<View className="mr-6 bg-red-300">
+								<View className="flex-row items-center">
+									<ThemeText size={'fs_13'}>
 										{item.accounts[0].display_name}
 									</ThemeText>
 									<ThemeText
-										numberOfLines={1}
-										ellipsizeMode="tail"
-										className="mr-12"
+										size={'fs_13'}
+										className="text-patchwork-grey-400 ml-3"
 									>
-										<ParseHTMLString status={item.last_status} />
+										{getDurationFromNow(item.last_status.created_at)}
 									</ThemeText>
 								</View>
-							</Pressable>
-						)
-					}
-				/>
-			)}
+								<ThemeText
+									size={'xs_12'}
+									className="text-patchwork-grey-400 my-0.5"
+								>
+									@{item.accounts[0].acct}
+								</ThemeText>
+								<View className="flex-row items-center">
+									<ThemeText size={'xs_12'}>You: </ThemeText>
+									<ThemeText
+										className="w-fit bg-green-500"
+										size={'xs_12'}
+										numberOfLines={1}
+										ellipsizeMode="tail"
+									>
+										{extractMessage(cleanText(item.last_status?.content))}
+									</ThemeText>
+								</View>
+							</View>
+						</Pressable>
+					)
+				}
+				ListFooterComponent={
+					!isLoading ? (
+						<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
+							No more conversations to show
+						</ThemeText>
+					) : null
+				}
+			/>
 			<Pressable
 				onPress={handlePressNewChat}
 				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
