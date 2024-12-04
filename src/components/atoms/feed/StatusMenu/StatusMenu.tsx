@@ -35,6 +35,7 @@ import { useNavigation } from '@react-navigation/native';
 import { getEditStatusSourceFn } from '@/services/statusActions.service';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import { FeedDetail } from '@/screens';
+import { queryClient } from '@/App';
 
 const StatusMenu = ({
 	status,
@@ -60,6 +61,38 @@ const StatusMenu = ({
 		return userInfo?.id == status.account.id;
 	}, [status, userInfo?.id]);
 
+	const accountDetailFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: true,
+			exclude_reblogs: false,
+			exclude_original_statuses: false,
+		},
+	];
+
+	const accountDetailReplyFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: false,
+			exclude_reblogs: true,
+			exclude_original_statuses: true,
+		},
+	];
+
+	const feedReplyQueryKey = [
+		'feed-replies',
+		{ id: currentFeed?.id, domain_name },
+	];
+
+	const channelFeedQueryKey = [
+		'channel-feed',
+		{ domain_name, remote: false, only_media: false },
+	];
+
 	//********** Delete Status **********//
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
@@ -83,6 +116,20 @@ const StatusMenu = ({
 			isFeedDetail &&
 				status.in_reply_to_id == currentFeed?.id &&
 				changeActiveFeedReplyCount('decrease');
+
+			//temp
+			queryClient.invalidateQueries({
+				queryKey: accountDetailReplyFeedQueryKey,
+			});
+			queryClient.invalidateQueries({
+				queryKey: feedReplyQueryKey,
+			});
+			queryClient.invalidateQueries({
+				queryKey: accountDetailFeedQueryKey,
+			});
+			queryClient.invalidateQueries({
+				queryKey: channelFeedQueryKey,
+			});
 		},
 		onError(error) {
 			Toast.show({
