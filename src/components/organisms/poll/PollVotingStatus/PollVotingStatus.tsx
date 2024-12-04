@@ -6,7 +6,7 @@ import PollVotingFooter from '@/components/molecules/poll/PollVotingFooter/PollV
 import PollVotingOption from '@/components/molecules/poll/PollVotingOption/PollVotingOption';
 import PollVotingControls from '@/components/molecules/poll/PollVotingControls/PollVotingControls';
 import {
-	getPollCacheQueryKeys,
+	PollCacheQueryKeys,
 	updatePollCacheData,
 	updatePollStatus,
 } from '@/util/cache/poll/pollCache';
@@ -14,13 +14,16 @@ import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
+import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 
 const PollVotingStatus = ({
 	poll,
 	accountId,
+	inReplyToId,
 }: {
 	poll: Pathchwork.Poll;
 	accountId: string;
+	inReplyToId: Pathchwork.Status['in_reply_to_id'];
 }) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
@@ -61,7 +64,10 @@ const PollVotingStatus = ({
 				setActiveFeed(updateFeedDatailData);
 			}
 
-			const queryKeys = getPollCacheQueryKeys(accountId);
+			const queryKeys = getCacheQueryKeys<PollCacheQueryKeys>(
+				accountId,
+				inReplyToId,
+			);
 			updatePollCacheData({
 				response,
 				selectedIndices,

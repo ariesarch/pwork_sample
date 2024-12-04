@@ -31,7 +31,11 @@ const StatusContent = ({ status, isFromNotiStatusImage }: Props) => {
 			>
 				<HTMLParser status={status} />
 				{status?.poll && (
-					<PollVotingStatus poll={status.poll} accountId={status.account.id} />
+					<PollVotingStatus
+						poll={status.poll}
+						accountId={status.account.id}
+						inReplyToId={status.in_reply_to_id}
+					/>
 				)}
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
