@@ -47,6 +47,7 @@ const StatusMenu = ({
 	const hideMenu = () => setMenuVisible(false);
 	const showMenu = () => setMenuVisible(true);
 	const showEditIcon = !isFeedDetail || currentFeed?.id == status.id;
+	const goBackToPreviousPage = isFeedDetail && currentFeed?.id == status.id;
 
 	const { userInfo } = useAuthStore();
 
@@ -64,7 +65,7 @@ const StatusMenu = ({
 
 	const { mutate } = useStatusDeleteMutation({
 		onSuccess(_, { status_id }) {
-			if (currentFeed?.id === status_id) {
+			if (goBackToPreviousPage) {
 				navigation.goBack();
 			}
 			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
