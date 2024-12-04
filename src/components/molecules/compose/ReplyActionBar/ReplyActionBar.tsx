@@ -15,6 +15,11 @@ import {
 } from '@/store/compose/statusReply/statusReplyStore';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import {
+	getCacheQueryKeys,
+	StatusCacheQueryKeys,
+} from '@/util/cache/queryCacheHelper';
+import { createStatusAndCache } from '@/util/cache/statusActions/editStatusCache';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import {
 	prepareComposePayload,
@@ -68,12 +73,21 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 	}, [composeState]);
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (response: Pathchwork.Status) => {
+		onSuccess: (newStatus: Pathchwork.Status) => {
 			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
 			currentFocusStatus?.id == feedDetailId &&
 				changeActiveFeedReplyCount('increase');
+
+			const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
+				newStatus.account.id,
+				newStatus.in_reply_to_id,
+			);
+			createStatusAndCache({
+				newStatus: newStatus,
+				queryKeys: feedListQueryKey,
+			});
 		},
 		onError: e => {
 			Toast.show({

@@ -28,6 +28,7 @@ import ReplyStatus from '@/components/organisms/feed/ReplyStatus/ReplyStatus';
 import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStore';
 import _ from 'lodash';
 import PollForm from '@/components/organisms/compose/PollForm/PollForm';
+import ReplyPollForm from '@/components/organisms/compose/ReplyPollForm/ReplyPollForm';
 
 const FeedDetail = ({
 	navigation,
@@ -142,13 +143,7 @@ const FeedDetail = ({
 								</ThemeText>
 							</Animated.View>
 							<Animated.View style={replyActionBarStyle}>
-								<ScrollView
-									className="max-h-[200] mb-4 border border-patchwork-dark-50 rounded-lg"
-									showsVerticalScrollIndicator={false}
-									keyboardShouldPersistTaps="always"
-								>
-									<PollForm composeType="reply" />
-								</ScrollView>
+								<ReplyPollForm />
 								<LinkCard composeType="reply" />
 								<ImageCard composeType="reply" />
 								<UserSuggestionReply />
