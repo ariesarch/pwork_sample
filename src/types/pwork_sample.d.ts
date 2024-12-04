@@ -75,6 +75,24 @@ declare namespace Pathchwork {
 		about_me: string;
 	};
 
+	type RelationShip = {
+		blocked_by: boolean;
+		blocking: boolean;
+		domain_blocking: boolean;
+		endorsed: boolean;
+		followed_by: boolean;
+		following: boolean;
+		id: string;
+		languages: null;
+		muting: boolean;
+		muting_notifications: boolean;
+		note: string;
+		notifying: boolean;
+		requested: boolean;
+		requested_by: boolean;
+		showing_reblogs: boolean;
+	};
+
 	type ChannelList = {
 		id: string;
 		type: string;
@@ -139,28 +157,6 @@ declare namespace Pathchwork {
 		}[];
 		videos: [];
 	};
-
-	// type Channel = {
-	// 	id: string;
-	// 	type: string;
-	// 	attributes: {
-	// 		id: number;
-	// 		name: string;
-	// 		slug: string;
-	// 		description: string;
-	// 		is_recommended: boolean;
-	// 		admin_following_count: number;
-	// 		account_id: number;
-	// 		patchwork_collection_id: number;
-	// 		guides?: Guide;
-	// 		participants_count: number;
-	// 		visibility: string;
-	// 		domain_name: string;
-	// 		status: string;
-	// 		banner_image_url: string;
-	// 		avatar_image_url: string;
-	// 	};
-	// };
 
 	type Status = {
 		id: string;

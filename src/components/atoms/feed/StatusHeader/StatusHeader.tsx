@@ -6,6 +6,13 @@ import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { timelineDateFormatter } from '@/util/helper/helper';
+import { useUserRelationshipMutation } from '@/hooks/mutations/profile.mutation';
+import { createRelationshipQueryKey } from '@/hooks/queries/profile.queries';
+import { queryClient } from '@/App';
+import { Flow } from 'react-native-animated-spinkit';
+import customColor from '@/util/constant/color';
+import { memo } from 'react';
+import { useAuthStore } from '@/store/auth/authStore';
 
 dayjs.extend(relativeTime);
 
@@ -14,6 +21,7 @@ type Props = {
 	showAvatarIcon?: boolean;
 	showFollowIcon?: boolean;
 	imageSize?: string;
+	relationships?: Pathchwork.RelationShip[];
 } & ViewProps;
 
 const StatusHeader = ({
@@ -21,14 +29,46 @@ const StatusHeader = ({
 	showAvatarIcon = false,
 	showFollowIcon = false,
 	imageSize = '',
+	relationships,
 	...props
 }: Props) => {
 	const navigation = useNavigation();
+	const { userInfo } = useAuthStore();
+
+	const { mutate, isPending } = useUserRelationshipMutation({
+		onSuccess: (newRelationship, { accountId }) => {
+			const relationshipQueryKey = createRelationshipQueryKey([
+				accountId,
+				accountId,
+			]);
+
+			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+				relationshipQueryKey,
+				old => {
+					if (!old) return [newRelationship];
+					return old.map(rel =>
+						rel.id === accountId ? { ...rel, ...newRelationship } : rel,
+					);
+				},
+			);
+		},
+	});
+
+	const onMakeRelationship = () => {
+		mutate({
+			accountId: status.account.id,
+			isFollowing: relationships ? relationships[0].following : false,
+		});
+	};
+
 	return (
 		<View className="flex flex-row items-center mb-2" {...props}>
 			<Pressable
 				onPress={() => {
-					navigation.navigate('ProfileOther', { id: status.account.id });
+					navigation.navigate(
+						userInfo?.id === status.account.id ? 'Profile' : 'ProfileOther',
+						{ id: status.account.id },
+					);
 				}}
 				className="flex-row items-center active:opacity-80"
 			>
@@ -47,12 +87,24 @@ const StatusHeader = ({
 			</ThemeText>
 			<View className="flex-1" />
 			{showFollowIcon && (
-				<Button variant="outline" className="rounded-full h-8 py-0 px-4">
-					<ThemeText size="fs_13">Follow</ThemeText>
+				<Button
+					variant="outline"
+					className="rounded-full h-8 py-0 px-4"
+					onPress={onMakeRelationship}
+				>
+					{isPending ? (
+						<Flow size={25} color={customColor['patchwork-light-900']} />
+					) : (
+						<ThemeText size="fs_13">
+							{relationships && relationships[0].following
+								? 'Following'
+								: 'Follow'}
+						</ThemeText>
+					)}
 				</Button>
 			)}
 		</View>
 	);
 };
 
-export default StatusHeader;
+export default memo(StatusHeader);

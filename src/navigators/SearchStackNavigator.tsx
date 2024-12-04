@@ -1,4 +1,11 @@
-import { ChannelProfile, FeedDetail, Search, SearchResults } from '@/screens';
+import {
+	ChannelProfile,
+	FeedDetail,
+	Profile,
+	Search,
+	SearchResults,
+} from '@/screens';
+import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { SearchStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -11,6 +18,8 @@ const SearchStack = () => {
 			<Stack.Screen name="SearchResults" component={SearchResults} />
 			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
+			<Stack.Screen name="Profile" component={Profile} />
+			<Stack.Screen name="ProfileOther" component={ProfileOther} />
 		</Stack.Navigator>
 	);
 };

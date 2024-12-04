@@ -1,6 +1,7 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	AccountInfoQueryKey,
+	CheckRelationshipQueryKey,
 	UpdateProfileCredentialsQueryParam,
 	UpdateProfilePayload,
 } from '@/types/queries/profile.type';
@@ -22,6 +23,48 @@ export const accountInfoQueryFn = async ({
 		return resp.data;
 	} catch (e) {
 		return handleError(e);
+	}
+};
+// export const getRelationships = async (accountIds: string[]): Promise<any[]> => {
+//   const response = await apiClient.get('/accounts/relationships', {
+//     params: { id: accountIds },
+//   });
+//   return response.data;
+// };
+
+export const checkRelationshipQueryFn = async ({
+	queryKey,
+}: QueryFunctionContext<CheckRelationshipQueryKey>) => {
+	try {
+		const { accountIds } = queryKey[1];
+		const resp: AxiosResponse<Pathchwork.RelationShip[]> = await instance.get(
+			appendApiVersion(`accounts/relationships`, 'v1'),
+			{
+				params: { id: accountIds },
+			},
+		);
+		return resp.data;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const relationshipQueryFn = async ({
+	accountId,
+	isFollowing,
+}: {
+	accountId: string;
+	isFollowing: boolean;
+}) => {
+	try {
+		const relation = isFollowing ? 'unfollow' : 'follow';
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`accounts/${accountId}/${relation}`, 'v1'),
+			!isFollowing && { reblogs: true },
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
 	}
 };
 

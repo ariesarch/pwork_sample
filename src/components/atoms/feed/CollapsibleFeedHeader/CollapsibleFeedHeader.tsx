@@ -14,6 +14,11 @@ import UserStats from '@/components/molecules/profile/UserStats/UserStats';
 import Underline from '../../common/Underline/Underline';
 import { useNavigation } from '@react-navigation/native';
 import { cleanText } from '@/util/helper/cleanText';
+import { useUserRelationshipMutation } from '@/hooks/mutations/profile.mutation';
+import { createRelationshipQueryKey } from '@/hooks/queries/profile.queries';
+import { queryClient } from '@/App';
+import { Flow } from 'react-native-animated-spinkit';
+import customColor from '@/util/constant/color';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -31,6 +36,7 @@ type ProfileProps = {
 	onPressPlusIcon?: () => void;
 	onPressEditIcon?: () => void;
 	is_my_account?: boolean;
+	relationships?: Pathchwork.RelationShip[];
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -39,10 +45,84 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const scrollY = useCurrentTabScrollY();
 	const isChannel = props.type == 'Channel';
+	const isProfile = props.type == 'Profile';
 	useAnimatedReaction(
 		() => scrollY.value,
 		() => (sharedScrollYOffset.value = scrollY.value),
 	);
+
+	const { mutate, isPending } = useUserRelationshipMutation({
+		onSuccess: (newRelationship, { accountId }) => {
+			const relationshipQueryKey = createRelationshipQueryKey([
+				accountId,
+				accountId,
+			]);
+
+			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+				relationshipQueryKey,
+				old => {
+					if (!old) return [newRelationship];
+					return old.map(rel =>
+						rel.id === accountId ? { ...rel, ...newRelationship } : rel,
+					);
+				},
+			);
+		},
+	});
+
+	const onMakeRelationship = () => {
+		if (isProfile && props.profile.id) {
+			mutate({
+				accountId: props.profile.id,
+				isFollowing: props.relationships
+					? props.relationships[0].following
+					: false,
+			});
+		}
+	};
+
+	const displayFollowActionText = () => {
+		if (isProfile) {
+			if (props.relationships && props.relationships[0].following) {
+				return 'Following';
+			}
+			return 'Follow';
+		}
+	};
+
+	const renderProfileActions = () => {
+		if (isChannel) return null;
+
+		if (props.is_my_account) {
+			return (
+				<Button
+					variant="default"
+					size="sm"
+					className="bg-transparent border-white border rounded-3xl px-6 mt-5"
+					onPress={() => navigation.navigate('EditProfile')}
+				>
+					<ThemeText size={'fs_13'}>Edit account</ThemeText>
+				</Button>
+			);
+		}
+
+		return (
+			<Button
+				variant="default"
+				size="sm"
+				className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+				onPress={onMakeRelationship}
+			>
+				{isPending ? (
+					<Flow size={25} color={customColor['patchwork-dark-900']} />
+				) : (
+					<ThemeText className="text-black" size={'fs_13'}>
+						{displayFollowActionText()}
+					</ThemeText>
+				)}
+			</Button>
+		);
+	};
 
 	return (
 		<View>
@@ -73,26 +153,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							resizeMode={FastImage.resizeMode.cover}
 						/>
 					</Animated.View>
-					{props.type === 'Profile' && props.is_my_account ? (
-						<Button
-							variant="default"
-							size="sm"
-							className="bg-transparent border-white border rounded-3xl px-6 mt-5"
-							onPress={() => navigation.navigate('EditProfile')}
-						>
-							<ThemeText size={'fs_13'}>Edit account</ThemeText>
-						</Button>
-					) : (
-						<Button
-							variant="default"
-							size="sm"
-							className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-						>
-							<ThemeText className="text-black" size={'fs_13'}>
-								Follow
-							</ThemeText>
-						</Button>
-					)}
+					{renderProfileActions()}
 				</View>
 				{isChannel ? (
 					<VerticalInfo

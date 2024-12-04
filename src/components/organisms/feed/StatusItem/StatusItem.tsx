@@ -2,6 +2,7 @@ import Underline from '@/components/atoms/common/Underline/Underline';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
+import { useAuthStore } from '@/store/auth/authStore';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +16,7 @@ type Props = {
 const StatusItem = ({ status, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { setActiveFeed } = useActiveFeedAction();
+	const { userInfo } = useAuthStore();
 
 	const handleOnPress = (item: Pathchwork.Status) => {
 		setActiveFeed(item);
@@ -27,9 +29,12 @@ const StatusItem = ({ status, ...props }: Props) => {
 				<View className="flex-row">
 					<Pressable
 						onPress={() =>
-							navigation.navigate('ProfileOther', {
-								id: status.account.id,
-							})
+							navigation.navigate(
+								userInfo?.id === status.account.id ? 'Profile' : 'ProfileOther',
+								{
+									id: status.account.id,
+								},
+							)
 						}
 					>
 						<Image

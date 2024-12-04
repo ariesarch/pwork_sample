@@ -1,10 +1,19 @@
 import { Asset } from 'react-native-image-picker';
+import { string } from 'yup';
 
 export type AccountInfoQueryParam = {
 	id: string;
 };
 
+export type CheckRelationshipQueryParam = {
+	accountIds: string[];
+};
+
 export type AccountInfoQueryKey = ['get_account_info', AccountInfoQueryParam];
+export type CheckRelationshipQueryKey = [
+	'check-relationship-to-other-accounts',
+	CheckRelationshipQueryParam,
+];
 
 export type UpdateProfileCredentialsQueryParam = {
 	display_name: string;

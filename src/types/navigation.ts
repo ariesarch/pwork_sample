@@ -83,6 +83,8 @@ export type SearchStackParamList = {
 	FeedDetail: {
 		id: string;
 	};
+	Profile: { id: string };
+	ProfileOther: { id: string };
 };
 
 // ********** Notification Stack ********** //

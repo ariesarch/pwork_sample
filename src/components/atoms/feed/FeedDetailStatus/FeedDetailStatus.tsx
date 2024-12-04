@@ -4,17 +4,20 @@ import StatusContent from '../StatusContent/StatusContent';
 import StatusActionBar from '@/components/molecules/feed/StatusActionBar/StatusActionBar';
 import Underline from '../../common/Underline/Underline';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
-import { memo } from 'react';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const FeedDetailStatus = ({
 	feedDetail,
+	relationships,
 }: {
 	feedDetail: Pathchwork.Status;
+	relationships: Pathchwork.RelationShip[];
 }) => {
+	const { userInfo } = useAuthStore();
 	const { setActiveFeed } = useActiveFeedAction();
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
@@ -30,7 +33,8 @@ const FeedDetailStatus = ({
 					status={feedDetail}
 					imageSize="w-8 h-8"
 					showAvatarIcon
-					showFollowIcon
+					showFollowIcon={userInfo?.id !== feedDetail.account.id}
+					relationships={relationships}
 				/>
 				<StatusContent status={feedDetail} className="mt-2" />
 				{feedDetail.reblog && (
@@ -44,6 +48,7 @@ const FeedDetailStatus = ({
 							imageSize="w-7 h-7"
 							status={feedDetail.reblog}
 							showAvatarIcon
+							relationships={relationships}
 						/>
 						<StatusContent status={feedDetail.reblog} className="mt-2" />
 					</Pressable>

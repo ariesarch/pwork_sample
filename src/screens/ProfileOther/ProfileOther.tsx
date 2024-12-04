@@ -30,8 +30,14 @@ import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import customColor from '@/util/constant/color';
 import { RefreshControl } from 'react-native';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
-import { useAccountInfo } from '@/hooks/queries/profile.queries';
-import { AccountInfoQueryKey } from '@/types/queries/profile.type';
+import {
+	useAccountInfo,
+	useCheckRelationships,
+} from '@/hooks/queries/profile.queries';
+import {
+	AccountInfoQueryKey,
+	CheckRelationshipQueryKey,
+} from '@/types/queries/profile.type';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -51,8 +57,19 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = ['get_account_info', { id }];
 
-	const { data: accountInfoData } = useAccountInfo(acctInfoQueryKey);
+	const { data: accountInfoData, refetch: refetchAccountInfo } =
+		useAccountInfo(acctInfoQueryKey);
 	// ***** Get Account Info ***** //
+
+	// ***** Check Relationship To Other Accounts ***** //
+	const relationshipQueryKey: CheckRelationshipQueryKey = [
+		'check-relationship-to-other-accounts',
+		{ accountIds: [id, id] },
+	];
+
+	const { data: relationships, refetch: refetchRelationships } =
+		useCheckRelationships(relationshipQueryKey);
+	// ***** Check Relationship To Other Accounts ***** //
 
 	const {
 		data: timeline,
@@ -92,6 +109,8 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 
 	const handleRefresh = () => {
 		refreshProfileTimeline();
+		refetchAccountInfo();
+		refetchRelationships();
 	};
 
 	const onReplyFeedLoadMore = () => {
@@ -103,7 +122,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	return (
 		<ScrollProvider>
 			<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-				{timeline && accountInfoData ? (
+				{timeline && accountInfoData && relationships ? (
 					<>
 						<FeedTitleHeader title={accountInfoData.display_name} />
 						<Tabs.Container
@@ -112,6 +131,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									<CollapsibleFeedHeader
 										type="Profile"
 										profile={accountInfoData}
+										relationships={relationships}
 									/>
 								);
 							}}

@@ -4,16 +4,10 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { View } from 'react-native';
-import {
-	useFeedDetailQuery,
-	useFeedRepliesQuery,
-} from '@/hooks/queries/feed.queries';
+import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { useMemo, useState } from 'react';
-import { InfiniteData, useQueryClient } from '@tanstack/react-query';
-import { PagedResponse } from '@/util/helper/timeline';
 import { FlatList } from 'react-native-gesture-handler';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
@@ -26,10 +20,10 @@ import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import FeedDetailStatus from '@/components/atoms/feed/FeedDetailStatus/FeedDetailStatus';
 import FeedReplyTextInput from '@/components/atoms/compose/FeedReplyTextInput/FeedReplyTextInput';
 import useFeedItemResolver from '@/hooks/custom/useFeedItemResolver';
-import RebloggedStatus from '@/components/organisms/feed/RebloggedStatus/RebloggedStatus';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
-import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
+import { CheckRelationshipQueryKey } from '@/types/queries/profile.type';
+import { useCheckRelationships } from '@/hooks/queries/profile.queries';
 
 const FeedDetail = ({
 	navigation,
@@ -72,10 +66,25 @@ const FeedDetail = ({
 			id,
 		});
 
+	// ***** Check Relationship To Other Accounts ***** //
+	const relationshipQueryKey: CheckRelationshipQueryKey = [
+		'check-relationship-to-other-accounts',
+		{
+			accountIds: [
+				feedDetail && feedDetail.account.id,
+				feedDetail && feedDetail.account.id,
+			],
+		},
+	];
+
+	const { data: relationships, isSuccess } =
+		useCheckRelationships(relationshipQueryKey);
+	// ***** Check Relationship To Other Accounts ***** //
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type={'reply'}>
-				{!!feedDetail ? (
+				{!!feedDetail && isSuccess ? (
 					<View className="flex-1">
 						<Header title="Post" leftCustomComponent={<BackButton />} />
 						<FlatList
@@ -85,6 +94,7 @@ const FeedDetail = ({
 							ListHeaderComponent={() => (
 								<FeedDetailStatus
 									feedDetail={feedDetail as Pathchwork.Status}
+									relationships={relationships}
 								/>
 							)}
 							showsVerticalScrollIndicator={false}

@@ -1,11 +1,12 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { SearchIcon } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import FastImage from 'react-native-fast-image';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { SearchStackParamList } from '@/types/navigation';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 type Props = {
 	navigation: StackNavigationProp<
@@ -23,17 +24,29 @@ const SearchFeedHeader = ({
 	showUnderLine = true,
 }: Props) => {
 	const { colorScheme } = useColorScheme();
+	const { setDomain } = useActiveDomainAction();
+
 	return (
 		<View>
 			<View className="flex flex-row items-center mx-6 mt-4">
-				<FastImage
-					className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"
-					source={{
-						uri: account.avatar,
-						priority: FastImage.priority.normal,
+				<Pressable
+					onPress={() => {
+						setDomain('channel.org');
+						navigation.navigate('Profile', {
+							id: account.id,
+						});
 					}}
-					resizeMode={FastImage.resizeMode.cover}
-				/>
+				>
+					<FastImage
+						className="bg-patchwork-dark-50 w-[60] h-[60] rounded-full"
+						source={{
+							uri: account.avatar,
+							priority: FastImage.priority.normal,
+						}}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				</Pressable>
+
 				<View className="flex flex-1 mx-3">
 					<ThemeText className="font-SourceSans3_Bold" size="lg_18">
 						Search
