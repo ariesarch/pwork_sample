@@ -27,10 +27,14 @@ import {
 } from '@/util/cache/statusActions/deleteStatusCache';
 import Toast from 'react-native-toast-message';
 import StatusDeleteModal from '../../common/StatusDeleteModal/StatusDeleteModal';
-import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
+import {
+	useActiveFeedAction,
+	useCurrentActiveFeed,
+} from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
 import { getEditStatusSourceFn } from '@/services/statusActions.service';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
+import { FeedDetail } from '@/screens';
 
 const StatusMenu = ({
 	status,
@@ -48,6 +52,7 @@ const StatusMenu = ({
 	const showMenu = () => setMenuVisible(true);
 	const showEditIcon = !isFeedDetail || currentFeed?.id == status.id;
 	const goBackToPreviousPage = isFeedDetail && currentFeed?.id == status.id;
+	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 
 	const { userInfo } = useAuthStore();
 
@@ -74,6 +79,10 @@ const StatusMenu = ({
 			);
 			deleteStatusCacheData({ status_id, queryKeys });
 			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
+
+			isFeedDetail &&
+				status.in_reply_to_id == currentFeed?.id &&
+				changeActiveFeedReplyCount('decrease');
 		},
 		onError(error) {
 			Toast.show({
