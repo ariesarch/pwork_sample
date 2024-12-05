@@ -97,6 +97,11 @@ const UserSuggestionModal = () => {
 											type: 'replaceMentionText',
 											payload: { raw: newString, count: newString.length },
 										});
+
+										composeDispatch({
+											type: 'disableUserSuggestionsModal',
+											payload: true,
+										});
 									}}
 								>
 									<View className="p-4 flex-row">

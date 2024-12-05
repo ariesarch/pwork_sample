@@ -58,11 +58,6 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 			onSelectMedia(status.media_attachments.map(media => media));
 		}
 
-		composeDispatch({
-			type: 'disableUserSuggestionsModal',
-			payload: true,
-		});
-
 		return () => {
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
