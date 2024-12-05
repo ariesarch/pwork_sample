@@ -20,6 +20,11 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { onSelectMedia, resetAttachmentStore } = useManageAttachmentActions();
 
 	useEffect(() => {
+		composeDispatch({
+			type: 'disableUserSuggestionsModal',
+			payload: true,
+		});
+
 		if (status.text) {
 			composeDispatch({
 				type: 'text',

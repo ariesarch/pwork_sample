@@ -11,7 +11,7 @@ export const initialState: ComposeState = {
 		firstLinkUrl: '',
 		showLinkCard: false,
 	},
-	disableUserSuggestionsModal: true,
+	disableUserSuggestionsModal: false,
 	media_ids: [],
 	maxCount: 500,
 	visibility: 'public',
