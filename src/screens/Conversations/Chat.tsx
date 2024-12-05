@@ -60,7 +60,11 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 		// }
 	};
 
-	const { data: conversationsList, isLoading, error } = useConversationsList();
+	const {
+		data: conversationsList,
+		isLoading,
+		error,
+	} = useConversationsList({ max_id: null });
 
 	useEffect(() => {
 		const handleBackPress = () => {
@@ -98,7 +102,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 						<Animated.View className="flex-1 m-3">
 							{/* the send date is needed to be checked on condition */}
 							<ThemeText className="self-center">19 Dec 2022</ThemeText>
-							{/* {conversationsList.map((chat, i) => (
+							{conversationsList?.data?.map((chat, i) => (
 								<View key={i}>
 									{chat.accounts.map((message, j) => (
 										<View key={j}>
@@ -129,7 +133,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 										</View>
 									))}
 								</View>
-							))} */}
+							))}
 						</Animated.View>
 					</ScrollView>
 					<MessageActionsBar

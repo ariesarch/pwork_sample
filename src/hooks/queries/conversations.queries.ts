@@ -45,19 +45,21 @@ export const useConversationsList = ({
 		queryKey,
 		//@ts-expect-error
 		queryFn: getConversationsList,
+		...options,
 	});
 };
-export const useConversations = () => {
-	return useInfiniteQuery({
-		queryKey: ['conversations'],
-		queryFn: ({ pageParam }) => fetchConversations(pageParam),
-		getNextPageParam: lastPage => {
-			if (lastPage?.data?.length > 0) {
-				return { max_id: lastPage.data[lastPage.data.length - 1].id };
-			}
-			return undefined;
-		},
-		refetchOnWindowFocus: false,
-		refetchOnMount: false,
-	});
-};
+
+// export const useConversations = () => {
+// 	return useInfiniteQuery({
+// 		queryKey: ['conversations'],
+// 		queryFn: ({ pageParam }) => fetchConversations(pageParam),
+// 		getNextPageParam: lastPage => {
+// 			if (lastPage?.data?.length > 0) {
+// 				return { max_id: lastPage.data[lastPage.data.length - 1].id };
+// 			}
+// 			return undefined;
+// 		},
+// 		refetchOnWindowFocus: false,
+// 		refetchOnMount: false,
+// 	});
+// };

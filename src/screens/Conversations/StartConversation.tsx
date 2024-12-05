@@ -1,7 +1,5 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
-import HTMLParser from '@/components/atoms/common/ParseHtml/ParseHtml';
-import ParseHTMLString from '@/components/atoms/common/ParseHtml/ParseNormalHtmlStr';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
 import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
@@ -53,14 +51,13 @@ const Message = ({
 	} = useConversationsList({ max_id: maxID });
 
 	useEffect(() => {
-		if (_conversationsList) {
-			setConversationsList(prev => [...prev, ..._conversationsList]);
+		if (_conversationsList.data) {
+			setConversationsList(prev => [...prev, ..._conversationsList.data]);
 
-			// If no new items are returned, set hasMore to false
-			if (_conversationsList.length === 0) {
+			if (_conversationsList.data?.length === 0) {
 				setHasMore(false);
 			}
-			setIsLoadingMore(false); // Reset "load more" state
+			setIsLoadingMore(false);
 		}
 	}, [_conversationsList]);
 
