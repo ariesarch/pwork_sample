@@ -8,6 +8,20 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
 
+	const handleChangeText = (text: string) => {
+		composeDispatch({
+			type: 'text',
+			payload: { count: text.length, raw: text },
+		});
+
+		if (composeState.disableUserSuggestionsModal) {
+			composeDispatch({
+				type: 'disableUserSuggestionsModal',
+				payload: false,
+			});
+		}
+	};
+
 	return (
 		<TextInput
 			placeholder="Start Typing here.."
@@ -16,15 +30,7 @@ const ComposeTextInput = ({ ...textInputProps }: TextInputProps) => {
 			placeholderTextColor={inputColor}
 			scrollEnabled={false}
 			selectionColor={selectionColor}
-			onChangeText={text => {
-				composeDispatch({
-					type: 'text',
-					payload: {
-						count: text.length,
-						raw: text,
-					},
-				});
-			}}
+			onChangeText={handleChangeText}
 			autoCorrect
 			autoComplete="off"
 			autoFocus

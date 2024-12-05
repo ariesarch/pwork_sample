@@ -46,7 +46,10 @@ const UserSuggestionModal = () => {
 	});
 
 	useEffect(() => {
-		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
+		if (
+			composeState.disableUserSuggestionsModal &&
+			composeState?.currentMention?.raw === previousCurrentMentionStr.current
+		)
 			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
 			startDebounce(() => {

@@ -11,6 +11,7 @@ export const initialState: ComposeState = {
 		firstLinkUrl: '',
 		showLinkCard: false,
 	},
+	disableUserSuggestionsModal: false,
 	media_ids: [],
 	maxCount: 500,
 	visibility: 'public',
@@ -35,6 +36,8 @@ export function composeReducer(
 			return { ...state, currentMention: action.payload };
 		case 'replaceMentionText':
 			return { ...state, text: action.payload };
+		case 'disableUserSuggestionsModal':
+			return { ...state, disableUserSuggestionsModal: action.payload };
 		case 'media_add':
 			return { ...state, media_ids: [...state.media_ids, ...action.payload] };
 		case 'media_remove':

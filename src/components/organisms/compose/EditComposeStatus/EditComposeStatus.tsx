@@ -28,10 +28,8 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 					raw: status.text,
 				},
 			});
-		}
-
-		if (status.text && status.text.length > 500) {
-			composeDispatch({ type: 'maxCount', payload: 4000 });
+			status.text.length > 500 &&
+				composeDispatch({ type: 'maxCount', payload: 4000 });
 		}
 
 		if (status.poll) {
@@ -59,6 +57,11 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 			});
 			onSelectMedia(status.media_attachments.map(media => media));
 		}
+
+		composeDispatch({
+			type: 'disableUserSuggestionsModal',
+			payload: true,
+		});
 
 		return () => {
 			composeDispatch({ type: 'clear' });
