@@ -30,7 +30,7 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 			});
 		}
 
-		if (status.text && status.text.length >= 500) {
+		if (status.text && status.text.length > 500) {
 			composeDispatch({ type: 'maxCount', payload: 4000 });
 		}
 

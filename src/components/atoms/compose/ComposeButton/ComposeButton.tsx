@@ -93,7 +93,7 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 			!text.raw ||
 			insufficientPollOptions ||
 			hasEmptyPollOptions ||
-			text.count >= maxCount
+			text.count > maxCount
 		);
 	};
 
