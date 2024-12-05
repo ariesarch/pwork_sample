@@ -37,7 +37,7 @@ import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.c
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import { initialState } from '@/context/composeStatusContext/composeStatus.reducer';
 
-const ComposeActionsBar = () => {
+const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { colorScheme } = useColorScheme();
 	const MAX_CHAR = 4000;
@@ -122,9 +122,12 @@ const ComposeActionsBar = () => {
 
 				{/****** Poll Action ******/}
 				<Pressable
-					disabled={selectedMedia.length > 0}
+					disabled={selectedMedia.length > 0 || isRepost}
 					onPress={onPressPoll}
-					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-30')}
+					className={cn(
+						'mr-3',
+						(selectedMedia.length > 0 || isRepost) && 'opacity-30',
+					)}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
@@ -154,11 +157,11 @@ const ComposeActionsBar = () => {
 				{/****** Long Post Action ******/}
 				<View className="flex-1 items-end">
 					<View className="flex-row items-center">
-						<ThemeText className="mr-2">
+						{/* <ThemeText className="mr-2">
 							{composeState.maxCount - composeState.text.count <= 0
 								? 'Too many characters'
 								: composeState.maxCount - composeState.text.count}
-						</ThemeText>
+						</ThemeText> */}
 						{composeState.maxCount === 500 && (
 							<Pressable
 								className="flex-row items-center"

@@ -80,7 +80,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						{composeParams.type === 'create' && <CreateComposeStatus />}
 					</ScrollView>
 					<UserSuggestionModal />
-					<ComposeActionsBar />
+					<ComposeActionsBar isRepost={composeParams.type === 'repost'} />
 					<Animated.View style={toolbarAnimatedViewStyle} />
 				</View>
 			</ComposeStatusProvider>
