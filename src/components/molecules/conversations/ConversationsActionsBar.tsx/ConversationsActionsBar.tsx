@@ -136,12 +136,12 @@ const ConversationsActionsBar = () => {
 				{/****** Poll Action ******/}
 
 				{/****** Visibility Settings Action ******/}
-				<Pressable
+				{/* <Pressable
 					disabled
 					onPress={onToggleVisibilityModal}
 					className={'mr-3'}
 					children={getVisibilityIcon}
-				/>
+				/> */}
 				{/****** Visibility Settings Action ******/}
 
 				{/****** CTA Action ******/}

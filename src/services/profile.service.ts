@@ -136,12 +136,8 @@ export const updateProfile = async (
 			};
 			formData.append('header', header);
 		}
-		if (params.display_name) {
-			formData.append('display_name', params.display_name);
-		}
-		if (params.note) {
-			formData.append('note', params.note);
-		}
+		formData.append('display_name', params.display_name);
+		formData.append('note', params.note);
 		if (params.fields_attributes) {
 			formData.append(
 				'fields_attributes[0][name]',

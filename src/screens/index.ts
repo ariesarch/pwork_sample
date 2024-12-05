@@ -18,3 +18,4 @@ export { default as ImageViewer } from './ImageViewer/ImageViewer';
 export { default as NewMessage } from './Conversations/NewMessage';
 export { default as Chat } from './Conversations/Chat';
 export { default as StartConversation } from './Conversations/StartConversation';
+export { default as LocalImageViewer } from './LocalImageViewer/LocalImageViewer';

@@ -16,6 +16,9 @@ import MessageActionsBar from '@/components/molecules/conversations/MessageActio
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import { useConversationsList } from '@/hooks/queries/conversations.queries';
+import { cleanText } from '@/util/helper/cleanText';
+import { extractMessage } from '@/util/helper/extractMessage';
+import moment from 'moment';
 
 const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	const scrollViewRef = useRef<ScrollView | null>(null);
@@ -104,34 +107,34 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 							<ThemeText className="self-center">19 Dec 2022</ThemeText>
 							{conversationsList?.data?.map((chat, i) => (
 								<View key={i}>
-									{chat.accounts.map((message, j) => (
-										<View key={j}>
-											<View
-												className={`mt-2 ${
-													message. === 'me'
-														? 'self-end bg-patchwork-red-50'
-														: 'self-start bg-gray-300'
-												} rounded-t-xl rounded-l-xl px-4 py-2`}
-											>
-												<ThemeText className="text-white">
-													{message.text}
-												</ThemeText>
-											</View>
-											<View
-												className={`flex-row items-center ${
-													message.sender === 'me' ? 'self-end' : 'self-start'
-												}`}
-											>
-												<ThemeText className={'text-xs text-gray-400 '}>
-													{message.time}
-												</ThemeText>
-												<ThemeText className="text-2xl align-middle mx-2">
-													▸
-												</ThemeText>
-												<ThemeText>{message.status}</ThemeText>
-											</View>
-										</View>
-									))}
+									<View
+										className={`mt-2 ${
+											// chat.accounts[0].id !== === 'me'
+											// ?
+											'self-end bg-patchwork-red-50'
+											// : 'self-start bg-gray-300'
+										} rounded-t-xl rounded-l-xl px-4 py-2`}
+									>
+										<ThemeText className="text-white">
+											{extractMessage(cleanText(chat.last_status?.content))}
+										</ThemeText>
+									</View>
+									<View
+										className={`flex-row items-center ${
+											// chat.sender === 'me' ?
+											'self-end'
+											// :
+											// 'self-start'
+										}`}
+									>
+										<ThemeText className={'text-xs text-gray-400 '}>
+											{moment(chat.last_status?.created_at).format('hh:mm a')}
+										</ThemeText>
+										<ThemeText className="text-2xl align-middle mx-2">
+											▸
+										</ThemeText>
+										<ThemeText>{chat?.unread ? 'Sent' : 'Read'}</ThemeText>
+									</View>
 								</View>
 							))}
 						</Animated.View>

@@ -32,11 +32,7 @@ const NewMessage = () => {
 					<Header
 						title="New Message"
 						leftCustomComponent={<BackButton />}
-						rightCustomComponent={
-							<SendButton
-							// disabled={!selectedUser || !messageText}
-							/>
-						}
+						rightCustomComponent={<SendButton disabled />}
 					/>
 					<ScrollView
 						keyboardShouldPersistTaps="always"

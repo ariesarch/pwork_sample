@@ -42,46 +42,47 @@ const Message = ({
 	const [hasMore, setHasMore] = useState(true);
 	const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-	const {
-		data: _conversationsList,
-		isLoading,
-		isFetching,
-		refetch,
-		error,
-	} = useConversationsList({ max_id: maxID });
+	// const {
+	// 	data: _conversationsList,
+	// 	isLoading,
+	// 	isFetching,
+	// 	refetch,
+	// 	error,
+	// } = useConversationsList({ max_id: maxID });
 
-	useEffect(() => {
-		if (_conversationsList.data) {
-			setConversationsList(prev => [...prev, ..._conversationsList.data]);
+	// useEffect(() => {
+	// 	if (_conversationsList) {
+	// 		setConversationsList(prev => [...prev, ..._conversationsList.data]);
 
-			if (_conversationsList.data?.length === 0) {
-				setHasMore(false);
-			}
-			setIsLoadingMore(false);
-		}
-	}, [_conversationsList]);
+	// 		if (_conversationsList.data?.length === 0) {
+	// 			setHasMore(false);
+	// 		}
+	// 		setIsLoadingMore(false);
+	// 	}
+	// }, [_conversationsList]);
 
-	const loadMore = () => {
-		if (!hasMore || isLoadingMore) return;
+	// const loadMore = () => {
+	// 	if (!hasMore || isLoadingMore) return;
 
-		setIsLoadingMore(true);
-		if (conversationsList.length > 0) {
-			const lastItem = conversationsList[conversationsList.length - 1];
-			const lastStatusId = lastItem.last_status?.id;
+	// 	setIsLoadingMore(true);
+	// 	if (conversationsList.length > 0) {
+	// 		const lastItem = conversationsList[conversationsList.length - 1];
+	// 		const lastStatusId = lastItem.last_status?.id;
 
-			if (lastStatusId) {
-				setMaxID(lastStatusId);
-			} else {
-				setHasMore(false);
-				setIsLoadingMore(false);
-			}
-		}
-	};
+	// 		if (lastStatusId) {
+	// 			setMaxID(lastStatusId);
+	// 		} else {
+	// 			setHasMore(false);
+	// 			setIsLoadingMore(false);
+	// 		}
+	// 	}
+	// };
 
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<FlashList
+			<StartConversation onPress={handlePressNewChat} />
+			{/* <FlashList
 				refreshControl={
 					<RefreshControl
 						refreshing={isFetching}
@@ -154,6 +155,53 @@ const Message = ({
 				)}
 				onEndReachedThreshold={0.15}
 				onEndReached={loadMore}
+				keyExtractor={(_, index) => index.toString()}
+				renderItem={({ item }: { item: Pathchwork.Conversations }) =>
+					isLoading ? (
+						<ConversationsListLoading />
+					) : (
+						<Pressable
+							disabled
+							key={item.id}
+							className={`flex-row items-center rounded-2xl p-3 mr-2`}
+						>
+							<FastImage
+								className="w-10 h-10 rounded-full mr-3"
+								source={{ uri: item.accounts[0].avatar }}
+								resizeMode={FastImage.resizeMode.contain}
+							/>
+							<View className="flex-1 mr-6">
+								<View className="flex-row items-center">
+									<ThemeText size={'fs_13'}>
+										{item.accounts[0].display_name}
+									</ThemeText>
+									<ThemeText
+										size={'fs_13'}
+										className="text-patchwork-grey-400 ml-3"
+									>
+										{getDurationFromNow(item.last_status.created_at)}
+									</ThemeText>
+								</View>
+								<ThemeText
+									size={'xs_12'}
+									className="text-patchwork-grey-400 my-0.5"
+								>
+									@{item.accounts[0].acct}
+								</ThemeText>
+								<View className="flex-row items-center">
+									<ThemeText
+										className="w-full"
+										size={'xs_12'}
+										numberOfLines={1}
+										ellipsizeMode="tail"
+									>
+										{extractMessage(cleanText(item.last_status?.content))}
+									</ThemeText>
+								</View>
+							</View>
+						</Pressable>
+					)
+				}
 				ListFooterComponent={
 					isLoadingMore ? (
 						<ConversationsListLoading />
@@ -163,13 +211,13 @@ const Message = ({
 						</ThemeText>
 					) : null
 				}
-			/>
-			<Pressable
+			/> */}
+			{/* <Pressable
 				onPress={handlePressNewChat}
 				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
 			>
 				<PlusIcon />
-			</Pressable>
+			</Pressable> */}
 		</SafeScreen>
 	);
 };
