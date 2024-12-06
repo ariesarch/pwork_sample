@@ -40,6 +40,7 @@ import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import { cleanText } from '@/util/helper/cleanText';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -117,6 +118,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	) => {
 		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
+				display_name: userInfo?.display_name,
+				note: cleanText(userInfo?.note),
 				fields_attributes: generateFieldsAttributes(
 					userInfo,
 					link,
