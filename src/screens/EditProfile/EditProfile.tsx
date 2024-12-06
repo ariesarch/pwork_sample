@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAuthStore } from '@/store/auth/authStore';
 import { cn } from '@/util/helper/twutil';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
-import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import Header from '@/components/atoms/common/Header/Header';
-import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { useProfileMutation } from '@/hooks/mutations/profile.mutation';
 import { useNavigation } from '@react-navigation/native';
 import { handleError } from '@/util/helper/helper';
@@ -27,6 +24,7 @@ import {
 	useGradualAnimation,
 } from '@/hooks/custom/useGradualAnimation';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
 
 type ProfileType = {
 	display_name?: string;
@@ -132,21 +130,18 @@ const EditProfile = () => {
 
 	if (!userInfo) return null;
 	return (
-		<SafeScreen>
-			<Header
-				hideUnderline
-				title="Edit Your Profile"
-				leftCustomComponent={
-					<BackButton
-						customOnPress={() => {
-							actions.onSelectMedia('header', []);
-							actions.onSelectMedia('avatar', []);
-							navigation.goBack();
-						}}
-					/>
-				}
-			/>
-			<ScrollView style={{ flex: 1 }}>
+		<View className="flex-1">
+			<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+				<TouchableOpacity
+					onPress={() => {
+						actions.onSelectMedia('header', []);
+						actions.onSelectMedia('avatar', []);
+						navigation.goBack();
+					}}
+					className="absolute z-10 top-8 left-2 w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
+				>
+					<ProfileBackIcon />
+				</TouchableOpacity>
 				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
 					{/* Header Media Modal */}
 					<ThemeModal
@@ -174,7 +169,6 @@ const EditProfile = () => {
 							}
 						/>
 					</ThemeModal>
-
 					{/* Avatar Media Modal */}
 					<ThemeModal
 						hasNotch={false}
@@ -205,7 +199,7 @@ const EditProfile = () => {
 					{/* Header Image */}
 					<Pressable onPress={() => actions.onToggleMediaModal('header')}>
 						<FastImage
-							className="bg-patchwork-dark-50 h-32 w-full"
+							className="bg-patchwork-dark-50 h-36 w-full"
 							source={{
 								uri: header.selectedMedia[0]?.uri || profile?.header,
 								priority: FastImage.priority.normal,
@@ -272,7 +266,7 @@ const EditProfile = () => {
 				<ThemeText>Save</ThemeText>
 			</Button>
 			<LoadingModal isVisible={isPending} />
-		</SafeScreen>
+		</View>
 	);
 };
 
