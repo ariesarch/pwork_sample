@@ -3,7 +3,9 @@ import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
 import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { DEFAULT_API_URL } from '@/util/constant';
 
-type PollCacheQueryKeys = GetChannelFeedQueryKey | AccountDetailFeedQueryKey;
+export type PollCacheQueryKeys =
+	| GetChannelFeedQueryKey
+	| AccountDetailFeedQueryKey;
 
 type UpdatePollCacheParams = {
 	response: Pathchwork.Status['poll'];

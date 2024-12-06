@@ -54,7 +54,11 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						leftCustomComponent={<BackButton />}
 						rightCustomComponent={
 							isRepost ? (
-								<ComposeRepostButton status={composeParams.incomingStatus} />
+								<ComposeRepostButton
+									status={composeParams.incomingStatus}
+									otherUserId={composeParams.incomingStatus.account.id}
+									isFeedDetail={composeParams.isFeedDetail}
+								/>
 							) : (
 								<ComposeButton
 									{...{
@@ -80,7 +84,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						{composeParams.type === 'create' && <CreateComposeStatus />}
 					</ScrollView>
 					<UserSuggestionModal />
-					<ComposeActionsBar />
+					<ComposeActionsBar isRepost={composeParams.type === 'repost'} />
 					<Animated.View style={toolbarAnimatedViewStyle} />
 				</View>
 			</ComposeStatusProvider>

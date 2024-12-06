@@ -54,6 +54,7 @@ export type BottomStackParamList = {
 		| {
 				type: 'repost' | 'edit';
 				incomingStatus: Pathchwork.Status;
+				isFeedDetail?: boolean;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 	HomeFeed: undefined;

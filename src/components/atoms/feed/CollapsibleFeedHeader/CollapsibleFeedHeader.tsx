@@ -19,6 +19,8 @@ import { createRelationshipQueryKey } from '@/hooks/queries/profile.queries';
 import { queryClient } from '@/App';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
+import { AccountInfoQueryKey } from '@/types/queries/profile.type';
+import { useAuthStore } from '@/store/auth/authStore';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -37,6 +39,7 @@ type ProfileProps = {
 	onPressEditIcon?: () => void;
 	is_my_account?: boolean;
 	relationships?: Pathchwork.RelationShip[];
+	myAcctId?: string;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -51,8 +54,16 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		() => (sharedScrollYOffset.value = scrollY.value),
 	);
 
+	const { userInfo } = useAuthStore();
+
 	const { mutate, isPending } = useUserRelationshipMutation({
 		onSuccess: (newRelationship, { accountId }) => {
+			const acctInfoQueryKey: AccountInfoQueryKey = [
+				'get_account_info',
+				{ id: isProfile && props.is_my_account ? userInfo?.id! : accountId },
+			];
+			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
+
 			const relationshipQueryKey = createRelationshipQueryKey([
 				accountId,
 				accountId,
@@ -75,7 +86,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			mutate({
 				accountId: props.profile.id,
 				isFollowing: props.relationships
-					? props.relationships[0].following
+					? props.relationships[0]?.following
 					: false,
 			});
 		}
@@ -83,7 +94,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 
 	const displayFollowActionText = () => {
 		if (isProfile) {
-			if (props.relationships && props.relationships[0].following) {
+			if (props.relationships && props.relationships[0]?.following) {
 				return 'Following';
 			}
 			return 'Follow';

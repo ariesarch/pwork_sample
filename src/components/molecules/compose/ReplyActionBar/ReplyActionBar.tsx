@@ -17,28 +17,17 @@ import {
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
-import {
-	getCacheQueryKeys,
-	StatusCacheQueryKeys,
-} from '@/util/cache/queryCacheHelper';
-import { createStatusAndCache } from '@/util/cache/statusActions/editStatusCache';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
-import {
-	prepareComposePayload,
-	prepareReplyPayload,
-} from '@/util/helper/compose';
-import { mediaUploadAction } from '@/util/helper/mediaUploadActions';
-import { hasMediaPermissions } from '@/util/helper/permission';
+import { prepareComposePayload } from '@/util/helper/compose';
 import {
 	ComposeGalleryIcon,
 	ComposeGifIcon,
 	ComposeLocationIcon,
 	ComposePollIcon,
 } from '@/util/svg/icon.compose';
-import { useFocusEffect } from '@react-navigation/native';
 import { uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
-import { RefObject, useCallback, useEffect } from 'react';
+import { RefObject, useEffect } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 import Toast from 'react-native-toast-message';
@@ -62,7 +51,6 @@ const ReplyActionBar = ({
 	const { currentFocusStatus } = useStatusReplyStore();
 	const isMediaUploading = progress.currentIndex !== undefined;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
-	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
 	const { userInfo } = useAuthStore();
 	const { saveStatus } = useSubchannelStatusActions();
 
@@ -110,24 +98,33 @@ const ReplyActionBar = ({
 			changeCurrentStatus(feedDetailStatus);
 		}
 	}, [composeState]);
-
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (newStatus: Pathchwork.Status) => {
-			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
+
 			currentFocusStatus?.id == feedDetailId &&
 				changeActiveFeedReplyCount('increase');
 
-			const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
-				newStatus.account.id,
-				newStatus.in_reply_to_id,
-				domain_name,
-			);
-			createStatusAndCache({
-				newStatus: newStatus,
-				queryKeys: feedListQueryKey,
-			});
+			// ***** Feed Replies ***** //
+			const feedReplyQueryKey = [
+				'feed-replies',
+				{ id: feedDetailId, domain_name },
+			];
+			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
+			// ***** Feed Replies ***** //
+
+			// ***** Need to recheck if neccessary ***** //
+			// const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
+			// 	newStatus.account.id,
+			// 	newStatus.in_reply_to_id,
+			// );
+			// createStatusAndCache({
+			// 	newStatus: newStatus,
+			// 	queryKeys: feedListQueryKey,
+			// });
+			// ***** Need to recheck if neccessary ***** //
+
 			//temp
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 			queryClient.invalidateQueries({

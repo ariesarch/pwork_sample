@@ -6,7 +6,6 @@ import {
 	ComposeGalleryIcon,
 	ComposeGifIcon,
 	ComposeLocationIcon,
-	ComposePlusIcon,
 	ComposePollIcon,
 	ComposePinIcon,
 	ComposeUnlockIcon,
@@ -15,7 +14,6 @@ import {
 } from '@/util/svg/icon.compose';
 import { useColorScheme } from 'nativewind';
 import styles from './ComposeActionsBar.style';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import {
@@ -35,9 +33,9 @@ import VisibilitySettingsModal from '@/components/organisms/compose/modal/Visibi
 import { cn } from '@/util/helper/twutil';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
-import { initialState } from '@/context/composeStatusContext/composeStatus.reducer';
+import LongPostAction from '@/components/atoms/compose/LongPostAction/LongPostAction';
 
-const ComposeActionsBar = () => {
+const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { colorScheme } = useColorScheme();
 	const MAX_CHAR = 4000;
@@ -122,9 +120,12 @@ const ComposeActionsBar = () => {
 
 				{/****** Poll Action ******/}
 				<Pressable
-					disabled={selectedMedia.length > 0}
+					disabled={selectedMedia.length > 0 || isRepost}
 					onPress={onPressPoll}
-					className={cn('mr-3', selectedMedia.length > 0 && 'opacity-30')}
+					className={cn(
+						'mr-3',
+						(selectedMedia.length > 0 || isRepost) && 'opacity-30',
+					)}
 					children={
 						<ComposePollIcon
 							{...{ colorScheme }}
@@ -152,64 +153,7 @@ const ComposeActionsBar = () => {
 				{/****** CTA Action ******/}
 
 				{/****** Long Post Action ******/}
-				<View className="flex-1 items-end">
-					<View className="flex-row items-center">
-						<ThemeText className="mr-2">
-							{composeState.maxCount - composeState.text.count <= 0
-								? 'Too many characters'
-								: composeState.maxCount - composeState.text.count}
-						</ThemeText>
-						{composeState.maxCount === 500 && (
-							<Pressable
-								className="flex-row items-center"
-								onPress={() =>
-									composeDispatch({ type: 'maxCount', payload: MAX_CHAR })
-								}
-							>
-								<ComposePlusIcon />
-								<ThemeText className="ml-2 text-white">Long Post</ThemeText>
-							</Pressable>
-						)}
-					</View>
-				</View>
-
-				{/* {composeState?.maxCount === 500 ? (
-					<View className="flex-1 items-end">
-						<View className="flex-row items-center">
-							<ThemeText className="mr-3 text-white">
-								{composeState.text.count ? 500 - composeState.text.count : 500}
-							</ThemeText>
-							<Pressable
-								className="flex-row items-center"
-								onPress={() =>
-									composeDispatch({ type: 'maxCount', payload: MAX_CHAR })
-								}
-							>
-								<ComposePlusIcon />
-								<ThemeText className="ml-2 text-white">Long Post</ThemeText>
-							</Pressable>
-						</View>
-					</View>
-				) : (
-					<View className="flex-1 items-end">
-						<Pressable
-							className="flex-row items-center"
-							onPress={() =>
-								composeDispatch({
-									type: 'maxCount',
-									payload: 500,
-								})
-							}
-						>
-							<ThemeText className="ml-2 text-white">
-								{composeState.text.count
-									? MAX_CHAR - composeState.text.count
-									: MAX_CHAR}
-							</ThemeText>
-						</Pressable>
-					</View>
-				)} */}
-
+				<LongPostAction />
 				{/****** Long Post Action ******/}
 			</View>
 

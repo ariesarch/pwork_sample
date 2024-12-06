@@ -34,18 +34,18 @@ const StatusDeleteModal = ({
 					>
 						Are you sure you want to delete post?
 					</ThemeText>
-					<ThemeText className="text-center mt-1 mb-4 px-8" size={'fs_15'}>
+					<ThemeText className="text-center mt-1 mb-4 px-7" size={'fs_15'}>
 						All the comments, re-posts and likes will be lost
 					</ThemeText>
 				</View>
 				<Underline />
 				<View className="flex-row items-center justify-around my-3">
-					<ThemeText onPress={handleDeleteStatus} size={'md_16'}>
+					<ThemeText onPress={handleDeleteStatus} size={'fs_15'}>
 						Delete this Post
 					</ThemeText>
 					<ThemeText
 						onPress={onPressHideDeleteModal}
-						size={'md_16'}
+						size={'fs_15'}
 						variant={'textOrange'}
 					>
 						Cancel

@@ -95,10 +95,17 @@ export const FormattedText = ({ text }: { text: string }) => {
 	};
 
 	const dispatchMentionChanges = (mentionChanges: Match[]) => {
-		return composeDispatch({
-			type: 'currentMention',
-			payload: mentionChanges.length > 0 ? mentionChanges[0] : undefined,
-		});
+		if (!composeState.disableUserSuggestionsModal) {
+			return composeDispatch({
+				type: 'currentMention',
+				payload: mentionChanges.length > 0 ? mentionChanges[0] : undefined,
+			});
+		} else {
+			return composeDispatch({
+				type: 'currentMention',
+				payload: undefined,
+			});
+		}
 	};
 
 	if (!matches) {

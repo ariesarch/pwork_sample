@@ -29,7 +29,7 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 					onPress={() =>
 						navigation.navigate('Index', {
 							screen: 'Compose',
-							params: { type: 'repost', incomingStatus: status },
+							params: { type: 'repost', incomingStatus: status, isFeedDetail },
 						})
 					}
 				/>
@@ -38,7 +38,7 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 			<View className="flex flex-row ">
 				<Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" />
-				<StatusMenu {...{ status }} isFeedDetail={isFeedDetail} />
+				<StatusMenu {...{ status, isFeedDetail }} />
 			</View>
 		</View>
 	);

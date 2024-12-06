@@ -21,7 +21,10 @@ import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
-import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import {
+	useManageAttachmentActions,
+	useManageAttachmentStore,
+} from '@/store/compose/manageAttachments/manageAttachmentStore';
 
 const ComposeButton = ({ statusId }: { statusId: string }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -30,6 +33,8 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { resetAttachmentStore } = useManageAttachmentActions();
+	const { progress } = useManageAttachmentStore();
+	const isMediaUploading = progress.currentIndex !== undefined;
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (status: Pathchwork.Status) => {
@@ -89,9 +94,10 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 		return (
 			isPending ||
 			!text.raw ||
+			isMediaUploading ||
 			insufficientPollOptions ||
 			hasEmptyPollOptions ||
-			text.count >= maxCount
+			text.count > maxCount
 		);
 	};
 

@@ -32,7 +32,7 @@ const PollForm = ({ composeType }: { composeType?: ComposeType }) => {
 			className={cn(
 				'px-5',
 				composeType !== 'reply'
-					? 'border border-patchwork-dark-50 rounded-lg mt-4 '
+					? 'border border-patchwork-dark-50 rounded-lg mt-4 pb-2'
 					: 'py-3',
 			)}
 		>

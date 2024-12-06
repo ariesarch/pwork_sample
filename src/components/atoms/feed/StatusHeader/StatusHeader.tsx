@@ -57,7 +57,7 @@ const StatusHeader = ({
 	const onMakeRelationship = () => {
 		mutate({
 			accountId: status.account.id,
-			isFollowing: relationships ? relationships[0].following : false,
+			isFollowing: relationships ? relationships[0]?.following : false,
 		});
 	};
 
@@ -96,7 +96,7 @@ const StatusHeader = ({
 						<Flow size={25} color={customColor['patchwork-light-900']} />
 					) : (
 						<ThemeText size="fs_13">
-							{relationships && relationships[0].following
+							{relationships && relationships[0]?.following
 								? 'Following'
 								: 'Follow'}
 						</ThemeText>

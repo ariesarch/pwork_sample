@@ -20,6 +20,11 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { onSelectMedia, resetAttachmentStore } = useManageAttachmentActions();
 
 	useEffect(() => {
+		composeDispatch({
+			type: 'disableUserSuggestionsModal',
+			payload: true,
+		});
+
 		if (status.text) {
 			composeDispatch({
 				type: 'text',
@@ -28,10 +33,8 @@ const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
 					raw: status.text,
 				},
 			});
-		}
-
-		if (status.text && status.text.length >= 500) {
-			composeDispatch({ type: 'maxCount', payload: 4000 });
+			status.text.length > 500 &&
+				composeDispatch({ type: 'maxCount', payload: 4000 });
 		}
 
 		if (status.poll) {

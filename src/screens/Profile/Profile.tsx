@@ -32,7 +32,10 @@ import { CircleFade, Flow } from 'react-native-animated-spinkit';
 import SocialLink from '@/components/organisms/profile/SocialLink/SocialLink';
 import { useProfileMutation } from '@/hooks/mutations/profile.mutation';
 import { queryClient } from '@/App';
-import { UpdateProfilePayload } from '@/types/queries/profile.type';
+import {
+	AccountInfoQueryKey,
+	UpdateProfilePayload,
+} from '@/types/queries/profile.type';
 import { handleError } from '@/util/helper/helper';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
@@ -40,6 +43,7 @@ import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
@@ -69,6 +73,16 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 
 	const { clearFeed } = useActiveFeedAction();
 	const { resetAttachmentStore } = useManageAttachmentActions();
+
+	// ***** Get Account Info ***** //
+	const acctInfoQueryKey: AccountInfoQueryKey = [
+		'get_account_info',
+		{ id: userInfo?.id! },
+	];
+
+	const { data: accountInfoData, refetch: refetchAccountInfo } =
+		useAccountInfo(acctInfoQueryKey);
+	// ***** Get Account Info ***** //
 
 	const {
 		data: timeline,
@@ -133,6 +147,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 
 	const { mutateAsync, isPending } = useProfileMutation({
 		onSuccess: async response => {
+			refetchAccountInfo();
 			queryClient.invalidateQueries({
 				queryKey: [
 					'account-detail-feed',
@@ -154,6 +169,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 
 	const handleRefresh = async () => {
 		refetchProfileFeed();
+		refetchAccountInfo();
 		const res = await verifyAuthToken();
 		setUserInfo(res);
 	};
@@ -182,16 +198,17 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 				</View>
 			) : (
 				<View className="flex-1 bg-patchwork-light-900 dark:bg-patchwork-dark-100">
-					{timeline && userInfo ? (
+					{timeline && accountInfoData ? (
 						<>
-							<FeedTitleHeader title={userInfo.display_name} />
+							<FeedTitleHeader title={accountInfoData.display_name} />
 							<Tabs.Container
 								renderHeader={() => {
 									return (
 										<CollapsibleFeedHeader
 											type="Profile"
 											is_my_account={true}
-											profile={userInfo}
+											// myAcctId={accountInfoData.id}
+											profile={accountInfoData}
 											onPressPlusIcon={() =>
 												setSocialLinkAction({ visible: true, formType: 'add' })
 											}
@@ -352,7 +369,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									)
 								}
 								formType={socialLinkAction.formType}
-								data={userInfo?.fields?.filter(v => v.value)}
+								data={accountInfoData.fields?.filter(v => v.value)}
 							/>
 						</>
 					) : (

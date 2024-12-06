@@ -2,27 +2,15 @@ import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.c
 import useDebounce from '@/hooks/custom/useDebounce';
 import { useSearchUsers } from '@/hooks/queries/conversations.queries';
 import { useEffect, useRef, useState } from 'react';
-import {
-	ActivityIndicator,
-	Pressable,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
-import BottomSheet, {
-	BottomSheetFlatList,
-	BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import ThemeModal from '../../common/Modal/Modal';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import { getReplacedMentionText } from '@/util/helper/compose';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { text } from 'stream/consumers';
-import { count } from 'console';
-import { Match } from 'linkify-it';
 import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 const UserSuggestionModal = () => {
@@ -46,7 +34,10 @@ const UserSuggestionModal = () => {
 	});
 
 	useEffect(() => {
-		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
+		if (
+			composeState.disableUserSuggestionsModal &&
+			composeState?.currentMention?.raw === previousCurrentMentionStr.current
+		)
 			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
 			startDebounce(() => {
@@ -93,6 +84,11 @@ const UserSuggestionModal = () => {
 										composeDispatch({
 											type: 'replaceMentionText',
 											payload: { raw: newString, count: newString.length },
+										});
+
+										composeDispatch({
+											type: 'disableUserSuggestionsModal',
+											payload: true,
 										});
 									}}
 								>
