@@ -138,7 +138,7 @@ const EditProfile = () => {
 						actions.onSelectMedia('avatar', []);
 						navigation.goBack();
 					}}
-					className="absolute z-10 top-8 left-2 w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
+					className="absolute z-10 top-2 left-2 w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
 				>
 					<ProfileBackIcon />
 				</TouchableOpacity>
@@ -149,7 +149,6 @@ const EditProfile = () => {
 						openThemeModal={header.mediaModal}
 						onCloseThemeModal={() => {
 							actions.onToggleMediaModal('header');
-							actions.onSelectMedia('header', []);
 						}}
 						modalPositionStyle={{
 							justifyContent: 'flex-end',
@@ -175,7 +174,6 @@ const EditProfile = () => {
 						openThemeModal={avatar.mediaModal}
 						onCloseThemeModal={() => {
 							actions.onToggleMediaModal('avatar');
-							actions.onSelectMedia('avatar', []);
 						}}
 						modalPositionStyle={{
 							justifyContent: 'flex-end',
