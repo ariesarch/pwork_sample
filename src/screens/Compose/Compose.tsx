@@ -54,7 +54,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 						leftCustomComponent={<BackButton />}
 						rightCustomComponent={
 							isRepost ? (
-								<ComposeRepostButton id={composeParams.incomingStatus.id} />
+								<ComposeRepostButton status={composeParams.incomingStatus} />
 							) : (
 								<ComposeButton
 									{...{

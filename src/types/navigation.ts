@@ -52,6 +52,7 @@ export type BottomStackParamList = {
 
 export type HomeStackParamList = {
 	HomeFeed: undefined;
+	SearchFeed: undefined;
 	PeopleFollowing: undefined;
 	FeedDetail: {
 		id: string;

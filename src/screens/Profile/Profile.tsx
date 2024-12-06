@@ -40,6 +40,7 @@ import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -67,6 +68,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	);
 
 	const { clearFeed } = useActiveFeedAction();
+	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	const {
 		data: timeline,
@@ -158,6 +160,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 
 	useFocusEffect(
 		useCallback(() => {
+			resetAttachmentStore();
 			setTimeout(() => {
 				clearFeed();
 			}, 300);

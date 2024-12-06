@@ -178,7 +178,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 										backgroundColor:
 											colorScheme === 'dark' ? '#2E363B' : '#ffffff',
 									}}
-									ListHeaderComponent={<HorizontalScrollMenu />}
+									// ListHeaderComponent={<HorizontalScrollMenu />}
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => <StatusWrapper status={item} />}
 									refreshControl={

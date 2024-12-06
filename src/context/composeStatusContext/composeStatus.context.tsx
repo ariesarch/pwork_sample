@@ -24,7 +24,7 @@ export const ComposeStatusProvider: React.FC<ComposeStateProviderProps> = ({
 
 	useEffect(() => {
 		const unsubscribe = navigation.addListener('focus', () => {
-			if (type === 'create') {
+			if (type !== 'edit') {
 				composeDispatch({ type: 'clear' });
 				onChangeCTAText('');
 				resetAttachmentStore();

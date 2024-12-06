@@ -456,4 +456,10 @@ declare namespace Pathchwork {
 		accounts: Pathchwork.Account[];
 		last_status: Pathchwork.Status;
 	};
+
+	type SearchResult = {
+		accounts: Account[];
+		hashtags: HashTag[];
+		statuses: Status[];
+	};
 }

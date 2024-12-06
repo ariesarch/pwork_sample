@@ -5,6 +5,7 @@ import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import {
 	FavouriteQueryKeys,
 	updateFavouriteCacheData,
@@ -14,6 +15,7 @@ import {
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
+import { uniqueId } from 'lodash';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
 type Props = {
@@ -24,6 +26,7 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { domain_name } = useActiveDomainStore();
+	const { saveStatus } = useSubchannelStatusActions();
 
 	const { mutate } = useFavouriteMutation({
 		onMutate: async ({ status }) => {
@@ -31,9 +34,11 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 				const updateFeedDatailData = updateFavouriteStatus(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
+
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
 				status.account.id,
 				status.in_reply_to_id,
+				domain_name,
 			);
 			updateFavouriteCacheData({
 				response: status,
@@ -48,7 +53,20 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 	});
 
 	const handleFavourite = () => {
-		mutate({ status });
+		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
+		saveStatus(crossChannelRequestIdentifier, {
+			status,
+			savedPayload: {
+				id: status.id,
+				account: status.account,
+			},
+			crossChannelRequestIdentifier,
+			specificResponseMapping: {
+				id: 'id',
+				account: 'account',
+			},
+		});
+		mutate({ status, crossChannelRequestIdentifier });
 	};
 
 	return (

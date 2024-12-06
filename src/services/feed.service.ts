@@ -191,13 +191,16 @@ export const uploadComposeImage = async (params: ComposeImagePayload) => {
 
 export const favouriteStatus = async ({
 	status,
+	crossChannelRequestIdentifier,
 }: {
 	status: Pathchwork.Status;
+	crossChannelRequestIdentifier?: string;
 }) => {
 	const toggleFavourite = status.favourited ? 'unfavourite' : 'favourite';
 	try {
 		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
 			appendApiVersion(`statuses/${status.id}/${toggleFavourite}`, 'v1'),
+			{ crossChannelRequestIdentifier },
 		);
 		return resp.data;
 	} catch (error) {

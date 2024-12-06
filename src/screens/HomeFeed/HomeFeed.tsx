@@ -22,6 +22,8 @@ import { FlashList } from '@shopify/flash-list';
 import { FlatList } from 'react-native-gesture-handler';
 import customColor from '@/util/constant/color';
 import { ensureHttp } from '@/util/helper/helper';
+import { useState } from 'react';
+import { delay } from 'lodash';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -34,6 +36,13 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 
 	const { data: myChannels } = useGetMyChannels();
 	const { userInfo } = useAuthStore();
+	const [isRefreshing, setIsRefreshing] = useState(false);
+
+	const handleRefresh = () => {
+		setIsRefreshing(true);
+		refetchChannels();
+		delay(() => setIsRefreshing(false), 1500);
+	};
 
 	return (
 		<SafeScreen>
@@ -81,7 +90,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 								>
 									Explore Channels
 								</ThemeText>
-								<Pressable onPress={() => {}}>
+								<Pressable onPress={() => navigation.navigate('SearchFeed')}>
 									<ThemeText variant="textGrey">View All</ThemeText>
 								</Pressable>
 							</View>
@@ -105,9 +114,9 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 					)}
 					refreshControl={
 						<RefreshControl
-							refreshing={isFetching}
+							refreshing={isRefreshing}
 							tintColor={customColor['patchwork-light-900']}
-							onRefresh={refetchChannels}
+							onRefresh={handleRefresh}
 						/>
 					}
 					className="mx-6 my-2"

@@ -4,13 +4,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Dimensions } from 'react-native';
-import { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import {
 	QueryKey,
 	UseInfiniteQueryOptions,
 	UseQueryOptions,
 } from '@tanstack/react-query';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { DEFAULT_API_URL } from '../constant';
+import { useActiveFeedStore } from '@/store/feed/activeFeed';
+import { uniqueId } from 'lodash';
 
 export const handleError = (error: any) => {
 	console.error('API Request Failed::', error?.response.message);
@@ -155,4 +158,45 @@ export const formatUserStatsNumber = (num: number) => {
 	}
 };
 
+export const getSpecificServerStatus = async (q: string, authToken: string) => {
+	try {
+		const baseURl = process.env.API_URL ?? DEFAULT_API_URL;
+		const payload = { q, resolve: true, type: 'statuses' };
+		const resp: AxiosResponse<Pathchwork.SearchResult> = await axios.get(
+			`${baseURl}/api/v2/search`,
+			{
+				params: payload,
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+				},
+			},
+		);
+		return resp.data;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export function isPatchworkStatus(data: any): data is Pathchwork.Status {
+	return (
+		typeof data === 'object' &&
+		typeof data.id === 'string' &&
+		typeof data.uri === 'string' &&
+		typeof data.url === 'string' &&
+		typeof data.account === 'object'
+	);
+}
+
+export const replaceIdInUrl = (
+	url: string,
+	searchRes: Pathchwork.SearchResult,
+) => {
+	const match = url.match(/\b\d{9,}\b/);
+	if (match && searchRes.statuses?.length > 0) {
+		const oldId = match[0];
+		const newUrl = url.replace(oldId, searchRes.statuses[0].id);
+		return newUrl;
+	}
+	return url;
+};
 export { scale, keyExtractor };

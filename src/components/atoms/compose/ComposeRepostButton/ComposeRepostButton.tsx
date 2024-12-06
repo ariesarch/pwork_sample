@@ -1,25 +1,28 @@
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useRepostMutation } from '@/hooks/mutations/feed.mutation';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { BottomStackParamList } from '@/types/navigation';
 import { prepareRepostPayload } from '@/util/helper/compose';
 import { cn } from '@/util/helper/twutil';
 import { ComposeRepostSendIcon } from '@/util/svg/icon.compose';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
 import { Pressable } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	id: string;
+	status: Pathchwork.Status;
 	extraClass?: string;
 };
 
-const ComposeRepostButton = ({ extraClass, id }: Props) => {
+const ComposeRepostButton = ({ extraClass, status }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
+	const { saveStatus } = useSubchannelStatusActions();
 
 	const { resetAttachmentStore } = useManageAttachmentActions();
 
@@ -38,7 +41,7 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 		onError: e => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Currently, reposting is available only for main channel',
+				text1: e.message,
 				position: 'top',
 				topOffset: 50,
 			});
@@ -47,8 +50,17 @@ const ComposeRepostButton = ({ extraClass, id }: Props) => {
 
 	const handleRepostStatus = () => {
 		if (composeState.text.count <= composeState.maxCount) {
-			const payload = prepareRepostPayload(composeState, id);
-			mutate(payload);
+			const payload = prepareRepostPayload(composeState, status.id);
+			const crossChannelRequestIdentifier = uniqueId(
+				`CROS-Channel-Status::${status.id}::Req-ID::`,
+			);
+			saveStatus(crossChannelRequestIdentifier, {
+				status: status,
+				savedPayload: payload,
+				specificPayloadMapping: { in_reply_to_id: 'id' },
+				crossChannelRequestIdentifier,
+			});
+			mutate({ ...payload, crossChannelRequestIdentifier });
 		}
 	};
 

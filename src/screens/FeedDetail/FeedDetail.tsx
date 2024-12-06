@@ -3,12 +3,18 @@ import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { RefreshControl, ScrollView, TextInput, View } from 'react-native';
+import {
+	BackHandler,
+	RefreshControl,
+	ScrollView,
+	TextInput,
+	View,
+} from 'react-native';
 import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import {
@@ -31,6 +37,7 @@ import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStor
 import _ from 'lodash';
 import PollForm from '@/components/organisms/compose/PollForm/PollForm';
 import ReplyPollForm from '@/components/organisms/compose/ReplyPollForm/ReplyPollForm';
+import { useFocusEffect } from '@react-navigation/native';
 
 const FeedDetail = ({
 	navigation,
@@ -173,7 +180,7 @@ const FeedDetail = ({
 							/>
 							<Animated.View style={replyActionBarStyle}>
 								<ReplyActionBar
-									currentStatus={feedDetail}
+									feedDetailStatus={feedDetail}
 									inputRef={inputRef}
 									feedDetailId={feedDetail.id}
 								/>

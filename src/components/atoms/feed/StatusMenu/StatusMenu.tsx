@@ -36,6 +36,7 @@ import { getEditStatusSourceFn } from '@/services/statusActions.service';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import { FeedDetail } from '@/screens';
 import { queryClient } from '@/App';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 
 const StatusMenu = ({
 	status,
@@ -54,11 +55,16 @@ const StatusMenu = ({
 	const showEditIcon = !isFeedDetail || currentFeed?.id == status.id;
 	const goBackToPreviousPage = isFeedDetail && currentFeed?.id == status.id;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
+	const { saveStatus } = useSubchannelStatusActions();
 
 	const { userInfo } = useAuthStore();
 
 	const isAuthor = useMemo(() => {
-		return userInfo?.id == status.account.id;
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == status.account.id ||
+			status.account.acct == currentUserAccHandle
+		);
 	}, [status, userInfo?.id]);
 
 	const accountDetailFeedQueryKey = [
@@ -109,6 +115,7 @@ const StatusMenu = ({
 			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
 				status.account.id,
 				status.in_reply_to_id,
+				domain_name,
 			);
 			deleteStatusCacheData({ status_id, queryKeys });
 			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
@@ -142,7 +149,15 @@ const StatusMenu = ({
 	});
 
 	const handleDeleteStatus = () => {
-		mutate({ status_id: status.id });
+		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
+		saveStatus(crossChannelRequestIdentifier, {
+			status,
+			savedPayload: {
+				id: status.id,
+			},
+			crossChannelRequestIdentifier,
+		});
+		mutate({ status_id: status.id, crossChannelRequestIdentifier });
 		setDeleteModalVisible(false);
 	};
 	//********** Delete Status **********//

@@ -4,12 +4,15 @@ import { appendApiVersion, handleError } from '@/util/helper/helper';
 
 export const statusDeleteFn = async ({
 	status_id,
+	crossChannelRequestIdentifier,
 }: {
 	status_id: Pathchwork.Status['id'];
+	crossChannelRequestIdentifier: string;
 }) => {
 	try {
 		const resp: AxiosResponse<Pathchwork.Status> = await instance.delete(
 			appendApiVersion(`statuses/${status_id}`, 'v1'),
+			{ data: { crossChannelRequestIdentifier } },
 		);
 		return resp.data;
 	} catch (error) {
