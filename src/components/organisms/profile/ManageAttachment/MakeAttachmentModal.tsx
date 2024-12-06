@@ -1,10 +1,6 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
-import {
-	Asset,
-	launchCamera,
-	launchImageLibrary,
-} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { mediaUploadAction } from '@/util/helper/mediaUploadActions';
@@ -13,7 +9,6 @@ import {
 	hasMediaPermissions,
 } from '@/util/helper/permission';
 import {
-	ComposeAddFileIcon,
 	ComposeCameraIcon,
 	ComposeOpenGalleryIcon,
 } from '@/util/svg/icon.compose';
@@ -93,21 +88,6 @@ const ManageAttachmentModal = ({
 		);
 	};
 
-	const onPressFile = async () => {
-		if (Platform.OS === 'android' && !(await hasMediaPermissions())) {
-			return;
-		}
-		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'video', selectionLimit: 1 },
-			response => {
-				if (response.assets) {
-					onToggleMediaModal();
-					onSelectMedia(type, response.assets as Asset[]);
-				}
-			},
-		);
-	};
-
 	const onPressPreview = () => {
 		if (imageUrl) {
 			navigation.navigate('LocalImageViewer', {
@@ -142,19 +122,10 @@ const ManageAttachmentModal = ({
 					</Button>
 				</View>
 			</View>
-			<View className="flex-row items-center justify-between mb-4 gap-4">
-				<Button
-					className=" flex-1 flex-row items-center justify-center px-4 py-2 flex-shrink-0 border border-gray-300 rounded-md"
-					variant="outline"
-					onPress={onPressFile}
-				>
-					<ComposeAddFileIcon {...{ colorScheme }} />
-					<ThemeText className="text-white pl-2">Add File</ThemeText>
-				</Button>
-
+			<View className="flex-row items-center justify-between">
 				{canPreview && imageUrl && (
 					<Button
-						className="flex-1 flex-row items-center justify-center px-4 py-2 flex-shrink-0 border border-gray-300 rounded-md"
+						className="flex-1 flex-row items-center justify-center px-4 py-2 flex-shrink-0 border border-gray-300 rounded-md mb-4"
 						variant="outline"
 						onPress={onPressPreview}
 					>
