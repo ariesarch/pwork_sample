@@ -52,7 +52,10 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 				extraClass,
 			)}
 		>
-			<SendIcon colorScheme={colorScheme} />
+			<SendIcon
+				stroke={disabled ? '#6D7276' : '#fff'}
+				colorScheme={colorScheme}
+			/>
 		</TouchableOpacity>
 	);
 };

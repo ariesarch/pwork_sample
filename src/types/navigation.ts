@@ -17,6 +17,7 @@ import type {
 import { GetChannelFeedQueryKey } from './queries/channel.type';
 import { AccountDetailFeedQueryKey } from './queries/feed.type';
 import { SearchUsersQueryKey } from './queries/conversations.type';
+import { Asset } from 'react-native-image-picker';
 
 export type RootStackParamList = {
 	AboutYou: undefined;
@@ -32,6 +33,14 @@ export type RootStackParamList = {
 		id: Pathchwork.Attachment['id'];
 	};
 	EditProfile: undefined;
+	LocalImageViewer: {
+		imageUrl: {
+			url: string;
+			width?: number;
+			height?: number;
+			isLocal?: boolean;
+		};
+	};
 };
 
 export type BottomStackParamList = {

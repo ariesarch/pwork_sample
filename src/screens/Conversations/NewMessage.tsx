@@ -12,7 +12,7 @@ import {
 } from '@/hooks/custom/useGradualAnimation';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
+import ConversationsActionsBar from '@/components/molecules/conversations/ConversationsActionsBar.tsx/ConversationsActionsBar';
 
 const NewMessage = () => {
 	const { height } = useGradualAnimation();
@@ -31,11 +31,7 @@ const NewMessage = () => {
 					<Header
 						title="New Message"
 						leftCustomComponent={<BackButton />}
-						rightCustomComponent={
-							<SendButton
-							// disabled={!selectedUser || !messageText}
-							/>
-						}
+						rightCustomComponent={<SendButton disabled />}
 					/>
 					<ScrollView
 						keyboardShouldPersistTaps="always"
@@ -47,7 +43,7 @@ const NewMessage = () => {
 						</View>
 					</ScrollView>
 					<UserSuggestionModal />
-					<ComposeActionsBar />
+					<ConversationsActionsBar />
 					<Animated.View style={virtualKeyboardContainerStyle} />
 				</View>
 			</ComposeStatusProvider>
