@@ -7,6 +7,7 @@ export type SearchUsersQueryParam = {
 export type SearchUsersQueryKey = ['users', SearchUsersQueryParam];
 
 export type ConversationsQueryParam = {
-	max_id: string | null;
+	max_id?: string | null;
 };
-export type ConversationsQueryKey = ['conversations', ConversationsQueryParam];
+
+export type ConversationsQueryKey = ['conversations'];

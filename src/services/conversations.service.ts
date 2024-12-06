@@ -38,15 +38,10 @@ export const getConversationsList = async ({
 	queryKey,
 }: QueryFunctionContext<ConversationsQueryKey>) => {
 	try {
-		const [, params] = queryKey;
-		const { max_id } = params;
 		const resp: AxiosResponse<Pathchwork.Conversations[]> = await instance.get(
-			appendApiVersion('conversations'),
+			appendApiVersion(`conversations`),
 			{
-				params: {
-					limit: 10,
-					max_id: max_id,
-				},
+				params: {},
 			},
 		);
 		return resp.data;

@@ -34,18 +34,11 @@ export const useSearchUsers = ({
 	});
 };
 
-export const useConversationsList = ({
-	options,
-	...queryParam
-}: ConversationsQueryKey[1] & {
-	options?: QueryOptionHelper<AxiosResponse<Pathchwork.Conversations[]>>;
-}) => {
-	const queryKey: ConversationsQueryKey = ['conversations', queryParam];
+export const useGetConversationsList = () => {
+	const queryKey: ConversationsQueryKey = ['conversations'];
 	return useQuery({
 		queryKey,
-		//@ts-expect-error
 		queryFn: getConversationsList,
-		...options,
 	});
 };
 
