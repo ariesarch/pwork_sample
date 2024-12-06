@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
@@ -101,6 +101,14 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		}
 	};
 
+	const onPressPreview = (imageUrl: string) => {
+		navigation.navigate('LocalImageViewer', {
+			imageUrl: {
+				url: imageUrl,
+			},
+		});
+	};
+
 	const renderProfileActions = () => {
 		if (isChannel) return null;
 
@@ -138,31 +146,51 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	return (
 		<View>
 			<View className="bg-white dark:bg-patchwork-dark-100">
-				<FastImage
-					className="bg-patchwork-dark-50 h-[140]"
-					source={{
-						uri: isChannel
-							? props.channelInfo?.banner_image_url
-							: props.profile?.header,
-						priority: FastImage.priority.normal,
-					}}
-					resizeMode={FastImage.resizeMode.cover}
-				/>
+				<Pressable
+					onPress={() =>
+						onPressPreview(
+							isChannel
+								? props.channelInfo?.banner_image_url
+								: props.profile?.header,
+						)
+					}
+				>
+					<FastImage
+						className="bg-patchwork-dark-50 h-[140]"
+						source={{
+							uri: isChannel
+								? props.channelInfo?.banner_image_url
+								: props.profile?.header,
+							priority: FastImage.priority.normal,
+						}}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				</Pressable>
 				<View className="flex-row mx-4">
 					<Animated.View className="flex-1">
-						<FastImage
-							className={cn(
-								'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50  border-patchwork-dark-100 border-4',
-								isChannel ? 'rounded-md' : 'rounded-full',
-							)}
-							source={{
-								uri: isChannel
-									? props.channelInfo?.avatar_image_url
-									: props.profile?.avatar,
-								priority: FastImage.priority.normal,
-							}}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
+						<Pressable
+							onPress={() =>
+								onPressPreview(
+									isChannel
+										? props.channelInfo?.avatar_image_url
+										: props.profile?.avatar,
+								)
+							}
+						>
+							<FastImage
+								className={cn(
+									'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50  border-patchwork-dark-100 border-4',
+									isChannel ? 'rounded-md' : 'rounded-full',
+								)}
+								source={{
+									uri: isChannel
+										? props.channelInfo?.avatar_image_url
+										: props.profile?.avatar,
+									priority: FastImage.priority.normal,
+								}}
+								resizeMode={FastImage.resizeMode.cover}
+							/>
+						</Pressable>
 					</Animated.View>
 					{renderProfileActions()}
 				</View>

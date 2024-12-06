@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useAuthStore } from '@/store/auth/authStore';
 import { cn } from '@/util/helper/twutil';
@@ -23,6 +23,11 @@ import { cleanText } from '@/util/helper/cleanText';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingModal from '@/components/atoms/common/LoadingModal/LoadingModal';
 import Toast from 'react-native-toast-message';
+import {
+	BottomBarHeight,
+	useGradualAnimation,
+} from '@/hooks/custom/useGradualAnimation';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 type ProfileType = {
 	display_name?: string;
@@ -39,6 +44,7 @@ const EditProfile = () => {
 	const navigation = useNavigation();
 	const [profile, setProfile] = useState<ProfileType>();
 	const { header, avatar, actions } = useProfileMediaStore();
+	const { height, progress } = useGradualAnimation();
 
 	useEffect(() => {
 		if (userInfo) {
@@ -68,9 +74,9 @@ const EditProfile = () => {
 			setUserInfo(response);
 			Toast.show({
 				text1: 'Your profile has been updated successfully!',
-				position: 'bottom',
+				position: 'top',
+				topOffset: 15,
 				visibilityTime: 1000,
-				bottomOffset: 10,
 				onHide: () =>
 					navigation.navigate('Index', {
 						screen: 'Home',
@@ -85,8 +91,8 @@ const EditProfile = () => {
 				type: 'error',
 				text1: error?.message || 'Something went wrong!',
 				position: 'top',
+				topOffset: 15,
 				visibilityTime: 1000,
-				bottomOffset: 10,
 				onHide: () => {
 					actions.onSelectMedia('header', []);
 					actions.onSelectMedia('avatar', []);
@@ -118,6 +124,13 @@ const EditProfile = () => {
 		}
 	};
 
+	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
+		return {
+			height:
+				height.value > BottomBarHeight ? height.value - BottomBarHeight : 0,
+		};
+	});
+
 	if (!userInfo) return null;
 	return (
 		<SafeScreen>
@@ -134,11 +147,7 @@ const EditProfile = () => {
 					/>
 				}
 			/>
-			<KeyboardAwareScrollView
-				enableOnAndroid
-				extraScrollHeight={30}
-				contentContainerStyle={{ flexGrow: 1 }}
-			>
+			<ScrollView style={{ flex: 1 }}>
 				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
 					{/* Header Media Modal */}
 					<ThemeModal
@@ -156,6 +165,14 @@ const EditProfile = () => {
 						<ManageAttachmentModal
 							type="header"
 							onToggleMediaModal={() => actions.onToggleMediaModal('header')}
+							imageUrl={profile?.header ? profile.header : null}
+							canPreview={
+								header.selectedMedia.length > 0
+									? false
+									: profile?.header
+									? true
+									: true
+							}
 						/>
 					</ThemeModal>
 
@@ -175,13 +192,21 @@ const EditProfile = () => {
 						<ManageAttachmentModal
 							type="avatar"
 							onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
+							imageUrl={profile?.avatar ? profile.avatar : null}
+							canPreview={
+								avatar.selectedMedia.length > 0
+									? false
+									: profile?.avatar
+									? true
+									: true
+							}
 						/>
 					</ThemeModal>
 
 					{/* Header Image */}
 					<Pressable onPress={() => actions.onToggleMediaModal('header')}>
 						<FastImage
-							className="bg-patchwork-dark-50 h-[100]"
+							className="bg-patchwork-dark-50 h-32 w-full"
 							source={{
 								uri: header.selectedMedia[0]?.uri || profile?.header,
 								priority: FastImage.priority.normal,
@@ -228,7 +253,6 @@ const EditProfile = () => {
 						/>
 						<ThemeText className="mt-2 mb-1">Bio</ThemeText>
 						<TextInput
-							multiline
 							textArea
 							value={profile?.bio || ''}
 							onChangeText={bio =>
@@ -240,7 +264,8 @@ const EditProfile = () => {
 						/>
 					</View>
 				</View>
-			</KeyboardAwareScrollView>
+			</ScrollView>
+			<Animated.View style={virtualKeyboardContainerStyle} />
 			<Button
 				className="mx-6 bottom-0 left-0 right-0 mb-5"
 				onPress={handleUpdateProfile}

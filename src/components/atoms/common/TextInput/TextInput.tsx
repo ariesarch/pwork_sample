@@ -66,7 +66,7 @@ const TextInput = forwardRef<RNTextInput, InputProps>(
 					{...textInputProps}
 					className={cn(
 						'font-SourceSans3_Regular',
-						textArea ? 'h-32' : 'h-10',
+						textArea ? 'h-32 py-5' : 'h-10',
 						endIcon ? 'w-10/12' : 'w-full',
 						extraInputStyle,
 					)}
