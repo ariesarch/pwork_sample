@@ -49,6 +49,7 @@ export type ComposeMutationPayload = {
 	max_length?: number;
 	poll: Poll | null;
 	media_ids: string[];
+	crossChannelRequestIdentifier?: string;
 };
 
 export type RepostMutationPayload = {

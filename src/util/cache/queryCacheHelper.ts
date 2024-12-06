@@ -40,8 +40,9 @@ export const updateQueryCacheGeneric = <T>(
 export const getCacheQueryKeys = <T>(
 	accountId: string,
 	inReplyToId?: string | null,
+	current_domain?: string,
 ): T[] => {
-	const domain_name = process.env.API_URL || DEFAULT_API_URL;
+	const domain_name = current_domain || process.env.API_URL || DEFAULT_API_URL;
 
 	return [
 		['channel-feed', { domain_name, remote: false, only_media: false }],

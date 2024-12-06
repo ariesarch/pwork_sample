@@ -9,6 +9,7 @@ import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { BottomStackParamList } from '@/types/navigation';
 import {
 	StatusCacheQueryKeys,
@@ -18,20 +19,20 @@ import {
 	applyReblogCountCacheUpdates,
 	incrementReblogsCount,
 } from '@/util/cache/reblog/reblogCache';
-import { createStatusAndCache } from '@/util/cache/statusActions/editStatusCache';
 import { POLL_LIMITS } from '@/util/constant/pollOption';
 import { prepareRepostPayload } from '@/util/helper/compose';
 import { cn } from '@/util/helper/twutil';
 import { ComposeRepostSendIcon } from '@/util/svg/icon.compose';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
 import { useMemo } from 'react';
 import { Pressable } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	id: string;
+	status: Pathchwork.Status;
 	extraClass?: string;
 	isFeedDetail?: boolean;
 	otherUserId: Pathchwork.Account['id'];
@@ -39,13 +40,14 @@ type Props = {
 
 const ComposeRepostButton = ({
 	extraClass,
-	id,
+	status,
 	isFeedDetail,
 	otherUserId,
 }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
+	const { saveStatus } = useSubchannelStatusActions();
 
 	const { userInfo } = useAuthStore();
 
@@ -88,7 +90,7 @@ const ComposeRepostButton = ({
 		onError: e => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Currently, reposting is available only for main channel',
+				text1: e.message,
 				position: 'top',
 				topOffset: 50,
 			});
@@ -97,8 +99,17 @@ const ComposeRepostButton = ({
 
 	const handleRepostStatus = () => {
 		if (composeState.text.count <= composeState.maxCount) {
-			const payload = prepareRepostPayload(composeState, id);
-			mutate(payload);
+			const payload = prepareRepostPayload(composeState, status.id);
+			const crossChannelRequestIdentifier = uniqueId(
+				`CROS-Channel-Status::${status.id}::Req-ID::`,
+			);
+			saveStatus(crossChannelRequestIdentifier, {
+				status: status,
+				savedPayload: payload,
+				specificPayloadMapping: { in_reply_to_id: 'id' },
+				crossChannelRequestIdentifier,
+			});
+			mutate({ ...payload, crossChannelRequestIdentifier });
 		}
 	};
 

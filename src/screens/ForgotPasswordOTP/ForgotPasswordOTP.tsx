@@ -37,7 +37,6 @@ const ForgotPasswordOTP: React.FC<
 
 	const { mutate } = useOTPVerificationMutation({
 		onSuccess: response => {
-			console.log('response::', response);
 			navigation.navigate('ChangePassword', {
 				reset_password_token: currentSecretToken,
 			});

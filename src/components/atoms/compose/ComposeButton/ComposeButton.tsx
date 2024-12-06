@@ -53,8 +53,6 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 					updatedStatus: status,
 					queryKeys,
 				});
-			} else {
-				createStatusAndCache({ newStatus: status, queryKeys });
 			}
 
 			Toast.show({
@@ -71,7 +69,7 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 		onError: e => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Something went wrong',
+				text1: e.message,
 				position: 'top',
 				topOffset: 50,
 			});

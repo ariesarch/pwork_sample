@@ -46,7 +46,7 @@ export const useFavouriteMutation = (
 	options: UseMutationOptions<
 		Pathchwork.Status,
 		AxiosError,
-		{ status: Pathchwork.Status }
+		{ status: Pathchwork.Status; crossChannelRequestIdentifier?: string }
 	>,
 ) => {
 	return useMutation({ mutationFn: favouriteStatus, ...options });

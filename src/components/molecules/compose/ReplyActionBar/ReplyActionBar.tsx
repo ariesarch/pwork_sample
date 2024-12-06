@@ -14,45 +14,35 @@ import {
 	useStatusReplyAction,
 	useStatusReplyStore,
 } from '@/store/compose/statusReply/statusReplyStore';
-import {
-	useActiveDomainStore,
-	useSelectedDomain,
-} from '@/store/feed/activeDomain';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
-import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
-import {
-	getCacheQueryKeys,
-	StatusCacheQueryKeys,
-} from '@/util/cache/queryCacheHelper';
-import { createStatusAndCache } from '@/util/cache/statusActions/editStatusCache';
-import { DEFAULT_API_URL } from '@/util/constant';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
-import {
-	prepareComposePayload,
-	prepareReplyPayload,
-} from '@/util/helper/compose';
-import { mediaUploadAction } from '@/util/helper/mediaUploadActions';
-import { hasMediaPermissions } from '@/util/helper/permission';
+import { prepareComposePayload } from '@/util/helper/compose';
 import {
 	ComposeGalleryIcon,
 	ComposeGifIcon,
 	ComposeLocationIcon,
 	ComposePollIcon,
 } from '@/util/svg/icon.compose';
+import { uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
-import { Ref, RefObject, useEffect } from 'react';
-import { Keyboard, Platform, Pressable, TextInput, View } from 'react-native';
+import { RefObject, useEffect } from 'react';
+import { Pressable, TextInput, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
-import { Asset, launchImageLibrary } from 'react-native-image-picker';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	currentStatus: Pathchwork.Status;
+	feedDetailStatus: Pathchwork.Status;
 	inputRef: RefObject<TextInput>;
 	feedDetailId: string;
 };
 
-const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
+const ReplyActionBar = ({
+	feedDetailStatus,
+	inputRef,
+	feedDetailId,
+}: Props) => {
 	const { colorScheme } = useColorScheme();
 	const domain_name = useSelectedDomain();
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -62,6 +52,7 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 	const isMediaUploading = progress.currentIndex !== undefined;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { userInfo } = useAuthStore();
+	const { saveStatus } = useSubchannelStatusActions();
 
 	const { onToggleMediaModal, resetAttachmentStore } =
 		useManageAttachmentActions();
@@ -100,8 +91,11 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 
 	useEffect(() => {
 		if (composeState.in_reply_to_id === undefined) {
-			composeDispatch({ type: 'reply_id_change', payload: currentStatus.id });
-			changeCurrentStatus(currentStatus);
+			composeDispatch({
+				type: 'reply_id_change',
+				payload: feedDetailStatus.id,
+			});
+			changeCurrentStatus(feedDetailStatus);
 		}
 	}, [composeState]);
 	const { mutate, isPending } = useComposeMutation({
@@ -141,7 +135,7 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 		onError: e => {
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Currently, reply is only available for main channel.',
+				text1: e.message,
 				position: 'top',
 				topOffset: 50,
 			});
@@ -154,7 +148,17 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 			composeState.in_reply_to_id !== undefined
 		) {
 			const payload = prepareComposePayload(composeState);
-			mutate(payload);
+			const selectedStatus = currentFocusStatus ?? feedDetailStatus;
+			const crossChannelRequestIdentifier = uniqueId(
+				`CROS-Channel-Status::${selectedStatus.id}::Req-ID::`,
+			);
+			saveStatus(crossChannelRequestIdentifier, {
+				status: selectedStatus,
+				savedPayload: payload,
+				specificPayloadMapping: { in_reply_to_id: 'id' },
+				crossChannelRequestIdentifier,
+			});
+			mutate({ ...payload, crossChannelRequestIdentifier });
 		}
 	};
 

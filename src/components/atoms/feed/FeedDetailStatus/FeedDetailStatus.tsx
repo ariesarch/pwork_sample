@@ -34,7 +34,7 @@ const FeedDetailStatus = ({
 					imageSize="w-8 h-8"
 					showAvatarIcon
 					showFollowIcon={userInfo?.id !== feedDetail.account.id}
-					relationships={relationships}
+					// relationships={relationships}
 				/>
 				<StatusContent status={feedDetail} className="mt-2" />
 				{feedDetail.reblog && (
@@ -48,7 +48,7 @@ const FeedDetailStatus = ({
 							imageSize="w-7 h-7"
 							status={feedDetail.reblog}
 							showAvatarIcon
-							relationships={relationships}
+							// relationships={relationships}
 						/>
 						<StatusContent status={feedDetail.reblog} className="mt-2" />
 					</Pressable>

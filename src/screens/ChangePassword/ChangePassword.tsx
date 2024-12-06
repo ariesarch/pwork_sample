@@ -43,7 +43,6 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 	const { mutate, isPending } = useResetPWMutation({
 		onSuccess: async response => {
 			setAlert({ isOpen: true, isSuccess: true });
-			console.log('resp::', response);
 		},
 		onError: error => {
 			setAlert({ isOpen: true, isSuccess: false });
@@ -52,7 +51,6 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 
 	const onSubmit = (data: any) => {
 		if (!isPending) {
-			console.log('data::', data);
 			mutate({
 				reset_password_token,
 				password: data.password,

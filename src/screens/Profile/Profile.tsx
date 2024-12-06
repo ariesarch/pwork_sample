@@ -44,6 +44,7 @@ import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -71,6 +72,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	);
 
 	const { clearFeed } = useActiveFeedAction();
+	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
@@ -174,6 +176,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 
 	useFocusEffect(
 		useCallback(() => {
+			resetAttachmentStore();
 			setTimeout(() => {
 				clearFeed();
 			}, 300);

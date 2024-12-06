@@ -79,7 +79,6 @@ const updatePollCacheData = ({
 
 const getPollCacheQueryKeys = (accountId: string): PollCacheQueryKeys[] => {
 	const domain_name = process.env.API_URL || DEFAULT_API_URL;
-	console.log('domain_name::', domain_name);
 
 	return [
 		['channel-feed', { domain_name, remote: false, only_media: false }],

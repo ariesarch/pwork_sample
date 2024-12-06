@@ -6,7 +6,10 @@ export const useStatusDeleteMutation = (
 	options: UseMutationOptions<
 		Pathchwork.Status,
 		AxiosError,
-		{ status_id: Pathchwork.Status['id'] }
+		{
+			status_id: Pathchwork.Status['id'];
+			crossChannelRequestIdentifier: string;
+		}
 	>,
 ) => {
 	return useMutation({ mutationFn: statusDeleteFn, ...options });

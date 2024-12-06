@@ -46,9 +46,11 @@ const ImageCard = ({ composeType }: Props) => {
 			});
 		},
 		onError: error => {
+			console.log('error::', error);
+
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Image Upload Failed',
+				text1: 'Something went wrong',
 				position: 'top',
 				topOffset: 50,
 			});
