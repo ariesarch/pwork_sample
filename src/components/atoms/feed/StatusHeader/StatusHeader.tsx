@@ -91,6 +91,7 @@ const StatusHeader = ({
 					variant="outline"
 					className="rounded-full h-8 py-0 px-4"
 					onPress={onMakeRelationship}
+					disabled
 				>
 					{isPending ? (
 						<Flow size={25} color={customColor['patchwork-light-900']} />

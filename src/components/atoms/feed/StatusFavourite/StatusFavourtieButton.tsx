@@ -53,6 +53,7 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 	});
 
 	const handleFavourite = () => {
+		const stat = status.reblog ? status.reblog : status;
 		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
 		saveStatus(crossChannelRequestIdentifier, {
 			status,
@@ -66,8 +67,12 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 				account: 'account',
 			},
 		});
-		mutate({ status, crossChannelRequestIdentifier });
+		mutate({ status: stat, crossChannelRequestIdentifier });
 	};
+
+	const favouriteColor = status.reblog
+		? status.reblog.favourited
+		: status.favourited;
 
 	return (
 		<TouchableOpacity
@@ -78,13 +83,17 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 		>
 			<HeartOutlineIcon
 				stroke={
-					status.favourited
+					favouriteColor
 						? customColor['patchwork-red-50']
 						: customColor['patchwork-grey-100']
 				}
-				fill={status.favourited ? customColor['patchwork-red-50'] : 'none'}
+				fill={favouriteColor ? customColor['patchwork-red-50'] : 'none'}
 			/>
-			<ThemeText variant="textGrey">{status.favourites_count}</ThemeText>
+			<ThemeText variant="textGrey">
+				{status.reblog
+					? status.reblog.favourites_count
+					: status.favourites_count}
+			</ThemeText>
 		</TouchableOpacity>
 	);
 };
