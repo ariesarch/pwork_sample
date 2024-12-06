@@ -112,7 +112,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		exclude_original_statuses: true,
 	});
 
-	const timelineList = timeline ? flattenPages(timeline) : [];
+	const [isRefresh, setIsRefresh] = useState(false);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
@@ -168,10 +168,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	});
 
 	const handleRefresh = async () => {
+		setIsRefresh(true);
 		refetchProfileFeed();
 		refetchAccountInfo();
 		const res = await verifyAuthToken();
 		setUserInfo(res);
+		setIsRefresh(false);
 	};
 
 	useFocusEffect(
@@ -274,7 +276,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										refreshControl={
 											<RefreshControl
 												className="mt-1"
-												refreshing={isFetching}
+												refreshing={isRefresh}
 												tintColor={customColor['patchwork-light-900']}
 												onRefresh={handleRefresh}
 											/>

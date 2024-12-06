@@ -25,16 +25,37 @@ import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { queryClient } from '@/App';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const ComposeButton = ({ statusId }: { statusId: string }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
+	const domain_name = useSelectedDomain();
+	const { userInfo } = useAuthStore();
 
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { resetAttachmentStore } = useManageAttachmentActions();
 	const { progress } = useManageAttachmentStore();
 	const isMediaUploading = progress.currentIndex !== undefined;
+
+	const accountDetailFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: true,
+			exclude_reblogs: false,
+			exclude_original_statuses: false,
+		},
+	];
+
+	const channelFeedQueryKey = [
+		'channel-feed',
+		{ domain_name, remote: false, only_media: false },
+	];
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (status: Pathchwork.Status) => {
@@ -54,6 +75,8 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 					queryKeys,
 				});
 			}
+			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
+			queryClient.invalidateQueries({ queryKey: channelFeedQueryKey });
 
 			Toast.show({
 				type: 'successToast',

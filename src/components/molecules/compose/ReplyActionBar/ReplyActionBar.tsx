@@ -25,7 +25,7 @@ import {
 	ComposeLocationIcon,
 	ComposePollIcon,
 } from '@/util/svg/icon.compose';
-import { uniqueId } from 'lodash';
+import { delay, uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
 import { RefObject, useEffect } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
@@ -61,6 +61,8 @@ const ReplyActionBar = ({
 		selectedMedia.length == 4 || isMediaUploading || !!composeState.poll;
 
 	const disabledPoll = selectedMedia.length > 0;
+
+	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
 
 	const accountDetailFeedQueryKey = [
 		'account-detail-feed',
@@ -106,26 +108,7 @@ const ReplyActionBar = ({
 			currentFocusStatus?.id == feedDetailId &&
 				changeActiveFeedReplyCount('increase');
 
-			// ***** Feed Replies ***** //
-			const feedReplyQueryKey = [
-				'feed-replies',
-				{ id: feedDetailId, domain_name },
-			];
-			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
-			// ***** Feed Replies ***** //
-
-			// ***** Need to recheck if neccessary ***** //
-			// const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
-			// 	newStatus.account.id,
-			// 	newStatus.in_reply_to_id,
-			// );
-			// createStatusAndCache({
-			// 	newStatus: newStatus,
-			// 	queryKeys: feedListQueryKey,
-			// });
-			// ***** Need to recheck if neccessary ***** //
-
-			//temp
+			retryReplyQueryUpToThreeTimes(feedReplyQueryKey);
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 			queryClient.invalidateQueries({
 				queryKey: accountDetailReplyFeedQueryKey,
@@ -141,6 +124,29 @@ const ReplyActionBar = ({
 			});
 		},
 	});
+
+	//temp
+	const retryReplyQueryUpToThreeTimes = async (
+		queryKey: typeof feedReplyQueryKey,
+		retries = 3,
+	) => {
+		let attempts = 0;
+		const fetchAndCheck = async () => {
+			await queryClient.invalidateQueries({ queryKey });
+			const previousData = queryClient.getQueryData(queryKey);
+			await queryClient.refetchQueries({ queryKey });
+			const currentData = queryClient.getQueryData(queryKey);
+			if (JSON.stringify(previousData) !== JSON.stringify(currentData)) {
+				return true;
+			}
+			attempts++;
+			if (attempts < retries) {
+				const delayTime = attempts === 1 ? 300 : 600;
+				delay(fetchAndCheck, delayTime);
+			}
+		};
+		await fetchAndCheck();
+	};
 
 	const handlePublish = () => {
 		if (
@@ -208,12 +214,11 @@ const ReplyActionBar = ({
 					}
 				/>
 				<Pressable
-					disabled={disabledPoll}
+					// disabled={disabledPoll}
+					disabled={true}
 					onPress={onPressPoll}
 					className={'mr-3'}
-					children={
-						<ComposePollIcon {...{ colorScheme }} stroke={getStrokeColor()} />
-					}
+					children={<ComposePollIcon {...{ colorScheme }} stroke={'#6D7276'} />}
 				/>
 			</View>
 			<Button

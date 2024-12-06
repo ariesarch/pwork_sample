@@ -209,7 +209,7 @@ const StatusMenu = ({
 				>
 					{isAuthor ? (
 						<>
-							{showEditIcon && !status.reblog && (
+							{showEditIcon && !status.reblog && !status.in_reply_to_id && (
 								<>
 									<MenuOption onSelect={onPressEditStatus}>
 										<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />
