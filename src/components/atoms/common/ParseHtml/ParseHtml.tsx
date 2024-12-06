@@ -204,7 +204,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 					lineHeight: adaptedLineheight,
 				}}
 			/>
-			{typeof totalLines === 'number' || numberOfLines === 1 ? (
+			{/* {typeof totalLines === 'number' || numberOfLines === 1 ? (
 				<Pressable
 					onPress={() => {
 						layoutAnimation();
@@ -219,7 +219,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						}}
 					/>
 				</Pressable>
-			) : null}
+			) : null} */}
 		</>
 	);
 };
