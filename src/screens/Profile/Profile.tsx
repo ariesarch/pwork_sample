@@ -45,6 +45,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { cleanText } from '@/util/helper/cleanText';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -112,7 +113,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		exclude_original_statuses: true,
 	});
 
-	const timelineList = timeline ? flattenPages(timeline) : [];
+	const [isRefresh, setIsRefresh] = useState(false);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
@@ -133,6 +134,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	) => {
 		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
+				display_name: userInfo?.display_name,
+				note: cleanText(userInfo?.note),
 				fields_attributes: generateFieldsAttributes(
 					userInfo,
 					link,
@@ -168,10 +171,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	});
 
 	const handleRefresh = async () => {
+		setIsRefresh(true);
 		refetchProfileFeed();
 		refetchAccountInfo();
 		const res = await verifyAuthToken();
 		setUserInfo(res);
+		setIsRefresh(false);
 	};
 
 	useFocusEffect(
@@ -274,7 +279,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										refreshControl={
 											<RefreshControl
 												className="mt-1"
-												refreshing={isFetching}
+												refreshing={isRefresh}
 												tintColor={customColor['patchwork-light-900']}
 												onRefresh={handleRefresh}
 											/>

@@ -13,7 +13,6 @@ import SocialSection from '@/components/molecules/profile/SocialSection/SocialSe
 import UserStats from '@/components/molecules/profile/UserStats/UserStats';
 import Underline from '../../common/Underline/Underline';
 import { useNavigation } from '@react-navigation/native';
-import { cleanText } from '@/util/helper/cleanText';
 import { useUserRelationshipMutation } from '@/hooks/mutations/profile.mutation';
 import { createRelationshipQueryKey } from '@/hooks/queries/profile.queries';
 import { queryClient } from '@/App';
@@ -212,7 +211,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							accountName={props.profile?.display_name}
 							username={props.profile?.acct}
 							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
-							userBio={cleanText(props.profile?.note)}
+							userBio={props.profile?.note}
 						/>
 						<SocialSection
 							isMyAccount={props.is_my_account}
