@@ -58,17 +58,11 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 
 	const { mutate, isPending } = useUserRelationshipMutation({
 		onSuccess: (newRelationship, { accountId }) => {
-			const otherAcctInfoQueryKey: AccountInfoQueryKey = [
+			const acctInfoQueryKey: AccountInfoQueryKey = [
 				'get_account_info',
-				{ id: accountId },
+				{ id: isProfile && props.is_my_account ? userInfo?.id! : accountId },
 			];
-			const myAcctInfoQueryKey: AccountInfoQueryKey = [
-				'get_account_info',
-				{ id: userInfo?.id! },
-			];
-
-			queryClient.invalidateQueries({ queryKey: otherAcctInfoQueryKey });
-			queryClient.invalidateQueries({ queryKey: myAcctInfoQueryKey });
+			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
 
 			const relationshipQueryKey = createRelationshipQueryKey([
 				accountId,

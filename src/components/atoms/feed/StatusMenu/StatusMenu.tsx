@@ -106,11 +106,11 @@ const StatusMenu = ({
 			if (goBackToPreviousPage) {
 				navigation.goBack();
 			}
-			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
-				status.account.id,
-				status.in_reply_to_id,
-			);
-			deleteStatusCacheData({ status_id, queryKeys });
+			// const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+			// 	status.account.id,
+			// 	status.in_reply_to_id,
+			// );
+			// deleteStatusCacheData({ status_id, queryKeys });
 			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
 
 			isFeedDetail &&
@@ -195,7 +195,7 @@ const StatusMenu = ({
 				>
 					{isAuthor ? (
 						<>
-							{showEditIcon && (
+							{showEditIcon && !status.reblog && (
 								<>
 									<MenuOption onSelect={onPressEditStatus}>
 										<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />

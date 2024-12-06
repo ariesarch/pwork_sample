@@ -19,6 +19,7 @@ import {
 	useSelectedDomain,
 } from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
 import {
 	getCacheQueryKeys,
 	StatusCacheQueryKeys,
@@ -60,7 +61,6 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 	const { currentFocusStatus } = useStatusReplyStore();
 	const isMediaUploading = progress.currentIndex !== undefined;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
-	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
 	const { userInfo } = useAuthStore();
 
 	const { onToggleMediaModal, resetAttachmentStore } =
@@ -104,23 +104,33 @@ const ReplyActionBar = ({ currentStatus, inputRef, feedDetailId }: Props) => {
 			changeCurrentStatus(currentStatus);
 		}
 	}, [composeState]);
-
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (newStatus: Pathchwork.Status) => {
-			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
+
 			currentFocusStatus?.id == feedDetailId &&
 				changeActiveFeedReplyCount('increase');
 
-			const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
-				newStatus.account.id,
-				newStatus.in_reply_to_id,
-			);
-			createStatusAndCache({
-				newStatus: newStatus,
-				queryKeys: feedListQueryKey,
-			});
+			// ***** Feed Replies ***** //
+			const feedReplyQueryKey = [
+				'feed-replies',
+				{ id: feedDetailId, domain_name },
+			];
+			queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
+			// ***** Feed Replies ***** //
+
+			// ***** Need to recheck if neccessary ***** //
+			// const feedListQueryKey = getCacheQueryKeys<StatusCacheQueryKeys>(
+			// 	newStatus.account.id,
+			// 	newStatus.in_reply_to_id,
+			// );
+			// createStatusAndCache({
+			// 	newStatus: newStatus,
+			// 	queryKeys: feedListQueryKey,
+			// });
+			// ***** Need to recheck if neccessary ***** //
+
 			//temp
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 			queryClient.invalidateQueries({
