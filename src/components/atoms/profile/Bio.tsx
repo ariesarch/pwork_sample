@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { cleanText } from '@/util/helper/cleanText';
 
 type BioProps = {
 	userBio: string;
@@ -9,8 +10,8 @@ type BioProps = {
 const Bio = ({ userBio, userBioTextStyle }: BioProps) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 	const maxWordCount = 30;
-
-	const words = userBio.split(' ');
+	const cleanedText = cleanText(userBio);
+	const words = cleanedText.split(' ');
 	const shouldShorten = words.length > maxWordCount;
 
 	const handleToggle = () => setIsExpanded(!isExpanded);
@@ -18,7 +19,7 @@ const Bio = ({ userBio, userBioTextStyle }: BioProps) => {
 	const displayedText =
 		shouldShorten && !isExpanded
 			? `${words.slice(0, maxWordCount).join(' ')}...`
-			: userBio;
+			: cleanedText;
 
 	return (
 		<ThemeText className={`mt-2 leading-5 ${userBioTextStyle}`}>

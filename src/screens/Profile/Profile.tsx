@@ -45,6 +45,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { cleanText } from '@/util/helper/cleanText';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -133,6 +134,8 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	) => {
 		if (userInfo) {
 			const updatedProfile: UpdateProfilePayload = {
+				display_name: userInfo?.display_name,
+				note: cleanText(userInfo?.note),
 				fields_attributes: generateFieldsAttributes(
 					userInfo,
 					link,
