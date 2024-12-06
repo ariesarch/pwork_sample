@@ -42,7 +42,6 @@ const ManageAttachmentModal = ({
 
 	const cropImage = async (imagePath: string) => {
 		try {
-			console.log('hi');
 			const croppedImage = await ImagePicker.openCropper({
 				mediaType: 'photo',
 				path: imagePath,
