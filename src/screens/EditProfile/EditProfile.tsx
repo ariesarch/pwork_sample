@@ -20,7 +20,6 @@ import { useProfileMediaStore } from '@/store/profile/useProfileMediaStore';
 import ManageAttachmentModal from '@/components/organisms/profile/ManageAttachment/MakeAttachmentModal';
 import { ComposeCameraIcon } from '@/util/svg/icon.compose';
 import { cleanText } from '@/util/helper/cleanText';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingModal from '@/components/atoms/common/LoadingModal/LoadingModal';
 import Toast from 'react-native-toast-message';
 import {

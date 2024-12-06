@@ -12,7 +12,6 @@ import {
 } from '@/hooks/custom/useGradualAnimation';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import ComposeActionsBar from '@/components/molecules/compose/ComposeActionsBar/ComposeActionsBar';
 import ConversationsActionsBar from '@/components/molecules/conversations/ConversationsActionsBar.tsx/ConversationsActionsBar';
 
 const NewMessage = () => {
