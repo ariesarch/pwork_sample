@@ -16,6 +16,7 @@ const StartConversation = ({ onPress }: { onPress: () => void }) => {
 			</ThemeText>
 			<View className="mt-5 flex-row justify-center">
 				<Pressable
+					disabled
 					onPress={onPress}
 					className="border border-patchwork-grey-100 py-1.5 px-4 rounded-full w-auto"
 				>

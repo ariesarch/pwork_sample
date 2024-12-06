@@ -10,6 +10,7 @@ import {
 	EmailVerification,
 	ChannelCreate,
 	ImageViewer,
+	LocalImageViewer,
 } from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
@@ -59,6 +60,10 @@ function ApplicationNavigator() {
 							<Stack.Screen name="WebViewer" component={WebViewer} />
 							<Stack.Screen name="ImageViewer" component={ImageViewer} />
 							<Stack.Screen name="EditProfile" component={EditProfile} />
+							<Stack.Screen
+								name="LocalImageViewer"
+								component={LocalImageViewer}
+							/>
 						</>
 					)}
 				</Stack.Navigator>

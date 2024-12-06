@@ -8193,6 +8193,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"he@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "he@npm:1.2.0"
+  bin:
+    he: bin/he
+  checksum: 3d4d6babccccd79c5c5a3f929a68af33360d6445587d628087f39a965079d84f18ce9c3d3f917ee1e3978916fc833bb8b29377c3b403f919426f91bc6965e7a7
+  languageName: node
+  linkType: hard
+
 "hermes-estree@npm:0.19.1":
   version: 0.19.1
   resolution: "hermes-estree@npm:0.19.1"
@@ -11004,6 +11013,7 @@ __metadata:
     eslint-import-resolver-typescript: ^3.6.1
     eslint-plugin-import: ^2.29.0
     eslint-plugin-jsx-a11y: ^6.8.0
+    he: ^1.2.0
     htmlparser2: ^9.1.0
     i18next: ^23.11.2
     jest: ^29.6.3
@@ -11024,6 +11034,7 @@ __metadata:
     react-native-encrypted-storage: ^4.0.3
     react-native-fast-image: ^8.6.3
     react-native-gesture-handler: ^2.16.0
+    react-native-image-crop-picker: ^0.41.6
     react-native-image-picker: ^7.1.2
     react-native-keyboard-aware-scroll-view: ^0.9.5
     react-native-keyboard-controller: ^1.14.5
@@ -11738,6 +11749,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 70da4fc51d92899591aadf03396a8e0b78223fbe71da5b10e76232058c1ef5943d54c1dd8da815d5b6a8b41f259ea9d50457680e2ef7878c88d7396771170ae3
+  languageName: node
+  linkType: hard
+
+"react-native-image-crop-picker@npm:^0.41.6":
+  version: 0.41.6
+  resolution: "react-native-image-crop-picker@npm:0.41.6"
+  peerDependencies:
+    react-native: ">=0.40.0"
+  checksum: 6e4ef44e9e74311f91ef783dd52105964cbe60ab1b0d6a48a7029f8faffed25451cfd62b3526ffa99d4e00feaeae473175d237f6bfb063f21691d5983ef78567
   languageName: node
   linkType: hard
 
