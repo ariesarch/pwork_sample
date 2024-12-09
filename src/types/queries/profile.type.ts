@@ -3,6 +3,7 @@ import { string } from 'yup';
 
 export type AccountInfoQueryParam = {
 	id: string;
+	domain_name: string;
 };
 
 export type CheckRelationshipQueryParam = {

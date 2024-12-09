@@ -38,7 +38,7 @@ const StatusReplyButton = ({
 		if (!isFeedDetail) {
 			setActiveFeed(status);
 			return navigation.navigate('FeedDetail', {
-				id: status.id,
+				id: status.reblog ? status.reblog.id : status.id,
 				openKeyboardAtMount: true,
 			});
 		}

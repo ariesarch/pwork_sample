@@ -42,7 +42,6 @@ import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes'
 import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { cleanText } from '@/util/helper/cleanText';
@@ -57,28 +56,25 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
-	const [showDelConf, setShowDelConf] = useState<{
-		visible: boolean;
-		title: string;
-	}>({ visible: false, title: '' });
+
 	const domain_name = useSelectedDomain();
+
 	const {
 		userInfo,
 		actions: { setUserInfo },
 	} = useAuthStore();
+
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-
-	const { clearFeed } = useActiveFeedAction();
 	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
 		'get_account_info',
-		{ id: userInfo?.id! },
+		{ id: userInfo?.id!, domain_name },
 	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =
@@ -184,9 +180,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	useFocusEffect(
 		useCallback(() => {
 			resetAttachmentStore();
-			setTimeout(() => {
-				clearFeed();
-			}, 300);
 		}, []),
 	);
 

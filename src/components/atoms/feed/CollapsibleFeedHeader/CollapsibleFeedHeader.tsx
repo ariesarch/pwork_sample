@@ -130,6 +130,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 				size="sm"
 				className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
 				onPress={onMakeRelationship}
+				disabled
 			>
 				{isPending ? (
 					<Flow size={25} color={customColor['patchwork-dark-900']} />
