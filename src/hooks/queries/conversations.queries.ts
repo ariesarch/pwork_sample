@@ -1,17 +1,12 @@
 import {
-	fetchConversations,
 	getConversationsList,
 	searchUsers,
 } from '@/services/conversations.service';
-import {
-	ConversationsQueryKey,
-	SearchUsersQueryKey,
-} from '@/types/queries/conversations.type';
+import { SearchUsersQueryKey } from '@/types/queries/conversations.type';
 import {
 	InfiniteQueryOptionHelper,
 	QueryOptionHelper,
 } from '@/util/helper/helper';
-import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
 import {
 	InfiniteData,
 	useInfiniteQuery,
@@ -35,24 +30,30 @@ export const useSearchUsers = ({
 };
 
 export const useGetConversationsList = () => {
-	const queryKey: ConversationsQueryKey = ['conversations'];
-	return useQuery({
-		queryKey,
-		queryFn: getConversationsList,
+	return useInfiniteQuery<
+		Pathchwork.Conversations[],
+		Error,
+		InfiniteData<Pathchwork.Conversations[]>
+	>({
+		queryKey: ['conversations'],
+		//@ts-expect-error
+		queryFn: ({ pageParam }: { pageParam: string | null }) =>
+			getConversationsList({ pageParam }),
+		getNextPageParam: (
+			lastPage: Pathchwork.Conversations[],
+			allPages: Pathchwork.Conversations[][],
+		) => {
+			if (!lastPage || lastPage.length === 0) return undefined;
+			const pageParams = allPages.flatMap(page => page.map(item => item.id));
+			const lastParam = lastPage[lastPage.length - 1]?.id;
+			const occurrences = pageParams.filter(
+				param => param === lastParam,
+			).length;
+			if (occurrences > 1) {
+				return undefined;
+			}
+
+			return lastParam;
+		},
 	});
 };
-
-// export const useConversations = () => {
-// 	return useInfiniteQuery({
-// 		queryKey: ['conversations'],
-// 		queryFn: ({ pageParam }) => fetchConversations(pageParam),
-// 		getNextPageParam: lastPage => {
-// 			if (lastPage?.data?.length > 0) {
-// 				return { max_id: lastPage.data[lastPage.data.length - 1].id };
-// 			}
-// 			return undefined;
-// 		},
-// 		refetchOnWindowFocus: false,
-// 		refetchOnMount: false,
-// 	});
-// };

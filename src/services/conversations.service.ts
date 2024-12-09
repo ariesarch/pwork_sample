@@ -35,51 +35,19 @@ export const searchUsers = async ({
 };
 
 export const getConversationsList = async ({
-	queryKey,
-}: QueryFunctionContext<ConversationsQueryKey>) => {
+	pageParam = null,
+}: {
+	pageParam?: string | null;
+}): Promise<Pathchwork.Conversations[]> => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Conversations[]> = await instance.get(
-			appendApiVersion(`conversations`),
-			{
-				params: {},
-			},
+		const limit = 10;
+		const params: ConversationsQueryKey[1] = { limit, min_id: pageParam };
+		const { data } = await instance.get<Pathchwork.Conversations[]>(
+			appendApiVersion('conversations'),
+			{ params },
 		);
-		return resp.data;
+		return data;
 	} catch (e) {
 		return handleError(e);
 	}
-};
-
-export const fetchConversations = async (params?: {
-	max_id?: string;
-	since_id?: string;
-}) => {
-	const response = await instance.get(appendApiVersion('conversations'), {
-		params: { limit: 10 },
-	});
-	const linkHeader = response.headers['link'];
-	const links = parseLinkHeader(linkHeader);
-
-	return {
-		data: response.data,
-		nextPageUrl: links?.next,
-		prevPageUrl: links?.prev,
-	};
-};
-const parseLinkHeader = (header: string | undefined) => {
-	if (!header) return null;
-
-	const links: Record<string, string> = {};
-	const parts = header.split(',');
-
-	parts.forEach(part => {
-		const section = part.split(';');
-		if (section.length !== 2) return;
-
-		const url = section[0].trim().slice(1, -1); // Remove < and >
-		const rel = section[1].trim().replace(/rel="(.*)"/, '$1'); // Extract rel
-		links[rel] = url;
-	});
-
-	return links;
 };

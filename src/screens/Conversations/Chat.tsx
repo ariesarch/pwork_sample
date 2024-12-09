@@ -22,12 +22,6 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	const scrollViewRef = useRef<ScrollView | null>(null);
 	const [_message, setMessage] = useState<string>('');
 
-	const {
-		data: conversationsList,
-		isLoading,
-		error,
-	} = useGetConversationsList();
-
 	useEffect(() => {
 		const handleBackPress = () => {
 			navigation.navigate('StartConversation');
@@ -68,7 +62,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 						<Animated.View className="flex-1 m-3">
 							{/* the send date is needed to be checked on condition */}
 							<ThemeText className="self-center">19 Dec 2022</ThemeText>
-							{conversationsList &&
+							{/* {conversationsList &&
 								[...conversationsList].reverse().map((chat, i) => (
 									<View key={i}>
 										<View
@@ -100,7 +94,7 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 											<ThemeText>{chat?.unread ? 'Read' : 'Sent'}</ThemeText>
 										</View>
 									</View>
-								))}
+								))} */}
 						</Animated.View>
 					</ScrollView>
 					<MessageActionsBar

@@ -18,8 +18,13 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FlashList } from '@shopify/flash-list';
-import { useEffect, useState } from 'react';
-import { Dimensions, Pressable, RefreshControl, View } from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Pressable,
+	RefreshControl,
+	View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
@@ -35,13 +40,26 @@ const Message = ({
 	navigation: MessageScreenNavigationProp;
 }) => {
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
+
 	const {
-		data: _conversationsList,
+		data,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
 		isLoading,
-		isFetching,
 		refetch,
-		error,
 	} = useGetConversationsList();
+
+	const _conversationsList: Pathchwork.Conversations[] = data?.pages
+		.flat()
+		.filter(
+			(item, index, self) => index === self.findIndex(t => t.id === item.id),
+		);
+
+	const handleEndReached = () => {
+		if (isFetchingNextPage || !hasNextPage) return;
+		fetchNextPage();
+	};
 
 	return (
 		<SafeScreen>
@@ -49,7 +67,7 @@ const Message = ({
 			<FlashList
 				refreshControl={
 					<RefreshControl
-						refreshing={isFetching}
+						refreshing={isLoading}
 						tintColor={customColor['patchwork-light-900']}
 						onRefresh={refetch}
 					/>
@@ -118,10 +136,19 @@ const Message = ({
 					</Pressable>
 				)}
 				onEndReachedThreshold={0.15}
+				onEndReached={handleEndReached}
 				ListFooterComponent={
-					<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
-						No more conversations to show
-					</ThemeText>
+					isFetchingNextPage ? (
+						<ActivityIndicator
+							color={customColor['patchwork-red-50']}
+							size={'large'}
+							className="my-5"
+						/>
+					) : (
+						<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
+							No more conversations to show
+						</ThemeText>
+					)
 				}
 			/>
 			<Pressable
