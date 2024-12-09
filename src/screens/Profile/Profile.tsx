@@ -42,7 +42,6 @@ import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes'
 import { verifyAuthToken } from '@/services/auth.service';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { cleanText } from '@/util/helper/cleanText';
@@ -71,7 +70,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		'patchwork-dark-100',
 	);
 
-	const { clearFeed } = useActiveFeedAction();
 	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	// ***** Get Account Info ***** //

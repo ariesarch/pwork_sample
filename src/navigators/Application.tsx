@@ -2,9 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {
-	Login,
-	Register,
-	Welcome,
 	AboutYou,
 	Profile,
 	EmailVerification,
@@ -16,11 +13,10 @@ import {
 import type { RootStackParamList } from '@/types/navigation';
 import BottomTabs from './BottomTabStackNavigator';
 import WebViewer from '@/screens/WebViewer/WebViewer';
-import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
-import { useEffect } from 'react';
+import { useAuthStore } from '@/store/auth/authStore';
 import Guest from './GuestStackNavigator';
-import { getAppToken } from '@/util/helper/helper';
 import EditProfile from '@/screens/EditProfile/EditProfile';
+import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -52,6 +48,7 @@ function ApplicationNavigator() {
 							<Stack.Screen name="Index" component={BottomTabs} />
 							<Stack.Screen name="AboutYou" component={AboutYou} />
 							<Stack.Screen name="Profile" component={Profile} />
+							<Stack.Screen name="ProfileOther" component={ProfileOther} />
 							<Stack.Screen name="ChannelCreate" component={ChannelCreate} />
 							<Stack.Screen
 								name="EmailVerification"

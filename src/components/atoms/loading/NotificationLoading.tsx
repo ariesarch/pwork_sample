@@ -2,15 +2,21 @@ import React from 'react';
 import { View } from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import customColor from '@/util/constant/color';
+
 const NotificationLoading = () => {
 	return (
-		<View style={{ paddingHorizontal: 20, paddingBottom: 15 }}>
+		<View
+			style={{
+				paddingBottom: 15,
+				alignItems: 'center',
+			}}
+		>
 			<SkeletonPlaceholder
 				backgroundColor={customColor['skeleton-bg']}
 				highlightColor={customColor['skeleton-highlight']}
 				speed={1000}
 			>
-				<SkeletonPlaceholder.Item paddingHorizontal={20}>
+				<SkeletonPlaceholder.Item>
 					<SkeletonPlaceholder.Item flexDirection="row" paddingTop={20}>
 						<SkeletonPlaceholder.Item
 							marginTop={8}
@@ -35,6 +41,7 @@ const NotificationLoading = () => {
 									borderRadius={3}
 								/>
 							</SkeletonPlaceholder.Item>
+
 							<SkeletonPlaceholder.Item>
 								<SkeletonPlaceholder.Item
 									width={300}

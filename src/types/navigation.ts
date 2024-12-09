@@ -108,6 +108,8 @@ export type NotiStackParamList = {
 		id: string;
 		openKeyboardAtMount?: boolean;
 	};
+	Profile: { id: string };
+	ProfileOther: { id: string };
 };
 
 export type NotificationScreenNavigationProp = NavigationProp<
