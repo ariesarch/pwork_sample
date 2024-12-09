@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Menu, MenuItem } from 'react-native-material-menu';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { POLL_TYPES } from '@/util/constant/pollOption';
 import { PollDropperIcon } from '@/util/svg/icon.compose';
+import {
+	Menu,
+	MenuOption,
+	MenuOptions,
+	MenuTrigger,
+	renderers,
+} from 'react-native-popup-menu';
+import Underline from '@/components/atoms/common/Underline/Underline';
+import customColor from '@/util/constant/color';
 
 type PollTypeProps = {
 	selectedType: boolean;
@@ -18,8 +26,19 @@ const PollType = ({ selectedType, handleTypeChange }: PollTypeProps) => {
 	return (
 		<View>
 			<Menu
-				visible={choiceMenuVisible}
-				anchor={
+				renderer={renderers.Popover}
+				rendererProps={{
+					placement: 'top',
+					anchorStyle: {
+						width: 0,
+						height: 0,
+					},
+				}}
+				opened={choiceMenuVisible}
+				style={{ zIndex: 1000 }}
+				onBackdropPress={hideMenu}
+			>
+				<MenuTrigger>
 					<Pressable
 						onPress={showMenu}
 						style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -29,22 +48,36 @@ const PollType = ({ selectedType, handleTypeChange }: PollTypeProps) => {
 						</ThemeText>
 						<PollDropperIcon stroke={'#FFFFFF'} />
 					</Pressable>
-				}
-				style={{ marginTop: 50, borderRadius: 10, overflow: 'hidden' }}
-				onRequestClose={hideMenu}
-			>
-				{POLL_TYPES.map((type, index) => (
-					<MenuItem
-						key={index}
-						onPress={() => {
-							handleTypeChange(type.value);
-							hideMenu();
-						}}
-						className="bg-patchwork-dark-50"
-					>
-						<ThemeText>{type.label}</ThemeText>
-					</MenuItem>
-				))}
+				</MenuTrigger>
+				<MenuOptions
+					customStyles={{
+						optionsContainer: {
+							backgroundColor: customColor['patchwork-dark-50'],
+							borderRadius: 3,
+							shadowOpacity: 0.1,
+							elevation: 2,
+						},
+					}}
+				>
+					<>
+						{POLL_TYPES.map((type, index) => (
+							<MenuOption
+								onSelect={() => {
+									handleTypeChange(type.value);
+									hideMenu();
+								}}
+								key={index}
+								style={{
+									paddingHorizontal: 15,
+									paddingVertical: 10,
+									borderRadius: 3,
+								}}
+							>
+								<ThemeText>{type.label}</ThemeText>
+							</MenuOption>
+						))}
+					</>
+				</MenuOptions>
 			</Menu>
 		</View>
 	);

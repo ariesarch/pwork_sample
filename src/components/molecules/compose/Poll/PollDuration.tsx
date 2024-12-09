@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
 import { Pressable, View } from 'react-native';
-import { Menu, MenuItem } from 'react-native-material-menu';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { PollDropperIcon } from '@/util/svg/icon.compose';
 import { POLL_DURATION_OPTIONS } from '@/util/constant/pollOption';
+import {
+	Menu,
+	MenuOption,
+	MenuOptions,
+	MenuTrigger,
+	renderers,
+} from 'react-native-popup-menu';
+import customColor from '@/util/constant/color';
 
 type PollDurationProps = {
 	selectedDuration: number;
@@ -21,13 +28,19 @@ const PollDuration = ({
 	return (
 		<View>
 			<Menu
-				visible={durationMenuVisible}
-				style={{
-					marginTop: -30,
-					borderRadius: 12,
-					overflow: 'hidden',
+				renderer={renderers.Popover}
+				rendererProps={{
+					placement: 'top',
+					anchorStyle: {
+						width: 0,
+						height: 0,
+					},
 				}}
-				anchor={
+				opened={durationMenuVisible}
+				style={{ zIndex: 1000 }}
+				onBackdropPress={hideMenu}
+			>
+				<MenuTrigger>
 					<Pressable
 						onPress={showMenu}
 						style={{ flexDirection: 'row', alignItems: 'center' }}
@@ -41,21 +54,34 @@ const PollDuration = ({
 						</ThemeText>
 						<PollDropperIcon />
 					</Pressable>
-				}
-				onRequestClose={hideMenu}
-			>
-				{POLL_DURATION_OPTIONS.map((option, index) => (
-					<MenuItem
-						key={index}
-						onPress={() => {
-							handleDurationSelect(option.value);
-							hideMenu();
-						}}
-						className="bg-patchwork-dark-50"
-					>
-						<ThemeText>{option.label}</ThemeText>
-					</MenuItem>
-				))}
+				</MenuTrigger>
+				<MenuOptions
+					customStyles={{
+						optionsContainer: {
+							backgroundColor: customColor['patchwork-dark-50'],
+							borderRadius: 3,
+						},
+					}}
+				>
+					<>
+						{POLL_DURATION_OPTIONS.map((option, index) => (
+							<MenuOption
+								onSelect={() => {
+									handleDurationSelect(option.value);
+									hideMenu();
+								}}
+								key={index}
+								style={{
+									paddingVertical: 10,
+									paddingHorizontal: 15,
+									borderRadius: 3,
+								}}
+							>
+								<ThemeText>{option.label}</ThemeText>
+							</MenuOption>
+						))}
+					</>
+				</MenuOptions>
 			</Menu>
 		</View>
 	);

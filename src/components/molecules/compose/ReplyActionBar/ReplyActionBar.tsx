@@ -179,7 +179,7 @@ const ReplyActionBar = ({
 		}
 	};
 
-	const getStrokeColor = () => {
+	const getStrokeColorForPoll = () => {
 		if (disabledPoll) return '#6D7276';
 		if (composeState.poll) return '#FF3C26';
 		return '#FFFFFF';
@@ -214,11 +214,15 @@ const ReplyActionBar = ({
 					}
 				/>
 				<Pressable
-					// disabled={disabledPoll}
-					disabled={true}
+					disabled={disabledPoll}
 					onPress={onPressPoll}
 					className={'mr-3'}
-					children={<ComposePollIcon {...{ colorScheme }} stroke={'#6D7276'} />}
+					children={
+						<ComposePollIcon
+							{...{ colorScheme }}
+							stroke={getStrokeColorForPoll()}
+						/>
+					}
 				/>
 			</View>
 			<Button

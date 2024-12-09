@@ -56,6 +56,7 @@ import customColor from '@/util/constant/color';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
+import { delay } from 'lodash';
 
 type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
@@ -69,6 +70,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const { domain_name, channel_info } = route.params;
+	const [isRefresh, setIsRefresh] = useState(false);
 	const queryParams = {
 		domain_name,
 		remote: false,
@@ -112,9 +114,11 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	);
 
 	const handleRefresh = () => {
+		setIsRefresh(true);
 		refetchChannelFeed();
 		refetchChannelAbout();
 		refetchAdditionalInfo();
+		delay(() => setIsRefresh(false), 1500);
 	};
 
 	return (
@@ -183,7 +187,7 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 									renderItem={({ item }) => <StatusWrapper status={item} />}
 									refreshControl={
 										<RefreshControl
-											refreshing={isFetching}
+											refreshing={isRefresh}
 											tintColor={customColor['patchwork-light-900']}
 											onRefresh={handleRefresh}
 										/>
