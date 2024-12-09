@@ -10,7 +10,7 @@ import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 const ProfileInfo = () => {
 	const { colorScheme } = useColorScheme();
-	const { userInfo, setUserInfo } = useUserInfo();
+	const { userInfo } = useUserInfo();
 
 	return (
 		<View className=" -mt-3">

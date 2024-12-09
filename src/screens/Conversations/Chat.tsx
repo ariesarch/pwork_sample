@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { BackHandler, ScrollView, View } from 'react-native';
@@ -11,16 +11,43 @@ import ConversationsHeader from '@/components/molecules/conversations/Header/Hea
 import MessageActionsBar from '@/components/molecules/conversations/MessageActionsBar/MessageActionsBar';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
-import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
 import { queryClient } from '@/App';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { extractMessage } from '@/util/helper/extractMessage';
 import { cleanText } from '@/util/helper/cleanText';
 import moment from 'moment';
+import { useUserInfo } from '@/store/conversations/userInfoStore';
+
+type PaginatedChatData = {
+	pages: Pathchwork.Conversations[][];
+	pageParams: {};
+};
 
 const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
+	const { id } = route.params;
 	const scrollViewRef = useRef<ScrollView | null>(null);
+	const { height } = useGradualAnimation();
+	const { setUserInfo } = useUserInfo();
 	const [_message, setMessage] = useState<string>('');
+
+	const cachedChatList: PaginatedChatData | undefined =
+		queryClient.getQueryData(['conversations']);
+
+	const cachedDetailChat: Pathchwork.Conversations | undefined = useMemo(() => {
+		if (cachedChatList) {
+			return cachedChatList.pages
+				.flat()
+				.filter(
+					(item, index, self) =>
+						index === self.findIndex(t => t.id === item.id),
+				)
+				.find(v => v.id === id);
+		}
+	}, [cachedChatList]);
+
+	useEffect(() => {
+		setUserInfo(cachedDetailChat?.accounts[0]!);
+	}, [cachedDetailChat]);
 
 	useEffect(() => {
 		const handleBackPress = () => {
@@ -33,7 +60,6 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 		};
 	}, [navigation]);
 
-	const { height } = useGradualAnimation();
 	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
 		return {
 			height:
@@ -45,9 +71,9 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 		scrollViewRef.current?.scrollToEnd({ animated: true });
 	};
 
-	useEffect(() => {
-		scrollViewRef.current?.scrollToEnd({ animated: true });
-	}, []);
+	useEffect(() => scrollToEnd(), []);
+
+	if (!cachedDetailChat) return null;
 
 	return (
 		<SafeScreen>
@@ -60,41 +86,52 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 					<ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
 						<ProfileInfo />
 						<Animated.View className="flex-1 m-3">
-							{/* the send date is needed to be checked on condition */}
-							<ThemeText className="self-center">19 Dec 2022</ThemeText>
-							{/* {conversationsList &&
-								[...conversationsList].reverse().map((chat, i) => (
-									<View key={i}>
-										<View
-											className={`mt-2 ${
-												// chat.accounts[0].id !== === 'me'
-												// ?
-												'self-end bg-patchwork-red-50'
-												// : 'self-start bg-gray-300'
-											} rounded-t-xl rounded-l-xl px-4 py-2`}
-										>
-											<ThemeText className="text-white">
-												{extractMessage(cleanText(chat.last_status?.content))}
-											</ThemeText>
-										</View>
-										<View
-											className={`flex-row items-center ${
-												// chat.sender === 'me' ?
-												'self-end'
-												// :
-												// 'self-start'
-											}`}
-										>
-											<ThemeText className={'text-xs text-gray-400 '}>
-												{moment(chat.last_status?.created_at).format('HH:mm A')}
-											</ThemeText>
-											<ThemeText className="text-2xl align-middle mx-2">
-												▸
-											</ThemeText>
-											<ThemeText>{chat?.unread ? 'Read' : 'Sent'}</ThemeText>
-										</View>
+							<ThemeText className="self-center">
+								{moment(cachedDetailChat.last_status?.created_at).format(
+									'DD MMM YYYY',
+								)}
+							</ThemeText>
+							{cachedDetailChat && (
+								<>
+									<View
+										className={`mt-2 ${
+											// chat.accounts[0].id !== === 'me'
+											// ?
+											'self-end bg-patchwork-red-50'
+											// : 'self-start bg-gray-300'
+										} rounded-t-xl rounded-l-xl px-4 py-2`}
+										style={{
+											maxWidth: '66.67%',
+										}}
+									>
+										<ThemeText className="text-white">
+											{extractMessage(
+												cleanText(cachedDetailChat.last_status?.content),
+											)}
+										</ThemeText>
 									</View>
-								))} */}
+									<View
+										className={`flex-row items-center ${
+											// chat.sender === 'me' ?
+											'self-end'
+											// :
+											// 'self-start'
+										}`}
+									>
+										<ThemeText className={'text-xs text-gray-400 '}>
+											{moment(cachedDetailChat.last_status?.created_at).format(
+												'HH:mm A',
+											)}
+										</ThemeText>
+										<ThemeText className="text-2xl align-middle mx-2">
+											▸
+										</ThemeText>
+										<ThemeText>
+											{cachedDetailChat?.unread ? 'Read' : 'Sent'}
+										</ThemeText>
+									</View>
+								</>
+							)}
 						</Animated.View>
 					</ScrollView>
 					<MessageActionsBar

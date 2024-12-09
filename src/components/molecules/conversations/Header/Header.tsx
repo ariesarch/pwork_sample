@@ -14,7 +14,7 @@ type Props = {
 
 const ConversationsHeader = ({ onPressBackButton }: Props) => {
 	const { colorScheme } = useColorScheme();
-	const { userInfo, setUserInfo } = useUserInfo();
+	const { userInfo } = useUserInfo();
 
 	return (
 		<View className="flex-row justify-center items-center mx-4 mt-4 mb-5">

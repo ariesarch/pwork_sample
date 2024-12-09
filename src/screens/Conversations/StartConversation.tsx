@@ -96,7 +96,7 @@ const Message = ({
 				keyExtractor={item => item.id.toString()}
 				renderItem={({ item }: { item: Pathchwork.Conversations }) => (
 					<Pressable
-						disabled
+						onPress={() => navigation.navigate('Chat', { id: item.id })}
 						className={`flex-row items-center rounded-2xl p-3 mr-2`}
 					>
 						<FastImage

@@ -46,13 +46,13 @@ export const useGetConversationsList = () => {
 			if (!lastPage || lastPage.length === 0) return undefined;
 			const pageParams = allPages.flatMap(page => page.map(item => item.id));
 			const lastParam = lastPage[lastPage.length - 1]?.id;
+			// the occurrences is used as the api response with min_id is not completely reliable.
 			const occurrences = pageParams.filter(
 				param => param === lastParam,
 			).length;
 			if (occurrences > 1) {
 				return undefined;
 			}
-
 			return lastParam;
 		},
 	});
