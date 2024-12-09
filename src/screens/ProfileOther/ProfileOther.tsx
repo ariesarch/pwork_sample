@@ -55,7 +55,10 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	);
 
 	// ***** Get Account Info ***** //
-	const acctInfoQueryKey: AccountInfoQueryKey = ['get_account_info', { id }];
+	const acctInfoQueryKey: AccountInfoQueryKey = [
+		'get_account_info',
+		{ id, domain_name },
+	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =
 		useAccountInfo(acctInfoQueryKey);

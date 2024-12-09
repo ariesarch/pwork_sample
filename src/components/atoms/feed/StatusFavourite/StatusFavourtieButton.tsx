@@ -1,5 +1,6 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { useFavouriteMutation } from '@/hooks/mutations/feed.mutation';
+import { useAuthStore } from '@/store/auth/authStore';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import {
 	useActiveFeedAction,
@@ -15,29 +16,31 @@ import {
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
-import { uniqueId } from 'lodash';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
 type Props = {
 	status: Pathchwork.Status;
+	isFeedDetail?: boolean;
 } & ViewProps;
 
-const StatusFavourtieButton = ({ status, ...props }: Props) => {
+const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { domain_name } = useActiveDomainStore();
 	const { saveStatus } = useSubchannelStatusActions();
+	const { userInfo } = useAuthStore();
 
 	const { mutate } = useFavouriteMutation({
-		onMutate: async ({ status }) => {
-			if (currentFeed) {
+		onMutate: async variables => {
+			if (isFeedDetail && currentFeed?.id === status.id) {
 				const updateFeedDatailData = updateFavouriteStatus(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
 
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
-				status.account.id,
-				status.in_reply_to_id,
+				userInfo?.id!,
+				variables.status.in_reply_to_id,
+				variables.status.in_reply_to_account_id,
 				domain_name,
 			);
 			updateFavouriteCacheData({
@@ -74,6 +77,10 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 		? status.reblog.favourited
 		: status.favourited;
 
+	const favouritesCount = status.reblog
+		? status.reblog.favourites_count
+		: status.favourites_count;
+
 	return (
 		<TouchableOpacity
 			activeOpacity={0.8}
@@ -89,11 +96,7 @@ const StatusFavourtieButton = ({ status, ...props }: Props) => {
 				}
 				fill={favouriteColor ? customColor['patchwork-red-50'] : 'none'}
 			/>
-			<ThemeText variant="textGrey">
-				{status.reblog
-					? status.reblog.favourites_count
-					: status.favourites_count}
-			</ThemeText>
+			<ThemeText variant="textGrey">{favouritesCount}</ThemeText>
 		</TouchableOpacity>
 	);
 };

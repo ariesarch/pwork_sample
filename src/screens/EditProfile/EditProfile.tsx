@@ -25,6 +25,7 @@ import {
 } from '@/hooks/custom/useGradualAnimation';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type ProfileType = {
 	display_name?: string;
@@ -42,6 +43,8 @@ const EditProfile = () => {
 	const [profile, setProfile] = useState<ProfileType>();
 	const { header, avatar, actions } = useProfileMediaStore();
 	const { height, progress } = useGradualAnimation();
+
+	const { top } = useSafeAreaInsets();
 
 	useEffect(() => {
 		if (userInfo) {
@@ -130,7 +133,7 @@ const EditProfile = () => {
 
 	if (!userInfo) return null;
 	return (
-		<View className="flex-1">
+		<View className="flex-1" style={{ paddingTop: top }}>
 			<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
 				<TouchableOpacity
 					onPress={() => {

@@ -16,9 +16,15 @@ export const accountInfoQueryFn = async ({
 	queryKey,
 }: QueryFunctionContext<AccountInfoQueryKey>) => {
 	try {
-		const { id } = queryKey[1];
+		const { id, domain_name } = queryKey[1];
 		const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
 			appendApiVersion(`accounts/${id}`, 'v1'),
+			{
+				params: {
+					domain_name,
+					isDynamicDomain: true,
+				},
+			},
 		);
 		return resp.data;
 	} catch (e) {

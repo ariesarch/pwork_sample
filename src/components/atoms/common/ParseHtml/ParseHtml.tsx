@@ -182,44 +182,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 
 	return (
 		<>
-			<ThemeText
-				children={document.children.map(renderNode)}
-				onTextLayout={({ nativeEvent }) => {
-					if (
-						numberOfLines === 1 ||
-						nativeEvent.lines.length >= numberOfLines + 8
-					) {
-						setTotalLines(nativeEvent.lines.length);
-					}
-				}}
-				numberOfLines={
-					typeof totalLines === 'number'
-						? expanded
-							? 999
-							: numberOfLines
-						: Math.max(MAX_ALLOWED_LINES, numberOfLines)
-				}
-				style={{
-					height: numberOfLines === 1 && !expanded ? 0 : undefined,
-					lineHeight: adaptedLineheight,
-				}}
-			/>
-			{/* {typeof totalLines === 'number' || numberOfLines === 1 ? (
-				<Pressable
-					onPress={() => {
-						layoutAnimation();
-						setExpanded(!expanded);
-					}}
-				>
-					<ThemeText
-						children={expanded ? 'See Less' : 'See More'}
-						variant={'textOrange'}
-						style={{
-							textDecorationLine: 'underline',
-						}}
-					/>
-				</Pressable>
-			) : null} */}
+			<ThemeText children={document.children.map(renderNode)} />
 		</>
 	);
 };

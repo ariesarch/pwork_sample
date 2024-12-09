@@ -17,15 +17,37 @@ const updateFavouriteStatus = (
 		: status.favourites_count + 1,
 });
 
+const toggleReblogFavouriteStatus = (
+	status: Pathchwork.Status,
+): Pathchwork.Status => {
+	if (status.reblog) {
+		return {
+			...status,
+			reblog: updateFavouriteStatus(status.reblog),
+		};
+	}
+	return updateFavouriteStatus(status);
+};
+
 const updateFeedPageWithFavouriteStatus = (
 	data: IFeedQueryFnData,
 	response: Pathchwork.Status,
-) =>
-	updateFeedPage(
-		data,
-		status => status.id === response.id,
-		status => updateFavouriteStatus(status),
-	);
+) => {
+	return {
+		...data,
+		pages: data.pages.map(page => ({
+			...page,
+			data: page.data.map(status => {
+				if (status.reblog?.id === response.id) {
+					return toggleReblogFavouriteStatus(status);
+				} else if (status.id === response.id) {
+					return toggleReblogFavouriteStatus(status);
+				}
+				return status;
+			}),
+		})),
+	};
+};
 
 const applyUpdateToQueryCache = (
 	queryKey: FavouriteQueryKeys,

@@ -53,19 +53,19 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
+
 	const [socialLinkAction, setSocialLinkAction] = useState<{
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
-	const [showDelConf, setShowDelConf] = useState<{
-		visible: boolean;
-		title: string;
-	}>({ visible: false, title: '' });
+
 	const domain_name = useSelectedDomain();
+
 	const {
 		userInfo,
 		actions: { setUserInfo },
 	} = useAuthStore();
+
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
 		'patchwork-light-900',
@@ -78,7 +78,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
 		'get_account_info',
-		{ id: userInfo?.id! },
+		{ id: userInfo?.id!, domain_name },
 	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =
@@ -182,9 +182,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	useFocusEffect(
 		useCallback(() => {
 			resetAttachmentStore();
-			setTimeout(() => {
-				clearFeed();
-			}, 300);
 		}, []),
 	);
 
