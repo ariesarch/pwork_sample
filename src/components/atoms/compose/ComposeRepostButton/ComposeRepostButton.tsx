@@ -73,6 +73,7 @@ const ComposeRepostButton = ({
 			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
 				isNotMyId ? otherUserId : status.account.id,
 				status.reblog?.in_reply_to_id,
+				status.reblog?.in_reply_to_account_id,
 			);
 			applyReblogCountCacheUpdates({ response: status, queryKeys });
 

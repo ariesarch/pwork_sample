@@ -14,6 +14,15 @@ type Props = {
 
 const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 	const navigation = useNavigation();
+
+	const reblogsCount = status.reblog
+		? status.reblog.reblogs_count
+		: status.reblogs_count;
+
+	const repliesCount = status.reblog
+		? status.reblog.replies_count
+		: status.replies_count;
+
 	return (
 		<View
 			className={cn(
@@ -25,13 +34,13 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 			<View className="flex flex-row ">
 				<StatusReplyButton
 					className="mr-3"
-					count={status.replies_count}
+					count={repliesCount}
 					status={status}
 					isFeedDetail={isFeedDetail}
 				/>
 				<StatusReblogButton
 					className="mr-3"
-					count={status.reblogs_count}
+					count={reblogsCount}
 					onPress={() => {
 						status.reblogged || status.reblog?.reblogged
 							? Alert.alert('You have already re-posted this status!')
