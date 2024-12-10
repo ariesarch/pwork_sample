@@ -12,5 +12,3 @@ export type ConversationsQueryParam = {
 	since_id?: string | null;
 	min_id?: string | null;
 };
-
-export type ConversationsQueryKey = ['conversations', ConversationsQueryParam];

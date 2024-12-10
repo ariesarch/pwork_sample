@@ -23,11 +23,14 @@ type PaginatedChatData = {
 	pageParams: {};
 };
 
-const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
+const ConversationDetail = ({
+	navigation,
+	route,
+}: ConversationsStackScreenProps<'ConversationDetail'>) => {
 	const { id } = route.params;
 	const scrollViewRef = useRef<ScrollView | null>(null);
 	const { height } = useGradualAnimation();
-	const { setUserInfo } = useUserInfo();
+	const { userInfo, setUserInfo } = useUserInfo();
 	const [_message, setMessage] = useState<string>('');
 
 	const cachedChatList: PaginatedChatData | undefined =
@@ -46,12 +49,14 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	}, [cachedChatList]);
 
 	useEffect(() => {
-		setUserInfo(cachedDetailChat?.accounts[0]!);
+		if (cachedDetailChat) {
+			setUserInfo(cachedDetailChat.accounts[0]);
+		}
 	}, [cachedDetailChat]);
 
 	useEffect(() => {
 		const handleBackPress = () => {
-			navigation.navigate('StartConversation');
+			navigation.navigate('ConversationList');
 			return true;
 		};
 		BackHandler.addEventListener('hardwareBackPress', handleBackPress);
@@ -73,23 +78,26 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 
 	useEffect(() => scrollToEnd(), []);
 
-	if (!cachedDetailChat) return null;
-
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
 				<View className="flex-1">
 					{/* Header */}
 					<ConversationsHeader
-						onPressBackButton={() => navigation.navigate('StartConversation')}
+						onPressBackButton={() => {
+							navigation.navigate('ConversationList');
+							setUserInfo(null);
+						}}
 					/>
 					<ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
 						<ProfileInfo />
 						<Animated.View className="flex-1 m-3">
 							<ThemeText className="self-center">
-								{moment(cachedDetailChat.last_status?.created_at).format(
-									'DD MMM YYYY',
-								)}
+								{cachedDetailChat
+									? moment(cachedDetailChat?.last_status?.created_at).format(
+											'DD MMM YYYY',
+									  )
+									: moment().format('DD MMM YYYY')}
 							</ThemeText>
 							{cachedDetailChat && (
 								<>
@@ -146,4 +154,4 @@ const Chat = ({ navigation, route }: ConversationsStackScreenProps<'Chat'>) => {
 	);
 };
 
-export default Chat;
+export default ConversationDetail;

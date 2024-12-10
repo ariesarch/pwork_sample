@@ -7,6 +7,7 @@ import { SendIcon } from '@/util/svg/icon.conversations';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useColorScheme } from 'nativewind';
+import { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
 
@@ -22,7 +23,7 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
-			navigation.navigate('Chat');
+			navigation.navigate('ConversationDetail', { id: response.id });
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {

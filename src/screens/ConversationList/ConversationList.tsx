@@ -34,7 +34,7 @@ type MessageScreenNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<ConversationsStackParamList>
 >;
 
-const Message = ({
+const ConversationList = ({
 	navigation,
 }: {
 	navigation: MessageScreenNavigationProp;
@@ -96,7 +96,9 @@ const Message = ({
 				keyExtractor={item => item.id.toString()}
 				renderItem={({ item }: { item: Pathchwork.Conversations }) => (
 					<Pressable
-						onPress={() => navigation.navigate('Chat', { id: item.id })}
+						onPress={() =>
+							navigation.navigate('ConversationDetail', { id: item.id })
+						}
 						className={`flex-row items-center rounded-2xl p-3 mr-2`}
 					>
 						<FastImage
@@ -161,4 +163,4 @@ const Message = ({
 	);
 };
 
-export default Message;
+export default ConversationList;
