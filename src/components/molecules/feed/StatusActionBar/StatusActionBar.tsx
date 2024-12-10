@@ -14,7 +14,6 @@ type Props = {
 
 const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 	const navigation = useNavigation();
-	`flex flex-row justify-between mt-3 items-center`;
 	return (
 		<View
 			className={cn(
@@ -46,7 +45,7 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 							  });
 					}}
 				/>
-				<StatusFavourtieButton className="mr-3" {...{ status }} />
+				<StatusFavourtieButton className="mr-3" {...{ status, isFeedDetail }} />
 			</View>
 			<View className="flex flex-row ">
 				<Tranlsate className="mr-3" />

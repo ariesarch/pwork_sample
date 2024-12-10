@@ -1,9 +1,7 @@
 import React from 'react';
 import { Platform, View } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Button } from '@/components/atoms/common/Button/Button';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { mediaUploadAction } from '@/util/helper/mediaUploadActions';
 import {
 	hasCameraPermission,
 	hasMediaPermissions,
@@ -35,57 +33,64 @@ const ManageAttachmentModal = ({
 	const { onSelectMedia } = useProfileMediaActions();
 	const navigation = useNavigation();
 
-	const cropImage = async (imagePath: string) => {
-		try {
-			const croppedImage = await ImagePicker.openCropper({
-				mediaType: 'photo',
-				path: imagePath,
-				width: type === 'avatar' ? 300 : 1600,
-				height: type === 'avatar' ? 300 : 700,
-				cropping: true,
-			});
-			onToggleMediaModal();
-			onSelectMedia(type, [
-				{
-					uri: croppedImage.path,
-					type: croppedImage.mime,
-					fileName: croppedImage.path.split('/').pop(),
-				},
-			]);
-		} catch (error: any) {
-			Toast.show({
-				type: 'error',
-				text1: error?.message || 'Something went wrong!',
-				position: 'top',
-				visibilityTime: 1000,
-				onHide: () => {},
-			});
-		}
-	};
-
 	const onPressCamera = async () => {
 		if (Platform.OS === 'android' && !(await hasCameraPermission())) {
 			return;
 		}
-		await launchCamera(mediaUploadAction.options, async response => {
-			if (response.assets && response.assets[0].uri) {
-				await cropImage(response.assets[0].uri);
-			}
-		});
+		ImagePicker.openCamera({
+			width: type === 'avatar' ? 300 : 1600,
+			height: type === 'avatar' ? 300 : 700,
+			cropping: true,
+		})
+			.then(response => {
+				onToggleMediaModal();
+				onSelectMedia(type, [
+					{
+						uri: response.path,
+						type: response.mime,
+						fileName: response.path.split('/').pop(),
+					},
+				]);
+			})
+			.catch(error => {
+				Toast.show({
+					type: 'error',
+					text1: error?.message || 'Something went wrong!',
+					position: 'top',
+					visibilityTime: 1000,
+					onHide: () => {},
+				});
+			});
 	};
 
 	const onPressGallery = async () => {
 		if (Platform.OS === 'android' && !(await hasMediaPermissions())) {
 			return;
 		}
-		await launchImageLibrary(
-			{ ...mediaUploadAction.options, mediaType: 'photo', selectionLimit: 1 },
-			async response => {
-				if (response.assets && response.assets[0].uri) {
-					await cropImage(response.assets[0].uri);
-				}
-			},
-		);
+		ImagePicker.openPicker({
+			width: type === 'avatar' ? 300 : 1600,
+			height: type === 'avatar' ? 300 : 700,
+			cropping: true,
+		})
+			.then(response => {
+				onToggleMediaModal();
+				onSelectMedia(type, [
+					{
+						uri: response.path,
+						type: response.mime,
+						fileName: response.path.split('/').pop(),
+					},
+				]);
+			})
+			.catch(error => {
+				Toast.show({
+					type: 'error',
+					text1: error?.message || 'Something went wrong!',
+					position: 'top',
+					visibilityTime: 1000,
+					onHide: () => {},
+				});
+			});
 	};
 
 	const onPressPreview = () => {
@@ -96,6 +101,7 @@ const ManageAttachmentModal = ({
 				},
 			});
 		}
+		onToggleMediaModal();
 	};
 
 	return (
