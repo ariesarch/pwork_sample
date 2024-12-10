@@ -1,7 +1,6 @@
-import { Image, ImageProps, Pressable, View, ViewProps } from 'react-native';
+import { Image, Pressable, View, ViewProps } from 'react-native';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Button } from '@/components/atoms/common/Button/Button';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';

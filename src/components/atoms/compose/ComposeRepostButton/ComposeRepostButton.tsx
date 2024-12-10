@@ -1,3 +1,4 @@
+import { queryClient } from '@/App';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useRepostMutation } from '@/hooks/mutations/feed.mutation';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -5,6 +6,7 @@ import {
 	useManageAttachmentActions,
 	useManageAttachmentStore,
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
 import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
@@ -49,6 +51,7 @@ const ComposeRepostButton = ({
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
 	const { saveStatus } = useSubchannelStatusActions();
 
+	const domain_name = useSelectedDomain();
 	const { userInfo } = useAuthStore();
 
 	const isNotMyId = useMemo(() => {
@@ -62,6 +65,17 @@ const ComposeRepostButton = ({
 	const { progress } = useManageAttachmentStore();
 	const isMediaUploading = progress.currentIndex !== undefined;
 
+	const accountDetailFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: true,
+			exclude_reblogs: false,
+			exclude_original_statuses: false,
+		},
+	];
+
 	const { mutate, isPending } = useRepostMutation({
 		onMutate: ({ id: statusId }) => {
 			if (isFeedDetail && currentFeed?.id === statusId) {
@@ -74,8 +88,12 @@ const ComposeRepostButton = ({
 				isNotMyId ? otherUserId : status.account.id,
 				status.reblog?.in_reply_to_id,
 				status.reblog?.in_reply_to_account_id,
+				status.reblog ? true : false,
+				domain_name,
 			);
 			applyReblogCountCacheUpdates({ response: status, queryKeys });
+
+			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 
 			Toast.show({
 				type: 'successToast',

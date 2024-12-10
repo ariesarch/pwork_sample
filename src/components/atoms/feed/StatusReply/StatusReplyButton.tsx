@@ -36,7 +36,7 @@ const StatusReplyButton = ({
 
 	const handlePress = () => {
 		if (!isFeedDetail) {
-			setActiveFeed(status);
+			setActiveFeed(status.reblog ? status.reblog : status);
 			return navigation.navigate('FeedDetail', {
 				id: status.reblog ? status.reblog.id : status.id,
 				openKeyboardAtMount: true,

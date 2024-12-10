@@ -111,6 +111,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	});
 
 	const [isRefresh, setIsRefresh] = useState(false);
+	const [isRepliesRefresh, setIsRepliesRefresh] = useState(false);
 
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage) {
@@ -312,10 +313,11 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										refreshControl={
 											<RefreshControl
 												className="mt-1"
-												refreshing={isRefresh}
+												refreshing={isRepliesRefresh}
 												tintColor={customColor['patchwork-light-900']}
 												onRefresh={() => {
-													delay(() => setIsRefresh(true), 1500);
+													setIsRepliesRefresh(true);
+													delay(() => setIsRepliesRefresh(false), 1500);
 													refetchReplies();
 												}}
 											/>

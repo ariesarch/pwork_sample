@@ -36,7 +36,7 @@ const FeedDetailStatus = ({
 					showFollowIcon={userInfo?.id !== feedDetail.account.id}
 					// relationships={relationships}
 				/>
-				<StatusContent status={feedDetail} className="mt-2" />
+				<StatusContent status={feedDetail} isFeedDetail className="mt-2" />
 				{feedDetail.reblog && (
 					<Pressable
 						className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl"

@@ -175,6 +175,7 @@ const StatusMenu = ({
 						...status,
 						text,
 					},
+					isFeedDetail,
 				},
 			});
 			hideMenu();

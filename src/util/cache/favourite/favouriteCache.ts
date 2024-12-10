@@ -1,13 +1,13 @@
 import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
 import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
-import { updateFeedPage, updateQueryCacheGeneric } from '../queryCacheHelper';
+import { updateQueryCacheGeneric } from '../queryCacheHelper';
 import { queryClient } from '@/App';
 
 export type FavouriteQueryKeys =
 	| GetChannelFeedQueryKey
 	| AccountDetailFeedQueryKey;
 
-const updateFavouriteStatus = (
+const toggleFavouriteState = (
 	status: Pathchwork.Status,
 ): Pathchwork.Status => ({
 	...status,
@@ -17,19 +17,19 @@ const updateFavouriteStatus = (
 		: status.favourites_count + 1,
 });
 
-const toggleReblogFavouriteStatus = (
+const updateStatusFavourite = (
 	status: Pathchwork.Status,
 ): Pathchwork.Status => {
 	if (status.reblog) {
 		return {
 			...status,
-			reblog: updateFavouriteStatus(status.reblog),
+			reblog: toggleFavouriteState(status.reblog),
 		};
 	}
-	return updateFavouriteStatus(status);
+	return toggleFavouriteState(status);
 };
 
-const updateFeedPageWithFavouriteStatus = (
+const updateFeedWithFavourite = (
 	data: IFeedQueryFnData,
 	response: Pathchwork.Status,
 ) => {
@@ -38,10 +38,15 @@ const updateFeedPageWithFavouriteStatus = (
 		pages: data.pages.map(page => ({
 			...page,
 			data: page.data.map(status => {
-				if (status.reblog?.id === response.id) {
-					return toggleReblogFavouriteStatus(status);
-				} else if (status.id === response.id) {
-					return toggleReblogFavouriteStatus(status);
+				if (status.id === response.id) {
+					// Update favourite count for normal case
+					return updateStatusFavourite(status);
+				} else if (status.reblog?.id === response.id) {
+					// Update favourite count for reblog status case
+					return updateStatusFavourite(status);
+				} else if (status.id === response.reblog?.id) {
+					// Update favourite count for reblog status which also update to original favourite count in Profile
+					return updateStatusFavourite(status);
 				}
 				return status;
 			}),
@@ -49,21 +54,21 @@ const updateFeedPageWithFavouriteStatus = (
 	};
 };
 
-const applyUpdateToQueryCache = (
+const updateFavouriteInCache = (
 	queryKey: FavouriteQueryKeys,
 	response: Pathchwork.Status,
 ) => {
 	updateQueryCacheGeneric<IFeedQueryFnData>(queryKey, previousData =>
-		updateFeedPageWithFavouriteStatus(previousData, response),
+		updateFeedWithFavourite(previousData, response),
 	);
 };
 
-const updateFavouriteCacheData = ({
+const syncFavouriteAcrossCache = ({
 	response,
 	queryKeys,
 }: CacheUpdateParams<Pathchwork.Status, FavouriteQueryKeys>): void => {
 	queryKeys.forEach(queryKey => {
-		applyUpdateToQueryCache(queryKey, response);
+		updateFavouriteInCache(queryKey, response);
 	});
 };
 
@@ -101,7 +106,7 @@ const updateFavouriteForDescendentReply = (
 };
 
 export {
-	updateFavouriteStatus,
-	updateFavouriteCacheData,
+	toggleFavouriteState,
+	syncFavouriteAcrossCache,
 	updateFavouriteForDescendentReply,
 };

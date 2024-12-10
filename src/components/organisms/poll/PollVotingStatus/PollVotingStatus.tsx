@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import { useVoteMutation } from '@/hooks/mutations/vote.mutation';
 import Toast from 'react-native-toast-message';
@@ -15,16 +15,22 @@ import {
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
+import { useAuthStore } from '@/store/auth/authStore';
+import { queryClient } from '@/App';
 
 const PollVotingStatus = ({
-	poll,
-	accountId,
-	inReplyToId,
+	status,
+	isFeedDetail,
+	isReposting,
 }: {
-	poll: Pathchwork.Poll;
-	accountId: string;
-	inReplyToId: Pathchwork.Status['in_reply_to_id'];
+	status: Pathchwork.Status;
+	isFeedDetail?: boolean;
+	isReposting?: boolean;
 }) => {
+	const { domain_name } = useActiveDomainStore();
+	const { userInfo } = useAuthStore();
+
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 
@@ -39,7 +45,7 @@ const PollVotingStatus = ({
 		(index: number) => {
 			setSelectedIndices(prev => {
 				const updatedIndices = new Set(prev);
-				if (poll.multiple) {
+				if (status.poll.multiple) {
 					updatedIndices.has(index)
 						? updatedIndices.delete(index)
 						: updatedIndices.add(index);
@@ -50,13 +56,24 @@ const PollVotingStatus = ({
 				return updatedIndices;
 			});
 		},
-		[poll.multiple],
+		[status.poll.multiple],
 	);
 
 	// ******** Poll Vote Mutation ******** //
+	const accountDetailFeedQueryKey = [
+		'account-detail-feed',
+		{
+			domain_name: domain_name,
+			account_id: userInfo?.id!,
+			exclude_replies: true,
+			exclude_reblogs: false,
+			exclude_original_statuses: false,
+		},
+	];
+
 	const { mutate, isPending } = useVoteMutation({
 		onSuccess: response => {
-			if (currentFeed) {
+			if (isFeedDetail && currentFeed?.id === status.id) {
 				const updateFeedDatailData = updatePollStatus(
 					currentFeed,
 					selectedIndices,
@@ -64,9 +81,18 @@ const PollVotingStatus = ({
 				setActiveFeed(updateFeedDatailData);
 			}
 
+			if (status.reblogged) {
+				return queryClient.invalidateQueries({
+					queryKey: accountDetailFeedQueryKey,
+				});
+			}
+
 			const queryKeys = getCacheQueryKeys<PollCacheQueryKeys>(
-				accountId,
-				inReplyToId,
+				status.account.id,
+				status.in_reply_to_id,
+				status.in_reply_to_account_id,
+				status.reblog ? true : false,
+				domain_name,
 			);
 			updatePollCacheData({
 				response,
@@ -86,31 +112,32 @@ const PollVotingStatus = ({
 
 	const handleVote = useCallback(() => {
 		if (selectedIndices.size > 0) {
-			mutate({ id: poll.id, choices: Array.from(selectedIndices) });
+			mutate({ id: status.poll.id, choices: Array.from(selectedIndices) });
 		}
 	}, [selectedIndices, mutate]);
 	// ******** Poll Vote Mutation ******** //
 
 	const expired =
-		poll.expired ||
-		(poll.expires_at !== null &&
-			new Date(poll.expires_at).getTime() < Date.now());
+		status.poll.expired ||
+		(status.poll.expires_at !== null &&
+			new Date(status.poll.expires_at).getTime() < Date.now());
 
-	const showResults = poll.voted || expired;
+	const showResults = status.poll.voted || expired;
 
 	return (
 		<View className="py-1">
 			<View>
-				{poll.options.map((option, index) => (
+				{status.poll.options.map((option, index) => (
 					<PollVotingOption
 						key={index}
-						poll={poll}
+						poll={status.poll}
 						title={option.title}
 						votesCount={option.votes_count}
 						isSelected={selectedIndices.has(index)}
 						optionIndex={index}
 						handleOptionSelect={() => handleOptionSelect(index)}
 						showResults={showResults || checkResults}
+						isReposting={isReposting}
 					/>
 				))}
 			</View>
@@ -127,11 +154,11 @@ const PollVotingStatus = ({
 			/>
 
 			<PollVotingFooter
-				votesCount={poll.votes_count}
-				votersCount={poll.voters_count}
-				isMultiple={poll.multiple}
+				votesCount={status.poll.votes_count}
+				votersCount={status.poll.voters_count}
+				isMultiple={status.poll.multiple}
 				expired={expired}
-				expiresAt={poll.expires_at}
+				expiresAt={status.poll.expires_at}
 			/>
 		</View>
 	);
