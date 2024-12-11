@@ -63,6 +63,7 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 								<ComposeButton
 									{...{
 										statusId: isEdit ? composeParams.incomingStatus.id : '',
+										isFeedDetail: isEdit ? composeParams.isFeedDetail : false,
 									}}
 								/>
 							)

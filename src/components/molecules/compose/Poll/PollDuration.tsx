@@ -24,7 +24,6 @@ const PollDuration = ({
 	const [durationMenuVisible, setDurationMenuVisible] = useState(false);
 	const hideMenu = () => setDurationMenuVisible(false);
 	const showMenu = () => setDurationMenuVisible(true);
-	console.log('bb::');
 
 	return (
 		<View>

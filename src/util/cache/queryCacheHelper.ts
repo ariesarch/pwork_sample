@@ -41,10 +41,12 @@ export const getCacheQueryKeys = <T>(
 	accountId: string,
 	inReplyToId?: string | null,
 	inReplyToAcctId?: string | null,
+	isReblogged?: boolean,
 	current_domain?: string,
 ): T[] => {
 	const domain_name = current_domain || process.env.API_URL || DEFAULT_API_URL;
-	const isThatReply = inReplyToId !== null || inReplyToAcctId !== null;
+	const isThatReply =
+		(inReplyToId !== null || inReplyToAcctId !== null) && !isReblogged;
 	return [
 		['channel-feed', { domain_name, remote: false, only_media: false }],
 		[

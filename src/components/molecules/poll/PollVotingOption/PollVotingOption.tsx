@@ -16,6 +16,7 @@ interface PollVotingOptionProps {
 	handleOptionSelect: () => void;
 	showResults: boolean;
 	optionIndex: number;
+	isReposting?: boolean;
 }
 
 const PollVotingOption = ({
@@ -26,6 +27,7 @@ const PollVotingOption = ({
 	handleOptionSelect,
 	showResults,
 	optionIndex,
+	isReposting,
 }: PollVotingOptionProps) => {
 	const pollVotesCount = poll.voters_count || poll.votes_count;
 	const hasOwnVotes = poll.own_votes && poll.own_votes?.includes(optionIndex);
@@ -76,7 +78,7 @@ const PollVotingOption = ({
 	}
 
 	return (
-		<Pressable onPress={onPressOptionSelect}>
+		<Pressable onPress={onPressOptionSelect} disabled={isReposting}>
 			<View className="py-1">
 				<View className="relative py-1">
 					<View className="flex-row items-center">

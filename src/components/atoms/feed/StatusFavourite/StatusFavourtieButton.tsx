@@ -9,13 +9,14 @@ import {
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import {
 	FavouriteQueryKeys,
-	updateFavouriteCacheData,
+	syncFavouriteAcrossCache,
 	updateFavouriteForDescendentReply,
-	updateFavouriteStatus,
+	toggleFavouriteState,
 } from '@/util/cache/favourite/favouriteCache';
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
+import { useMemo } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
 type Props = {
@@ -30,20 +31,25 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 	const { saveStatus } = useSubchannelStatusActions();
 	const { userInfo } = useAuthStore();
 
+	const isAuthor = useMemo(() => {
+		return userInfo?.id === status.account.id;
+	}, [userInfo, status.account.id]);
+
 	const { mutate } = useFavouriteMutation({
 		onMutate: async variables => {
 			if (isFeedDetail && currentFeed?.id === status.id) {
-				const updateFeedDatailData = updateFavouriteStatus(currentFeed);
+				const updateFeedDatailData = toggleFavouriteState(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
 
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
-				userInfo?.id!,
+				isAuthor ? userInfo?.id! : variables.status.account.id,
 				variables.status.in_reply_to_id,
 				variables.status.in_reply_to_account_id,
+				status.reblog ? true : false,
 				domain_name,
 			);
-			updateFavouriteCacheData({
+			syncFavouriteAcrossCache({
 				response: status,
 				queryKeys,
 			});

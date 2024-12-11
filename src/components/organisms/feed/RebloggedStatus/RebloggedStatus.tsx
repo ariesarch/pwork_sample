@@ -1,5 +1,4 @@
-import { Pressable, View } from 'react-native';
-import StatusItem from '../StatusItem/StatusItem';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
@@ -9,21 +8,26 @@ import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
+import { useAuthStore } from '@/store/auth/authStore';
 
 const RebloggedStatus = ({ status }: { status: Pathchwork.Status }) => {
+	const { userInfo } = useAuthStore();
+
 	const { setActiveFeed } = useActiveFeedAction();
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
-	const handleOnPress = (status: Pathchwork.Status) => {
-		setActiveFeed(status);
-		navigation.navigate('FeedDetail', { id: status.id });
+	const handleOnPressStatus = (status: Pathchwork.Status) => {
+		setActiveFeed(status.reblog ? status.reblog : status);
+		navigation.navigate('FeedDetail', {
+			id: status.reblog ? status.reblog.id : status.id,
+		});
 	};
 
 	return (
 		<View>
 			<View className="m-4">
 				<View className="flex-row">
-					<Pressable onPress={() => handleOnPress(status)}>
+					<Pressable disabled>
 						<FastImage
 							source={
 								status.account.avatar
@@ -35,7 +39,7 @@ const RebloggedStatus = ({ status }: { status: Pathchwork.Status }) => {
 					</Pressable>
 					<Pressable
 						className="ml-2 flex-1"
-						onPress={() => handleOnPress(status)}
+						onPress={() => handleOnPressStatus(status)}
 					>
 						<StatusHeader status={status} />
 						<StatusContent status={status} />
@@ -45,7 +49,7 @@ const RebloggedStatus = ({ status }: { status: Pathchwork.Status }) => {
 					<Pressable
 						className="border border-slate-200 dark:border-patchwork-grey-70 my-2 ml-10 p-3 rounded-xl"
 						onPress={() => {
-							handleOnPress(status.reblog!);
+							handleOnPressStatus(status.reblog!);
 						}}
 					>
 						<StatusHeader

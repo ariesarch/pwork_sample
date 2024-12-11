@@ -29,7 +29,13 @@ import { queryClient } from '@/App';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useAuthStore } from '@/store/auth/authStore';
 
-const ComposeButton = ({ statusId }: { statusId: string }) => {
+const ComposeButton = ({
+	statusId,
+	isFeedDetail,
+}: {
+	statusId: string;
+	isFeedDetail?: boolean;
+}) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
 	const domain_name = useSelectedDomain();
@@ -59,24 +65,27 @@ const ComposeButton = ({ statusId }: { statusId: string }) => {
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (status: Pathchwork.Status) => {
-			if (currentFeed) {
+			if (isFeedDetail && currentFeed?.id === status.id) {
 				setActiveFeed(status);
 			}
 
-			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
-				status.account.id,
-				status.in_reply_to_id,
-			);
-
 			if (statusId) {
+				const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+					status.account.id,
+					status.in_reply_to_id,
+					status.in_reply_to_account_id,
+					status.reblog ? true : false,
+					domain_name,
+				);
 				editedStatusCacheData({
 					status_id: status.id,
 					updatedStatus: status,
 					queryKeys,
 				});
+			} else {
+				queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
+				queryClient.invalidateQueries({ queryKey: channelFeedQueryKey });
 			}
-			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
-			queryClient.invalidateQueries({ queryKey: channelFeedQueryKey });
 
 			Toast.show({
 				type: 'successToast',

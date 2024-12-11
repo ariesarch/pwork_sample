@@ -14,27 +14,36 @@ import PollVotingStatus from '@/components/organisms/poll/PollVotingStatus/PollV
 type Props = {
 	status: Pathchwork.Status;
 	isFromNotiStatusImage?: boolean;
+	isFeedDetail?: boolean;
+	isReposting?: boolean;
 } & ViewProps;
 
-const StatusContent = ({ status, isFromNotiStatusImage }: Props) => {
+const StatusContent = ({
+	status,
+	isFromNotiStatusImage,
+	isFeedDetail,
+	isReposting,
+}: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const isImageMissing = status?.media_attachments?.length !== 0;
 	const { setActiveFeed } = useActiveFeedAction();
 
+	const handlePressStatus = () => {
+		setActiveFeed(status.reblog ? status.reblog : status);
+		navigation.navigate('FeedDetail', {
+			id: status.reblog ? status.reblog.id : status.id,
+		});
+	};
+
 	return (
 		<View>
-			<Pressable
-				onPress={() => {
-					setActiveFeed(status);
-					navigation.navigate('FeedDetail', { id: status.id });
-				}}
-			>
+			<Pressable onPress={handlePressStatus} disabled={isReposting}>
 				<HTMLParser status={status} />
 				{status?.poll && (
 					<PollVotingStatus
-						poll={status.poll}
-						accountId={status.account.id}
-						inReplyToId={status.in_reply_to_id}
+						status={status}
+						isFeedDetail={isFeedDetail}
+						isReposting={isReposting}
 					/>
 				)}
 				{!status?.is_rss_content &&

@@ -90,8 +90,8 @@ const FeedDetail = ({
 	const isNestedNodeInclude = useMemo(() => {
 		return (
 			statusReplies &&
-			statusReplies.descendants.some(item => {
-				return item.in_reply_to_id && item.in_reply_to_id !== feedDetail.id;
+			statusReplies?.descendants?.some(item => {
+				return item?.in_reply_to_id && item?.in_reply_to_id !== feedDetail?.id;
 			})
 		);
 	}, [statusReplies]);
