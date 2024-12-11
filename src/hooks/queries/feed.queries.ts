@@ -47,9 +47,13 @@ export const useFeedDetailQuery = ({
 export const useFeedRepliesQuery = ({
 	domain_name,
 	id,
-}: FeedRepliesQueryKey[1]) => {
+	options,
+}: FeedRepliesQueryKey[1] & {
+	options?: QueryOptionHelper<Pathchwork.TimelineReplies>;
+}) => {
 	const queryKey: FeedRepliesQueryKey = ['feed-replies', { domain_name, id }];
-	return useQuery({ queryKey, queryFn: getFeedReplies });
+	//@ts-expect-error
+	return useQuery({ queryKey, queryFn: getFeedReplies, ...options });
 };
 
 export const useAccountDetailFeed = ({

@@ -1,6 +1,6 @@
 import { ConversationsStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NewMessage, Chat, StartConversation } from '@/screens';
+import { NewMessage, ConversationDetail, StartConversation } from '@/screens';
 
 const Stack = createStackNavigator<ConversationsStackParamList>();
 
@@ -12,7 +12,7 @@ const ConversationsStack = () => {
 		>
 			<Stack.Screen name="StartConversation" component={StartConversation} />
 			<Stack.Screen name="NewMessage" component={NewMessage} />
-			<Stack.Screen name="Chat" component={Chat} />
+			<Stack.Screen name="ConversationDetail" component={ConversationDetail} />
 		</Stack.Navigator>
 	);
 };

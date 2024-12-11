@@ -5,7 +5,7 @@ import { CalendarIcon } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
 import dayjs from 'dayjs';
 import HTMLParser from '@/components/atoms/common/ParseHtml/ParseHtml';
-import ParseHTMLString from '@/components/atoms/common/ParseHtml/ParseNormalHtmlStr';
+import ParseNormalHtmlStr from '@/components/atoms/common/ParseHtml/ParseNormalHtmlStr';
 
 type Props = {
 	channelAbout: Pathchwork.ChannelAbout | undefined;
@@ -22,7 +22,7 @@ const ChannelInformation = ({ channelAbout, channelAdditionalInfo }: Props) => {
 				Channel information
 			</ThemeText>
 			{/* <ThemeText className="my-3 leading-[18px]"></ThemeText> */}
-			<ParseHTMLString content={channelAdditionalInfo.content} />
+			<ParseNormalHtmlStr content={channelAdditionalInfo.content} />
 			<View className="flex-row items-center">
 				<CalendarIcon {...{ colorScheme }} />
 				<ThemeText className="ml-2">

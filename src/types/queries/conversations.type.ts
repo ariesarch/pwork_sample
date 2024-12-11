@@ -14,3 +14,8 @@ export type ConversationsQueryParam = {
 };
 
 export type ConversationsQueryKey = ['conversations', ConversationsQueryParam];
+
+export type PaginatedResponse<T, P extends object = {}> = {
+	pageParams: P;
+	pages: T[];
+};

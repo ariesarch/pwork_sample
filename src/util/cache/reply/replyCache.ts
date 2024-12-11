@@ -12,7 +12,6 @@ export const updateReplyFeedCache = (
 		feedReplyQueryKey,
 		oldData => {
 			if (!oldData) return oldData;
-			console.log('aa::', newStatus.in_reply_to_id, feedDetailStatusId);
 
 			if (newStatus.in_reply_to_id == feedDetailStatusId) {
 				return {

@@ -18,7 +18,7 @@ interface Props {
 }
 const MAX_ALLOWED_LINES = 2;
 
-const ParseHTMLString: React.FC<Props> = ({
+const ParseNormalHtmlStr: React.FC<Props> = ({
 	content,
 	numberOfLines = 10,
 	emojis,
@@ -197,4 +197,4 @@ const ParseHTMLString: React.FC<Props> = ({
 	);
 };
 
-export default ParseHTMLString;
+export default ParseNormalHtmlStr;
