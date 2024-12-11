@@ -8,15 +8,18 @@ import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.c
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
 import Toast from 'react-native-toast-message';
 import { prepareComposePayload } from '@/util/helper/compose';
+import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
+import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
 
 type Props = {
-	message: string;
-	handleMessage: (text: string) => void;
+	isFirstMsg: boolean;
+	firstMsg: Pathchwork.Conversations;
 	handleScroll: () => void;
 };
 
-const MessageActionsBar = ({ message, handleMessage, handleScroll }: Props) => {
+const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 	const { colorScheme } = useColorScheme();
+	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
 
 	const { mutate, isPending } = useComposeMutation({
@@ -32,12 +35,34 @@ const MessageActionsBar = ({ message, handleMessage, handleScroll }: Props) => {
 			});
 		},
 	});
+
 	const sendMessage = () => {
 		if (composeState.text.count <= composeState.maxCount) {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
+			payload.in_reply_to_id = isFirstMsg
+				? firstMsg.last_status?.id
+				: firstMsg.last_status?.in_reply_to_id;
+			payload.status = `@${firstMsg?.accounts[0]?.username}@${firstMsg?.last_status?.application?.name} ${payload.status}`;
 			mutate(payload);
+		}
+	};
+
+	const handleChangeText = (text: string) => {
+		composeDispatch({
+			type: 'text',
+			payload: {
+				count: text.length,
+				raw: text,
+			},
+		});
+
+		if (composeState.disableUserSuggestionsModal) {
+			composeDispatch({
+				type: 'disableUserSuggestionsModal',
+				payload: false,
+			});
 		}
 	};
 
@@ -53,23 +78,28 @@ const MessageActionsBar = ({ message, handleMessage, handleScroll }: Props) => {
 					children={<ComposeGifIcon {...{ colorScheme }} />}
 				/>
 				<TextInput
-					value={message}
-					onChangeText={handleMessage}
 					placeholder="Your message..."
 					className="flex-1 rounded-md px-4 py-2 border-gray-300 bg-patchwork-grey-400 text-white"
 					placeholderTextColor={'#fff'}
-					autoFocus
+					autoFocus={false}
+					selectionColor={selectionColor}
+					onChangeText={handleChangeText}
+					autoCorrect
+					autoComplete="off"
+					autoCapitalize="none"
+					spellCheck
 					onPress={handleScroll}
-				/>
+				>
+					<FormattedText text={composeState.text.raw} />
+				</TextInput>
 				<Pressable
-					// disabled={!message}
-					disabled
+					disabled={!composeState.text.raw}
 					onPress={sendMessage}
 					className="ml-2 rounded-full p-3"
 				>
 					<ThemeText
 						className={`border-[1] border-[1px]  py-[6] px-3 rounded-full  ${
-							message
+							composeState.text.raw
 								? 'text-patchwork-red-50 border-patchwork-red-50'
 								: 'border-patchwork-grey-100 text-patchwork-grey-100'
 						}`}

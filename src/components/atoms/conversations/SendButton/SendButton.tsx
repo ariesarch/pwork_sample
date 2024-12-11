@@ -22,7 +22,10 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
-			navigation.navigate('Chat');
+			navigation.navigate('ConversationDetail', {
+				id: response.id,
+				isNewMessage: true,
+			});
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {

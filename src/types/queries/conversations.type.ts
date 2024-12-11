@@ -13,8 +13,6 @@ export type ConversationsQueryParam = {
 	min_id?: string | null;
 };
 
-export type ConversationsQueryKey = ['conversations', ConversationsQueryParam];
-
 export type PaginatedResponse<T, P extends object = {}> = {
 	pageParams: P;
 	pages: T[];

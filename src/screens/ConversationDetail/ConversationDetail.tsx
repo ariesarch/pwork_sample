@@ -18,16 +18,17 @@ import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageItem from '@/components/molecules/conversations/MessageItem/MessageItem';
-import useGetLatestMsgAndProfileInfo from '@/hooks/custom/useGetLatestMsgAndProfileInfo';
+import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
+import { Flow } from 'react-native-animated-spinkit';
 
 const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const { id } = route.params;
+	const { id, isNewMessage } = route.params;
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
-	const { lastMessage, chatParticipant } = useGetLatestMsgAndProfileInfo(id);
+	const currentConversation = useGetCurrentConversation(id);
 
 	const {
 		data: messageList,
@@ -55,13 +56,16 @@ const ConversationDetail = ({
 			<ComposeStatusProvider type="chat">
 				<View className="flex-1">
 					<ConversationsHeader
-						onPressBackButton={() => navigation.navigate('StartConversation')}
-						chatParticipant={chatParticipant}
+						onPressBackButton={() => navigation.navigate('ConversationList')}
+						chatParticipant={currentConversation?.last_status?.account}
 					/>
 					<View style={{ flex: 1 }}>
-						{messageList && lastMessage && (
+						{messageList && currentConversation?.last_status ? (
 							<FlashList
-								data={[...messageList?.ancestors, lastMessage]}
+								data={[
+									...messageList?.ancestors,
+									currentConversation?.last_status,
+								]}
 								// inverted
 								renderItem={({ item, index }) => {
 									const previousMsg =
@@ -83,13 +87,19 @@ const ConversationDetail = ({
 									/>
 								}
 							/>
+						) : (
+							<View className="flex-1 items-center justify-center">
+								<Flow size={25} color={customColor['patchwork-red-50']} />
+							</View>
 						)}
 					</View>
-					<MessageActionsBar
-						message={'Hello There'}
-						handleMessage={() => {}}
-						handleScroll={() => {}}
-					/>
+					{currentConversation && (
+						<MessageActionsBar
+							isFirstMsg={isNewMessage}
+							firstMsg={currentConversation}
+							handleScroll={() => {}}
+						/>
+					)}
 					<Animated.View style={virtualKeyboardContainerStyle} />
 				</View>
 			</ComposeStatusProvider>

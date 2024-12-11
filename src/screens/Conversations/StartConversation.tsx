@@ -99,6 +99,7 @@ const Message = ({
 						onPress={() =>
 							navigation.navigate('ConversationDetail', {
 								id: item.last_status.id,
+								isNewMessage: false,
 							})
 						}
 						className={`flex-row items-center rounded-2xl p-3 mr-2`}
