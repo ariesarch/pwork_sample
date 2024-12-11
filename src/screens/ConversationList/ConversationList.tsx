@@ -1,10 +1,24 @@
+import { useMemo } from 'react';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Pressable,
+	RefreshControl,
+	View,
+} from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import FastImage from 'react-native-fast-image';
+import { CompositeNavigationProp } from '@react-navigation/native';
+
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
 import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
 import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import { useAuthStore } from '@/store/auth/authStore';
 import {
 	BottomStackParamList,
 	ConversationsStackParamList,
@@ -15,17 +29,7 @@ import { extractMessage } from '@/util/helper/extractMessage';
 import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
 import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { FlashList } from '@shopify/flash-list';
-import {
-	ActivityIndicator,
-	Dimensions,
-	Pressable,
-	RefreshControl,
-	View,
-} from 'react-native';
-import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
 
@@ -39,8 +43,7 @@ const ConversationList = ({
 }: {
 	navigation: MessageScreenNavigationProp;
 }) => {
-	const handlePressNewChat = () => navigation.navigate('NewMessage');
-
+	const { userInfo } = useAuthStore();
 	const {
 		data,
 		fetchNextPage,
@@ -50,16 +53,94 @@ const ConversationList = ({
 		refetch,
 	} = useGetConversationsList();
 
-	const _conversationsList: Pathchwork.Conversations[] = data?.pages
-		.flat()
-		.filter(
-			(item, index, self) => index === self.findIndex(t => t.id === item.id),
-		);
+	const { mutate: markConversationAsRead } = useMarkAsReadMutation();
+	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
+
+	// Handlers
+	const handlePressNewChat = () => navigation.navigate('NewMessage');
+
+	const handleRead = (id: string) => markConversationAsRead({ id });
 
 	const handleEndReached = () => {
-		if (isFetchingNextPage || !hasNextPage) return;
-		fetchNextPage();
+		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
 	};
+
+	// Render items
+	const renderConversationItem = ({
+		item,
+	}: {
+		item: Pathchwork.Conversations;
+	}) => (
+		<Pressable
+			onPress={() => {
+				if (!item.unread) handleRead(item.id);
+				navigation.navigate('ConversationDetail', {
+					id: item.id,
+					isNewMessage: false,
+				});
+			}}
+			className="flex-row items-center rounded-2xl p-3 mr-2 my-1"
+		>
+			<FastImage
+				className="w-10 h-10 rounded-full mr-3"
+				source={{ uri: item.accounts[0].avatar }}
+				resizeMode={FastImage.resizeMode.contain}
+			/>
+			<View className="flex-1 mr-6">
+				<View className="flex-row items-center">
+					<ThemeText size={'fs_13'} variant={'textOrange'}>
+						{item.accounts[0].display_name}
+					</ThemeText>
+					<ThemeText size={'fs_13'} className="text-patchwork-grey-400 ml-3">
+						{item.last_status
+							? getDurationFromNow(item.last_status.created_at)
+							: ''}
+					</ThemeText>
+				</View>
+				<ThemeText size={'xs_12'} className="text-patchwork-grey-400 my-0.5">
+					@{item.accounts[0].acct}
+				</ThemeText>
+				<View className="flex-row items-center">
+					<ThemeText size={'xs_12'}>
+						{item.last_status?.account?.id === userInfo?.id ? 'You: ' : ''}
+					</ThemeText>
+					<ThemeText
+						className={`w-full ${item.unread ? 'font-bold' : 'font-normal'}`}
+						size={'xs_12'}
+						numberOfLines={1}
+						ellipsizeMode="tail"
+					>
+						{extractMessage(cleanText(item.last_status?.content))}
+					</ThemeText>
+				</View>
+			</View>
+			{item.unread && (
+				<View className="w-2 h-2 bg-patchwork-red-50 rounded-full mr-2" />
+			)}
+		</Pressable>
+	);
+
+	const renderListFooter = () =>
+		isFetchingNextPage ? (
+			<ActivityIndicator
+				color={customColor['patchwork-red-50']}
+				size={'large'}
+				className="my-5"
+			/>
+		) : (
+			<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
+				No more conversations to show
+			</ThemeText>
+		);
+
+	const renderListEmptyComponent = () =>
+		!isLoading ? (
+			<StartConversation onPress={handlePressNewChat} />
+		) : (
+			Array(8)
+				.fill(null)
+				.map((_, index) => <ConversationsListLoading key={index} />)
+		);
 
 	return (
 		<SafeScreen>
@@ -72,86 +153,17 @@ const ConversationList = ({
 						onRefresh={refetch}
 					/>
 				}
-				ListEmptyComponent={
-					!isLoading ? (
-						<StartConversation onPress={handlePressNewChat} />
-					) : (
-						<>
-							{Array(8)
-								.fill(null)
-								.map((_, index) => (
-									<ConversationsListLoading key={index} />
-								))}
-						</>
-					)
-				}
+				ListEmptyComponent={renderListEmptyComponent}
 				estimatedItemSize={100}
-				estimatedListSize={{
-					width: width,
-					height: height,
-				}}
+				estimatedListSize={{ width, height }}
 				contentContainerStyle={{ paddingHorizontal: 10 }}
-				data={_conversationsList}
+				data={conversationsList}
 				showsVerticalScrollIndicator={false}
 				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }: { item: Pathchwork.Conversations }) => (
-					<Pressable
-						onPress={() =>
-							navigation.navigate('ConversationDetail', { id: item.id })
-						}
-						className={`flex-row items-center rounded-2xl p-3 mr-2`}
-					>
-						<FastImage
-							className="w-10 h-10 rounded-full mr-3"
-							source={{ uri: item.accounts[0].avatar }}
-							resizeMode={FastImage.resizeMode.contain}
-						/>
-						<View className="flex-1 mr-6">
-							<View className="flex-row items-center">
-								<ThemeText size={'fs_13'}>
-									{item.accounts[0].display_name}
-								</ThemeText>
-								<ThemeText
-									size={'fs_13'}
-									className="text-patchwork-grey-400 ml-3"
-								>
-									{getDurationFromNow(item.last_status.created_at)}
-								</ThemeText>
-							</View>
-							<ThemeText
-								size={'xs_12'}
-								className="text-patchwork-grey-400 my-0.5"
-							>
-								@{item.accounts[0].acct}
-							</ThemeText>
-							<View className="flex-row items-center">
-								<ThemeText
-									className="w-full"
-									size={'xs_12'}
-									numberOfLines={1}
-									ellipsizeMode="tail"
-								>
-									{extractMessage(cleanText(item.last_status?.content))}
-								</ThemeText>
-							</View>
-						</View>
-					</Pressable>
-				)}
+				renderItem={renderConversationItem}
 				onEndReachedThreshold={0.15}
 				onEndReached={handleEndReached}
-				ListFooterComponent={
-					isFetchingNextPage ? (
-						<ActivityIndicator
-							color={customColor['patchwork-red-50']}
-							size={'large'}
-							className="my-5"
-						/>
-					) : (
-						<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
-							No more conversations to show
-						</ThemeText>
-					)
-				}
+				ListFooterComponent={renderListFooter}
 			/>
 			<Pressable
 				onPress={handlePressNewChat}

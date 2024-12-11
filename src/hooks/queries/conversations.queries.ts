@@ -3,10 +3,7 @@ import {
 	searchUsers,
 } from '@/services/conversations.service';
 import { SearchUsersQueryKey } from '@/types/queries/conversations.type';
-import {
-	InfiniteQueryOptionHelper,
-	QueryOptionHelper,
-} from '@/util/helper/helper';
+import { QueryOptionHelper } from '@/util/helper/helper';
 import {
 	InfiniteData,
 	useInfiniteQuery,
@@ -29,7 +26,9 @@ export const useSearchUsers = ({
 	});
 };
 
-export const useGetConversationsList = () => {
+export const useGetConversationsList = (
+	options?: QueryOptionHelper<Pathchwork.Conversations[]>,
+) => {
 	return useInfiniteQuery<
 		Pathchwork.Conversations[],
 		Error,
@@ -39,21 +38,24 @@ export const useGetConversationsList = () => {
 		//@ts-expect-error
 		queryFn: ({ pageParam }: { pageParam: string | null }) =>
 			getConversationsList({ pageParam }),
-		getNextPageParam: (
-			lastPage: Pathchwork.Conversations[],
-			allPages: Pathchwork.Conversations[][],
-		) => {
+		...options,
+		getNextPageParam: (lastPage: Pathchwork.Conversations[]) => {
 			if (!lastPage || lastPage.length === 0) return undefined;
-			const pageParams = allPages.flatMap(page => page.map(item => item.id));
-			const lastParam = lastPage[lastPage.length - 1]?.id;
-			// the occurrences is used as the api response with min_id is not completely reliable.
-			const occurrences = pageParams.filter(
-				param => param === lastParam,
-			).length;
-			if (occurrences > 1) {
-				return undefined;
-			}
+			const lastParam = lastPage[lastPage.length - 1]?.last_status?.id;
 			return lastParam;
+		},
+		select: data => {
+			const deduplicatedList: Pathchwork.Conversations[] = data.pages
+				.flat()
+				.filter(
+					(item, index, self) =>
+						index === self.findIndex(t => t.id === item.id),
+				);
+
+			return {
+				...data,
+				pages: [deduplicatedList],
+			};
 		},
 	});
 };

@@ -119,7 +119,7 @@ export type NotificationScreenNavigationProp = NavigationProp<
 export type ConversationsStackParamList = {
 	ConversationList: undefined;
 	NewMessage: undefined;
-	ConversationDetail: { id?: string };
+	ConversationDetail: { id: string; isNewMessage: boolean };
 };
 
 export type GuestStackParamList = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { BackHandler, ScrollView, View } from 'react-native';
@@ -17,6 +17,12 @@ import { extractMessage } from '@/util/helper/extractMessage';
 import { cleanText } from '@/util/helper/cleanText';
 import moment from 'moment';
 import { useUserInfo } from '@/store/conversations/userInfoStore';
+import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import { Flow } from 'react-native-animated-spinkit';
+import customColor from '@/util/constant/color';
+import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
+import { FlatList } from 'react-native';
 
 type PaginatedChatData = {
 	pages: Pathchwork.Conversations[][];
@@ -27,32 +33,40 @@ const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const { id } = route.params;
+	const domain_name = useSelectedDomain();
+	const { id, isNewMessage } = route.params;
 	const scrollViewRef = useRef<ScrollView | null>(null);
 	const { height } = useGradualAnimation();
-	const { userInfo, setUserInfo } = useUserInfo();
-	const [_message, setMessage] = useState<string>('');
+	const { setUserInfo } = useUserInfo();
+
+	const { data: conversationList, isLoading } = useGetConversationsList({
+		enabled: isNewMessage,
+	});
 
 	const cachedChatList: PaginatedChatData | undefined =
 		queryClient.getQueryData(['conversations']);
 
-	const cachedDetailChat: Pathchwork.Conversations | undefined = useMemo(() => {
-		if (cachedChatList) {
-			return cachedChatList.pages
-				.flat()
-				.filter(
-					(item, index, self) =>
-						index === self.findIndex(t => t.id === item.id),
-				)
-				.find(v => v.id === id);
+	const detailChat: Pathchwork.Conversations | undefined = useMemo(() => {
+		if (cachedChatList && !isNewMessage) {
+			return cachedChatList.pages.flat().find(v => v?.id === id);
+		} else if (conversationList && isNewMessage) {
+			return conversationList.pages.flat().find(v => v?.last_status?.id === id);
 		}
 	}, [cachedChatList]);
 
 	useEffect(() => {
-		if (cachedDetailChat) {
-			setUserInfo(cachedDetailChat.accounts[0]);
+		if (detailChat) {
+			setUserInfo(detailChat.accounts[0]);
 		}
-	}, [cachedDetailChat]);
+	}, [detailChat]);
+
+	const {
+		data: conversationDetailList,
+		isLoading: isLoadingConversationDetailList,
+	} = useFeedRepliesQuery({
+		domain_name,
+		id: detailChat?.last_status?.id!,
+	});
 
 	useEffect(() => {
 		const handleBackPress = () => {
@@ -75,80 +89,92 @@ const ConversationDetail = ({
 	const scrollToEnd = () => {
 		scrollViewRef.current?.scrollToEnd({ animated: true });
 	};
-
 	useEffect(() => scrollToEnd(), []);
+
+	//  the list now is showing just the decendants for temporary, currently ancestor is not included.
 
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
-				<View className="flex-1">
-					{/* Header */}
-					<ConversationsHeader
-						onPressBackButton={() => {
-							navigation.navigate('ConversationList');
-							setUserInfo(null);
-						}}
-					/>
-					<ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
-						<ProfileInfo />
-						<Animated.View className="flex-1 m-3">
-							<ThemeText className="self-center">
-								{cachedDetailChat
-									? moment(cachedDetailChat?.last_status?.created_at).format(
-											'DD MMM YYYY',
-									  )
-									: moment().format('DD MMM YYYY')}
-							</ThemeText>
-							{cachedDetailChat && (
-								<>
-									<View
-										className={`mt-2 ${
-											// chat.accounts[0].id !== === 'me'
-											// ?
-											'self-end bg-patchwork-red-50'
-											// : 'self-start bg-gray-300'
-										} rounded-t-xl rounded-l-xl px-4 py-2`}
-										style={{
-											maxWidth: '66.67%',
-										}}
-									>
-										<ThemeText className="text-white">
-											{extractMessage(
-												cleanText(cachedDetailChat.last_status?.content),
-											)}
-										</ThemeText>
+				{isLoading || !detailChat || isLoadingConversationDetailList ? (
+					<View className="flex-1 justify-center items-center">
+						<Flow size={25} color={customColor['patchwork-red-50']} />
+					</View>
+				) : (
+					<View className="flex-1">
+						{/* Header */}
+						<ConversationsHeader
+							onPressBackButton={() => {
+								navigation.navigate('ConversationList');
+								setUserInfo(null);
+							}}
+						/>
+						<FlatList
+							ListHeaderComponent={() => <ProfileInfo />}
+							data={conversationDetailList?.descendants}
+							renderItem={({ item, index }) => {
+								const nextItem = conversationDetailList?.descendants[index + 1];
+								return (
+									<View className="px-3">
+										<View
+											className={`mt-2 ${
+												// chat.accounts[0].id !== === 'me'
+												// ?
+												'self-end bg-patchwork-red-50'
+												// : 'self-start bg-gray-300'
+											} rounded-t-xl rounded-l-xl px-4 py-2`}
+											style={{
+												maxWidth: '66.67%',
+											}}
+										>
+											<ThemeText className="text-white">
+												{extractMessage(cleanText(item.content))}
+											</ThemeText>
+										</View>
+										<View
+											className={`flex-row items-center ${
+												// chat.sender === 'me' ?
+												'self-end'
+												// :
+												// 'self-start'
+											}`}
+										>
+											<ThemeText className={'text-xs text-gray-400 '}>
+												{moment(item.created_at).format('HH:mm A')}
+											</ThemeText>
+											<ThemeText className="text-2xl align-middle mx-2">
+												▸
+											</ThemeText>
+											<ThemeText>
+												{detailChat?.unread ? 'Sent' : 'Read'}
+											</ThemeText>
+										</View>
 									</View>
-									<View
-										className={`flex-row items-center ${
-											// chat.sender === 'me' ?
-											'self-end'
-											// :
-											// 'self-start'
-										}`}
-									>
-										<ThemeText className={'text-xs text-gray-400 '}>
-											{moment(cachedDetailChat.last_status?.created_at).format(
-												'HH:mm A',
-											)}
-										</ThemeText>
-										<ThemeText className="text-2xl align-middle mx-2">
-											▸
-										</ThemeText>
-										<ThemeText>
-											{cachedDetailChat?.unread ? 'Read' : 'Sent'}
-										</ThemeText>
-									</View>
-								</>
-							)}
-						</Animated.View>
-					</ScrollView>
-					<MessageActionsBar
-						message={_message}
-						handleMessage={setMessage}
-						handleScroll={scrollToEnd}
-					/>
-					<Animated.View style={virtualKeyboardContainerStyle} />
-				</View>
+								);
+							}}
+							keyExtractor={item => item.id.toString()}
+							showsVerticalScrollIndicator={false}
+						/>
+
+						<ScrollView ref={scrollViewRef} style={{ flex: 1 }}>
+							<Animated.View className="flex-1 m-3">
+								<ThemeText className="self-center">
+									{detailChat
+										? moment(detailChat?.last_status?.created_at).format(
+												'DD MMM YYYY',
+										  )
+										: moment().format('DD MMM YYYY')}
+								</ThemeText>
+							</Animated.View>
+						</ScrollView>
+						<MessageActionsBar
+							isFirstMsg={isNewMessage}
+							firstMsg={detailChat}
+							handleScroll={scrollToEnd}
+						/>
+						<Animated.View style={virtualKeyboardContainerStyle} />
+					</View>
+				)}
 			</ComposeStatusProvider>
 		</SafeScreen>
 	);
