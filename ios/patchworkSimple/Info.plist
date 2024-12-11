@@ -31,18 +31,30 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
 	<key>NSCameraUsageDescription</key>
 	<string>Patchwork would like to take pictures and record videos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Patchwork would like to access your microphone.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Patchwork would like to save photos to your photo library.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Patchwork would like to select photos and videos from your library.</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SourceSans3-Bold.ttf</string>
+		<string>SourceSans3-Medium.ttf</string>
+		<string>SourceSans3-Regular.ttf</string>
+		<string>SourceSans3-SemiBold.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
-	<string/>
+	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -59,12 +71,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>UIAppFonts</key>
-	<array>
-		<string>SourceSans3-Bold.ttf</string>
-		<string>SourceSans3-Medium.ttf</string>
-		<string>SourceSans3-Regular.ttf</string>
-		<string>SourceSans3-SemiBold.ttf</string>
-	</array>
 </dict>
 </plist>

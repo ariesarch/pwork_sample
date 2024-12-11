@@ -17,6 +17,8 @@ import { useAuthStore } from '@/store/auth/authStore';
 import Guest from './GuestStackNavigator';
 import EditProfile from '@/screens/EditProfile/EditProfile';
 import ProfileOther from '@/screens/ProfileOther/ProfileOther';
+import { useEffect } from 'react';
+import { requestNotificationPermission } from '@/util/helper/firebase';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -31,6 +33,16 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
+
+	// ***** Firebase Request Noti Permission ***** //
+	useEffect(() => {
+		(() => {
+			setTimeout(async () => {
+				access_token && (await requestNotificationPermission());
+			}, 1000);
+		})();
+	}, [access_token]);
+	// ***** Firebase Request Noti Permission ***** //
 
 	return (
 		<SafeAreaProvider>

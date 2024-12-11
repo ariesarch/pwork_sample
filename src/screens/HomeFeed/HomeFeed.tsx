@@ -1,16 +1,17 @@
-import Card from '@/components/atoms/card/Card';
-import Chip from '@/components/atoms/common/Chip/Chip';
 import HomeFeedHeader from '@/components/molecules/feed/HomeFeedHeader/HomeFeedHeader';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { mockHashTag } from '@/mock/feed/myChanel';
 import { mockUserList } from '@/mock/feed/statusList';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { ChevronRight, ListItem } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
-import { Pressable, RefreshControl, ScrollView, View } from 'react-native';
+import {
+	Platform,
+	Pressable,
+	RefreshControl,
+	ScrollView,
+	View,
+} from 'react-native';
 import ChannelLoading from '@/components/atoms/loading/ChannelLoading';
-import PeopleFollowingLoading from '@/components/atoms/loading/PeopleFollowingLoading';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import {
 	useGetMyChannels,
@@ -18,12 +19,13 @@ import {
 } from '@/hooks/queries/channel.queries';
 import ChannelCard from '@/components/atoms/channel/ChannelCard/ChannelCard';
 import { useAuthStore } from '@/store/auth/authStore';
-import { FlashList } from '@shopify/flash-list';
 import { FlatList } from 'react-native-gesture-handler';
 import customColor from '@/util/constant/color';
 import { ensureHttp } from '@/util/helper/helper';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { delay } from 'lodash';
+import { usePushNotiTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
+import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -43,6 +45,32 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 		refetchChannels();
 		delay(() => setIsRefreshing(false), 1500);
 	};
+
+	// ***** Push Notification Token Mutation ***** //
+	const fcmToken = usePushNoticationStore(state => state.fcmToken);
+
+	const { mutate } = usePushNotiTokenMutation({
+		onSuccess: () => {
+			/**
+			 * Generated Token means everytime you enter the app, it will not be invalid.
+			 * When the users try to uninstall/clear-data or something else, the token will be generated again.
+			 */
+			console.log(
+				'Push Notification Token',
+				'Generated & Saved into database.',
+			);
+		},
+	});
+
+	useEffect(() => {
+		if (fcmToken) {
+			mutate({
+				notification_token: fcmToken,
+				platform_type: Platform.OS,
+			});
+		}
+	}, [fcmToken]);
+	// ***** Push Notification Token Mutation ***** //
 
 	return (
 		<SafeScreen>

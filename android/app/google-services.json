@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "662568839796",
+    "project_id": "patchwork-279c9",
+    "storage_bucket": "patchwork-279c9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662568839796:android:d56b86ec8e71ab75e37f21",
+        "android_client_info": {
+          "package_name": "online.patchwork.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLCecWLM2zxCUjd9n_nvxhHwRo64bN450"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
