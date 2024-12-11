@@ -73,7 +73,7 @@ const ConversationList = ({
 	}) => (
 		<Pressable
 			onPress={() => {
-				if (!item.unread) handleRead(item.id);
+				if (item.unread) handleRead(item.id);
 				navigation.navigate('ConversationDetail', {
 					id: item.id,
 					isNewMessage: false,
