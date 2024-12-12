@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
@@ -16,10 +16,10 @@ import customColor from '@/util/constant/color';
 import { delay } from 'lodash';
 import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { DEFAULT_API_URL } from '@/util/constant';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageItem from '@/components/molecules/conversations/MessageItem/MessageItem';
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
+import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 
 const ConversationDetail = ({
 	navigation,
@@ -29,7 +29,6 @@ const ConversationDetail = ({
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(id);
-
 	const {
 		data: messageList,
 		isLoading: isMessageLoading,
@@ -62,6 +61,9 @@ const ConversationDetail = ({
 					<View style={{ flex: 1 }}>
 						{messageList && currentConversation?.last_status ? (
 							<FlashList
+								ListHeaderComponent={() => (
+									<ProfileInfo userInfo={currentConversation?.accounts[0]} />
+								)}
 								data={[
 									...messageList?.ancestors,
 									currentConversation?.last_status,
@@ -93,7 +95,7 @@ const ConversationDetail = ({
 							</View>
 						)}
 					</View>
-					{currentConversation && (
+					{currentConversation && messageList && (
 						<MessageActionsBar
 							isFirstMsg={isNewMessage}
 							firstMsg={currentConversation}

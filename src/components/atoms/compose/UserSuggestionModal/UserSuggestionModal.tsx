@@ -4,23 +4,19 @@ import { useSearchUsers } from '@/hooks/queries/conversations.queries';
 import { useEffect, useRef, useState } from 'react';
 import { Pressable, TouchableOpacity, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
-import BottomSheet from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import ThemeModal from '../../common/Modal/Modal';
 import { FlatList } from 'react-native-gesture-handler';
 import { getReplacedMentionText } from '@/util/helper/compose';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 const UserSuggestionModal = () => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const [debounceVal, setDebounceVal] = useState('');
 	const startDebounce = useDebounce();
 	const [openModal, setModal] = useState(false);
-	const bottomSheetRef = useRef<BottomSheet>(null);
 	const previousCurrentMentionStr = useRef('');
-	const { setUserInfo } = useUserInfo();
 
 	const {
 		data: searchedUsers,
@@ -73,7 +69,6 @@ const UserSuggestionModal = () => {
 								<TouchableOpacity
 									onPress={() => {
 										setModal(false);
-										setUserInfo(item);
 										const newString = getReplacedMentionText(
 											composeState.text.raw,
 											composeState.currentMention?.index ?? 0,

@@ -29,3 +29,7 @@ export const formatMessageDate = (createdAt: string): string => {
 
 	return `${date.format('MMM D, h:mm A')}`;
 };
+
+export function formatMessageSentTime(timestamp: string | Date): string {
+	return moment(timestamp).format('h:mm A');
+}

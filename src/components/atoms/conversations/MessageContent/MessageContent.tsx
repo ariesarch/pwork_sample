@@ -1,6 +1,9 @@
 import { View } from 'react-native';
 import HTMLParser from '../../common/ParseHtml/ParseHtml';
 import { cn } from '@/util/helper/twutil';
+import { ThemeText } from '../../common/ThemeText/ThemeText';
+import { extractMessage } from '@/util/helper/extractMessage';
+import { cleanText } from '@/util/helper/cleanText';
 
 const MessageContent = ({
 	item,
@@ -18,7 +21,8 @@ const MessageContent = ({
 					: 'bg-patchwork-grey-70 rounded-bl-none',
 			)}
 		>
-			<HTMLParser status={item} />
+			<ThemeText>{extractMessage(cleanText(item.content))}</ThemeText>
+			{/* <HTMLParser status={item} /> */}
 		</View>
 	);
 };

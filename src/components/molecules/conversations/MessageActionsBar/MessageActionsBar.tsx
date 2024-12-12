@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import { prepareComposePayload } from '@/util/helper/compose';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
+import { queryClient } from '@/App';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -21,9 +22,23 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
-
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
+			queryClient.setQueryData(['conversations'], (oldData: any) => {
+				if (!oldData) return oldData;
+				return {
+					...oldData,
+					pages: oldData.pages.map((page: any) =>
+						page.map((conversation: Pathchwork.Conversations) => {
+							if (conversation?.id === firstMsg.id) {
+								return { ...conversation, last_status: response };
+							} else {
+								return conversation;
+							}
+						}),
+					),
+				};
+			});
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
@@ -41,9 +56,7 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			payload.in_reply_to_id = isFirstMsg
-				? firstMsg.last_status?.id
-				: firstMsg.last_status?.in_reply_to_id;
+			payload.in_reply_to_id = firstMsg.last_status?.id;
 			payload.status = `@${firstMsg?.accounts[0]?.username}@${firstMsg?.last_status?.application?.name} ${payload.status}`;
 			mutate(payload);
 		}
