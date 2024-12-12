@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Blurhash } from 'react-native-blurhash';
@@ -14,11 +14,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type Props = {
 	media_attachments: Pathchwork.Attachment[];
+	isFeedDetail?: boolean;
+	sensitive: boolean;
 };
 
 type NavigationProps = StackNavigationProp<RootStackParamList>;
 
-const StatusImage = ({ media_attachments }: Props) => {
+const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 	const navigation = useNavigation<NavigationProps>();
 	const [imageSensitiveState, setImageSensitiveState] = useState<{
 		[id: string]: boolean;
@@ -86,7 +88,7 @@ const StatusImage = ({ media_attachments }: Props) => {
 		imageStyle: any,
 		index: number,
 	) => {
-		const isSensitive = imageSensitiveState[item.id];
+		const isSensitive = sensitive && !imageSensitiveState[item.id];
 		const imageAttachmentUrl = {
 			uri: item?.remote_url || item?.url,
 		};
@@ -104,7 +106,9 @@ const StatusImage = ({ media_attachments }: Props) => {
 					mediaType="photo"
 					attachmentId={item.id}
 					onViewSensitiveContent={onForceViewSensitiveMedia}
-					scaleValue={length === 3 && index === 0 ? 1 : length > 2 ? 0.5 : 1}
+					scaleValue={
+						length === 3 && index === 0 ? 0.5 : length > 2 ? 0.5 : 0.7
+					}
 				/>
 			</View>
 		);
@@ -136,6 +140,7 @@ const StatusImage = ({ media_attachments }: Props) => {
 								url={imageAttachmentUrl.uri}
 								blurHash={item.blurhash}
 								imageStyle={imageStyle}
+								isFeedDetail={isFeedDetail}
 							/>
 						</View>
 					)}

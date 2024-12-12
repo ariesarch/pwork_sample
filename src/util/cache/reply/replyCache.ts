@@ -11,26 +11,29 @@ export const updateReplyFeedCache = (
 	queryClient.setQueryData<Pathchwork.TimelineReplies>(
 		feedReplyQueryKey,
 		oldData => {
+			const { domain_name } = feedReplyQueryKey[1];
+			const default_domain = process.env.API_URL ?? DEFAULT_API_URL;
 			if (!oldData) return oldData;
 
-			if (newStatus.in_reply_to_id == feedDetailStatusId) {
+			if (
+				newStatus.in_reply_to_id == feedDetailStatusId &&
+				domain_name == default_domain
+			) {
 				return {
 					...oldData,
 					descendants: [...oldData.descendants, newStatus],
 				};
 			} else {
-				const { domain_name } = feedReplyQueryKey[1];
-				const default_domain = process.env.API_URL ?? DEFAULT_API_URL;
 				if (domain_name == default_domain) {
 					queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
 					return oldData;
 				}
-				// times(3, i => {
-				// 	setTimeout(() => {
-				// 		console.log('bb::', i);
-				// 		queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
-				// 	}, i * 800);
-				// });
+				times(4, i => {
+					setTimeout(() => {
+						console.log('bb::', i);
+						queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
+					}, i * 600);
+				});
 				return oldData;
 			}
 		},

@@ -17,12 +17,14 @@ type ReplyInputProps = {
 	username: string;
 	progress: SharedValue<number>;
 	autoFocus: boolean;
+	feedDetailStatus: Pathchwork.Status;
 };
 
 const FeedReplyTextInput = ({
 	username,
 	progress,
 	autoFocus,
+	feedDetailStatus,
 }: ReplyInputProps) => {
 	const [isKeyboardOpen, setKeyboardOpen] = useState(false);
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -33,6 +35,27 @@ const FeedReplyTextInput = ({
 	useEffect(() => {
 		setTextInputRef(inputRef);
 	}, [setTextInputRef]);
+
+	// useEffect(() => {
+	// 	if (
+	// 		isKeyboardOpen &&
+	// 		currentFocusStatus &&
+	// 		currentFocusStatus.id == feedDetailStatus.id &&
+	// 		composeState.text.raw.length < currentFocusStatus.account.acct.length
+	// 	) {
+	// 		composeDispatch({
+	// 			type: 'text',
+	// 			payload: {
+	// 				count: currentFocusStatus.account.acct.length,
+	// 				raw: '@' + currentFocusStatus.account.acct + ' ',
+	// 			},
+	// 		});
+	// 		composeDispatch({
+	// 			type: 'disableUserSuggestionsModal',
+	// 			payload: true,
+	// 		});
+	// 	}
+	// }, [isKeyboardOpen]);
 
 	useAnimatedReaction(
 		() => progress.value,
@@ -64,6 +87,12 @@ const FeedReplyTextInput = ({
 							raw: text,
 						},
 					});
+					if (composeState.disableUserSuggestionsModal) {
+						composeDispatch({
+							type: 'disableUserSuggestionsModal',
+							payload: false,
+						});
+					}
 				}}
 				autoFocus={autoFocus}
 				autoCapitalize="none"

@@ -1,6 +1,7 @@
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import { Button } from '@/components/atoms/common/Button/Button';
 import Header from '@/components/atoms/common/Header/Header';
+import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
@@ -124,6 +125,9 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 							</View>
 						);
 					}}
+					ListEmptyComponent={() => (
+						<ListEmptyComponent title="No Hashtag Found" />
+					)}
 					refreshControl={
 						<RefreshControl
 							refreshing={isFetching}

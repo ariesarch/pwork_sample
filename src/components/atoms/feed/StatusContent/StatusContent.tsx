@@ -50,7 +50,11 @@ const StatusContent = ({
 					status?.media_attachments?.length >= 1 &&
 					(!isFromNotiStatusImage ? (
 						<View className="h-[150]">
-							<StatusImage media_attachments={status?.media_attachments} />
+							<StatusImage
+								media_attachments={status?.media_attachments}
+								isFeedDetail={isFeedDetail}
+								sensitive={status?.sensitive}
+							/>
 						</View>
 					) : (
 						<NotiStatusImageView {...{ status }} />
@@ -62,6 +66,7 @@ const StatusContent = ({
 								meta: status?.card,
 							},
 						}}
+						isFeedDetail={isFeedDetail}
 					/>
 				)}
 				{status?.is_rss_content &&
@@ -76,6 +81,7 @@ const StatusContent = ({
 								},
 							}}
 							extraStyle="mt-4"
+							isFeedDetail={isFeedDetail}
 						/>
 					)}
 				{!isImageMissing && !status?.is_rss_content && status?.card && (
@@ -91,6 +97,7 @@ const StatusContent = ({
 									},
 								}}
 								extraStyle="mt-4"
+								isFeedDetail={isFeedDetail}
 							/>
 						)}
 					</View>

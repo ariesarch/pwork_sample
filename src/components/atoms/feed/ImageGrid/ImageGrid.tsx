@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, StyleProp, ViewStyle } from 'react-native';
 
 interface ImageGridProps {

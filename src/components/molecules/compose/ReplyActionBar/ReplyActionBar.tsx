@@ -105,6 +105,7 @@ const ReplyActionBar = ({
 			changeCurrentStatus(feedDetailStatus);
 		}
 	}, [composeState]);
+
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (newStatus: Pathchwork.Status) => {
 			composeDispatch({ type: 'clear' });
@@ -144,7 +145,7 @@ const ReplyActionBar = ({
 				status: selectedStatus,
 				savedPayload: payload,
 				specificPayloadMapping: { in_reply_to_id: 'id' },
-				// specificResponseMapping: { in_reply_to_id: 'in_reply_to_id' },
+				specificResponseMapping: { in_reply_to_id: 'in_reply_to_id' },
 				crossChannelRequestIdentifier,
 			});
 			mutate({ ...payload, crossChannelRequestIdentifier });
