@@ -17,6 +17,8 @@ import {
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
+import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
+import { updateReplyFeedCache } from '@/util/cache/reply/replyCache';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import { prepareComposePayload } from '@/util/helper/compose';
 import {
@@ -70,7 +72,10 @@ const ReplyActionBar = ({
 		);
 	}, [feedDetailStatus, userInfo?.id]);
 
-	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
+	const feedReplyQueryKey: FeedRepliesQueryKey = [
+		'feed-replies',
+		{ id: feedDetailId, domain_name },
+	];
 
 	const accountDetailFeedQueryKey = [
 		'account-detail-feed',
@@ -108,6 +113,7 @@ const ReplyActionBar = ({
 			changeCurrentStatus(feedDetailStatus);
 		}
 	}, [composeState]);
+
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (newStatus: Pathchwork.Status) => {
 			composeDispatch({ type: 'clear' });
@@ -116,7 +122,7 @@ const ReplyActionBar = ({
 			currentFocusStatus?.id == feedDetailId &&
 				changeActiveFeedReplyCount('increase');
 
-			retryReplyQueryUpToThreeTimes(feedReplyQueryKey);
+			updateReplyFeedCache(feedReplyQueryKey, newStatus, feedDetailStatus.id);
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 			queryClient.invalidateQueries({
 				queryKey: accountDetailReplyFeedQueryKey,
@@ -133,29 +139,6 @@ const ReplyActionBar = ({
 		},
 	});
 
-	//temp
-	const retryReplyQueryUpToThreeTimes = async (
-		queryKey: typeof feedReplyQueryKey,
-		retries = 3,
-	) => {
-		let attempts = 0;
-		const fetchAndCheck = async () => {
-			await queryClient.invalidateQueries({ queryKey });
-			const previousData = queryClient.getQueryData(queryKey);
-			await queryClient.refetchQueries({ queryKey });
-			const currentData = queryClient.getQueryData(queryKey);
-			if (JSON.stringify(previousData) !== JSON.stringify(currentData)) {
-				return true;
-			}
-			attempts++;
-			if (attempts < retries) {
-				const delayTime = attempts === 1 ? 300 : 600;
-				delay(fetchAndCheck, delayTime);
-			}
-		};
-		await fetchAndCheck();
-	};
-
 	const handlePublish = () => {
 		if (
 			composeState.text.count < composeState.maxCount ||
@@ -170,6 +153,7 @@ const ReplyActionBar = ({
 				status: selectedStatus,
 				savedPayload: payload,
 				specificPayloadMapping: { in_reply_to_id: 'id' },
+				specificResponseMapping: { in_reply_to_id: 'in_reply_to_id' },
 				crossChannelRequestIdentifier,
 			});
 			mutate({ ...payload, crossChannelRequestIdentifier });

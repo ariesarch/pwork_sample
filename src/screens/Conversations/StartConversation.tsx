@@ -4,7 +4,7 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
 import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { useConversationsList } from '@/hooks/queries/conversations.queries';
+import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
 import {
 	BottomStackParamList,
 	ConversationsStackParamList,
@@ -18,8 +18,13 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FlashList } from '@shopify/flash-list';
-import { useEffect, useState } from 'react';
-import { Dimensions, Pressable, RefreshControl, View } from 'react-native';
+import {
+	ActivityIndicator,
+	Dimensions,
+	Pressable,
+	RefreshControl,
+	View,
+} from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 const { width, height } = Dimensions.get('window');
@@ -35,57 +40,34 @@ const Message = ({
 	navigation: MessageScreenNavigationProp;
 }) => {
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
-	const [maxID, setMaxID] = useState<string | null>(null);
-	const [conversationsList, setConversationsList] = useState<
-		Pathchwork.Conversations[]
-	>([]);
-	const [hasMore, setHasMore] = useState(true);
-	const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-	// const {
-	// 	data: _conversationsList,
-	// 	isLoading,
-	// 	isFetching,
-	// 	refetch,
-	// 	error,
-	// } = useConversationsList({ max_id: maxID });
+	const {
+		data,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading,
+		refetch,
+	} = useGetConversationsList();
 
-	// useEffect(() => {
-	// 	if (_conversationsList) {
-	// 		setConversationsList(prev => [...prev, ..._conversationsList.data]);
+	const _conversationsList: Pathchwork.Conversations[] = data?.pages
+		.flat()
+		.filter(
+			(item, index, self) => index === self.findIndex(t => t.id === item.id),
+		);
 
-	// 		if (_conversationsList.data?.length === 0) {
-	// 			setHasMore(false);
-	// 		}
-	// 		setIsLoadingMore(false);
-	// 	}
-	// }, [_conversationsList]);
-
-	// const loadMore = () => {
-	// 	if (!hasMore || isLoadingMore) return;
-
-	// 	setIsLoadingMore(true);
-	// 	if (conversationsList.length > 0) {
-	// 		const lastItem = conversationsList[conversationsList.length - 1];
-	// 		const lastStatusId = lastItem.last_status?.id;
-
-	// 		if (lastStatusId) {
-	// 			setMaxID(lastStatusId);
-	// 		} else {
-	// 			setHasMore(false);
-	// 			setIsLoadingMore(false);
-	// 		}
-	// 	}
-	// };
+	const handleEndReached = () => {
+		if (isFetchingNextPage || !hasNextPage) return;
+		fetchNextPage();
+	};
 
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<StartConversation onPress={handlePressNewChat} />
-			{/* <FlashList
+			<FlashList
 				refreshControl={
 					<RefreshControl
-						refreshing={isFetching}
+						refreshing={isLoading}
 						tintColor={customColor['patchwork-light-900']}
 						onRefresh={refetch}
 					/>
@@ -109,12 +91,17 @@ const Message = ({
 					height: height,
 				}}
 				contentContainerStyle={{ paddingHorizontal: 10 }}
-				data={conversationsList}
+				data={_conversationsList}
 				showsVerticalScrollIndicator={false}
 				keyExtractor={item => item.id.toString()}
 				renderItem={({ item }: { item: Pathchwork.Conversations }) => (
 					<Pressable
-						disabled
+						onPress={() =>
+							navigation.navigate('ConversationDetail', {
+								id: item.last_status.id,
+								isNewMessage: false,
+							})
+						}
 						className={`flex-row items-center rounded-2xl p-3 mr-2`}
 					>
 						<FastImage
@@ -154,70 +141,27 @@ const Message = ({
 					</Pressable>
 				)}
 				onEndReachedThreshold={0.15}
-				onEndReached={loadMore}
-				keyExtractor={(_, index) => index.toString()}
-				renderItem={({ item }: { item: Pathchwork.Conversations }) =>
-					isLoading ? (
-						<ConversationsListLoading />
-					) : (
-						<Pressable
-							disabled
-							key={item.id}
-							className={`flex-row items-center rounded-2xl p-3 mr-2`}
-						>
-							<FastImage
-								className="w-10 h-10 rounded-full mr-3"
-								source={{ uri: item.accounts[0].avatar }}
-								resizeMode={FastImage.resizeMode.contain}
-							/>
-							<View className="flex-1 mr-6">
-								<View className="flex-row items-center">
-									<ThemeText size={'fs_13'}>
-										{item.accounts[0].display_name}
-									</ThemeText>
-									<ThemeText
-										size={'fs_13'}
-										className="text-patchwork-grey-400 ml-3"
-									>
-										{getDurationFromNow(item.last_status.created_at)}
-									</ThemeText>
-								</View>
-								<ThemeText
-									size={'xs_12'}
-									className="text-patchwork-grey-400 my-0.5"
-								>
-									@{item.accounts[0].acct}
-								</ThemeText>
-								<View className="flex-row items-center">
-									<ThemeText
-										className="w-full"
-										size={'xs_12'}
-										numberOfLines={1}
-										ellipsizeMode="tail"
-									>
-										{extractMessage(cleanText(item.last_status?.content))}
-									</ThemeText>
-								</View>
-							</View>
-						</Pressable>
-					)
-				}
+				onEndReached={handleEndReached}
 				ListFooterComponent={
-					isLoadingMore ? (
-						<ConversationsListLoading />
-					) : !hasMore ? (
+					isFetchingNextPage ? (
+						<ActivityIndicator
+							color={customColor['patchwork-red-50']}
+							size={'large'}
+							className="my-5"
+						/>
+					) : (
 						<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
 							No more conversations to show
 						</ThemeText>
-					) : null
+					)
 				}
-			/> */}
-			{/* <Pressable
+			/>
+			<Pressable
 				onPress={handlePressNewChat}
 				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
 			>
 				<PlusIcon />
-			</Pressable> */}
+			</Pressable>
 		</SafeScreen>
 	);
 };

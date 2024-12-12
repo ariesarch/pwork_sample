@@ -38,6 +38,7 @@ import { FeedDetail } from '@/screens';
 import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
+import { uniqueId } from 'lodash';
 
 const StatusMenu = ({
 	status,
@@ -170,7 +171,9 @@ const StatusMenu = ({
 	});
 
 	const handleDeleteStatus = () => {
-		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
+		const crossChannelRequestIdentifier = uniqueId(
+			`CROS-Channel-Status::${status.id}::Req-ID::`,
+		);
 		saveStatus(crossChannelRequestIdentifier, {
 			status,
 			savedPayload: {

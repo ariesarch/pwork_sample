@@ -57,6 +57,9 @@ import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbo
 import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import { delay } from 'lodash';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { AccountListIcon } from '@/util/svg/icon.common';
+import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 
 type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
@@ -196,6 +199,9 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 									estimatedListSize={{
 										height: Dimensions.get('screen').height,
 										width: Dimensions.get('screen').width,
+									}}
+									ListEmptyComponent={() => {
+										return <ListEmptyComponent />;
 									}}
 									onEndReachedThreshold={0.15}
 									onEndReached={onTimelineContentLoadMore}

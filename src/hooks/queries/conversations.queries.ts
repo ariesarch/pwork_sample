@@ -1,17 +1,9 @@
 import {
-	fetchConversations,
 	getConversationsList,
 	searchUsers,
 } from '@/services/conversations.service';
-import {
-	ConversationsQueryKey,
-	SearchUsersQueryKey,
-} from '@/types/queries/conversations.type';
-import {
-	InfiniteQueryOptionHelper,
-	QueryOptionHelper,
-} from '@/util/helper/helper';
-import { infinitePageParam, PagedResponse } from '@/util/helper/timeline';
+import { SearchUsersQueryKey } from '@/types/queries/conversations.type';
+import { QueryOptionHelper } from '@/util/helper/helper';
 import {
 	InfiniteData,
 	useInfiniteQuery,
@@ -34,32 +26,36 @@ export const useSearchUsers = ({
 	});
 };
 
-export const useConversationsList = ({
-	options,
-	...queryParam
-}: ConversationsQueryKey[1] & {
-	options?: QueryOptionHelper<AxiosResponse<Pathchwork.Conversations[]>>;
-}) => {
-	const queryKey: ConversationsQueryKey = ['conversations', queryParam];
-	return useQuery({
-		queryKey,
+export const useGetConversationsList = (
+	options?: QueryOptionHelper<Pathchwork.Conversations[]>,
+) => {
+	return useInfiniteQuery<
+		Pathchwork.Conversations[],
+		Error,
+		InfiniteData<Pathchwork.Conversations[]>
+	>({
+		queryKey: ['conversations'],
 		//@ts-expect-error
-		queryFn: getConversationsList,
+		queryFn: ({ pageParam }: { pageParam: string | null }) =>
+			getConversationsList({ pageParam }),
 		...options,
+		getNextPageParam: (lastPage: Pathchwork.Conversations[]) => {
+			if (!lastPage || lastPage.length === 0) return undefined;
+			const lastParam = lastPage[lastPage.length - 1]?.last_status?.id;
+			return lastParam;
+		},
+		select: data => {
+			const deduplicatedList: Pathchwork.Conversations[] = data.pages
+				.flat()
+				.filter(
+					(item, index, self) =>
+						index === self.findIndex(t => t.id === item.id),
+				);
+
+			return {
+				...data,
+				pages: [deduplicatedList],
+			};
+		},
 	});
 };
-
-// export const useConversations = () => {
-// 	return useInfiniteQuery({
-// 		queryKey: ['conversations'],
-// 		queryFn: ({ pageParam }) => fetchConversations(pageParam),
-// 		getNextPageParam: lastPage => {
-// 			if (lastPage?.data?.length > 0) {
-// 				return { max_id: lastPage.data[lastPage.data.length - 1].id };
-// 			}
-// 			return undefined;
-// 		},
-// 		refetchOnWindowFocus: false,
-// 		refetchOnMount: false,
-// 	});
-// };

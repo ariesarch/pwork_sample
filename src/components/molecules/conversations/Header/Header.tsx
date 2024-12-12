@@ -10,11 +10,11 @@ import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 type Props = {
 	onPressBackButton: () => void;
+	chatParticipant: Pathchwork.Account | undefined;
 };
 
-const ConversationsHeader = ({ onPressBackButton }: Props) => {
+const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 	const { colorScheme } = useColorScheme();
-	const { userInfo, setUserInfo } = useUserInfo();
 
 	return (
 		<View className="flex-row justify-center items-center mx-4 mt-4 mb-5">
@@ -24,7 +24,7 @@ const ConversationsHeader = ({ onPressBackButton }: Props) => {
 			<View className="flex-1 flex-row ml-14 items-center">
 				<FastImage
 					className="w-10 h-10 rounded-full"
-					source={{ uri: userInfo?.avatar }}
+					source={{ uri: chatParticipant?.avatar }}
 					resizeMode={FastImage.resizeMode.contain}
 				/>
 				<ThemeText
@@ -32,7 +32,7 @@ const ConversationsHeader = ({ onPressBackButton }: Props) => {
 					ellipsizeMode="tail"
 					className="font-bold mx-3"
 				>
-					{userInfo?.display_name}
+					{chatParticipant?.display_name}
 				</ThemeText>
 				<VerifyIcon colorScheme={colorScheme} />
 			</View>

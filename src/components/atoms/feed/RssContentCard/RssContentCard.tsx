@@ -21,8 +21,9 @@ import { cn } from '@/util/helper/twutil';
 type Props = {
 	meta: any;
 	extraStyle?: string;
+	isFeedDetail?: boolean;
 };
-const RssContentCard = ({ meta, extraStyle }: Props) => {
+const RssContentCard = ({ meta, extraStyle, isFeedDetail }: Props) => {
 	const navigation =
 		useNavigation<StackNavigationProp<RootStackParamList, 'WebViewer'>>();
 	const regex = /(<([^>]+)>)/gi;
@@ -45,6 +46,7 @@ const RssContentCard = ({ meta, extraStyle }: Props) => {
 						width: '100%',
 					}}
 					blurHash={meta?.blurhash}
+					isFeedDetail={isFeedDetail}
 				/>
 
 				<View className="p-3">

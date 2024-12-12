@@ -170,8 +170,8 @@ declare namespace Pathchwork {
 		community_name: stirng;
 		community_slug: string;
 		created_at: string;
-		in_reply_to_id?: null;
-		in_reply_to_account_id?: null;
+		in_reply_to_id?: string;
+		in_reply_to_account_id?: string;
 		sensitive: boolean;
 		spoiler_text?: string;
 		visibility: string;
@@ -216,8 +216,8 @@ declare namespace Pathchwork {
 	type StatusDetail = {
 		id: string;
 		created_at: string;
-		in_reply_to_id?: null;
-		in_reply_to_account_id?: null;
+		in_reply_to_id?: string;
+		in_reply_to_account_id?: string;
 		sensitive: boolean;
 		spoiler_text?: string;
 		visibility: string;

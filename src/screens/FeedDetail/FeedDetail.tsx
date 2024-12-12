@@ -177,6 +177,7 @@ const FeedDetail = ({
 								username={feedDetail.account.username}
 								progress={progress}
 								autoFocus={!!openKeyboardAtMount}
+								feedDetailStatus={feedDetail}
 							/>
 							<Animated.View style={replyActionBarStyle}>
 								<ReplyActionBar

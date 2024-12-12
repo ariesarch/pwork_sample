@@ -46,6 +46,7 @@ import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { cleanText } from '@/util/helper/cleanText';
 import { delay } from 'lodash';
+import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -271,6 +272,9 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 												<StatusWrapper status={item} />
 											);
 										}}
+										ListEmptyComponent={() => (
+											<ListEmptyComponent className="mt-10" />
+										)}
 										refreshControl={
 											<RefreshControl
 												className="mt-1"
@@ -310,6 +314,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										renderItem={({ item }) => {
 											return <StatusWrapper status={item} />;
 										}}
+										ListEmptyComponent={() => (
+											<ListEmptyComponent
+												title="No Replies Found"
+												className="mt-10"
+											/>
+										)}
 										refreshControl={
 											<RefreshControl
 												className="mt-1"

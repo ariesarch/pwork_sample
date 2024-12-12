@@ -1,10 +1,10 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
-	ConversationsQueryKey,
+	ConversationsQueryParam,
 	SearchUsersQueryKey,
 } from '@/types/queries/conversations.type';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import instance from './instance';
 
 export const searchUsers = async ({
@@ -35,56 +35,30 @@ export const searchUsers = async ({
 };
 
 export const getConversationsList = async ({
-	queryKey,
-}: QueryFunctionContext<ConversationsQueryKey>) => {
+	pageParam = null,
+}: {
+	pageParam?: string | null;
+}): Promise<Pathchwork.Conversations[]> => {
 	try {
-		const [, params] = queryKey;
-		const { max_id } = params;
-		const resp: AxiosResponse<Pathchwork.Conversations[]> = await instance.get(
+		const limit = 10;
+		const params: ConversationsQueryParam = { limit, max_id: pageParam };
+		const { data } = await instance.get<Pathchwork.Conversations[]>(
 			appendApiVersion('conversations'),
-			{
-				params: {
-					limit: 10,
-					max_id: max_id,
-				},
-			},
+			{ params },
 		);
-		return resp.data;
+		return data;
 	} catch (e) {
 		return handleError(e);
 	}
 };
 
-export const fetchConversations = async (params?: {
-	max_id?: string;
-	since_id?: string;
-}) => {
-	const response = await instance.get(appendApiVersion('conversations'), {
-		params: { limit: 10 },
-	});
-	const linkHeader = response.headers['link'];
-	const links = parseLinkHeader(linkHeader);
-
-	return {
-		data: response.data,
-		nextPageUrl: links?.next,
-		prevPageUrl: links?.prev,
-	};
-};
-const parseLinkHeader = (header: string | undefined) => {
-	if (!header) return null;
-
-	const links: Record<string, string> = {};
-	const parts = header.split(',');
-
-	parts.forEach(part => {
-		const section = part.split(';');
-		if (section.length !== 2) return;
-
-		const url = section[0].trim().slice(1, -1); // Remove < and >
-		const rel = section[1].trim().replace(/rel="(.*)"/, '$1'); // Extract rel
-		links[rel] = url;
-	});
-
-	return links;
+export const markAsRead = async ({ id }: { id: string }) => {
+	try {
+		const response = await instance.post(
+			appendApiVersion(`conversations/${id}/read`),
+		);
+		return response.data;
+	} catch (error) {
+		return handleError(error);
+	}
 };

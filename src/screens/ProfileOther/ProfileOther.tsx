@@ -1,21 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import { View, TouchableOpacity, Platform, Dimensions } from 'react-native';
-import { SectionListWithHeaders } from '@codeherence/react-native-header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { statusListData } from '@/mock/feed/statusList';
-import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import { useColorScheme } from 'nativewind';
-import ProfileInfo from '@/components/organisms/profile/ProfileInfo';
-import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
 import { useAccountDetailFeed } from '@/hooks/queries/feed.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { flattenPages } from '@/util/helper/timeline';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
-import { useNavigation } from '@react-navigation/native';
-import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { CircleFade } from 'react-native-animated-spinkit';
 import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
 import { ScrollProvider } from '@/context/sharedScrollContext/sharedScroll.context';
@@ -38,6 +30,7 @@ import {
 	AccountInfoQueryKey,
 	CheckRelationshipQueryKey,
 } from '@/types/queries/profile.type';
+import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -199,6 +192,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									onEndReachedThreshold={0.15}
 									onEndReached={onTimelineContentLoadMore}
 									showsVerticalScrollIndicator={false}
+									ListEmptyComponent={<ListEmptyComponent className="mt-10" />}
 									ListFooterComponent={
 										isFetching ? (
 											<View className="my-3 items-center">
@@ -245,6 +239,14 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										width: Dimensions.get('screen').width,
 									}}
 									onEndReachedThreshold={0.15}
+									ListEmptyComponent={() => {
+										return (
+											<ListEmptyComponent
+												title="No Replies Found"
+												className="mt-10"
+											/>
+										);
+									}}
 									onEndReached={onReplyFeedLoadMore}
 									showsVerticalScrollIndicator={false}
 									ListFooterComponent={

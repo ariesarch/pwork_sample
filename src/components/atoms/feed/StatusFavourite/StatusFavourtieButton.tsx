@@ -17,6 +17,7 @@ import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import { DEFAULT_API_URL } from '@/util/constant';
 import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
+import { uniqueId } from 'lodash';
 import { useMemo } from 'react';
 import { TouchableOpacity, ViewProps } from 'react-native';
 
@@ -66,7 +67,9 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 
 	const handleFavourite = () => {
 		const stat = status.reblog ? status.reblog : status;
-		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
+		const crossChannelRequestIdentifier = uniqueId(
+			`CROS-Channel-Status::${status.id}::Req-ID::`,
+		);
 		saveStatus(crossChannelRequestIdentifier, {
 			status: stat,
 			savedPayload: {

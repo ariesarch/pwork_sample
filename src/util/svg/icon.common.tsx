@@ -597,7 +597,7 @@ export const PasswordEyeOpenIcon = () => (
 );
 
 export const MediaSensitiveDisbaleIcon = (props: SvgProps) => (
-	<Svg width={43} height={43} viewBox="0 0 43 43" fill="none" {...props}>
+	<Svg width={27} height={27} viewBox="0 0 43 43" fill="none" {...props}>
 		<G filter="url(#filter0_d_7112_163205)">
 			<Path
 				d="M11.0833 9.58333L31.9167 30.4167M21.5 35C13.2157 35 6.5 28.2843 6.5 20C6.5 11.7157 13.2157 5 21.5 5C29.7843 5 36.5 11.7157 36.5 20C36.5 28.2843 29.7843 35 21.5 35Z"
@@ -648,5 +648,17 @@ export const Browser = (props: SvgProps) => (
 				d="M28 72h136M28 120h136"
 			></Path>
 		</G>
+	</Svg>
+);
+
+export const AccountListIcon = (props: SvgProps) => (
+	<Svg width={60} height={60} viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M5 17H13M5 12H19M11 7H19"
+			stroke={props.stroke || '#fff'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
 	</Svg>
 );

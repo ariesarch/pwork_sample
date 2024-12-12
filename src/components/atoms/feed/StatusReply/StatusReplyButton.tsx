@@ -46,11 +46,24 @@ const StatusReplyButton = ({
 	};
 
 	const openKeyboardAndChangeReplyId = () => {
-		composeStatus &&
+		if (composeStatus) {
 			composeStatus.composeDispatch({
 				type: 'reply_id_change',
 				payload: status.id,
 			});
+			composeStatus.composeDispatch({
+				type: 'text',
+				payload: {
+					count: status.account.acct.length,
+					raw: '@' + status.account.acct + ' ',
+				},
+			});
+			composeStatus.composeDispatch({
+				type: 'disableUserSuggestionsModal',
+				payload: true,
+			});
+		}
+
 		changeCurrentStatus(status);
 		return textInputRef?.current?.focus();
 	};

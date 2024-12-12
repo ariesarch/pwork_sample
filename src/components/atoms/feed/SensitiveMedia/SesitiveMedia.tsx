@@ -22,21 +22,19 @@ const SensitiveMedia: React.FC<Props> = ({
 }) => {
 	return (
 		<View style={styles.sensitiveContainer}>
-			<View
-				style={{
-					transform: [{ scale: scaleValue }],
-					marginBottom: scaleValue < 1 ? -12 : 0,
-				}}
-			>
+			{/* <View>
 				<MediaSensitiveDisbaleIcon />
+			</View> */}
+
+			<View className="items-center">
+				<ThemeText
+					style={{ fontSize: scaleValue < 1 ? 8 : 12 }}
+					className="font-bold text-white items-center"
+				>
+					This {mediaType === 'photo' ? 'photo' : 'video'} may include sensitive
+					content
+				</ThemeText>
 			</View>
-			<ThemeText
-				style={{ fontSize: scaleValue < 1 ? 8 : 13 }}
-				className="font-bold max-w-[200px] text-white"
-			>
-				This {mediaType === 'photo' ? 'photo' : 'video'} may include sensitive
-				content
-			</ThemeText>
 			<Pressable
 				onPress={
 					sensitiveFromMastodon
@@ -70,13 +68,14 @@ const styles = StyleSheet.create({
 	},
 	forceViewSensitiveButton: {
 		backgroundColor: 'rgba(54, 70, 99, 0.4)',
-		borderWidth: 1,
+		borderWidth: 0,
 		borderRadius: 50,
-		width: 90,
-		height: 26,
+		width: 120,
+		height: 35,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginTop: 24,
+		margin: 3,
 		color: '#42454F',
 	},
 });

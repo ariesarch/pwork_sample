@@ -44,7 +44,10 @@ const UserSuggestionReply = () => {
 	});
 
 	useEffect(() => {
-		if (composeState?.currentMention?.raw === previousCurrentMentionStr.current)
+		if (
+			composeState.disableUserSuggestionsModal &&
+			composeState?.currentMention?.raw === previousCurrentMentionStr.current
+		)
 			return;
 		if (composeState.currentMention?.raw?.length! > 3) {
 			startDebounce(() => {
@@ -52,7 +55,10 @@ const UserSuggestionReply = () => {
 				setDebounceVal(composeState.currentMention?.raw || '');
 			}, 1200);
 		}
-	}, [composeState.currentMention?.raw]);
+	}, [
+		composeState.currentMention?.raw,
+		composeState.disableUserSuggestionsModal,
+	]);
 	if (!showUserSuggestion) return <></>;
 	return (
 		<View>
