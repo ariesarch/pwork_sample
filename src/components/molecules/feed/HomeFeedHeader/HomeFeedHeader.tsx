@@ -19,6 +19,8 @@ import { useState } from 'react';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import customColor from '@/util/constant/color';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
+import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
+import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -32,6 +34,9 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 	const [isMenuOpen, setMenuVisibility] = useState(false);
 	const [isAlertOpen, setAlert] = useState(false);
 	const { setDomain } = useActiveDomainAction();
+	const { mutateAsync, isPending } = usePushNotiRevokeTokenMutation({});
+
+	const fcmToken = usePushNoticationStore(state => state.fcmToken);
 
 	const handleLogout = async () => {
 		setMenuVisibility(false);
@@ -47,6 +52,11 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				{
 					text: 'OK',
 					onPress: async () => {
+						if (fcmToken) {
+							await mutateAsync({
+								notification_token: fcmToken,
+							});
+						}
 						await removeAppToken();
 						clearAuthState();
 					},

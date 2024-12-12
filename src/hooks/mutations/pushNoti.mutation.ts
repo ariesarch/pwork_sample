@@ -1,5 +1,6 @@
 import {
 	PushNotiTokenMutationPayload,
+	pushNotiRevokeTokenMutationFn,
 	pushNotiTokenMutationFn,
 } from '@/services/pushNoti.service';
 import { UseMutationOptions, useMutation } from '@tanstack/react-query';
@@ -13,4 +14,14 @@ export const usePushNotiTokenMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: pushNotiTokenMutationFn, ...options });
+};
+
+export const usePushNotiRevokeTokenMutation = (
+	options: UseMutationOptions<
+		{ message: string },
+		AxiosError,
+		{ notification_token: string }
+	>,
+) => {
+	return useMutation({ mutationFn: pushNotiRevokeTokenMutationFn, ...options });
 };

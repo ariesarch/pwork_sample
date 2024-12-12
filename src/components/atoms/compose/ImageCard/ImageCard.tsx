@@ -27,6 +27,7 @@ const ImageCard = ({ composeType }: Props) => {
 	const { composeDispatch } = useComposeStatus();
 	const previousImageCount = useRef(0);
 	const selectedMedia = useManageAttachmentStore(state => state.selectedMedia);
+
 	const progressInfo = useManageAttachmentStore(state => state.progress);
 
 	const {
@@ -47,14 +48,18 @@ const ImageCard = ({ composeType }: Props) => {
 		},
 		onError: error => {
 			console.log('error::', error);
-
 			Toast.show({
 				type: 'errorToast',
-				text1: 'Something went wrong',
+				text1:
+					'The data could not be read because it is not in the correct format.',
 				position: 'top',
 				topOffset: 50,
 			});
 			resetAttachmentStore();
+			composeDispatch({
+				type: 'media_add',
+				payload: [],
+			});
 		},
 	});
 

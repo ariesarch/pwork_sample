@@ -165,12 +165,13 @@ const ConversationList = ({
 				onEndReached={handleEndReached}
 				ListFooterComponent={renderListFooter}
 			/>
-			<Pressable
+			{/* <Pressable
+				disabled
 				onPress={handlePressNewChat}
 				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
 			>
 				<PlusIcon />
-			</Pressable>
+			</Pressable> */}
 		</SafeScreen>
 	);
 };

@@ -20,3 +20,17 @@ export const pushNotiTokenMutationFn = async (
 		return handleError(error);
 	}
 };
+
+export const pushNotiRevokeTokenMutationFn = async (params: {
+	notification_token: string;
+}) => {
+	try {
+		const resp: AxiosResponse<{ message: string }> = await instance.post(
+			appendApiVersion('notification_tokens/revoke_token', 'v1'),
+			params,
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
