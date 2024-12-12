@@ -127,11 +127,7 @@ const ConversationList = ({
 				size={'large'}
 				className="my-5"
 			/>
-		) : (
-			<ThemeText className="text-patchwork-grey-400 text-center mb-10 mt-5">
-				No more conversations to show
-			</ThemeText>
-		);
+		) : null;
 
 	const renderListEmptyComponent = () =>
 		!isLoading ? (
