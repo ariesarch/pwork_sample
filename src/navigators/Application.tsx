@@ -18,7 +18,18 @@ import Guest from './GuestStackNavigator';
 import EditProfile from '@/screens/EditProfile/EditProfile';
 import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { useEffect } from 'react';
-import { requestNotificationPermission } from '@/util/helper/firebase';
+import {
+	handleNotiDetailPress,
+	handleNotiProfileDetailPress,
+	listenMessage,
+	requestNotificationPermission,
+} from '@/util/helper/firebase';
+import { DeviceEventEmitter } from 'react-native';
+import notifee, { EventType } from '@notifee/react-native';
+import { NotificationsQueryKey } from '@/services/notification.service';
+import { queryClient } from '@/App';
+import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
+import navigationRef from '@/util/navigation/navigationRef';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -33,6 +44,36 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
+	const { onRemoveNotifcationCount } = usePushNoticationActions();
+
+	useEffect(() => {
+		const eventEmitter = DeviceEventEmitter.addListener(
+			'patchwork.noti',
+			val => {
+				const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
+
+				console.log('🚀 ~ useEffect  ~ val:', val);
+				return notifee.onForegroundEvent(({ type }) => {
+					console.log('🚀 ~ returnnotifee.onForegroundEvent ~ type:', type);
+					queryClient.invalidateQueries({ queryKey: notiQueryKey });
+					switch (type) {
+						case EventType.DISMISSED:
+							break;
+						case EventType.PRESS:
+							onRemoveNotifcationCount();
+							const destinationId = val.data?.destination_id;
+							if (val.data.noti_type === 'follow') {
+								handleNotiProfileDetailPress(destinationId);
+							} else {
+								handleNotiDetailPress(destinationId);
+							}
+							break;
+					}
+				});
+			},
+		);
+		return () => eventEmitter.remove();
+	}, []);
 
 	// ***** Firebase Request Noti Permission ***** //
 	useEffect(() => {
@@ -41,12 +82,14 @@ function ApplicationNavigator() {
 				access_token && (await requestNotificationPermission());
 			}, 1000);
 		})();
+		const unsubscribe = listenMessage();
+		return unsubscribe;
 	}, [access_token]);
 	// ***** Firebase Request Noti Permission ***** //
 
 	return (
 		<SafeAreaProvider>
-			<NavigationContainer theme={CustomTheme}>
+			<NavigationContainer theme={CustomTheme} ref={navigationRef}>
 				<Stack.Navigator
 					screenOptions={{ headerShown: false }}
 					initialRouteName={ENTRY_ROUTE}

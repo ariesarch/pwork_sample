@@ -1,4 +1,3 @@
-import { ChannelProfile } from '@/screens';
 /* eslint-disable @typescript-eslint/no-namespace */
 import {
 	CompositeNavigationProp,
@@ -14,10 +13,6 @@ import type {
 	BottomTabNavigationProp,
 	BottomTabScreenProps,
 } from '@react-navigation/bottom-tabs';
-import { GetChannelFeedQueryKey } from './queries/channel.type';
-import { AccountDetailFeedQueryKey } from './queries/feed.type';
-import { SearchUsersQueryKey } from './queries/conversations.type';
-import { Asset } from 'react-native-image-picker';
 
 export type RootStackParamList = {
 	AboutYou: undefined;
@@ -57,7 +52,6 @@ export type BottomStackParamList = {
 				isFeedDetail?: boolean;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
-	HomeFeed: undefined;
 };
 
 export type HomeStackParamList = {

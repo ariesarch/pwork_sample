@@ -15,11 +15,18 @@ import { scale } from '@/util/helper/helper';
 import SearchStack from './SearchStackNavigator';
 import ConversationsStack from './ConversationsStackNavigator';
 import NotiStack from './NotiStackNavigator';
+import {
+	usePushNoticationActions,
+	usePushNoticationStore,
+} from '@/store/pushNoti/pushNotiStore';
+import NotiTabBarIcon from '@/components/atoms/notifications/NotiTabBarIcon/NotiTabBarIcon';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
 export default function BottomTabs() {
 	const { colorScheme } = useColorScheme();
+	const notiCount = usePushNoticationStore(state => state.notiCount);
+	const { onRemoveNotifcationCount } = usePushNoticationActions();
 
 	return (
 		<Tab.Navigator
@@ -86,9 +93,16 @@ export default function BottomTabs() {
 				component={NotiStack}
 				options={{
 					tabBarIcon: ({ focused }) => (
-						<NotificationTabIcon colorScheme={colorScheme} focused={focused} />
+						<NotiTabBarIcon {...{ colorScheme, focused, notiCount }} />
 					),
 				}}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault();
+						notiCount !== 0 && onRemoveNotifcationCount();
+						navigation.navigate('Notification');
+					},
+				})}
 			/>
 			<Tab.Screen
 				name="Conversations"

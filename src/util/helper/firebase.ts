@@ -1,6 +1,14 @@
-import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Platform } from 'react-native';
+import messaging, {
+	FirebaseMessagingTypes,
+} from '@react-native-firebase/messaging';
+import { DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
+import notifee, {
+	AndroidImportance,
+	Notification,
+} from '@notifee/react-native';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
+import navigationRef from '../navigation/navigationRef';
+import { CommonActions } from '@react-navigation/native';
 
 /**
  * Function to request notification permissions for Android.
@@ -62,4 +70,97 @@ const getFirebaseMessagingToken = async () => {
 	}
 };
 
-export { requestNotificationPermission, getFirebaseMessagingToken };
+export const AndroidMessageChannelId = 'Patchwork';
+
+if (Platform.OS === 'android') {
+	notifee.createChannel({
+		id: AndroidMessageChannelId,
+		name: 'Patchwork',
+		sound: 'default',
+		importance: AndroidImportance.HIGH,
+	});
+}
+
+const listenMessage = () => {
+	const onSetNotifcationCount =
+		usePushNoticationStore.getState().actions.onSetNotifcationCount;
+	return messaging().onMessage(async remoteMessage => {
+		console.log(
+			'🚀 ~ listenMessage ~ listenMessage:',
+			JSON.stringify(remoteMessage),
+		);
+		onSetNotifcationCount();
+		await showNotification(remoteMessage.notification);
+		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
+	});
+};
+
+const showNotification = async (
+	notification: FirebaseMessagingTypes.Notification | Notification | undefined,
+) => {
+	await notifee.displayNotification({
+		...notification,
+		android: {
+			channelId: AndroidMessageChannelId,
+		},
+		ios: {
+			sound: 'default',
+		},
+	});
+};
+
+const handleNotiDetailPress = (destinationId: string) => {
+	if (navigationRef.isReady()) {
+		navigationRef.dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [
+					{
+						name: 'Notification',
+						state: {
+							routes: [
+								{ name: 'NotificationList' },
+								{
+									name: 'FeedDetail',
+									params: { id: destinationId },
+								},
+							],
+						},
+					},
+				],
+			}),
+		);
+	}
+};
+
+const handleNotiProfileDetailPress = (destinationId: string) => {
+	if (navigationRef.isReady()) {
+		navigationRef.dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [
+					{
+						name: 'Notification',
+						state: {
+							routes: [
+								{ name: 'NotificationList' },
+								{
+									name: 'ProfileOther',
+									params: { id: destinationId },
+								},
+							],
+						},
+					},
+				],
+			}),
+		);
+	}
+};
+
+export {
+	requestNotificationPermission,
+	listenMessage,
+	handleNotiDetailPress,
+	handleNotiProfileDetailPress,
+	showNotification,
+};

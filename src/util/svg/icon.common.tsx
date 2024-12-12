@@ -323,10 +323,10 @@ export const Reply = (props: SvgProps) => (
 	</Svg>
 );
 
-export const RePost = (props: SvgProps) => (
+export const ReblogIcon = (props: SvgProps) => (
 	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
 		<Path
-			stroke="#828689"
+			stroke={props.stroke || '#828689'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}

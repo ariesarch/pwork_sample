@@ -57,7 +57,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
 
-	const domain_name = useSelectedDomain();
+	// const domain_name = useSelectedDomain();
 
 	const {
 		userInfo,
@@ -75,7 +75,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
 		'get_account_info',
-		{ id: userInfo?.id!, domain_name },
+		{ id: userInfo?.id!, domain_name: process.env.API_URL ?? DEFAULT_API_URL },
 	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =

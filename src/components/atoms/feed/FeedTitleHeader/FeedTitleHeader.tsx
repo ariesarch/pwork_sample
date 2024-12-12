@@ -72,14 +72,14 @@ const FeedTitleHeader = ({ title }: Props) => {
 					{title}
 				</ThemeText>
 			</Animated.View>
-			<View className="flex-row items-center gap-2">
+			{/* <View className="flex-row items-center gap-2">
 				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50">
 					<SearchIconInProfile />
 				</TouchableOpacity>
 				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1">
 					<EllipsisIcon />
 				</TouchableOpacity>
-			</View>
+			</View> */}
 		</Animated.View>
 	);
 };

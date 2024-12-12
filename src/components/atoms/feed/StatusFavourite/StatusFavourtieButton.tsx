@@ -14,6 +14,7 @@ import {
 	toggleFavouriteState,
 } from '@/util/cache/favourite/favouriteCache';
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
+import { DEFAULT_API_URL } from '@/util/constant';
 import customColor from '@/util/constant/color';
 import { HeartOutlineIcon } from '@/util/svg/icon.common';
 import { useMemo } from 'react';
@@ -28,6 +29,7 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { domain_name } = useActiveDomainStore();
+
 	const { saveStatus } = useSubchannelStatusActions();
 	const { userInfo } = useAuthStore();
 
@@ -43,10 +45,11 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 			}
 
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
-				isAuthor ? userInfo?.id! : variables.status.account.id,
+				isAuthor ? userInfo?.id! : status.account.id,
 				variables.status.in_reply_to_id,
 				variables.status.in_reply_to_account_id,
 				status.reblog ? true : false,
+				// isAuthor ? process.env.API_URL ?? DEFAULT_API_URL : domain_name,
 				domain_name,
 			);
 			syncFavouriteAcrossCache({
@@ -65,9 +68,9 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 		const stat = status.reblog ? status.reblog : status;
 		const crossChannelRequestIdentifier = `CROS-Channel-Status::${status.id}::Req-ID::`;
 		saveStatus(crossChannelRequestIdentifier, {
-			status,
+			status: stat,
 			savedPayload: {
-				id: status.id,
+				id: status.reblog ? status.reblog.id : status.id,
 				account: status.account,
 			},
 			crossChannelRequestIdentifier,

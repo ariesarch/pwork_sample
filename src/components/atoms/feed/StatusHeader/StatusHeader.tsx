@@ -10,7 +10,7 @@ import { createRelationshipQueryKey } from '@/hooks/queries/profile.queries';
 import { queryClient } from '@/App';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
 
 dayjs.extend(relativeTime);
@@ -33,6 +33,14 @@ const StatusHeader = ({
 }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
+
+	const isAuthor = useMemo(() => {
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == status.account.id ||
+			status.account.acct == currentUserAccHandle
+		);
+	}, [status, userInfo?.id]);
 
 	const { mutate, isPending } = useUserRelationshipMutation({
 		onSuccess: (newRelationship, { accountId }) => {
@@ -64,10 +72,9 @@ const StatusHeader = ({
 		<View className="flex flex-row items-center mb-2" {...props}>
 			<Pressable
 				onPress={() => {
-					navigation.navigate(
-						userInfo?.id === status.account.id ? 'Profile' : 'ProfileOther',
-						{ id: status.account.id },
-					);
+					navigation.navigate(isAuthor ? 'Profile' : 'ProfileOther', {
+						id: status.account.id,
+					});
 				}}
 				className="flex-row items-center active:opacity-80"
 			>

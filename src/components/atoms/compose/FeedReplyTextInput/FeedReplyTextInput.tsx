@@ -68,7 +68,7 @@ const FeedReplyTextInput = ({
 				autoFocus={autoFocus}
 				autoCapitalize="none"
 				spellCheck
-				className="text-white font-SourceSans3_Regular text-base opacity-80"
+				className="text-white leading-6 font-SourceSans3_Regular opacity-80"
 			>
 				<FormattedText text={composeState.text.raw} />
 			</TextInput>

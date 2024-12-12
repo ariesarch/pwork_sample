@@ -6,6 +6,8 @@ import StatusReblogButton from '@/components/atoms/feed/StatusReblog/StatusReblo
 import StatusFavourtieButton from '@/components/atoms/feed/StatusFavourite/StatusFavourtieButton';
 import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 import { cn } from '@/util/helper/twutil';
+import { useMemo } from 'react';
+import { useAuthStore } from '@/store/auth/authStore';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -14,6 +16,7 @@ type Props = {
 
 const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 	const navigation = useNavigation();
+	const { userInfo } = useAuthStore();
 
 	const reblogsCount = status.reblog
 		? status.reblog.reblogs_count
@@ -22,6 +25,14 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 	const repliesCount = status.reblog
 		? status.reblog.replies_count
 		: status.replies_count;
+
+	const isAuthor = useMemo(() => {
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == status.account.id ||
+			status.account.acct == currentUserAccHandle
+		);
+	}, [status, userInfo?.id]);
 
 	return (
 		<View
@@ -41,6 +52,7 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 				<StatusReblogButton
 					className="mr-3"
 					count={reblogsCount}
+					alreadyReblogged={status.reblogged || status.reblog?.reblogged}
 					onPress={() => {
 						status.reblogged || status.reblog?.reblogged
 							? Alert.alert('You have already re-posted this status!')
@@ -57,9 +69,9 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 				<StatusFavourtieButton className="mr-3" {...{ status, isFeedDetail }} />
 			</View>
 			<View className="flex flex-row ">
-				<Tranlsate className="mr-3" />
-				<ShareTo className="mr-3" />
-				<StatusMenu {...{ status, isFeedDetail }} />
+				{/* <Tranlsate className="mr-3" />
+				<ShareTo className="mr-3" /> */}
+				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
 			</View>
 		</View>
 	);

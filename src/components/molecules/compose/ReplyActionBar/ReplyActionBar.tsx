@@ -27,7 +27,7 @@ import {
 } from '@/util/svg/icon.compose';
 import { delay, uniqueId } from 'lodash';
 import { useColorScheme } from 'nativewind';
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, useMemo } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 import Toast from 'react-native-toast-message';
@@ -62,13 +62,21 @@ const ReplyActionBar = ({
 
 	const disabledPoll = selectedMedia.length > 0;
 
+	const isAuthor = useMemo(() => {
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == feedDetailStatus.account.id ||
+			feedDetailStatus.account.acct == currentUserAccHandle
+		);
+	}, [feedDetailStatus, userInfo?.id]);
+
 	const feedReplyQueryKey = ['feed-replies', { id: feedDetailId, domain_name }];
 
 	const accountDetailFeedQueryKey = [
 		'account-detail-feed',
 		{
 			domain_name: domain_name,
-			account_id: userInfo?.id!,
+			account_id: isAuthor ? userInfo?.id! : feedDetailStatus.account.id,
 			exclude_replies: true,
 			exclude_reblogs: false,
 			exclude_original_statuses: false,
@@ -79,7 +87,7 @@ const ReplyActionBar = ({
 		'account-detail-feed',
 		{
 			domain_name: domain_name,
-			account_id: userInfo?.id!,
+			account_id: isAuthor ? userInfo?.id! : feedDetailStatus.account.id,
 			exclude_replies: false,
 			exclude_reblogs: true,
 			exclude_original_statuses: true,

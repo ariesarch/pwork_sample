@@ -37,6 +37,7 @@ import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import { FeedDetail } from '@/screens';
 import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 const StatusMenu = ({
 	status,
@@ -108,35 +109,56 @@ const StatusMenu = ({
 	};
 
 	const { mutate } = useStatusDeleteMutation({
-		onSuccess(_, { status_id }) {
+		onMutate: ({ status_id }) => {
 			if (goBackToPreviousPage) {
 				navigation.goBack();
 			}
-			// const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
-			// 	status.account.id,
-			// 	status.in_reply_to_id,
-			// );
-			// deleteStatusCacheData({ status_id, queryKeys });
+			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+				status.account.id,
+				status.in_reply_to_id,
+				status.in_reply_to_account_id,
+				status.reblog ? true : false,
+				process.env.API_URL ?? DEFAULT_API_URL,
+			);
+			deleteStatusCacheData({ status_id, queryKeys });
 			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
 
 			isFeedDetail &&
 				status.in_reply_to_id == currentFeed?.id &&
 				changeActiveFeedReplyCount('decrease');
-
-			//temp
-			queryClient.invalidateQueries({
-				queryKey: accountDetailReplyFeedQueryKey,
-			});
-			queryClient.invalidateQueries({
-				queryKey: feedReplyQueryKey,
-			});
-			queryClient.invalidateQueries({
-				queryKey: accountDetailFeedQueryKey,
-			});
-			queryClient.invalidateQueries({
-				queryKey: channelFeedQueryKey,
-			});
 		},
+		// onSuccess(_, { status_id }) {
+		// if (goBackToPreviousPage) {
+		// 	navigation.goBack();
+		// }
+		// const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+		// 	status.account.id,
+		// 	status.in_reply_to_id,
+		// 	status.in_reply_to_account_id,
+		// 	status.reblog ? true : false,
+		// 	process.env.API_URL ?? DEFAULT_API_URL,
+		// );
+		// deleteStatusCacheData({ status_id, queryKeys });
+		// deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
+
+		// isFeedDetail &&
+		// 	status.in_reply_to_id == currentFeed?.id &&
+		// 	changeActiveFeedReplyCount('decrease');
+
+		//temp
+		// queryClient.invalidateQueries({
+		// 	queryKey: accountDetailReplyFeedQueryKey,
+		// });
+		// queryClient.invalidateQueries({
+		// 	queryKey: feedReplyQueryKey,
+		// });
+		// queryClient.invalidateQueries({
+		// 	queryKey: accountDetailFeedQueryKey,
+		// });
+		// queryClient.invalidateQueries({
+		// 	queryKey: channelFeedQueryKey,
+		// });
+		// },
 		onError(error) {
 			Toast.show({
 				type: 'error',
@@ -223,7 +245,7 @@ const StatusMenu = ({
 							</MenuOption>
 						</>
 					) : (
-						<MenuOption>
+						<MenuOption disabled>
 							<MenuOptionIcon icon={<StatusBlockIcon />} name="Block" />
 						</MenuOption>
 					)}

@@ -20,7 +20,7 @@ const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 						@{status.account.display_name}
 					</ThemeText>
 				</ThemeText>
-				<ComposeRepostInputExplorerIcon colorScheme={colorScheme} />
+				{/* <ComposeRepostInputExplorerIcon colorScheme={colorScheme} /> */}
 			</View>
 			<ComposeTextInput />
 			<LinkCard composeType="repost" />
