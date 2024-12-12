@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
@@ -16,7 +16,6 @@ import customColor from '@/util/constant/color';
 import { delay } from 'lodash';
 import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { DEFAULT_API_URL } from '@/util/constant';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageItem from '@/components/molecules/conversations/MessageItem/MessageItem';
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
@@ -34,8 +33,6 @@ const ConversationDetail = ({
 		data: messageList,
 		isLoading: isMessageLoading,
 		refetch: refetchMessageList,
-		isFetching,
-		isStale,
 	} = useFeedRepliesQuery({
 		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 		id,
@@ -52,28 +49,6 @@ const ConversationDetail = ({
 		setRefresh(true);
 		delay(() => setRefresh(false), 1200);
 	};
-
-	const theLastMsg =
-		messageList?.ancestors?.length > 0
-			? messageList?.ancestors[messageList?.ancestors.length - 1]
-			: undefined;
-
-	useEffect(() => {
-		console.log('Is fetching:', isFetching);
-		console.log('Is stale:', isStale);
-	}, [isFetching, isStale]);
-
-	// console.log(
-	// 	'last msg:::',
-	// 	currentConversation?.last_status?.in_reply_to_id,
-	// 	currentConversation?.last_status?.content,
-	// );
-
-	// console.log(
-	// 	'current msg:::',
-	// 	theLastMsg?.in_reply_to_id,
-	// 	theLastMsg?.content,
-	// );
 
 	return (
 		<SafeScreen>
@@ -122,10 +97,8 @@ const ConversationDetail = ({
 					</View>
 					{currentConversation && messageList && (
 						<MessageActionsBar
-							id={id}
 							isFirstMsg={isNewMessage}
 							firstMsg={currentConversation}
-							inReplyToId={theLastMsg?.in_reply_to_id}
 							handleScroll={() => {}}
 						/>
 					)}
