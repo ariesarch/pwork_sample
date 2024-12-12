@@ -6,11 +6,13 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import moment from 'moment';
 import { useColorScheme } from 'nativewind';
 import { VerifyIcon } from '@/util/svg/icon.conversations';
-import { useUserInfo } from '@/store/conversations/userInfoStore';
 
-const ProfileInfo = () => {
+type Props = {
+	userInfo: Pathchwork.Account;
+};
+
+const ProfileInfo = ({ userInfo }: Props) => {
 	const { colorScheme } = useColorScheme();
-	const { userInfo } = useUserInfo();
 
 	return (
 		<View className=" -mt-3">

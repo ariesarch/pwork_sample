@@ -1,8 +1,18 @@
 import moment from 'moment';
+import { handleError } from './helper';
 
 export function getDurationFromNow(timestamp: string): string {
 	const now = moment();
 	const givenTime = moment(timestamp);
+
+	if (!givenTime.isValid()) {
+		handleError('Invalid timestamp format');
+	}
+
+	if (givenTime.isAfter(now)) {
+		return 'in the future';
+	}
+
 	const diffInSeconds = now.diff(givenTime, 'seconds');
 
 	if (diffInSeconds < 60) {

@@ -10,20 +10,42 @@ import Toast from 'react-native-toast-message';
 import { prepareComposePayload } from '@/util/helper/compose';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
+import { queryClient } from '@/App';
+import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 type Props = {
 	isFirstMsg: boolean;
 	firstMsg: Pathchwork.Conversations;
 	handleScroll: () => void;
+	inReplyToId: string | undefined;
+	id: string;
 };
 
-const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
+const MessageActionsBar = ({
+	handleScroll,
+	firstMsg,
+	isFirstMsg,
+	inReplyToId,
+	id,
+}: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
-
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
+			console.log('success');
+			const queryKey: FeedRepliesQueryKey = [
+				'feed-replies',
+				{ domain_name: process.env.API_URL ?? DEFAULT_API_URL, id: id },
+			];
+			// queryClient.invalidateQueries({ queryKey });
+			queryClient.invalidateQueries({ queryKey }).then(() => {
+				const queryState = queryClient.getQueryState(queryKey);
+				console.log('Query state after invalidation:', queryState);
+			});
+			const cachedData = queryClient.getQueryData(queryKey);
+			console.log('Cached data after invalidation:', cachedData);
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
@@ -41,9 +63,12 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			payload.in_reply_to_id = isFirstMsg
-				? firstMsg.last_status?.id
-				: firstMsg.last_status?.in_reply_to_id;
+			// payload.in_reply_to_id = isFirstMsg
+			// ? firstMsg.last_status?.id
+			// : // : inReplyToId
+			// ? inReplyToId
+			// firstMsg.last_status.in_reply_to_id;
+			payload.in_reply_to_id = firstMsg.last_status?.id;
 			payload.status = `@${firstMsg?.accounts[0]?.username}@${firstMsg?.last_status?.application?.name} ${payload.status}`;
 			mutate(payload);
 		}

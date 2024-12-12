@@ -1,11 +1,14 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageContent from '@/components/atoms/conversations/MessageContent/MessageContent';
-import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
-import { formatMessageDate, isMsgTimeClose } from '@/util/helper/conversation';
+import { useAuthStore } from '@/store/auth/authStore';
+import {
+	formatMessageDate,
+	formatMessageSentTime,
+	isMsgTimeClose,
+} from '@/util/helper/conversation';
 import { cn } from '@/util/helper/twutil';
-import dayjs from 'dayjs';
-import { View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { useState } from 'react';
+import { Pressable, View } from 'react-native';
 
 type Prop = {
 	message: Pathchwork.Status;
@@ -16,9 +19,13 @@ const MessageItem = ({ message, previousMsg }: Prop) => {
 	const isOwnMessage = userInfo?.id == message.account.id;
 	const isTwoMsgFromSameUser = previousMsg?.account.id === message.account.id;
 	const isTwoMsgTimeClose = isMsgTimeClose(message, previousMsg);
+	const [showMsgTime, setShowMsgTime] = useState<boolean>(false);
 
 	return (
-		<View className="m-2 flex">
+		<Pressable
+			onPress={() => setShowMsgTime(!showMsgTime)}
+			className="m-2 flex"
+		>
 			{!isTwoMsgTimeClose && (
 				<ThemeText className="items-center justify-center text-center text-xs mt-2 mb-1 text-gray-400">
 					{formatMessageDate(message.created_at)}
@@ -35,9 +42,20 @@ const MessageItem = ({ message, previousMsg }: Prop) => {
 					style={{ maxWidth: '75%' }}
 				>
 					<MessageContent item={message} isOwnMessage={isOwnMessage} />
+					{showMsgTime && (
+						<ThemeText
+							className={cn(
+								'mx-2 mt-1',
+								isOwnMessage ? 'self-end' : 'self-start',
+							)}
+							size={'xs_12'}
+						>
+							{formatMessageSentTime(message.created_at)}
+						</ThemeText>
+					)}
 				</View>
 			</View>
-		</View>
+		</Pressable>
 	);
 };
 export default MessageItem;

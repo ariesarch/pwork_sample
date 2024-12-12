@@ -20,6 +20,7 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageItem from '@/components/molecules/conversations/MessageItem/MessageItem';
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
+import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 
 const ConversationDetail = ({
 	navigation,
@@ -29,11 +30,12 @@ const ConversationDetail = ({
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(id);
-
 	const {
 		data: messageList,
 		isLoading: isMessageLoading,
 		refetch: refetchMessageList,
+		isFetching,
+		isStale,
 	} = useFeedRepliesQuery({
 		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 		id,
@@ -51,6 +53,28 @@ const ConversationDetail = ({
 		delay(() => setRefresh(false), 1200);
 	};
 
+	const theLastMsg =
+		messageList?.ancestors?.length > 0
+			? messageList?.ancestors[messageList?.ancestors.length - 1]
+			: undefined;
+
+	useEffect(() => {
+		console.log('Is fetching:', isFetching);
+		console.log('Is stale:', isStale);
+	}, [isFetching, isStale]);
+
+	// console.log(
+	// 	'last msg:::',
+	// 	currentConversation?.last_status?.in_reply_to_id,
+	// 	currentConversation?.last_status?.content,
+	// );
+
+	// console.log(
+	// 	'current msg:::',
+	// 	theLastMsg?.in_reply_to_id,
+	// 	theLastMsg?.content,
+	// );
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
@@ -62,6 +86,9 @@ const ConversationDetail = ({
 					<View style={{ flex: 1 }}>
 						{messageList && currentConversation?.last_status ? (
 							<FlashList
+								ListHeaderComponent={() => (
+									<ProfileInfo userInfo={currentConversation?.accounts[0]} />
+								)}
 								data={[
 									...messageList?.ancestors,
 									currentConversation?.last_status,
@@ -93,10 +120,12 @@ const ConversationDetail = ({
 							</View>
 						)}
 					</View>
-					{currentConversation && (
+					{currentConversation && messageList && (
 						<MessageActionsBar
+							id={id}
 							isFirstMsg={isNewMessage}
 							firstMsg={currentConversation}
+							inReplyToId={theLastMsg?.in_reply_to_id}
 							handleScroll={() => {}}
 						/>
 					)}

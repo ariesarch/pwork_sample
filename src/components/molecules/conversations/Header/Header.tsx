@@ -6,7 +6,6 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import InfoButton from '@/components/atoms/conversations/InfoButton/InfoButton';
 import { VerifyIcon } from '@/util/svg/icon.conversations';
 import { useColorScheme } from 'nativewind';
-import { useUserInfo } from '@/store/conversations/userInfoStore';
 
 type Props = {
 	onPressBackButton: () => void;
