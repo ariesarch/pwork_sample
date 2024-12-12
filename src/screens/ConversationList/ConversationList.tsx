@@ -30,6 +30,7 @@ import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
 import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { queryClient } from '@/App';
 
 const { width, height } = Dimensions.get('window');
 
@@ -53,13 +54,31 @@ const ConversationList = ({
 		refetch,
 	} = useGetConversationsList();
 
-	const { mutate: markConversationAsRead } = useMarkAsReadMutation();
+	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
+		onSuccess: data => {
+			queryClient.setQueryData(['conversations'], (oldData: any) => {
+				if (!oldData) return oldData;
+				return {
+					...oldData,
+					pages: oldData.pages.map((page: any) =>
+						page.map((conversation: any) =>
+							conversation.id === data.id
+								? { ...conversation, unread: false }
+								: conversation,
+						),
+					),
+				};
+			});
+		},
+	});
 	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
 
 	// Handlers
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
 
-	const handleRead = (id: string) => markConversationAsRead({ id });
+	const handleRead = (id: string) => {
+		markConversationAsRead({ id });
+	};
 
 	const handleEndReached = () => {
 		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
@@ -82,31 +101,30 @@ const ConversationList = ({
 			className="flex-row items-center rounded-2xl p-3 mr-2 my-1"
 		>
 			<FastImage
-				className="w-10 h-10 rounded-full mr-3"
+				className="w-14 h-14 rounded-full mr-3"
 				source={{ uri: item.accounts[0].avatar }}
 				resizeMode={FastImage.resizeMode.contain}
 			/>
 			<View className="flex-1 mr-6">
 				<View className="flex-row items-center">
-					<ThemeText size={'fs_13'} variant={'textOrange'}>
+					<ThemeText variant={'textOrange'}>
 						{item.accounts[0].display_name}
 					</ThemeText>
-					<ThemeText size={'fs_13'} className="text-patchwork-grey-400 ml-3">
+					<ThemeText className="text-patchwork-grey-400 ml-3">
 						{item.last_status
 							? getDurationFromNow(item.last_status.created_at)
 							: ''}
 					</ThemeText>
 				</View>
-				<ThemeText size={'xs_12'} className="text-patchwork-grey-400 my-0.5">
+				<ThemeText size={'fs_13'} className="text-patchwork-grey-400 my-0.5">
 					@{item.accounts[0].acct}
 				</ThemeText>
 				<View className="flex-row items-center">
-					<ThemeText size={'xs_12'}>
+					<ThemeText>
 						{item.last_status?.account?.id === userInfo?.id ? 'You: ' : ''}
 					</ThemeText>
 					<ThemeText
 						className={`w-full ${item.unread ? 'font-bold' : 'font-normal'}`}
-						size={'xs_12'}
 						numberOfLines={1}
 						ellipsizeMode="tail"
 					>

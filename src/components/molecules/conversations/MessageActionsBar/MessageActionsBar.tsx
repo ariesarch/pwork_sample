@@ -11,8 +11,6 @@ import { prepareComposePayload } from '@/util/helper/compose';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
 import { queryClient } from '@/App';
-import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
-import { DEFAULT_API_URL } from '@/util/constant';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -26,6 +24,21 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
+			queryClient.setQueryData(['conversations'], (oldData: any) => {
+				if (!oldData) return oldData;
+				return {
+					...oldData,
+					pages: oldData.pages.map((page: any) =>
+						page.map((conversation: Pathchwork.Conversations) => {
+							if (conversation?.id === firstMsg.id) {
+								return { ...conversation, last_status: response };
+							} else {
+								return conversation;
+							}
+						}),
+					),
+				};
+			});
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
