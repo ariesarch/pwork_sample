@@ -14,15 +14,13 @@ import { FlashList } from '@shopify/flash-list';
 import { RefreshControl } from 'react-native-gesture-handler';
 import customColor from '@/util/constant/color';
 import { delay } from 'lodash';
-import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
-import { DEFAULT_API_URL } from '@/util/constant';
 import MessageItem from '@/components/molecules/conversations/MessageItem/MessageItem';
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
-import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import { useMessageListQuery } from '@/hooks/queries/conversations.queries';
-import { queryClient } from '@/App';
 import { removeOldMsgListCacheAndCreateNewOne } from '@/util/cache/conversation/conversationCahce';
+import useGetReceiver from '@/hooks/custom/useGetReceiver';
+import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 
 const ConversationDetail = ({
 	navigation,
@@ -32,6 +30,7 @@ const ConversationDetail = ({
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(initialLastMsgId);
+	const receiver = currentConversation?.accounts[0];
 
 	const {
 		data: messageList,
@@ -76,14 +75,12 @@ const ConversationDetail = ({
 				<View className="flex-1">
 					<ConversationsHeader
 						onPressBackButton={() => navigation.navigate('ConversationList')}
-						chatParticipant={currentConversation?.accounts[0]}
+						chatParticipant={receiver}
 					/>
 					<View style={{ flex: 1 }}>
-						{totalMsgList && !isMessageLoading ? (
+						{totalMsgList && !isMessageLoading && receiver ? (
 							<FlashList
-								// ListFooterComponent={() => (
-								// 	<ProfileInfo userInfo={currentConversation?.accounts[0]} />
-								// )}
+								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								inverted
 								data={totalMsgList}
 								renderItem={({ item, index }) => {
