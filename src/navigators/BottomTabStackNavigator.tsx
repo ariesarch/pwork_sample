@@ -100,7 +100,9 @@ export default function BottomTabs() {
 					tabPress: event => {
 						event.preventDefault();
 						notiCount !== 0 && onRemoveNotifcationCount();
-						navigation.navigate('Notification');
+						navigation.navigate('Notification', {
+							screen: 'NotificationList',
+						});
 					},
 				})}
 			/>
