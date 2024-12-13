@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
@@ -20,22 +20,25 @@ import MessageItem from '@/components/molecules/conversations/MessageItem/Messag
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
+import { useMessageListQuery } from '@/hooks/queries/conversations.queries';
+import { queryClient } from '@/App';
+import { removeOldMsgListCacheAndCreateNewOne } from '@/util/cache/conversation/conversationCahce';
 
 const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const { id, isNewMessage } = route.params;
+	const { id: initialLastMsgId, isNewMessage } = route.params;
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
-	const currentConversation = useGetCurrentConversation(id);
+	const currentConversation = useGetCurrentConversation(initialLastMsgId);
+
 	const {
 		data: messageList,
 		isLoading: isMessageLoading,
 		refetch: refetchMessageList,
-	} = useFeedRepliesQuery({
-		domain_name: process.env.API_URL ?? DEFAULT_API_URL,
-		id,
+	} = useMessageListQuery({
+		id: initialLastMsgId,
 	});
 
 	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
@@ -50,25 +53,39 @@ const ConversationDetail = ({
 		delay(() => setRefresh(false), 1200);
 	};
 
+	useEffect(() => {
+		return () => {
+			removeOldMsgListCacheAndCreateNewOne(initialLastMsgId);
+		};
+	}, []);
+
+	const totalMsgList = useMemo(() => {
+		if (messageList?.ancestors && currentConversation?.last_status) {
+			return [
+				...messageList?.descendants,
+				currentConversation?.last_status,
+				...messageList?.ancestors,
+			];
+		}
+		return [];
+	}, [messageList, currentConversation]);
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
 				<View className="flex-1">
 					<ConversationsHeader
 						onPressBackButton={() => navigation.navigate('ConversationList')}
-						chatParticipant={currentConversation?.last_status?.account}
+						chatParticipant={currentConversation?.accounts[0]}
 					/>
 					<View style={{ flex: 1 }}>
-						{messageList && currentConversation?.last_status ? (
+						{totalMsgList && !isMessageLoading ? (
 							<FlashList
-								ListHeaderComponent={() => (
-									<ProfileInfo userInfo={currentConversation?.accounts[0]} />
-								)}
-								data={[
-									...messageList?.ancestors,
-									currentConversation?.last_status,
-								]}
-								// inverted
+								// ListFooterComponent={() => (
+								// 	<ProfileInfo userInfo={currentConversation?.accounts[0]} />
+								// )}
+								inverted
+								data={totalMsgList}
 								renderItem={({ item, index }) => {
 									const previousMsg =
 										index > 0 ? messageList?.ancestors[index - 1] : undefined;
@@ -95,11 +112,13 @@ const ConversationDetail = ({
 							</View>
 						)}
 					</View>
-					{currentConversation && messageList && (
+					{messageList && (
 						<MessageActionsBar
 							isFirstMsg={isNewMessage}
-							firstMsg={currentConversation}
+							currentConversation={currentConversation}
 							handleScroll={() => {}}
+							currentFocusMsgId={initialLastMsgId}
+							lastMsg={totalMsgList[0]}
 						/>
 					)}
 					<Animated.View style={virtualKeyboardContainerStyle} />

@@ -1,10 +1,11 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	ConversationsQueryParam,
+	MessageListQueryKey,
 	SearchUsersQueryKey,
 } from '@/types/queries/conversations.type';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import instance from './instance';
 
 export const searchUsers = async ({
@@ -61,4 +62,17 @@ export const markAsRead = async ({ id }: { id: string }) => {
 	} catch (error) {
 		return handleError(error);
 	}
+};
+
+export const getMessageList = async (
+	qfContext: QueryFunctionContext<MessageListQueryKey>,
+) => {
+	const { id } = qfContext.queryKey[1];
+	const resp: AxiosResponse<Pathchwork.TimelineReplies> = await instance.get(
+		appendApiVersion(`statuses/${id}/context`),
+		{
+			params: { reverse_sort: true },
+		},
+	);
+	return resp.data;
 };

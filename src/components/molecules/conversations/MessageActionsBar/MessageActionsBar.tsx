@@ -11,34 +11,32 @@ import { prepareComposePayload } from '@/util/helper/compose';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
 import { queryClient } from '@/App';
+import {
+	addNewMsgToQueryCache,
+	changeLastMsgInConversationChache,
+} from '@/util/cache/conversation/conversationCahce';
 
 type Props = {
 	isFirstMsg: boolean;
-	firstMsg: Pathchwork.Conversations;
+	currentConversation: Pathchwork.Conversations | undefined;
+	lastMsg: Pathchwork.Status;
 	handleScroll: () => void;
+	currentFocusMsgId: string;
 };
 
-const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
+const MessageActionsBar = ({
+	handleScroll,
+	currentConversation,
+	lastMsg,
+	currentFocusMsgId,
+}: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
-			queryClient.setQueryData(['conversations'], (oldData: any) => {
-				if (!oldData) return oldData;
-				return {
-					...oldData,
-					pages: oldData.pages.map((page: any) =>
-						page.map((conversation: Pathchwork.Conversations) => {
-							if (conversation?.id === firstMsg.id) {
-								return { ...conversation, last_status: response };
-							} else {
-								return conversation;
-							}
-						}),
-					),
-				};
-			});
+			changeLastMsgInConversationChache(response, currentConversation?.id);
+			addNewMsgToQueryCache(response, currentFocusMsgId);
 			composeDispatch({ type: 'clear' });
 		},
 		onError: e => {
@@ -56,8 +54,8 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			payload.in_reply_to_id = firstMsg.last_status?.id;
-			payload.status = `@${firstMsg?.accounts[0]?.username}@${firstMsg?.last_status?.application?.name} ${payload.status}`;
+			payload.in_reply_to_id = lastMsg?.id;
+			payload.status = `@${currentConversation?.accounts[0]?.username}@${currentConversation?.last_status?.application?.name} ${payload.status}`;
 			mutate(payload);
 		}
 	};

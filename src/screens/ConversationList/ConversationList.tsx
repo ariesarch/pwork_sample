@@ -158,7 +158,6 @@ const ConversationList = ({
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<StartConversation onPress={() => {}} />
 			<FlashList
 				refreshControl={
 					<RefreshControl

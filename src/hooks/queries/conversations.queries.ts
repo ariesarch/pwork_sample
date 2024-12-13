@@ -1,8 +1,12 @@
 import {
 	getConversationsList,
+	getMessageList,
 	searchUsers,
 } from '@/services/conversations.service';
-import { SearchUsersQueryKey } from '@/types/queries/conversations.type';
+import {
+	MessageListQueryKey,
+	SearchUsersQueryKey,
+} from '@/types/queries/conversations.type';
 import { QueryOptionHelper } from '@/util/helper/helper';
 import {
 	InfiniteData,
@@ -58,4 +62,15 @@ export const useGetConversationsList = (
 			};
 		},
 	});
+};
+
+export const useMessageListQuery = ({
+	id,
+	options,
+}: MessageListQueryKey[1] & {
+	options?: QueryOptionHelper<Pathchwork.TimelineReplies>;
+}) => {
+	const queryKey: MessageListQueryKey = ['message-list', { id }];
+	//@ts-expect-error
+	return useQuery({ queryKey, queryFn: getMessageList, ...options });
 };
