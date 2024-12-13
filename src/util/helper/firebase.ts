@@ -85,10 +85,6 @@ const listenMessage = () => {
 	const onSetNotifcationCount =
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
-		console.log(
-			'🚀 ~ listenMessage ~ listenMessage:',
-			JSON.stringify(remoteMessage),
-		);
 		onSetNotifcationCount();
 		await showNotification(remoteMessage.notification);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);

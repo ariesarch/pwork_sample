@@ -7,7 +7,7 @@ import { useColorScheme } from 'nativewind';
 import ApplicationNavigator from './navigators/Application';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { getAppToken } from './util/helper/helper';
-import { useAuthStore, useAuthStoreAction } from './store/auth/authStore';
+import { useAuthStoreAction } from './store/auth/authStore';
 import { View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from './util/constant/color';
