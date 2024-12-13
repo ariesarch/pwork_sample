@@ -59,7 +59,10 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		onSuccess: (newRelationship, { accountId }) => {
 			const acctInfoQueryKey: AccountInfoQueryKey = [
 				'get_account_info',
-				{ id: isProfile && props.is_my_account ? userInfo?.id! : accountId },
+				{
+					id: isProfile && props.is_my_account ? userInfo?.id! : accountId,
+					domain_name: '',
+				}, // Need to fix later
 			];
 			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
 
@@ -124,23 +127,23 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			);
 		}
 
-		return (
-			<Button
-				variant="default"
-				size="sm"
-				className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-				onPress={onMakeRelationship}
-				disabled
-			>
-				{isPending ? (
-					<Flow size={25} color={customColor['patchwork-dark-900']} />
-				) : (
-					<ThemeText className="text-black" size={'fs_13'}>
-						{displayFollowActionText()}
-					</ThemeText>
-				)}
-			</Button>
-		);
+		// return (
+		// 	<Button
+		// 		variant="default"
+		// 		size="sm"
+		// 		className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+		// 		onPress={onMakeRelationship}
+		// 		disabled
+		// 	>
+		// 		{isPending ? (
+		// 			<Flow size={25} color={customColor['patchwork-dark-900']} />
+		// 		) : (
+		// 			<ThemeText className="text-black" size={'fs_13'}>
+		// 				{displayFollowActionText()}
+		// 			</ThemeText>
+		// 		)}
+		// 	</Button>
+		// );
 	};
 
 	return (
