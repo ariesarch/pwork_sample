@@ -20,6 +20,7 @@ import MessageItem from '@/components/molecules/conversations/MessageItem/Messag
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
+import useGetReceiver from '@/hooks/custom/useGetReceiver';
 
 const ConversationDetail = ({
 	navigation,
@@ -29,6 +30,7 @@ const ConversationDetail = ({
 	const { height } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(id);
+	const receiver = useGetReceiver(id);
 	const {
 		data: messageList,
 		isLoading: isMessageLoading,
@@ -56,14 +58,12 @@ const ConversationDetail = ({
 				<View className="flex-1">
 					<ConversationsHeader
 						onPressBackButton={() => navigation.navigate('ConversationList')}
-						chatParticipant={currentConversation?.last_status?.account}
+						chatParticipant={receiver}
 					/>
 					<View style={{ flex: 1 }}>
-						{messageList && currentConversation?.last_status ? (
+						{messageList && currentConversation?.last_status && receiver ? (
 							<FlashList
-								ListHeaderComponent={() => (
-									<ProfileInfo userInfo={currentConversation?.accounts[0]} />
-								)}
+								ListHeaderComponent={() => <ProfileInfo userInfo={receiver} />}
 								data={[
 									...messageList?.ancestors,
 									currentConversation?.last_status,
@@ -98,7 +98,7 @@ const ConversationDetail = ({
 					{currentConversation && messageList && (
 						<MessageActionsBar
 							isFirstMsg={isNewMessage}
-							firstMsg={currentConversation}
+							currConvo={currentConversation}
 							handleScroll={() => {}}
 						/>
 					)}

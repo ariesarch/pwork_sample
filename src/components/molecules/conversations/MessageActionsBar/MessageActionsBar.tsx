@@ -14,11 +14,11 @@ import { queryClient } from '@/App';
 
 type Props = {
 	isFirstMsg: boolean;
-	firstMsg: Pathchwork.Conversations;
+	currConvo: Pathchwork.Conversations;
 	handleScroll: () => void;
 };
 
-const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
+const MessageActionsBar = ({ handleScroll, currConvo, isFirstMsg }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -30,7 +30,7 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 					...oldData,
 					pages: oldData.pages.map((page: any) =>
 						page.map((conversation: Pathchwork.Conversations) => {
-							if (conversation?.id === firstMsg.id) {
+							if (conversation?.id === currConvo.id) {
 								return { ...conversation, last_status: response };
 							} else {
 								return conversation;
@@ -56,8 +56,8 @@ const MessageActionsBar = ({ handleScroll, firstMsg, isFirstMsg }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			payload.in_reply_to_id = firstMsg.last_status?.id;
-			payload.status = `@${firstMsg?.accounts[0]?.username}@${firstMsg?.last_status?.application?.name} ${payload.status}`;
+			payload.in_reply_to_id = currConvo.last_status?.id;
+			payload.status = `@${currConvo?.accounts[0]?.username}@${currConvo?.last_status?.application?.name} ${payload.status}`;
 			mutate(payload);
 		}
 	};
