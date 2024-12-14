@@ -1,22 +1,15 @@
-import { useMemo } from 'react';
-import {
-	ActivityIndicator,
-	Dimensions,
-	Pressable,
-	RefreshControl,
-	View,
-} from 'react-native';
+import React, { useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, Dimensions, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import FastImage from 'react-native-fast-image';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
-import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
+import {
+	useMarkAsReadMutation,
+	useMessageDeleteMutation,
+} from '@/hooks/mutations/conversations.mutation';
 import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
@@ -24,13 +17,17 @@ import {
 	ConversationsStackParamList,
 } from '@/types/navigation';
 import customColor from '@/util/constant/color';
-import { cleanText } from '@/util/helper/cleanText';
-import { extractMessage } from '@/util/helper/extractMessage';
-import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
-import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { queryClient } from '@/App';
+import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
+import { Swipeable } from 'react-native-gesture-handler';
+import {
+	markAsReadInConversationCache,
+	removeDeletedMsgInConversationCache,
+} from '@/util/cache/conversation/conversationCahce';
+import { EmptyListComponent } from '@/components/molecules/conversations/EmptyListItem/EmptyListItem';
+import { FloatingAddButton } from '@/components/molecules/conversations/FloatingAddButton/FloatingAddButton';
+import { ConversationItem } from '@/components/molecules/conversations/ConversationItem/ConversationItem';
 
 const { width, height } = Dimensions.get('window');
 
@@ -45,6 +42,12 @@ const ConversationList = ({
 	navigation: MessageScreenNavigationProp;
 }) => {
 	const { userInfo } = useAuthStore();
+	const swipeableRefs = useRef<Record<string, Swipeable>>({});
+	const [delConf, setDelConf] = useState<{ visible: boolean; id?: string }>({
+		visible: false,
+	});
+	const [deleting, setDeleting] = useState(false);
+
 	const {
 		data,
 		fetchNextPage,
@@ -53,109 +56,33 @@ const ConversationList = ({
 		isLoading,
 		refetch,
 	} = useGetConversationsList();
-
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
-		onSuccess: data => {
-			queryClient.setQueryData(['conversations'], (oldData: any) => {
-				if (!oldData) return oldData;
-				return {
-					...oldData,
-					pages: oldData.pages.map((page: any) =>
-						page.map((conversation: any) =>
-							conversation.id === data.id
-								? { ...conversation, unread: false }
-								: conversation,
-						),
-					),
-				};
-			});
+		onSuccess: data => markAsReadInConversationCache(data.id),
+	});
+	const { mutate: deleteMessage } = useMessageDeleteMutation({
+		onMutate: () => setDeleting(true),
+		onSuccess: (_, { id }) => removeDeletedMsgInConversationCache(id),
+		onSettled: () => {
+			setDeleting(false);
+			setDelConf({ visible: false, id: '' });
 		},
 	});
+
 	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
 
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
-
-	const handleRead = (id: string) => {
-		markConversationAsRead({ id });
-	};
-
+	const handleRead = (id: string) => markConversationAsRead({ id });
 	const handleEndReached = () => {
 		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
 	};
-
-	// Render items
-	const renderConversationItem = ({
-		item,
-	}: {
-		item: Pathchwork.Conversations;
-	}) => (
-		<Pressable
-			onPress={() => {
-				if (item.unread) {
-					handleRead(item.id);
-				}
-				navigation.navigate('ConversationDetail', {
-					id: item.last_status.id,
-					isNewMessage: false,
-				});
-			}}
-			className="flex-row items-center rounded-2xl p-3 mr-2 my-1"
-		>
-			<FastImage
-				className="w-14 h-14 rounded-full mr-3"
-				source={{ uri: item.accounts[0].avatar }}
-				resizeMode={FastImage.resizeMode.contain}
-			/>
-			<View className="flex-1 mr-6">
-				<View className="flex-row items-center">
-					<ThemeText variant={'textOrange'}>
-						{item.accounts[0].display_name}
-					</ThemeText>
-					<ThemeText className="text-patchwork-grey-400 ml-3">
-						{item.last_status
-							? getDurationFromNow(item.last_status.created_at)
-							: ''}
-					</ThemeText>
-				</View>
-				<ThemeText size={'fs_13'} className="text-patchwork-grey-400 my-0.5">
-					@{item.accounts[0].acct}
-				</ThemeText>
-				<View className="flex-row items-center">
-					<ThemeText>
-						{item.last_status?.account?.id === userInfo?.id ? 'You: ' : ''}
-					</ThemeText>
-					<ThemeText
-						className={`w-full ${item.unread ? 'font-bold' : 'font-normal'}`}
-						numberOfLines={1}
-						ellipsizeMode="tail"
-					>
-						{extractMessage(cleanText(item.last_status?.content))}
-					</ThemeText>
-				</View>
-			</View>
-			{item.unread && (
-				<View className="w-2 h-2 bg-patchwork-red-50 rounded-full mr-2" />
-			)}
-		</Pressable>
-	);
-
-	const renderListFooter = () =>
-		isFetchingNextPage ? (
-			<ActivityIndicator
-				color={customColor['patchwork-red-50']}
-				size={'large'}
-				className="my-5"
-			/>
-		) : null;
-
-	const renderListEmptyComponent = () =>
-		!isLoading ? (
-			<StartConversation onPress={handlePressNewChat} />
-		) : (
-			Array(8)
-				.fill(null)
-				.map((_, index) => <ConversationsListLoading key={index} />)
-		);
+	const handleDelete = (itemId: string) => {
+		setDelConf({ visible: false });
+		deleteMessage({ id: itemId });
+	};
+	const handleSwipeableClose = (id: string) => {
+		const ref = swipeableRefs.current[id];
+		if (ref) ref.close();
+	};
 
 	return (
 		<SafeScreen>
@@ -168,24 +95,57 @@ const ConversationList = ({
 						onRefresh={refetch}
 					/>
 				}
-				ListEmptyComponent={renderListEmptyComponent}
+				ListEmptyComponent={
+					<EmptyListComponent
+						isLoading={isLoading}
+						onPress={handlePressNewChat}
+					/>
+				}
 				estimatedItemSize={100}
 				estimatedListSize={{ width, height }}
 				contentContainerStyle={{ paddingHorizontal: 10 }}
 				data={conversationsList}
 				showsVerticalScrollIndicator={false}
 				keyExtractor={item => item.id.toString()}
-				renderItem={renderConversationItem}
+				renderItem={({ item }) => (
+					<ConversationItem
+						item={item}
+						swipeableRefs={swipeableRefs}
+						onPress={() => {
+							if (item.unread) handleRead(item.id);
+							navigation.navigate('ConversationDetail', {
+								id: item.last_status.id,
+								isNewMessage: false,
+							});
+						}}
+						onSwipeOpen={() => setDelConf({ visible: true, id: item.id })}
+						onSwipeClose={handleSwipeableClose}
+						userInfoID={userInfo?.id!}
+					/>
+				)}
 				onEndReachedThreshold={0.15}
 				onEndReached={handleEndReached}
-				ListFooterComponent={renderListFooter}
+				ListFooterComponent={
+					isFetchingNextPage ? (
+						<ActivityIndicator
+							color={customColor['patchwork-red-50']}
+							size="large"
+							className="my-5"
+						/>
+					) : null
+				}
 			/>
-			<Pressable
-				onPress={handlePressNewChat}
-				className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
-			>
-				<PlusIcon />
-			</Pressable>
+			<FloatingAddButton onPress={handlePressNewChat} />
+			<DeleteModal
+				visibile={delConf.visible}
+				onPressCancel={() => {
+					if (delConf.id) handleSwipeableClose(delConf.id);
+					setDelConf({ visible: false });
+				}}
+				onPressDelete={() => {
+					if (delConf.id) handleDelete(delConf.id);
+				}}
+			/>
 		</SafeScreen>
 	);
 };

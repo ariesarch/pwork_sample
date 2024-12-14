@@ -1,4 +1,5 @@
 import { queryClient } from '@/App';
+import { PaginatedResponse } from '@/types/queries/conversations.type';
 import { DEFAULT_API_URL } from '@/util/constant';
 
 export const addNewMsgToQueryCache = (
@@ -56,6 +57,39 @@ export const removeOldMsgListCacheAndCreateNewOne = (
 			};
 			queryClient.setQueryData(updatedMsgListQueryKey, updatedMsgQueryCache);
 			return undefined;
+		},
+	);
+};
+
+export const markAsReadInConversationCache = (currentMsgId: string) => {
+	queryClient.setQueryData(['conversations'], (oldData: any) => {
+		if (!oldData) return oldData;
+		return {
+			...oldData,
+			pages: oldData.pages.map((page: any) =>
+				page.map((conversation: any) =>
+					conversation.id === currentMsgId
+						? { ...conversation, unread: false }
+						: conversation,
+				),
+			),
+		};
+	});
+};
+
+export const removeDeletedMsgInConversationCache = (currentMsgId: string) => {
+	queryClient.setQueryData(
+		['conversations'],
+		(oldData: PaginatedResponse<Pathchwork.Conversations[]>) => {
+			if (!oldData) return oldData;
+			return {
+				...oldData,
+				pages: oldData.pages.map(page =>
+					page.filter(conversation => {
+						return conversation.id !== currentMsgId;
+					}),
+				),
+			};
 		},
 	);
 };

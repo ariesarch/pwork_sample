@@ -76,3 +76,12 @@ export const getMessageList = async (
 	);
 	return resp.data;
 };
+
+export const deleteMesssage = async ({ id }: { id: string }) => {
+	try {
+		const resp = await instance.delete(appendApiVersion(`conversations/${id}`));
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
