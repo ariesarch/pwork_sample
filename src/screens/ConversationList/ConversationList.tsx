@@ -46,7 +46,6 @@ const ConversationList = ({
 	const [delConf, setDelConf] = useState<{ visible: boolean; id?: string }>({
 		visible: false,
 	});
-	const [deleting, setDeleting] = useState(false);
 
 	const {
 		data,
@@ -60,10 +59,8 @@ const ConversationList = ({
 		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
 	const { mutate: deleteMessage } = useMessageDeleteMutation({
-		onMutate: () => setDeleting(true),
 		onSuccess: (_, { id }) => removeDeletedMsgInConversationCache(id),
 		onSettled: () => {
-			setDeleting(false);
 			setDelConf({ visible: false, id: '' });
 		},
 	});
