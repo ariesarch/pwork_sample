@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { ActivityIndicator, Dimensions, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -19,15 +19,13 @@ import {
 import customColor from '@/util/constant/color';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
-import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
-import { Swipeable } from 'react-native-gesture-handler';
 import {
 	markAsReadInConversationCache,
 	removeDeletedMsgInConversationCache,
 } from '@/util/cache/conversation/conversationCahce';
+import ConversationItem from '@/components/molecules/conversations/ConversationItem/ConversationItem';
 import { EmptyListComponent } from '@/components/molecules/conversations/EmptyListItem/EmptyListItem';
 import { FloatingAddButton } from '@/components/molecules/conversations/FloatingAddButton/FloatingAddButton';
-import { ConversationItem } from '@/components/molecules/conversations/ConversationItem/ConversationItem';
 
 const { width, height } = Dimensions.get('window');
 
@@ -42,11 +40,7 @@ const ConversationList = ({
 	navigation: MessageScreenNavigationProp;
 }) => {
 	const { userInfo } = useAuthStore();
-	const swipeableRefs = useRef<Record<string, Swipeable>>({});
-	const [delConf, setDelConf] = useState<{ visible: boolean; id?: string }>({
-		visible: false,
-	});
-
+	const ref = useRef(null);
 	const {
 		data,
 		fetchNextPage,
@@ -55,31 +49,32 @@ const ConversationList = ({
 		isLoading,
 		refetch,
 	} = useGetConversationsList();
+	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
+
+	// mutation
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
 		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
 	const { mutate: deleteMessage } = useMessageDeleteMutation({
 		onSuccess: (_, { id }) => removeDeletedMsgInConversationCache(id),
-		onSettled: () => {
-			setDelConf({ visible: false, id: '' });
-		},
 	});
 
-	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
-
+	// handle
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
-	const handleRead = (id: string) => markConversationAsRead({ id });
+
 	const handleEndReached = () => {
 		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
 	};
-	const handleDelete = (itemId: string) => {
-		setDelConf({ visible: false });
-		deleteMessage({ id: itemId });
-	};
-	const handleSwipeableClose = (id: string) => {
-		const ref = swipeableRefs.current[id];
-		if (ref) ref.close();
-	};
+
+	//render items
+	const renderListFooter = () =>
+		isFetchingNextPage ? (
+			<ActivityIndicator
+				color={customColor['patchwork-red-50']}
+				size={'large'}
+				className="my-5"
+			/>
+		) : null;
 
 	return (
 		<SafeScreen>
@@ -106,43 +101,26 @@ const ConversationList = ({
 				keyExtractor={item => item.id.toString()}
 				renderItem={({ item }) => (
 					<ConversationItem
+						simultaneousHandlers={ref}
 						item={item}
-						swipeableRefs={swipeableRefs}
+						onDismiss={id => {
+							deleteMessage({ id });
+						}}
+						userInfoId={userInfo?.id!}
 						onPress={() => {
-							if (item.unread) handleRead(item.id);
+							markConversationAsRead({ id: item.id });
 							navigation.navigate('ConversationDetail', {
 								id: item.last_status.id,
 								isNewMessage: false,
 							});
 						}}
-						onSwipeOpen={() => setDelConf({ visible: true, id: item.id })}
-						onSwipeClose={handleSwipeableClose}
-						userInfoID={userInfo?.id!}
 					/>
 				)}
 				onEndReachedThreshold={0.15}
 				onEndReached={handleEndReached}
-				ListFooterComponent={
-					isFetchingNextPage ? (
-						<ActivityIndicator
-							color={customColor['patchwork-red-50']}
-							size="large"
-							className="my-5"
-						/>
-					) : null
-				}
+				ListFooterComponent={renderListFooter}
 			/>
 			<FloatingAddButton onPress={handlePressNewChat} />
-			<DeleteModal
-				visibile={delConf.visible}
-				onPressCancel={() => {
-					if (delConf.id) handleSwipeableClose(delConf.id);
-					setDelConf({ visible: false });
-				}}
-				onPressDelete={() => {
-					if (delConf.id) handleDelete(delConf.id);
-				}}
-			/>
 		</SafeScreen>
 	);
 };

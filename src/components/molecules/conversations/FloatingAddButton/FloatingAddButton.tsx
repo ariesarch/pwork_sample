@@ -1,4 +1,4 @@
-import { PlusIcon } from '@/util/svg/icon.profile';
+import { PlusIcon } from '@/util/svg/icon.conversations';
 import { Pressable } from 'react-native';
 
 export const FloatingAddButton = ({ onPress }: { onPress: () => void }) => (
