@@ -26,6 +26,7 @@ import {
 import ConversationItem from '@/components/molecules/conversations/ConversationItem/ConversationItem';
 import { EmptyListComponent } from '@/components/molecules/conversations/EmptyListItem/EmptyListItem';
 import { FloatingAddButton } from '@/components/molecules/conversations/FloatingAddButton/FloatingAddButton';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const { width, height } = Dimensions.get('window');
 
@@ -79,47 +80,50 @@ const ConversationList = ({
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<FlashList
-				refreshControl={
-					<RefreshControl
-						refreshing={isLoading}
-						tintColor={customColor['patchwork-light-900']}
-						onRefresh={refetch}
-					/>
-				}
-				ListEmptyComponent={
-					<EmptyListComponent
-						isLoading={isLoading}
-						onPress={handlePressNewChat}
-					/>
-				}
-				estimatedItemSize={100}
-				estimatedListSize={{ width, height }}
-				contentContainerStyle={{ paddingHorizontal: 10 }}
-				data={conversationsList}
-				showsVerticalScrollIndicator={false}
-				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }) => (
-					<ConversationItem
-						simultaneousHandlers={ref}
-						item={item}
-						onDismiss={id => {
-							deleteMessage({ id });
-						}}
-						userInfoId={userInfo?.id!}
-						onPress={() => {
-							markConversationAsRead({ id: item.id });
-							navigation.navigate('ConversationDetail', {
-								id: item.last_status.id,
-								isNewMessage: false,
-							});
-						}}
-					/>
-				)}
-				onEndReachedThreshold={0.15}
-				onEndReached={handleEndReached}
-				ListFooterComponent={renderListFooter}
-			/>
+			<GestureHandlerRootView style={{ flex: 1 }}>
+				<FlashList
+					ref={ref}
+					refreshControl={
+						<RefreshControl
+							refreshing={isLoading}
+							tintColor={customColor['patchwork-light-900']}
+							onRefresh={refetch}
+						/>
+					}
+					ListEmptyComponent={
+						<EmptyListComponent
+							isLoading={isLoading}
+							onPress={handlePressNewChat}
+						/>
+					}
+					estimatedItemSize={100}
+					estimatedListSize={{ width, height }}
+					contentContainerStyle={{ paddingHorizontal: 10 }}
+					data={conversationsList}
+					showsVerticalScrollIndicator={false}
+					keyExtractor={item => item.id.toString()}
+					renderItem={({ item }) => (
+						<ConversationItem
+							simultaneousHandlers={ref}
+							item={item}
+							onDismiss={id => {
+								deleteMessage({ id });
+							}}
+							userInfoId={userInfo?.id!}
+							onPress={() => {
+								markConversationAsRead({ id: item.id });
+								navigation.navigate('ConversationDetail', {
+									id: item.last_status.id,
+									isNewMessage: false,
+								});
+							}}
+						/>
+					)}
+					onEndReachedThreshold={0.15}
+					onEndReached={handleEndReached}
+					ListFooterComponent={renderListFooter}
+				/>
+			</GestureHandlerRootView>
 			<FloatingAddButton onPress={handlePressNewChat} />
 		</SafeScreen>
 	);

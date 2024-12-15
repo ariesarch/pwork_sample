@@ -27,7 +27,7 @@ interface ListItemProps
 	onPress: (id: string) => void;
 }
 
-const LIST_ITEM_HEIGHT = 70;
+const LIST_ITEM_HEIGHT = 60;
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TRANSLATE_X_THRESHOLD = -SCREEN_WIDTH * 0.3;
@@ -85,6 +85,7 @@ const ConversationItem: React.FC<ListItemProps> = ({
 			height: itemHeight.value,
 			marginVertical: marginVertical.value,
 			opacity: opacity.value,
+			zIndex: 1,
 		};
 	});
 
@@ -94,8 +95,12 @@ const ConversationItem: React.FC<ListItemProps> = ({
 				<ThemeText>delete</ThemeText>
 			</Animated.View>
 			<PanGestureHandler
+				waitFor={simultaneousHandlers}
+				shouldCancelWhenOutside
+				enableTrackpadTwoFingerGesture
 				simultaneousHandlers={simultaneousHandlers}
 				onGestureEvent={panGesture}
+				activeOffsetX={[-10, 10]}
 			>
 				<Animated.View style={[styles.item, rStyle]}>
 					<Pressable
