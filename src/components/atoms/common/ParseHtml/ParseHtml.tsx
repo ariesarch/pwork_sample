@@ -13,6 +13,7 @@ import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { layoutAnimation } from '@/util/helper/timeline';
+import { useAuthStore } from '@/store/auth/authStore';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -36,13 +37,26 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	}, [status?.image_url]);
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
-
+	const { userInfo } = useAuthStore();
 	const handleHashTahPress = (tag: string) => {
 		const specialTag = tag.replace(/#/g, '');
 		navigation.navigate('HashTagDetail', {
 			hashtag: specialTag?.toLowerCase(),
 			hashtagDomain: domain_name,
 		});
+	};
+
+	const handleMentionPress = (mention: Pathchwork.Mention) => {
+		if (mention.id === userInfo?.id!) {
+			navigation.navigate('Profile', { id: userInfo?.id! });
+		} else if (mention.url?.includes('channel.org')) {
+			navigation.navigate('ProfileOther', {
+				id: mention.id,
+			});
+		} else {
+			// better if show some toast info
+			// console.log('Non-channel mention:', mention.url);
+		}
 	};
 
 	const renderNode = (node: ChildNode, index: number) => {
@@ -94,6 +108,9 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 										variant={matchedMention ? 'textOrange' : 'textGrey'}
 										size={isMainStatus ? 'default' : 'fs_13'}
 										children={`${mentionedText} `}
+										onPress={() => {
+											if (matchedMention) handleMentionPress(matchedMention);
+										}}
 									/>
 								);
 							}
