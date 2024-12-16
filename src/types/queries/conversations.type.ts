@@ -1,5 +1,5 @@
 export type SearchUsersQueryParam = {
-	query: string;
+	q: string;
 	resolve?: boolean;
 	limit?: number;
 };

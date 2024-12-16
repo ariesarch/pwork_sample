@@ -1,5 +1,6 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import customColor from '@/util/constant/color';
+import { appendInstance } from '@/util/helper/appendInstance';
 import { cleanText } from '@/util/helper/cleanText';
 import { extractMessage } from '@/util/helper/extractMessage';
 import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
@@ -127,7 +128,7 @@ const ConversationItem: React.FC<ListItemProps> = ({
 								size={'fs_13'}
 								className="text-patchwork-grey-400 my-0.5"
 							>
-								@{item.accounts[0].acct}
+								{appendInstance(`@${item.accounts[0].acct}`)}
 							</ThemeText>
 							<View className="flex-row items-center">
 								<ThemeText>
