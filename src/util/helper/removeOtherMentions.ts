@@ -1,5 +1,5 @@
 export function removeOtherMentions(input: string): string {
-	const defaultInstance = '@newsmast.social';
+	const defaultInstance = '@channel.org';
 
 	const mentionPattern = /@(\w+)(@[\w.-]+)?/g;
 
