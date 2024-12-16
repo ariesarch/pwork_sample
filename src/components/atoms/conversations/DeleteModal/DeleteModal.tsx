@@ -33,14 +33,14 @@ const DeleteModal = ({ visibile, onPressCancel, onPressDelete }: Props) => {
 				</View>
 				<Underline />
 				<View className="flex-row items-center justify-around my-3">
-					<ThemeText onPress={onPressDelete} size={'fs_15'}>
-						Delete
-					</ThemeText>
 					<ThemeText
-						onPress={onPressCancel}
+						onPress={onPressDelete}
 						size={'fs_15'}
 						variant={'textOrange'}
 					>
+						Delete
+					</ThemeText>
+					<ThemeText onPress={onPressCancel} size={'fs_15'}>
 						Cancel
 					</ThemeText>
 				</View>

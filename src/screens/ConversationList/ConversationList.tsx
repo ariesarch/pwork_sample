@@ -1,6 +1,10 @@
-import React, { useMemo, useRef } from 'react';
-import { ActivityIndicator, Dimensions, RefreshControl } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import React, { useMemo, useState } from 'react';
+import {
+	ActivityIndicator,
+	ListRenderItemInfo,
+	TouchableOpacity,
+	View,
+} from 'react-native';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
@@ -26,9 +30,11 @@ import {
 import ConversationItem from '@/components/molecules/conversations/ConversationItem/ConversationItem';
 import { EmptyListComponent } from '@/components/molecules/conversations/EmptyListItem/EmptyListItem';
 import { FloatingAddButton } from '@/components/molecules/conversations/FloatingAddButton/FloatingAddButton';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { DeleteIcon } from '@/util/svg/icon.common';
+import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
 
-const { width, height } = Dimensions.get('window');
+type RowMap<T> = { [key: string]: T };
 
 type MessageScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Conversations'>,
@@ -41,7 +47,14 @@ const ConversationList = ({
 	navigation: MessageScreenNavigationProp;
 }) => {
 	const { userInfo } = useAuthStore();
-	const ref = useRef(null);
+	const [delConf, setDelConf] = useState<{
+		visible: boolean;
+		id?: string;
+		rowMap?: RowMap<any>;
+	}>({
+		visible: false,
+	});
+
 	const {
 		data,
 		fetchNextPage,
@@ -57,14 +70,22 @@ const ConversationList = ({
 		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
 	const { mutate: deleteMessage } = useMessageDeleteMutation({
-		onSuccess: (_, { id }) => removeDeletedMsgInConversationCache(id),
+		onSuccess: (_, { id }) => {
+			removeDeletedMsgInConversationCache(id);
+		},
 	});
 
 	// handle
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
-
 	const handleEndReached = () => {
 		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
+	};
+
+	const closeRow = (rowMap: RowMap<any>, rowKey: string) => {
+		if (rowMap && rowMap[rowKey]) rowMap[rowKey].closeRow();
+	};
+	const deleteRow = (rowMap: RowMap<any>, rowKey: string) => {
+		setDelConf({ visible: true, id: rowKey, rowMap });
 	};
 
 	//render items
@@ -77,54 +98,71 @@ const ConversationList = ({
 			/>
 		) : null;
 
+	const renderHiddenItem = (
+		rowData: ListRenderItemInfo<Pathchwork.Conversations>,
+		rowMap: RowMap<any>,
+	) => (
+		<View className="flex-1 bg-patchwork-dark-100 justify-center items-center">
+			<TouchableOpacity
+				className="p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
+				onPress={() => deleteRow(rowMap, rowData.item.id)}
+			>
+				<DeleteIcon fill={'white'} />
+			</TouchableOpacity>
+		</View>
+	);
+
 	return (
 		<SafeScreen>
 			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<GestureHandlerRootView style={{ flex: 1 }}>
-				<FlashList
-					ref={ref}
-					refreshControl={
-						<RefreshControl
-							refreshing={isLoading}
-							tintColor={customColor['patchwork-light-900']}
-							onRefresh={refetch}
-						/>
-					}
-					ListEmptyComponent={
-						<EmptyListComponent
-							isLoading={isLoading}
-							onPress={handlePressNewChat}
-						/>
-					}
-					estimatedItemSize={100}
-					estimatedListSize={{ width, height }}
-					contentContainerStyle={{ paddingHorizontal: 10 }}
-					data={conversationsList}
-					showsVerticalScrollIndicator={false}
-					keyExtractor={item => item.id.toString()}
-					renderItem={({ item }) => (
-						<ConversationItem
-							simultaneousHandlers={ref}
-							item={item}
-							onDismiss={id => {
-								deleteMessage({ id });
-							}}
-							userInfoId={userInfo?.id!}
-							onPress={() => {
-								markConversationAsRead({ id: item.id });
-								navigation.navigate('ConversationDetail', {
-									id: item.last_status.id,
-									isNewMessage: false,
-								});
-							}}
-						/>
-					)}
-					onEndReachedThreshold={0.15}
-					onEndReached={handleEndReached}
-					ListFooterComponent={renderListFooter}
-				/>
-			</GestureHandlerRootView>
+			<SwipeListView
+				data={conversationsList}
+				keyExtractor={item => item.id}
+				ListEmptyComponent={
+					<EmptyListComponent
+						isLoading={isLoading}
+						onPress={handlePressNewChat}
+					/>
+				}
+				renderItem={({ item }) => (
+					<ConversationItem
+						item={item}
+						userInfoId={userInfo?.id!}
+						onPress={() => {
+							markConversationAsRead({ id: item.id });
+							navigation.navigate('ConversationDetail', {
+								id: item.last_status.id,
+								isNewMessage: false,
+							});
+						}}
+					/>
+				)}
+				onEndReached={handleEndReached}
+				renderHiddenItem={renderHiddenItem}
+				ListFooterComponent={renderListFooter}
+				rightOpenValue={-150}
+				disableRightSwipe
+				previewRowKey={'0'}
+				previewOpenValue={-40}
+				previewOpenDelay={3000}
+				showsVerticalScrollIndicator={false}
+			/>
 			<FloatingAddButton onPress={handlePressNewChat} />
+			<DeleteModal
+				visibile={delConf?.visible}
+				onPressCancel={() => {
+					if (delConf.rowMap && delConf.id) {
+						setDelConf({ visible: false });
+						closeRow(delConf.rowMap, delConf.id);
+					}
+				}}
+				onPressDelete={() => {
+					if (delConf?.id) {
+						setDelConf({ visible: false });
+						deleteMessage({ id: delConf.id });
+					}
+				}}
+			/>
 		</SafeScreen>
 	);
 };
