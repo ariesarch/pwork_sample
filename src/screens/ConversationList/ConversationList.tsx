@@ -129,7 +129,9 @@ const ConversationList = ({
 						item={item}
 						userInfoId={userInfo?.id!}
 						onPress={() => {
-							markConversationAsRead({ id: item.id });
+							if (item.unread) {
+								markConversationAsRead({ id: item.id });
+							}
 							navigation.navigate('ConversationDetail', {
 								id: item.last_status.id,
 								isNewMessage: false,

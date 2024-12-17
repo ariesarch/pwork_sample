@@ -133,141 +133,148 @@ const EditProfile = () => {
 
 	if (!userInfo) return null;
 	return (
-		<View className="flex-1" style={{ paddingTop: top }}>
-			<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+		<>
+			<View
+				className={'flex-row items-center absolute px-2 z-40 py-2'}
+				style={[{ paddingTop: top + 10 }]}
+			>
 				<TouchableOpacity
 					onPress={() => {
 						actions.onSelectMedia('header', []);
 						actions.onSelectMedia('avatar', []);
 						navigation.goBack();
 					}}
-					className="absolute z-10 top-2 left-2 w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
+					className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
 				>
 					<ProfileBackIcon />
 				</TouchableOpacity>
-				<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
-					{/* Header Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={header.mediaModal}
-						onCloseThemeModal={() => {
-							actions.onToggleMediaModal('header');
-						}}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
-						}}
-						containerStyle={{ borderRadius: 0 }}
-					>
-						<ManageAttachmentModal
-							type="header"
-							onToggleMediaModal={() => actions.onToggleMediaModal('header')}
-							imageUrl={profile?.header ? profile.header : null}
-							canPreview={
-								header.selectedMedia.length > 0
-									? false
-									: profile?.header
-									? true
-									: true
-							}
-						/>
-					</ThemeModal>
-					{/* Avatar Media Modal */}
-					<ThemeModal
-						hasNotch={false}
-						openThemeModal={avatar.mediaModal}
-						onCloseThemeModal={() => {
-							actions.onToggleMediaModal('avatar');
-						}}
-						modalPositionStyle={{
-							justifyContent: 'flex-end',
-						}}
-						containerStyle={{ borderRadius: 0 }}
-					>
-						<ManageAttachmentModal
-							type="avatar"
-							onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
-							imageUrl={profile?.avatar ? profile.avatar : null}
-							canPreview={
-								avatar.selectedMedia.length > 0
-									? false
-									: profile?.avatar
-									? true
-									: true
-							}
-						/>
-					</ThemeModal>
-
-					{/* Header Image */}
-					<Pressable onPress={() => actions.onToggleMediaModal('header')}>
-						<FastImage
-							className="bg-patchwork-dark-50 h-36 w-full"
-							source={{
-								uri: header.selectedMedia[0]?.uri || profile?.header,
-								priority: FastImage.priority.normal,
+			</View>
+			<View className="flex-1">
+				<ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+					<View className="flex-1 -mt-2 bg-white dark:bg-patchwork-dark-100">
+						{/* Header Media Modal */}
+						<ThemeModal
+							hasNotch={false}
+							openThemeModal={header.mediaModal}
+							onCloseThemeModal={() => {
+								actions.onToggleMediaModal('header');
 							}}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
-					</Pressable>
-
-					{/* Avatar Image */}
-					<View className="mx-auto">
-						<Pressable
-							className="p-1 "
-							onPress={() => actions.onToggleMediaModal('avatar')}
+							modalPositionStyle={{
+								justifyContent: 'flex-end',
+							}}
+							containerStyle={{ borderRadius: 0 }}
 						>
-							<View className="z-10 absolute bottom-2 right-2 rounded-full bg-slate-50 p-1">
-								<ComposeCameraIcon className="" />
-							</View>
+							<ManageAttachmentModal
+								type="header"
+								onToggleMediaModal={() => actions.onToggleMediaModal('header')}
+								imageUrl={profile?.header ? profile.header : null}
+								canPreview={
+									header.selectedMedia.length > 0
+										? false
+										: profile?.header
+										? true
+										: true
+								}
+							/>
+						</ThemeModal>
+						{/* Avatar Media Modal */}
+						<ThemeModal
+							hasNotch={false}
+							openThemeModal={avatar.mediaModal}
+							onCloseThemeModal={() => {
+								actions.onToggleMediaModal('avatar');
+							}}
+							modalPositionStyle={{
+								justifyContent: 'flex-end',
+							}}
+							containerStyle={{ borderRadius: 0 }}
+						>
+							<ManageAttachmentModal
+								type="avatar"
+								onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
+								imageUrl={profile?.avatar ? profile.avatar : null}
+								canPreview={
+									avatar.selectedMedia.length > 0
+										? false
+										: profile?.avatar
+										? true
+										: true
+								}
+							/>
+						</ThemeModal>
+
+						{/* Header Image */}
+						<Pressable onPress={() => actions.onToggleMediaModal('header')}>
 							<FastImage
-								className={cn(
-									'w-[100] h-[100] mt-[-25] bg-patchwork-dark-50 border-patchwork-dark-100 border-4 rounded-full',
-								)}
+								className="bg-patchwork-dark-50 h-36 w-full"
 								source={{
-									uri: avatar.selectedMedia[0]?.uri || profile?.avatar,
+									uri: header.selectedMedia[0]?.uri || profile?.header,
 									priority: FastImage.priority.normal,
 								}}
 								resizeMode={FastImage.resizeMode.cover}
 							/>
 						</Pressable>
+
+						{/* Avatar Image */}
+						<View className="mx-auto">
+							<Pressable
+								className="p-1 "
+								onPress={() => actions.onToggleMediaModal('avatar')}
+							>
+								<View className="z-10 absolute bottom-2 right-2 rounded-full bg-slate-50 p-1">
+									<ComposeCameraIcon className="" />
+								</View>
+								<FastImage
+									className={cn(
+										'w-[100] h-[100] mt-[-25] bg-patchwork-dark-50 border-patchwork-dark-100 border-4 rounded-full',
+									)}
+									source={{
+										uri: avatar.selectedMedia[0]?.uri || profile?.avatar,
+										priority: FastImage.priority.normal,
+									}}
+									resizeMode={FastImage.resizeMode.cover}
+								/>
+							</Pressable>
+						</View>
+						<ThemeText className="mx-auto">{userInfo.display_name}</ThemeText>
+						{/* Profile Form */}
+						<View className="mx-5 flex-1">
+							<ThemeText size={'md_16'}>Public Info</ThemeText>
+							<ThemeText className="mt-3 mb-1">Display Name</ThemeText>
+							<TextInput
+								placeholder="Your display name"
+								value={profile?.display_name || ''}
+								onChangeText={name =>
+									setProfile(prev => ({
+										...prev,
+										display_name: name,
+									}))
+								}
+							/>
+							<ThemeText className="mt-2 mb-1">Bio</ThemeText>
+							<TextInput
+								textArea
+								value={profile?.bio || ''}
+								onChangeText={bio =>
+									setProfile(prev => ({
+										...prev,
+										bio: bio,
+									}))
+								}
+							/>
+						</View>
 					</View>
-					<ThemeText className="mx-auto">{userInfo.display_name}</ThemeText>
-					{/* Profile Form */}
-					<View className="mx-5 flex-1">
-						<ThemeText size={'md_16'}>Public Info</ThemeText>
-						<ThemeText className="mt-3 mb-1">Display Name</ThemeText>
-						<TextInput
-							placeholder="Your display name"
-							value={profile?.display_name || ''}
-							onChangeText={name =>
-								setProfile(prev => ({
-									...prev,
-									display_name: name,
-								}))
-							}
-						/>
-						<ThemeText className="mt-2 mb-1">Bio</ThemeText>
-						<TextInput
-							textArea
-							value={profile?.bio || ''}
-							onChangeText={bio =>
-								setProfile(prev => ({
-									...prev,
-									bio: bio,
-								}))
-							}
-						/>
-					</View>
-				</View>
-			</ScrollView>
-			<Animated.View style={virtualKeyboardContainerStyle} />
-			<Button
-				className="mx-6 bottom-0 left-0 right-0 mb-5"
-				onPress={handleUpdateProfile}
-			>
-				<ThemeText>Save</ThemeText>
-			</Button>
-			<LoadingModal isVisible={isPending} />
-		</View>
+				</ScrollView>
+				<Animated.View style={virtualKeyboardContainerStyle} />
+				<Button
+					className="mx-6 bottom-0 left-0 right-0 mb-5"
+					onPress={handleUpdateProfile}
+				>
+					<ThemeText>Save</ThemeText>
+				</Button>
+				<LoadingModal isVisible={isPending} />
+			</View>
+		</>
 	);
 };
 

@@ -10,7 +10,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
 import { useAccountDetailFeed } from '@/hooks/queries/feed.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
-import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { flattenPages } from '@/util/helper/timeline';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
@@ -211,10 +210,16 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 											// myAcctId={accountInfoData.id}
 											profile={accountInfoData}
 											onPressPlusIcon={() =>
-												setSocialLinkAction({ visible: true, formType: 'add' })
+												setSocialLinkAction({
+													visible: true,
+													formType: 'add',
+												})
 											}
 											onPressEditIcon={() =>
-												setSocialLinkAction({ visible: true, formType: 'edit' })
+												setSocialLinkAction({
+													visible: true,
+													formType: 'edit',
+												})
 											}
 										/>
 									);

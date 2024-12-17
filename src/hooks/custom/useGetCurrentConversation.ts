@@ -15,27 +15,14 @@ const useGetCurrentConversation = (lastMsgId: string) => {
 		.flatMap(page => page)
 		.find(item => item.last_status.id === lastMsgId);
 
-	const { data: fetchedConversationList } = useGetConversationsList({
+	useGetConversationsList({
 		enabled: !currentMsgFromCache,
 	});
 
 	useEffect(() => {
-		if (currentMsgFromCache) {
-			console.log('Found current message from cache');
-			setConversation(currentMsgFromCache);
-			// } else if (fetchedConversationList) {
-			// 	const currentMsgFromFetched = fetchedConversationList.pages
-			// 		.flatMap(page => page)
-			// 		.find(item => item.last_status.id === lastMsgId);
-			// 	if (currentMsgFromFetched) {
-			// 		console.log('Found current message from fetched data');
-			// 		setConversation(currentMsgFromFetched);
-			// 	} else {
-			// 		console.log('No matching conversation found');
-			// 		setConversation(null);
-			// 	}
-		}
+		if (currentMsgFromCache) setConversation(currentMsgFromCache);
 	}, [lastMsgId, currentMsgFromCache]);
+
 	return currentConversation;
 };
 
