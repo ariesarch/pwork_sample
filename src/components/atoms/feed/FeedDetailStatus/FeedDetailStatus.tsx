@@ -33,7 +33,7 @@ const FeedDetailStatus = ({
 					status={feedDetail}
 					imageSize="w-8 h-8"
 					showAvatarIcon
-					showFollowIcon={userInfo?.id !== feedDetail.account.id}
+					// showFollowIcon={userInfo?.id !== feedDetail.account.id}
 					// relationships={relationships}
 				/>
 				<StatusContent status={feedDetail} isFeedDetail className="mt-2" />
