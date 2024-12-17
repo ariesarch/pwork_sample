@@ -1,8 +1,10 @@
 import { queryClient } from '@/App';
 import { useActiveConversationStore } from '@/store/conversation/activeConversationStore';
 import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
+import { log } from 'console';
 import dayjs from 'dayjs';
 import moment from 'moment';
+import Sound from 'react-native-sound';
 
 export const isMsgTimeClose = (
 	message: Pathchwork.Status,
@@ -53,22 +55,46 @@ export const generateTWClassForImageSize = (
 	}
 };
 
-export const handleIncommingMessage = (
+export const handleIncommingMessage = async (
 	notiResp: FirebaseMessagingTypes.RemoteMessage,
 ) => {
 	console.log('noti_type::', notiResp.data?.noti_type);
 	if (notiResp.data?.noti_type !== 'mention') return;
 	const activeConvState = useActiveConversationStore.getState();
 
-	if (activeConvState) {
-		console.log('aa::', activeConvState);
-		queryClient.invalidateQueries({
+	if (activeConvState.activeConversation) {
+		await queryClient.invalidateQueries({
 			queryKey: [
 				'message-list',
 				{ id: activeConvState.activeConversation?.last_status.id },
 			],
 		});
+		return playSound('receive');
 	}
-	console.log('bb::');
-	queryClient.invalidateQueries({ queryKey: ['conversations'] });
+
+	await queryClient.invalidateQueries({ queryKey: ['conversations'] });
+	playSound();
+};
+
+type SoundType = 'noti' | 'send' | 'receive';
+export const playSound = (soundType: SoundType = 'noti') => {
+	const soundMap = {
+		noti: require('../../../assets/sound/notisound.wav'),
+		send: require('../../../assets/sound/message_send.wav'),
+		receive: require('../../../assets/sound/message_receive.wav'),
+	};
+	const soundPath = soundMap[soundType];
+	const sound = new Sound(soundPath, error => {
+		if (error) {
+			console.log('Failed to load the sound', error);
+			return;
+		}
+		sound.play(() => sound.release());
+	});
+};
+
+export const checkIsConversationNoti = (
+	notiResp: FirebaseMessagingTypes.RemoteMessage,
+) => {
+	return notiResp.data?.noti_type == 'mention';
 };

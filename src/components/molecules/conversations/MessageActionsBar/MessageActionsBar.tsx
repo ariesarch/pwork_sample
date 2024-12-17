@@ -16,6 +16,7 @@ import {
 	changeLastMsgInConversationChache,
 } from '@/util/cache/conversation/conversationCahce';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { playSound } from '@/util/helper/conversation';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -43,6 +44,7 @@ const MessageActionsBar = ({
 			addNewMsgToQueryCache(response, currentFocusMsgId);
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
+			playSound('send');
 		},
 		onError: e => {
 			Toast.show({

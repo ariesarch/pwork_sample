@@ -23,6 +23,7 @@ import useGetReceiver from '@/hooks/custom/useGetReceiver';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import { useActiveConversationActions } from '@/store/conversation/activeConversationStore';
 
 const ConversationDetail = ({
 	navigation,
@@ -32,6 +33,7 @@ const ConversationDetail = ({
 	const { height, progress } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(initialLastMsgId);
+	const { removeActiveConversation } = useActiveConversationActions();
 	const receiver = currentConversation?.accounts[0];
 
 	const {
@@ -57,6 +59,7 @@ const ConversationDetail = ({
 	useEffect(() => {
 		return () => {
 			removeOldMsgListCacheAndCreateNewOne(initialLastMsgId);
+			removeActiveConversation();
 		};
 	}, []);
 

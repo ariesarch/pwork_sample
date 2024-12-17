@@ -11685,6 +11685,7 @@ __metadata:
     react-native-screens: 3.31.1
     react-native-size-matters: ^0.4.2
     react-native-skeleton-placeholder: ^5.2.4
+    react-native-sound: ^0.11.2
     react-native-svg: ^15.3.0
     react-native-tab-view: ^3.5.2
     react-native-toast-message: ^2.2.1
@@ -12608,6 +12609,15 @@ __metadata:
     react-native: ">=0.50.1"
     react-native-linear-gradient: ^2.5.6
   checksum: c90176c55d0a8342724c38ed5af8baff8ed879b04feeff027574c3c405f3d1be193614bd65e30ddf46407cb951d412f6cc5e2aa4a8e179c589c865f83bdae39e
+  languageName: node
+  linkType: hard
+
+"react-native-sound@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "react-native-sound@npm:0.11.2"
+  peerDependencies:
+    react-native: ">=0.8.0"
+  checksum: d019de415c5f7bc8af51bc50adff7b9c307cb990aad3ea193933f89df743bbcdbfaa33c4a12bb1143a223137cea39f8b69baf5e1c29f77cf80476616bccc6f91
   languageName: node
   linkType: hard
 

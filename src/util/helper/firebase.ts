@@ -9,7 +9,10 @@ import notifee, {
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
-import { handleIncommingMessage } from './conversation';
+import {
+	checkIsConversationNoti,
+	handleIncommingMessage,
+} from './conversation';
 
 /**
  * Function to request notification permissions for Android.
@@ -90,10 +93,13 @@ const listenMessage = () => {
 			'🚀 ~ listenMessage ~ listenMessage:',
 			JSON.stringify(remoteMessage),
 		);
-		onSetNotifcationCount();
-		handleIncommingMessage(remoteMessage);
-		await showNotification(remoteMessage.notification);
+		const isChatNoti = checkIsConversationNoti(remoteMessage);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
+		if (isChatNoti) handleIncommingMessage(remoteMessage);
+		else {
+			onSetNotifcationCount();
+			await showNotification(remoteMessage.notification);
+		}
 	});
 };
 
