@@ -1,6 +1,7 @@
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
 import { ConversationsStackParamList } from '@/types/navigation';
+import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 import { prepareComposePayload } from '@/util/helper/compose';
 import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
 import { cn } from '@/util/helper/twutil';
@@ -43,7 +44,9 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			payload.status = removeOtherMentions(payload.status);
+			payload.status = addPrivateConvoHashtag(
+				removeOtherMentions(payload.status),
+			);
 			mutate(payload);
 		}
 	};

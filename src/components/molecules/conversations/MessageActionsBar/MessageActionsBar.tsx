@@ -15,6 +15,7 @@ import {
 	changeLastMsgInConversationChache,
 } from '@/util/cache/conversation/conversationCahce';
 import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
+import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -55,8 +56,10 @@ const MessageActionsBar = ({
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
 			payload.in_reply_to_id = lastMsg?.id;
-			payload.status = removeOtherMentions(
-				`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
+			payload.status = addPrivateConvoHashtag(
+				removeOtherMentions(
+					`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
+				),
 			);
 			mutate(payload);
 		}
