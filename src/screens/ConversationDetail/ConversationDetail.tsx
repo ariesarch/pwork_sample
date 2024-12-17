@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { BackHandler, Dimensions, ScrollView, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import {
 	BottomBarHeight,
 	useGradualAnimation,
@@ -19,7 +19,6 @@ import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation'
 import { Flow } from 'react-native-animated-spinkit';
 import { useMessageListQuery } from '@/hooks/queries/conversations.queries';
 import { removeOldMsgListCacheAndCreateNewOne } from '@/util/cache/conversation/conversationCahce';
-import useGetReceiver from '@/hooks/custom/useGetReceiver';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
@@ -35,6 +34,7 @@ const ConversationDetail = ({
 	const currentConversation = useGetCurrentConversation(initialLastMsgId);
 	const { removeActiveConversation } = useActiveConversationActions();
 	const receiver = currentConversation?.accounts[0];
+	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
 
 	const {
 		data: messageList,
@@ -79,6 +79,10 @@ const ConversationDetail = ({
 		height: progress.value < 0.5 ? 0 : 'auto',
 	}));
 
+	const handleSetCurrentMessageId = useCallback((id: string | null) => {
+		setCurrentMessageId(id);
+	}, []);
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
@@ -92,12 +96,19 @@ const ConversationDetail = ({
 							<FlashList
 								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								inverted
+								extraData={currentMessageId}
 								data={totalMsgList}
+								keyExtractor={item => item.id.toString()}
 								renderItem={({ item, index }) => {
 									const previousMsg =
 										index > 0 ? messageList?.ancestors[index - 1] : undefined;
 									return (
-										<MessageItem message={item} previousMsg={previousMsg} />
+										<MessageItem
+											message={item}
+											previousMsg={previousMsg}
+											currentMessageId={currentMessageId}
+											handlePress={handleSetCurrentMessageId}
+										/>
 									);
 								}}
 								estimatedItemSize={100}

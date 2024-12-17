@@ -5,7 +5,7 @@ import {
 	SearchUsersQueryKey,
 } from '@/types/queries/conversations.type';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import instance from './instance';
 
 export const searchUsers = async ({
@@ -13,21 +13,9 @@ export const searchUsers = async ({
 }: QueryFunctionContext<SearchUsersQueryKey>) => {
 	try {
 		const [, params] = queryKey;
-		const { query, resolve = false, limit = 4 } = params;
-		// temporary token
-		const token = 'uVsshEFJVC-1_F8xDXbWD1RViBxwBcAjKAp6xlztZzA';
-		const resp = await axios.get(
-			`https://backend.newsmast.org/api/v1/accounts/search`,
-			{
-				params: {
-					q: query,
-					resolve,
-					limit,
-				},
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
+		const resp = await instance.get<Pathchwork.Conversations[]>(
+			appendApiVersion('accounts/search'),
+			{ params },
 		);
 		return resp;
 	} catch (e) {
@@ -75,4 +63,13 @@ export const getMessageList = async (
 		},
 	);
 	return resp.data;
+};
+
+export const deleteMesssage = async ({ id }: { id: string }) => {
+	try {
+		const resp = await instance.delete(appendApiVersion(`conversations/${id}`));
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
 };

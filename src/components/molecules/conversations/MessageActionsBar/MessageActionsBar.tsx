@@ -10,13 +10,14 @@ import Toast from 'react-native-toast-message';
 import { prepareComposePayload } from '@/util/helper/compose';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { FormattedText } from '@/components/atoms/compose/FormattedText/FormattedText';
-import { queryClient } from '@/App';
 import {
 	addNewMsgToQueryCache,
 	changeLastMsgInConversationChache,
 } from '@/util/cache/conversation/conversationCahce';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { playSound } from '@/util/helper/conversation';
+import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
+import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -62,7 +63,11 @@ const MessageActionsBar = ({
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
 			payload.in_reply_to_id = lastMsg?.id;
-			payload.status = `@${currentConversation?.accounts[0]?.username}@${currentConversation?.last_status?.application?.name} ${payload.status}`;
+			payload.status = addPrivateConvoHashtag(
+				removeOtherMentions(
+					`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
+				),
+			);
 			mutate(payload);
 		}
 	};

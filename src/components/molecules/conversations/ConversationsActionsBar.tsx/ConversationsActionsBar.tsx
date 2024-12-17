@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Pressable } from 'react-native';
 import {
 	ComposeGlobeIcon,
@@ -35,13 +35,11 @@ import VisibilitySettingsModal from '@/components/organisms/compose/modal/Visibi
 import { cn } from '@/util/helper/twutil';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
-import { initialState } from '@/context/composeStatusContext/composeStatus.reducer';
 
 const ConversationsActionsBar = () => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { colorScheme } = useColorScheme();
 	const MAX_CHAR = 4000;
-	const [isLongPost, setLongPost] = useState(false);
 
 	// ****** Media Store ****** //
 	const { mediaModal, selectedMedia, progress } = useManageAttachmentStore();

@@ -4,6 +4,7 @@ import { cn } from '@/util/helper/twutil';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { extractMessage } from '@/util/helper/extractMessage';
 import { cleanText } from '@/util/helper/cleanText';
+import { removePrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 
 const MessageContent = ({
 	item,
@@ -21,7 +22,9 @@ const MessageContent = ({
 					: 'bg-patchwork-grey-70 rounded-bl-none',
 			)}
 		>
-			<ThemeText>{extractMessage(cleanText(item.content))}</ThemeText>
+			<ThemeText>
+				{removePrivateConvoHashtag(extractMessage(cleanText(item.content)))}
+			</ThemeText>
 			{/* <HTMLParser status={item} /> */}
 		</View>
 	);

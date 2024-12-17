@@ -31,7 +31,9 @@ function SafeScreen({
 		>
 			<StatusBar
 				barStyle={colorScheme === 'dark' ? 'light-content' : 'dark-content'}
-				backgroundColor={barColor}
+				// backgroundColor={barColor}
+				translucent
+				backgroundColor="transparent"
 			/>
 			{children}
 		</View>

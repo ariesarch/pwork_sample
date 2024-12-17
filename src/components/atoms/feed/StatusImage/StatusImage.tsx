@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-useless-fragment */
-import { useCallback, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Blurhash } from 'react-native-blurhash';
@@ -11,6 +10,7 @@ import { RootStackParamList } from '@/types/navigation';
 import { FourImageGrid, ImageGrid, ThreeImageGrid } from '../ImageGrid';
 import { getBorderRadiusStyle } from '@/util/helper/getBorderRadiusStyle';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSensitiveMediaStore } from '@/store/feed/sensitiveMediaStore';
 
 type Props = {
 	media_attachments: Pathchwork.Attachment[];
@@ -22,15 +22,17 @@ type NavigationProps = StackNavigationProp<RootStackParamList>;
 
 const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 	const navigation = useNavigation<NavigationProps>();
-	const [imageSensitiveState, setImageSensitiveState] = useState<{
-		[id: string]: boolean;
-	}>(() => {
-		const initialState: { [id: string]: boolean } = {};
-		media_attachments.forEach(attachment => {
-			initialState[attachment.id] = attachment.sensitive as boolean;
-		});
-		return initialState;
-	});
+	const { sensitiveMedia, toggleSensitiveMedia } = useSensitiveMediaStore();
+
+	const imageSensitiveState = media_attachments.reduce((state, attachment) => {
+		state[attachment.id] =
+			sensitiveMedia[attachment.id] ?? attachment.sensitive;
+		return state;
+	}, {} as Record<string, boolean>);
+
+	const onForceViewSensitiveMedia = (imageId: string) => {
+		toggleSensitiveMedia(imageId);
+	};
 
 	const imageUrls: RootStackParamList['ImageViewer']['imageUrls'] =
 		media_attachments
@@ -74,13 +76,6 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 			imageUrls,
 			id,
 		});
-	};
-
-	const onForceViewSensitiveMedia = (imageId: string) => {
-		setImageSensitiveState(prevState => ({
-			...prevState,
-			[imageId]: !prevState[imageId],
-		}));
 	};
 
 	const renderImage = (

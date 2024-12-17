@@ -8,25 +8,33 @@ import {
 	isMsgTimeClose,
 } from '@/util/helper/conversation';
 import { cn } from '@/util/helper/twutil';
-import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 type Prop = {
 	message: Pathchwork.Status;
 	previousMsg: Pathchwork.Status | undefined;
+	currentMessageId: string | null;
+	handlePress: (id: string | null) => void;
 };
-const MessageItem = ({ message, previousMsg }: Prop) => {
+const MessageItem = ({
+	message,
+	previousMsg,
+	currentMessageId,
+	handlePress,
+}: Prop) => {
 	const { userInfo } = useAuthStore();
 	const isOwnMessage = userInfo?.id == message.account.id;
 	const isTwoMsgFromSameUser = previousMsg?.account.id === message.account.id;
 	const isTwoMsgTimeClose = isMsgTimeClose(message, previousMsg);
-	const [showMsgTime, setShowMsgTime] = useState<boolean>(false);
+	const showMsgTime = currentMessageId === message.id;
+
+	const onPress = () => {
+		const newId = showMsgTime ? null : message.id;
+		handlePress(newId);
+	};
 
 	return (
-		<Pressable
-			onPress={() => setShowMsgTime(!showMsgTime)}
-			className="m-2 flex"
-		>
+		<Pressable onPress={onPress} className="m-2 flex">
 			{!isTwoMsgTimeClose && (
 				<ThemeText className="items-center justify-center text-center text-xs mt-2 mb-1 text-gray-400">
 					{formatMessageDate(message.created_at)}

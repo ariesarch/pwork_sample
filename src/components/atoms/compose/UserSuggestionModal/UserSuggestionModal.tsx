@@ -23,7 +23,7 @@ const UserSuggestionModal = () => {
 		isLoading,
 		error,
 	} = useSearchUsers({
-		query: debounceVal,
+		q: debounceVal,
 		resolve: false,
 		limit: 4,
 		options: { enabled: debounceVal.length > 3 },
