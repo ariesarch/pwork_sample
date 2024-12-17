@@ -87,18 +87,3 @@ export const calculateImageWidth = (selectedMedia: Asset[], index: number) => {
 			: 'w-1/2 h-[140]';
 	}
 };
-
-export const prepareMediaUploadOption = (
-	currentNoOfImage: number,
-	mediaType: 'photo' | 'video' | 'mixed' = 'mixed',
-) => {
-	const maxNoOfImage = 4;
-	return {
-		...mediaUploadAction,
-		options: {
-			selectionLimit: maxNoOfImage - currentNoOfImage,
-			mediaType: mediaType,
-			includeExtra: false,
-		},
-	};
-};

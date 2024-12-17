@@ -148,7 +148,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 						/>
 					}
 					className="mx-6 my-2"
-					keyExtractor={item => item.id.toString()}
+					keyExtractor={item => item.id.toString() + Math.random()}
 					showsHorizontalScrollIndicator={false}
 				/>
 			) : (

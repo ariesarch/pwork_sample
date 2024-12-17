@@ -30,7 +30,6 @@ export const updateReplyFeedCache = (
 				}
 				times(4, i => {
 					setTimeout(() => {
-						console.log('bb::', i);
 						queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
 					}, i * 600);
 				});

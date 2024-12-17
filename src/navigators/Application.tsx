@@ -30,6 +30,7 @@ import { NotificationsQueryKey } from '@/services/notification.service';
 import { queryClient } from '@/App';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
+import { handleIncommingMessage } from '@/util/helper/conversation';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -51,7 +52,6 @@ function ApplicationNavigator() {
 			'patchwork.noti',
 			val => {
 				const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
-
 				console.log('🚀 ~ useEffect  ~ val:', val);
 				return notifee.onForegroundEvent(({ type }) => {
 					console.log('🚀 ~ returnnotifee.onForegroundEvent ~ type:', type);

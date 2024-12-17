@@ -21,13 +21,15 @@ import { useMessageListQuery } from '@/hooks/queries/conversations.queries';
 import { removeOldMsgListCacheAndCreateNewOne } from '@/util/cache/conversation/conversationCahce';
 import useGetReceiver from '@/hooks/custom/useGetReceiver';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
+import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 
 const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
 	const { id: initialLastMsgId, isNewMessage } = route.params;
-	const { height } = useGradualAnimation();
+	const { height, progress } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(initialLastMsgId);
 	const receiver = currentConversation?.accounts[0];
@@ -69,6 +71,11 @@ const ConversationDetail = ({
 		return [];
 	}, [messageList, currentConversation]);
 
+	const imageCardWrapperStyle = useAnimatedStyle(() => ({
+		opacity: progress.value,
+		height: progress.value < 0.5 ? 0 : 'auto',
+	}));
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
@@ -109,6 +116,12 @@ const ConversationDetail = ({
 							</View>
 						)}
 					</View>
+					<Animated.View
+						style={imageCardWrapperStyle}
+						className="bg-patchwork-dark-400"
+					>
+						<ImageCard composeType="chat" />
+					</Animated.View>
 					{messageList && (
 						<MessageActionsBar
 							isFirstMsg={isNewMessage}

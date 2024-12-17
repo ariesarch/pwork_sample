@@ -15,7 +15,7 @@ const MessageContent = ({
 	return (
 		<View
 			className={cn(
-				'flex-1 ml-2 px-4 py-3 rounded-xl ',
+				'flex-1 ml-2 px-4 py-3 rounded-xl',
 				isOwnMessage
 					? 'bg-patchwork-red-50 rounded-br-none'
 					: 'bg-patchwork-grey-70 rounded-bl-none',

@@ -88,6 +88,19 @@ instance.interceptors.response.use(async response => {
 				}
 			}
 		}
+		//temp
+		if (response.config.method == 'get') {
+			const { url, params } = response.config;
+			console.log(
+				url && url.endsWith('/context') && params?.reverse_sort == true,
+			);
+
+			if (url && url.endsWith('/context') && params?.reverse_sort == true) {
+				if (Array.isArray(response.data?.descendants)) {
+					response.data?.descendants.reverse();
+				}
+			}
+		}
 	} catch (e) {
 		return response;
 	}

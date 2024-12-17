@@ -9,6 +9,7 @@ import notifee, {
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
+import { handleIncommingMessage } from './conversation';
 
 /**
  * Function to request notification permissions for Android.
@@ -17,6 +18,7 @@ const requestAndroidPermission = async () => {
 	const granted = await PermissionsAndroid.request(
 		PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
 	);
+	return await getFirebaseMessagingToken();
 	if (granted === PermissionsAndroid.RESULTS.GRANTED) {
 		return await getFirebaseMessagingToken();
 	} else {
@@ -33,7 +35,6 @@ const requestIOSPermission = async () => {
 	const enabled =
 		authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
 		authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
 	if (enabled) {
 		return await getFirebaseMessagingToken();
 	} else {
@@ -90,6 +91,7 @@ const listenMessage = () => {
 			JSON.stringify(remoteMessage),
 		);
 		onSetNotifcationCount();
+		handleIncommingMessage(remoteMessage);
 		await showNotification(remoteMessage.notification);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
 	});

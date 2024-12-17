@@ -1,5 +1,6 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import MessageContent from '@/components/atoms/conversations/MessageContent/MessageContent';
+import MessageImage from '@/components/atoms/conversations/MessageImage/MessageImage';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
 	formatMessageDate,
@@ -31,6 +32,7 @@ const MessageItem = ({ message, previousMsg }: Prop) => {
 					{formatMessageDate(message.created_at)}
 				</ThemeText>
 			)}
+			<MessageImage className="w-auto flex-1" {...{ message, isOwnMessage }} />
 			<View
 				className={cn(
 					'flex-row items-end',

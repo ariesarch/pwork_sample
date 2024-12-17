@@ -1,3 +1,6 @@
+import { queryClient } from '@/App';
+import { useActiveConversationStore } from '@/store/conversation/activeConversationStore';
+import { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import dayjs from 'dayjs';
 import moment from 'moment';
 
@@ -33,3 +36,39 @@ export const formatMessageDate = (createdAt: string): string => {
 export function formatMessageSentTime(timestamp: string | Date): string {
 	return moment(timestamp).format('h:mm A');
 }
+
+export const generateTWClassForImageSize = (
+	totalImage: number,
+	currentImageIdx: number,
+) => {
+	if (totalImage == 2) {
+		return ` ${
+			currentImageIdx == 0
+				? 'rounded-tl-xl border-r rounded-br-xl'
+				: 'rounded-tr-xl rounded-br-xl'
+		}`;
+	}
+	if (totalImage == 3) {
+		return ` ${currentImageIdx == 0 && 'w-full rounded-tl-xl rounded-br-xl'}`;
+	}
+};
+
+export const handleIncommingMessage = (
+	notiResp: FirebaseMessagingTypes.RemoteMessage,
+) => {
+	console.log('noti_type::', notiResp.data?.noti_type);
+	if (notiResp.data?.noti_type !== 'mention') return;
+	const activeConvState = useActiveConversationStore.getState();
+
+	if (activeConvState) {
+		console.log('aa::', activeConvState);
+		queryClient.invalidateQueries({
+			queryKey: [
+				'message-list',
+				{ id: activeConvState.activeConversation?.last_status.id },
+			],
+		});
+	}
+	console.log('bb::');
+	queryClient.invalidateQueries({ queryKey: ['conversations'] });
+};

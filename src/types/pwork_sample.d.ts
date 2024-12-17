@@ -462,4 +462,24 @@ declare namespace Pathchwork {
 		hashtags: HashTag[];
 		statuses: Status[];
 	};
+
+	type PushNotiResponse = {
+		notification: {
+			android: {};
+			body: string;
+			title: string;
+		};
+		originalPriority: number;
+		priority: number;
+		sentTime: number;
+		data: {
+			noti_type: string;
+			reblogged_id: string;
+			destination_id: string;
+		};
+		from: string;
+		messageId: string;
+		ttl: number;
+		collapseKey: string;
+	};
 }

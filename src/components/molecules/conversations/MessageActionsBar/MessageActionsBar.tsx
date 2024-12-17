@@ -15,6 +15,7 @@ import {
 	addNewMsgToQueryCache,
 	changeLastMsgInConversationChache,
 } from '@/util/cache/conversation/conversationCahce';
+import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -33,11 +34,15 @@ const MessageActionsBar = ({
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
+	const { onToggleMediaModal, resetAttachmentStore } =
+		useManageAttachmentActions();
+
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
 			changeLastMsgInConversationChache(response, currentConversation?.id);
 			addNewMsgToQueryCache(response, currentFocusMsgId);
 			composeDispatch({ type: 'clear' });
+			resetAttachmentStore();
 		},
 		onError: e => {
 			Toast.show({
@@ -82,6 +87,9 @@ const MessageActionsBar = ({
 			<View className="flex-row items-center px-2 pt-1 bg-patchwork-grey-70">
 				<Pressable
 					className={'mr-3'}
+					onPress={() => {
+						onToggleMediaModal();
+					}}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
 				<Pressable
