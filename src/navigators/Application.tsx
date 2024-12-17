@@ -73,10 +73,11 @@ function ApplicationNavigator() {
 						case EventType.PRESS:
 							onRemoveNotifcationCount();
 							const destinationId = val.data?.destination_id;
+							const rebloggedId = val.data?.reblogged_id;
 							if (val.data.noti_type === 'follow') {
 								handleNotiProfileDetailPress(destinationId);
 							} else {
-								handleNotiDetailPress(destinationId);
+								handleNotiDetailPress(destinationId, rebloggedId);
 							}
 							break;
 					}
@@ -92,11 +93,14 @@ function ApplicationNavigator() {
 		messaging().onNotificationOpenedApp(remoteMessage => {
 			onRemoveNotifcationCount();
 			if (remoteMessage?.data) {
-				const { noti_type, destination_id } = remoteMessage.data;
+				const { noti_type, destination_id, reblogged_id } = remoteMessage.data;
 				if (noti_type === 'follow') {
 					handleNotiProfileDetailPress(destination_id as string);
 				} else {
-					handleNotiDetailPress(destination_id as string);
+					handleNotiDetailPress(
+						destination_id as string,
+						reblogged_id as string,
+					);
 				}
 			}
 		});
@@ -108,14 +112,18 @@ function ApplicationNavigator() {
 				// console.log('🚀 ~ useEffect ~ getInitialNotification:', remoteMessage);
 				onRemoveNotifcationCount();
 				if (remoteMessage?.data) {
-					const { noti_type, destination_id } = remoteMessage.data;
+					const { noti_type, destination_id, reblogged_id } =
+						remoteMessage.data;
 					if (noti_type === 'follow') {
 						setTimeout(() => {
 							handleNotiProfileDetailPress(destination_id as string);
 						}, 1000);
 					} else {
 						setTimeout(() => {
-							handleNotiDetailPress(destination_id as string);
+							handleNotiDetailPress(
+								destination_id as string,
+								reblogged_id as string,
+							);
 						}, 1000);
 					}
 				}
