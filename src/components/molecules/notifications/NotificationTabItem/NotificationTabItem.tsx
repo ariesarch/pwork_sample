@@ -6,6 +6,9 @@ import {
 	NotificationPeopleFollowIcon,
 	NotificationBoostedIcon,
 	NotificationMentionIcon,
+	NotificationUpdateIcon,
+	NotificationPostedIcon,
+	NotificationPollIcon,
 } from '@/util/svg/icon.notification';
 import Image from '@/components/atoms/common/Image/Image';
 import {
@@ -25,6 +28,8 @@ const notificationMessages: Record<NotificationItem['type'], string> = {
 	mention: 'Private mention',
 	reblog: 'boosted your post',
 	poll: 'polled has ended',
+	status: 'posted',
+	update: 'updated their post',
 };
 
 const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
@@ -33,7 +38,9 @@ const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
 		favourite: <NotificationFavoriteIcon />,
 		reblog: <NotificationBoostedIcon />,
 		mention: <NotificationMentionIcon />,
-		poll: <NotificationPeopleFollowIcon />,
+		poll: <NotificationPollIcon />,
+		status: <NotificationPostedIcon />,
+		update: <NotificationUpdateIcon />,
 	};
 
 const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {

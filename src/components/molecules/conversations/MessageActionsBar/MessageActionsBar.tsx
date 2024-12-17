@@ -126,7 +126,7 @@ const MessageActionsBar = ({
 					<ThemeText
 						className={`border-[1] border-[1px]  py-[6] px-3 rounded-full  ${
 							composeState.text.raw
-								? 'text-patchwork-red-50 border-patchwork-red-50'
+								? 'text-white border-white'
 								: 'border-patchwork-grey-100 text-patchwork-grey-100'
 						}`}
 					>

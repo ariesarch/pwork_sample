@@ -8,7 +8,14 @@ export type MentionsNotificationsQueryKey = ['mention-noti-query-key'];
 
 export interface NotificationItem {
 	group_key: string;
-	type: 'follow' | 'favourite' | 'mention' | 'reblog' | 'poll';
+	type:
+		| 'follow'
+		| 'favourite'
+		| 'mention'
+		| 'reblog'
+		| 'poll'
+		| 'update'
+		| 'status';
 	latest_page_notification_at: string;
 	account: Pathchwork.Account;
 	status?: Pathchwork.Status | null;
@@ -16,7 +23,14 @@ export interface NotificationItem {
 
 export interface INotificationResponse {
 	id: string;
-	type: 'follow' | 'favourite' | 'mention' | 'reblog' | 'poll';
+	type:
+		| 'follow'
+		| 'favourite'
+		| 'mention'
+		| 'reblog'
+		| 'poll'
+		| 'update'
+		| 'status';
 	group_key: string;
 	status: Pathchwork.Status;
 	account: Pathchwork.Account;

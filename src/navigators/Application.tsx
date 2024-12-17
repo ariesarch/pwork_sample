@@ -30,7 +30,7 @@ import { NotificationsQueryKey } from '@/services/notification.service';
 import { queryClient } from '@/App';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
-import { handleIncommingMessage } from '@/util/helper/conversation';
+import messaging from '@react-native-firebase/messaging';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -45,16 +45,27 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
-	const { onRemoveNotifcationCount } = usePushNoticationActions();
+	const { onRemoveNotifcationCount, onSetNotifcationCount } =
+		usePushNoticationActions();
 
+	// ***** Listening for foreground and background messages ***** //
+	useEffect(() => {
+		messaging().setBackgroundMessageHandler(async _ => {
+			onSetNotifcationCount();
+		});
+
+		const unsubscribe = listenMessage();
+		return unsubscribe;
+	}, []);
+	// ***** Listening for foreground and background messages ***** //
+
+	// ***** This method will be triggered if the app is already opened. ( Start ) ***** //
 	useEffect(() => {
 		const eventEmitter = DeviceEventEmitter.addListener(
 			'patchwork.noti',
 			val => {
 				const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
-				console.log('🚀 ~ useEffect  ~ val:', val);
 				return notifee.onForegroundEvent(({ type }) => {
-					console.log('🚀 ~ returnnotifee.onForegroundEvent ~ type:', type);
 					queryClient.invalidateQueries({ queryKey: notiQueryKey });
 					switch (type) {
 						case EventType.DISMISSED:
@@ -62,10 +73,11 @@ function ApplicationNavigator() {
 						case EventType.PRESS:
 							onRemoveNotifcationCount();
 							const destinationId = val.data?.destination_id;
+							const rebloggedId = val.data?.reblogged_id;
 							if (val.data.noti_type === 'follow') {
 								handleNotiProfileDetailPress(destinationId);
 							} else {
-								handleNotiDetailPress(destinationId);
+								handleNotiDetailPress(destinationId, rebloggedId);
 							}
 							break;
 					}
@@ -73,6 +85,49 @@ function ApplicationNavigator() {
 			},
 		);
 		return () => eventEmitter.remove();
+	}, []);
+	// ***** This method will be triggered if the app is already opened. ( End ) ***** //
+
+	useEffect(() => {
+		// ***** This method will be triggered if the app has opened from a background state. ***** //
+		messaging().onNotificationOpenedApp(remoteMessage => {
+			onRemoveNotifcationCount();
+			if (remoteMessage?.data) {
+				const { noti_type, destination_id, reblogged_id } = remoteMessage.data;
+				if (noti_type === 'follow') {
+					handleNotiProfileDetailPress(destination_id as string);
+				} else {
+					handleNotiDetailPress(
+						destination_id as string,
+						reblogged_id as string,
+					);
+				}
+			}
+		});
+
+		// ***** This method will be triggered the application to open from a quit state. ***** //
+		messaging()
+			.getInitialNotification()
+			.then(remoteMessage => {
+				// console.log('🚀 ~ useEffect ~ getInitialNotification:', remoteMessage);
+				onRemoveNotifcationCount();
+				if (remoteMessage?.data) {
+					const { noti_type, destination_id, reblogged_id } =
+						remoteMessage.data;
+					if (noti_type === 'follow') {
+						setTimeout(() => {
+							handleNotiProfileDetailPress(destination_id as string);
+						}, 1000);
+					} else {
+						setTimeout(() => {
+							handleNotiDetailPress(
+								destination_id as string,
+								reblogged_id as string,
+							);
+						}, 1000);
+					}
+				}
+			});
 	}, []);
 
 	// ***** Firebase Request Noti Permission ***** //
@@ -82,8 +137,6 @@ function ApplicationNavigator() {
 				access_token && (await requestNotificationPermission());
 			}, 1000);
 		})();
-		const unsubscribe = listenMessage();
-		return unsubscribe;
 	}, [access_token]);
 	// ***** Firebase Request Noti Permission ***** //
 

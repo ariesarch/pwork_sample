@@ -58,8 +58,6 @@ export const generateTWClassForImageSize = (
 export const handleIncommingMessage = async (
 	notiResp: FirebaseMessagingTypes.RemoteMessage,
 ) => {
-	console.log('noti_type::', notiResp.data?.noti_type);
-	if (notiResp.data?.noti_type !== 'mention') return;
 	const activeConvState = useActiveConversationStore.getState();
 
 	if (activeConvState.activeConversation) {

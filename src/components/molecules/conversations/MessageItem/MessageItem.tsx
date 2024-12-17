@@ -35,11 +35,11 @@ const MessageItem = ({
 
 	return (
 		<Pressable onPress={onPress} className="m-2 flex">
-			{!isTwoMsgTimeClose && (
+			{/* {!isTwoMsgTimeClose && (
 				<ThemeText className="items-center justify-center text-center text-xs mt-2 mb-1 text-gray-400">
 					{formatMessageDate(message.created_at)}
 				</ThemeText>
-			)}
+			)} */}
 			<MessageImage className="w-auto flex-1" {...{ message, isOwnMessage }} />
 			<View
 				className={cn(

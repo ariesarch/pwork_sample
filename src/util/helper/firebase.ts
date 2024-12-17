@@ -18,15 +18,21 @@ import {
  * Function to request notification permissions for Android.
  **/
 const requestAndroidPermission = async () => {
-	const granted = await PermissionsAndroid.request(
-		PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-	);
-	return await getFirebaseMessagingToken();
-	if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-		return await getFirebaseMessagingToken();
+	if ((Platform.Version as number) >= 33) {
+		// For Android 13 and above
+		const granted = await PermissionsAndroid.request(
+			PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+		);
+		if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+			return await getFirebaseMessagingToken();
+		} else {
+			const saveFcmToken =
+				usePushNoticationStore.getState().actions.saveFcmToken;
+			return saveFcmToken(null);
+		}
 	} else {
-		const saveFcmToken = usePushNoticationStore.getState().actions.saveFcmToken;
-		return saveFcmToken(null);
+		// For Android versions below 13, no permission is needed
+		return await getFirebaseMessagingToken();
 	}
 };
 
@@ -89,10 +95,6 @@ const listenMessage = () => {
 	const onSetNotifcationCount =
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
-		console.log(
-			'🚀 ~ listenMessage ~ listenMessage:',
-			JSON.stringify(remoteMessage),
-		);
 		const isChatNoti = checkIsConversationNoti(remoteMessage);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
 		if (isChatNoti) handleIncommingMessage(remoteMessage);
@@ -117,7 +119,10 @@ const showNotification = async (
 	});
 };
 
-const handleNotiDetailPress = (destinationId: string) => {
+const handleNotiDetailPress = (
+	destinationId: string,
+	reblogged_id?: string,
+) => {
 	if (navigationRef.isReady()) {
 		navigationRef.dispatch(
 			CommonActions.reset({
@@ -130,7 +135,9 @@ const handleNotiDetailPress = (destinationId: string) => {
 								{ name: 'NotificationList' },
 								{
 									name: 'FeedDetail',
-									params: { id: destinationId },
+									params: {
+										id: reblogged_id !== '0' ? reblogged_id : destinationId,
+									},
 								},
 							],
 						},
