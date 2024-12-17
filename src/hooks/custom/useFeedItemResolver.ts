@@ -21,7 +21,7 @@ const useFeedItemResolver = (feedId: string) => {
 	});
 
 	useEffect(() => {
-		if (shouldFetch && currentFeed == undefined && feedDetail) {
+		if (shouldFetch && feedDetail) {
 			setActiveFeed(feedDetail as Pathchwork.Status);
 		}
 	}, [shouldFetch, currentFeed, feedDetail]);
