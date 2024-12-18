@@ -1,17 +1,14 @@
-import { Compose, Notification, Search } from '@/screens';
+import { Compose } from '@/screens';
 import { BottomStackParamList } from '@/types/navigation';
 import {
 	ComposeTabIcon,
 	HomeTabIcon,
-	MessageTabIcon,
-	NotificationTabIcon,
 	SearchTabIcon,
 } from '@/util/svg/icon.common';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useColorScheme } from 'nativewind';
 import { Platform, View } from 'react-native';
 import HomeStack from './HomeStackNavigator';
-import { scale } from '@/util/helper/helper';
 import SearchStack from './SearchStackNavigator';
 import ConversationsStack from './ConversationsStackNavigator';
 import NotiStack from './NotiStackNavigator';
@@ -20,6 +17,7 @@ import {
 	usePushNoticationStore,
 } from '@/store/pushNoti/pushNotiStore';
 import NotiTabBarIcon from '@/components/atoms/notifications/NotiTabBarIcon/NotiTabBarIcon';
+import ConversationsTabButton from '@/components/atoms/conversations/ConversationsTabButton/ConversationsTabButton';
 
 const Tab = createBottomTabNavigator<BottomStackParamList>();
 
@@ -27,7 +25,6 @@ export default function BottomTabs() {
 	const { colorScheme } = useColorScheme();
 	const notiCount = usePushNoticationStore(state => state.notiCount);
 	const { onRemoveNotifcationCount } = usePushNoticationActions();
-
 	return (
 		<Tab.Navigator
 			screenOptions={{
@@ -111,7 +108,7 @@ export default function BottomTabs() {
 				component={ConversationsStack}
 				options={{
 					tabBarIcon: ({ focused }) => (
-						<MessageTabIcon colorScheme={colorScheme} focused={focused} />
+						<ConversationsTabButton focused={focused} />
 					),
 				}}
 			/>

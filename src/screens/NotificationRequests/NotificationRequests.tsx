@@ -24,7 +24,13 @@ const NofificationRequests = () => {
 
 	// mutation
 	const { mutate: acceptNotiReq } = useAcceptNotiReqMutation({
-		onSuccess: (_, { id }) => removeAcceptedNotiReq(id),
+		onSuccess: (_, { id }) => {
+			removeAcceptedNotiReq(id);
+			queryClient.invalidateQueries({
+				queryKey: ['conversations'],
+				exact: true,
+			});
+		},
 	});
 	const { mutate: dismissNotiReq } = useDismissNotiReqMutation({
 		onSuccess: (_, { id }) => removeDismissedNotiReq(id),
