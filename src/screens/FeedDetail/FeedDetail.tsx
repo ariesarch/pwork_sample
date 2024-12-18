@@ -3,18 +3,12 @@ import Header from '@/components/atoms/common/Header/Header';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { HomeStackScreenProps } from '@/types/navigation';
-import {
-	BackHandler,
-	RefreshControl,
-	ScrollView,
-	TextInput,
-	View,
-} from 'react-native';
+import { RefreshControl, TextInput, View } from 'react-native';
 import { useFeedRepliesQuery } from '@/hooks/queries/feed.queries';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import {
@@ -28,23 +22,21 @@ import FeedReplyTextInput from '@/components/atoms/compose/FeedReplyTextInput/Fe
 import useFeedItemResolver from '@/hooks/custom/useFeedItemResolver';
 import { ComposeStatusProvider } from '@/context/composeStatusContext/composeStatus.context';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
-import { CheckRelationshipQueryKey } from '@/types/queries/profile.type';
-import { useCheckRelationships } from '@/hooks/queries/profile.queries';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import UserSuggestionReply from '@/components/atoms/compose/UserSuggestionReply/UserSuggestionReply';
 import ReplyStatus from '@/components/organisms/feed/ReplyStatus/ReplyStatus';
 import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStore';
 import _ from 'lodash';
-import PollForm from '@/components/organisms/compose/PollForm/PollForm';
 import ReplyPollForm from '@/components/organisms/compose/ReplyPollForm/ReplyPollForm';
-import { useFocusEffect } from '@react-navigation/native';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 const FeedDetail = ({
 	navigation,
 	route,
 }: HomeStackScreenProps<'FeedDetail'>) => {
 	const domain_name = useSelectedDomain();
-	const { id, openKeyboardAtMount } = route.params;
+
+	const { id, isMainChannel, openKeyboardAtMount } = route.params;
 	const { height, progress } = useGradualAnimation();
 	const feedDetail = useFeedItemResolver(id);
 	const inputRef = useRef<TextInput>(null);
@@ -83,7 +75,8 @@ const FeedDetail = ({
 		isFetching,
 		refetch: refetchReplies,
 	} = useFeedRepliesQuery({
-		domain_name,
+		domain_name: isMainChannel ? DEFAULT_API_URL : domain_name,
+		// domain_name,
 		id,
 	});
 

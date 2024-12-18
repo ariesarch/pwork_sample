@@ -59,7 +59,10 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					<Pressable
 						className="flex-row items-center"
 						onPress={() => {
-							navigation.navigate('ProfileOther', { id: account.id });
+							navigation.navigate('ProfileOther', {
+								id: account.id,
+								isFromNoti: true,
+							});
 						}}
 					>
 						<Image
@@ -82,8 +85,12 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					{/* Notification Status */}
 					{status && (
 						<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-lg">
-							<StatusHeader status={status} showAvatarIcon />
-							<StatusContent status={status} isFromNotiStatusImage />
+							<StatusHeader status={status} isFromNoti showAvatarIcon />
+							<StatusContent
+								status={status}
+								isMainChannel
+								isFromNotiStatusImage
+							/>
 						</View>
 					)}
 					{/* Notification Status */}

@@ -128,6 +128,7 @@ const handleNotiDetailPress = (
 									name: 'FeedDetail',
 									params: {
 										id: reblogged_id !== '0' ? reblogged_id : destinationId,
+										isMainChannel: true,
 									},
 								},
 							],
@@ -152,7 +153,7 @@ const handleNotiProfileDetailPress = (destinationId: string) => {
 								{ name: 'NotificationList' },
 								{
 									name: 'ProfileOther',
-									params: { id: destinationId },
+									params: { id: destinationId, isFromNoti: true },
 								},
 							],
 						},

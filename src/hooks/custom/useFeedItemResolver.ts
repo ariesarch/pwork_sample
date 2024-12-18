@@ -24,7 +24,7 @@ const useFeedItemResolver = (feedId: string) => {
 		if (shouldFetch && feedDetail) {
 			setActiveFeed(feedDetail as Pathchwork.Status);
 		}
-	}, [shouldFetch, currentFeed, feedDetail]);
+	}, [shouldFetch, feedDetail]);
 
 	return shouldFetch ? (feedDetail as Pathchwork.Status) : currentFeed;
 };

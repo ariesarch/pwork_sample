@@ -29,6 +29,7 @@ import {
 } from '@/hooks/queries/profile.queries';
 import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -37,7 +38,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
-	const { id } = route.params;
+	const { id, isFromNoti } = route.params;
 	const domain_name = useSelectedDomain();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
@@ -48,7 +49,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
 		'get_account_info',
-		{ id, domain_name },
+		{ id, domain_name: isFromNoti ? DEFAULT_API_URL : domain_name },
 	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =
@@ -84,7 +85,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		refetch: refreshProfileTimeline,
 		isFetching,
 	} = useAccountDetailFeed({
-		domain_name,
+		domain_name: isFromNoti ? DEFAULT_API_URL : domain_name,
 		account_id: id,
 		exclude_reblogs: false,
 		exclude_replies: true,
@@ -98,7 +99,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		isFetching: isFetchingReplies,
 		refetch: refetchReplies,
 	} = useAccountDetailFeed({
-		domain_name,
+		domain_name: isFromNoti ? DEFAULT_API_URL : domain_name,
 		account_id: id,
 		exclude_replies: false,
 		exclude_reblogs: true,
@@ -193,7 +194,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										return item.in_reply_to_id ? (
 											<></>
 										) : (
-											<StatusWrapper status={item} />
+											<StatusWrapper status={item} isFromNoti={isFromNoti} />
 										);
 									}}
 									estimatedItemSize={500}
@@ -233,7 +234,9 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									}}
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
-										return <StatusWrapper status={item} />;
+										return (
+											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+										);
 									}}
 									refreshControl={
 										<RefreshControl

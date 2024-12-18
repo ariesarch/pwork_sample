@@ -12,9 +12,10 @@ import FastImage from 'react-native-fast-image';
 
 type Props = {
 	status: Pathchwork.Status;
+	isFromNoti?: boolean;
 } & ViewProps;
 
-const StatusItem = ({ status, ...props }: Props) => {
+const StatusItem = ({ status, isFromNoti, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { userInfo } = useAuthStore();
@@ -29,14 +30,14 @@ const StatusItem = ({ status, ...props }: Props) => {
 			<View className="m-4" {...props}>
 				<View className="flex-row">
 					<Pressable
-						onPress={() =>
-							navigation.navigate(
-								userInfo?.id === status.account.id ? 'Profile' : 'ProfileOther',
-								{
-									id: status.account.id,
-								},
-							)
-						}
+						onPress={() => {
+							userInfo?.id
+								? navigation.navigate('Profile', { id: status.account.id })
+								: navigation.navigate('ProfileOther', {
+										id: status.account.id,
+										isFromNoti: isFromNoti,
+								  });
+						}}
 					>
 						<FastImage
 							source={
@@ -52,12 +53,12 @@ const StatusItem = ({ status, ...props }: Props) => {
 						{...props}
 						onPress={() => handleOnPress(status)}
 					>
-						<StatusHeader status={status} />
+						<StatusHeader status={status} isFromNoti={isFromNoti} />
 						<StatusContent status={status} />
 					</Pressable>
 				</View>
 				<View className="ml-10">
-					<StatusActionBar status={status} />
+					<StatusActionBar status={status} isFromNoti={isFromNoti} />
 				</View>
 			</View>
 			<Underline />

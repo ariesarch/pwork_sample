@@ -16,6 +16,7 @@ type Props = {
 	isFromNotiStatusImage?: boolean;
 	isFeedDetail?: boolean;
 	isReposting?: boolean;
+	isMainChannel?: boolean;
 } & ViewProps;
 
 const StatusContent = ({
@@ -23,6 +24,7 @@ const StatusContent = ({
 	isFromNotiStatusImage,
 	isFeedDetail,
 	isReposting,
+	isMainChannel,
 }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const isImageMissing = status?.media_attachments?.length !== 0;
@@ -32,6 +34,7 @@ const StatusContent = ({
 		setActiveFeed(status.reblog ? status.reblog : status);
 		navigation.navigate('FeedDetail', {
 			id: status.reblog ? status.reblog.id : status.id,
+			isMainChannel: isMainChannel,
 		});
 	};
 

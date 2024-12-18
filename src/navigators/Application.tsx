@@ -73,7 +73,6 @@ function ApplicationNavigator() {
 					break;
 				case EventType.PRESS:
 					onRemoveNotifcationCount();
-					setDomain('channel.org');
 					if (notification?.data) {
 						const destinationId = notification.data.destination_id;
 						const rebloggedId = notification?.data?.reblogged_id;

@@ -1,24 +1,14 @@
-import { memo, useCallback, useState, useRef, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import {
 	View,
 	TouchableOpacity,
 	StatusBar,
 	Dimensions,
-	NativeSyntheticEvent,
-	NativeScrollEvent,
 	RefreshControl,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
-import { FlashListWithHeaders } from '@codeherence/react-native-header';
-import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
-import CommonHeader from '@/components/molecules/common/CommonHeader/CommonHeader';
-import ChannelProfileHeaderInfo from '@/components/organisms/channel/ChannelProfileHeaderInfo/ChannelProfileHeaderInfo';
-import {
-	BottomStackParamList,
-	HomeStackParamList,
-	HomeStackScreenProps,
-} from '@/types/navigation';
+import { HomeStackScreenProps } from '@/types/navigation';
 import ChannelProfileLoading from '@/components/atoms/loading/ChannelProfileLoading';
 import {
 	useGetChannelAbout,
@@ -26,24 +16,12 @@ import {
 	useGetChannelFeed,
 } from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
-import {
-	useFocusEffect,
-	useNavigation,
-	CompositeNavigationProp,
-	useScrollToTop,
-} from '@react-navigation/native';
-import {
-	EllipsisIcon,
-	ProfileBackIcon,
-	SearchIconInProfile,
-} from '@/util/svg/icon.profile';
+import { useFocusEffect } from '@react-navigation/native';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';
 import { Platform } from 'react-native';
 import ChannelBannerLoading from '@/components/atoms/loading/ChannelBannerLoading';
-import ChannelListHeaderTabs from '@/components/organisms/channel/ChannelListHeaderTabs/ChannelListHeaderTabs';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { StackNavigationProp } from '@react-navigation/stack';
 import {
 	MaterialTabBar,
 	MaterialTabItem,
@@ -54,17 +32,9 @@ import FeedTitleHeader from '@/components/atoms/feed/FeedTitleHeader/FeedTitleHe
 import { ScrollProvider } from '@/context/sharedScrollContext/sharedScroll.context';
 import customColor from '@/util/constant/color';
 import ChannelAbout from '@/components/organisms/channel/ChannelAbout/ChannelAbout';
-import HorizontalScrollMenu from '@/components/organisms/channel/HorizontalScrollMenu/HorizontalScrollMenu';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import { delay } from 'lodash';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { AccountListIcon } from '@/util/svg/icon.common';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
-
-type ChannelProfileScreenNavigationProp = CompositeNavigationProp<
-	BottomTabNavigationProp<BottomStackParamList, 'Home'>,
-	StackNavigationProp<HomeStackParamList, 'ChannelProfile'>
->;
 
 const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 	route,
