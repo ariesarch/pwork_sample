@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import {
 	ActivityIndicator,
 	ListRenderItemInfo,
+	RefreshControl,
 	TouchableOpacity,
 	View,
 } from 'react-native';
@@ -14,7 +15,10 @@ import {
 	useMarkAsReadMutation,
 	useMessageDeleteMutation,
 } from '@/hooks/mutations/conversations.mutation';
-import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import {
+	useGetAllNotiReq,
+	useGetConversationsList,
+} from '@/hooks/queries/conversations.queries';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
 	BottomStackParamList,
@@ -33,6 +37,7 @@ import { FloatingAddButton } from '@/components/molecules/conversations/Floating
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { DeleteIcon } from '@/util/svg/icon.common';
 import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
+import NofiReqButton from '@/components/atoms/conversations/NotificationRequestsButton/NotificationRequestsButton';
 
 type RowMap<T> = { [key: string]: T };
 
@@ -64,6 +69,8 @@ const ConversationList = ({
 		refetch,
 	} = useGetConversationsList();
 	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
+
+	const { data: notiReqList, refetch: refetchNotiReq } = useGetAllNotiReq();
 
 	// mutation
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
@@ -114,10 +121,29 @@ const ConversationList = ({
 
 	return (
 		<SafeScreen>
-			<Header title="Conversations" leftCustomComponent={<BackButton />} />
+			<Header
+				title="Conversations"
+				leftCustomComponent={<BackButton />}
+				rightCustomComponent={
+					<NofiReqButton
+						isThereData={notiReqList && notiReqList?.length > 0 ? true : false}
+						customOnPress={() => navigation.navigate('NotificationRequests')}
+					/>
+				}
+			/>
 			<SwipeListView
 				data={conversationsList}
 				keyExtractor={item => item.id}
+				refreshControl={
+					<RefreshControl
+						refreshing={isLoading}
+						tintColor={customColor['patchwork-light-900']}
+						onRefresh={() => {
+							refetch();
+							refetchNotiReq();
+						}}
+					/>
+				}
 				ListEmptyComponent={
 					<EmptyListComponent
 						isLoading={isLoading}

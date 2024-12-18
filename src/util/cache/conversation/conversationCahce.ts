@@ -93,3 +93,19 @@ export const removeDeletedMsgInConversationCache = (currentMsgId: string) => {
 		},
 	);
 };
+
+export const removeAcceptedNotiReq = (id: string) => {
+	queryClient.setQueryData(
+		['all-noti-req'],
+		(oldData: Pathchwork.NotiReq[] | undefined) =>
+			oldData ? oldData.filter(item => item.id !== id) : [],
+	);
+};
+
+export const removeDismissedNotiReq = (id: string) => {
+	queryClient.setQueryData(
+		['all-noti-req'],
+		(oldData: Pathchwork.NotiReq[] | undefined) =>
+			oldData ? oldData.filter(item => item.id !== id) : [],
+	);
+};

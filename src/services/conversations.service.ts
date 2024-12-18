@@ -73,3 +73,54 @@ export const deleteMesssage = async ({ id }: { id: string }) => {
 		return handleError(error);
 	}
 };
+
+export const getAllNotiReqWPagination = async ({
+	pageParam = null,
+}: {
+	pageParam?: string | null;
+}): Promise<Pathchwork.NotiReq[]> => {
+	try {
+		const limit = 10;
+		const params: ConversationsQueryParam = { limit, max_id: pageParam };
+		const { data } = await instance.get<Pathchwork.NotiReq[]>(
+			appendApiVersion('notifications/requests'),
+			{ params },
+		);
+		return data;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const getAllNotiReq = async (): Promise<Pathchwork.NotiReq[]> => {
+	try {
+		const { data } = await instance.get<Pathchwork.NotiReq[]>(
+			appendApiVersion('notifications/requests'),
+		);
+		return data;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const acceptNotiReq = async ({ id }: { id: string }) => {
+	try {
+		const response = await instance.post(
+			appendApiVersion(`notifications/requests/${id}/accept`),
+		);
+		return response.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const dismissNotiReq = async ({ id }: { id: string }) => {
+	try {
+		const response = await instance.post(
+			appendApiVersion(`notifications/requests/${id}/dismiss`),
+		);
+		return response.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

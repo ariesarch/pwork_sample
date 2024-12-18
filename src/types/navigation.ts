@@ -116,6 +116,7 @@ export type ConversationsStackParamList = {
 	ConversationList: undefined;
 	NewMessage: undefined;
 	ConversationDetail: { id: string; isNewMessage: boolean };
+	NotificationRequests: undefined;
 };
 
 export type GuestStackParamList = {

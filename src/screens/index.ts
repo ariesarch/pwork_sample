@@ -19,3 +19,4 @@ export { default as NewMessage } from './NewMessage/NewMessage';
 export { default as ConversationDetail } from './ConversationDetail/ConversationDetail';
 export { default as ConversationList } from './ConversationList/ConversationList';
 export { default as LocalImageViewer } from './LocalImageViewer/LocalImageViewer';
+export { default as NotificationRequests } from './NotificationRequests/NotificationRequests';

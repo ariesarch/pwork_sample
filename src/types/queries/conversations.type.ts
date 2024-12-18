@@ -19,3 +19,5 @@ export type PaginatedResponse<T, P extends object = {}> = {
 	pageParams: P;
 	pages: T[];
 };
+
+export type NotiReqQueryKey = ['all-noti-req'];

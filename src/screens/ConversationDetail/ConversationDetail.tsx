@@ -91,10 +91,10 @@ const ConversationDetail = ({
 						onPressBackButton={() => navigation.navigate('ConversationList')}
 						chatParticipant={receiver}
 					/>
+					{receiver && <ProfileInfo userInfo={receiver} />}
 					<View style={{ flex: 1 }}>
-						{totalMsgList && !isMessageLoading && receiver ? (
+						{totalMsgList && !isMessageLoading ? (
 							<FlashList
-								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								inverted
 								extraData={currentMessageId}
 								data={totalMsgList}

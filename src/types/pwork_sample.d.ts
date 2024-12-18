@@ -482,4 +482,13 @@ declare namespace Pathchwork {
 		ttl: number;
 		collapseKey: string;
 	};
+
+	type NotiReq = {
+		id: string;
+		created_at: string | Date;
+		updated_at: string | Date | null;
+		notifications_count: string;
+		account: Pathchwork.Account;
+		last_status: Pathchwork.Status;
+	};
 }
