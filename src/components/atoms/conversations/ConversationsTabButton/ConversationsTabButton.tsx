@@ -17,7 +17,7 @@ const ConversationsTabButton = ({ focused }: { focused: boolean }) => {
 		<View className="relative">
 			<MessageTabIcon colorScheme={colorScheme} focused={focused} />
 			{unreadCount > 0 && (
-				<View className="absolute top-2 right-2 z-20 w-5 h-5 rounded-full items-center justify-center bg-patchwork-red-50">
+				<View className="absolute -top-3 -right-3 z-20 w-5 h-5 rounded-full items-center justify-center bg-patchwork-red-50">
 					<ThemeText size={'xs_12'}>
 						{unreadCount > 99 ? '99+' : unreadCount}
 					</ThemeText>

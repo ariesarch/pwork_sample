@@ -58,7 +58,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		() => (sharedScrollYOffset.value = scrollY.value),
 	);
 
-	const { data: test } = useGetConversationByUserId({
+	const { data: userConversation } = useGetConversationByUserId({
 		id: props.type == 'Profile' ? props.profile.id : '',
 		options: {
 			enabled: props.type == 'Profile' && !props.is_my_account,
@@ -172,7 +172,26 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	};
 
 	const handleChatIconPress = () => {
-		console.log('chat icon press');
+		if (props.type == 'Profile') {
+			if (userConversation?.last_status) {
+				//@ts-expect-error
+				navigation.navigate('Conversations', {
+					screen: 'ConversationDetail',
+					params: {
+						id: userConversation.last_status.id,
+						isFromProfile: true,
+					},
+				});
+			} else {
+				//@ts-expect-error
+				navigation.navigate('Conversations', {
+					screen: 'InitiateNewConversation',
+					params: {
+						account: props.profile,
+					},
+				});
+			}
+		}
 	};
 
 	return (

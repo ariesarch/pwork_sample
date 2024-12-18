@@ -15,6 +15,7 @@ const useGetCurrentConversation = (
 	lastMsgId: string,
 	isFromNotification: boolean | undefined,
 ) => {
+	if (!lastMsgId) return;
 	const [currentConversation, setConversation] =
 		useState<Pathchwork.Conversations>();
 	const { saveActiveConversation } = useActiveConversationActions();

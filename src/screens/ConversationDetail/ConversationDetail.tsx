@@ -40,7 +40,11 @@ const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const { id: initialLastMsgId, isFromNotification } = route.params;
+	const {
+		id: initialLastMsgId,
+		isFromNotification,
+		isFromProfile,
+	} = route.params;
 	const { height, progress } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(
@@ -52,7 +56,6 @@ const ConversationDetail = ({
 	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
 	const listRef = useRef<FlashList<any>>(null);
 	const [showScrollToBottom, setShowScrollToBottom] = useState(false);
-	const { colorScheme } = useColorScheme();
 
 	const {
 		data: messageList,
@@ -60,6 +63,9 @@ const ConversationDetail = ({
 		refetch: refetchMessageList,
 	} = useMessageListQuery({
 		id: initialLastMsgId,
+		options: {
+			enabled: !!initialLastMsgId,
+		},
 	});
 
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
@@ -84,6 +90,12 @@ const ConversationDetail = ({
 			removeActiveConversation();
 		};
 	}, []);
+
+	useEffect(() => {
+		if (currentConversation && currentConversation.unread) {
+			markConversationAsRead({ id: currentConversation.id });
+		}
+	}, [currentConversation]);
 
 	const totalMsgList = useMemo(() => {
 		if (messageList?.ancestors && currentConversation?.last_status) {
@@ -127,69 +139,74 @@ const ConversationDetail = ({
 					<ConversationsHeader
 						onPressBackButton={() => {
 							markConversationAsRead({ id: currentConversation?.id! });
-							navigation.navigate('ConversationList');
+							isFromProfile
+								? navigation.goBack()
+								: navigation.navigate('ConversationList');
 						}}
 						chatParticipant={receiver}
 					/>
-					<View style={{ flex: 1 }}>
-						{totalMsgList && !isMessageLoading && receiver ? (
-							<FlashList
-								ListFooterComponent={<ProfileInfo userInfo={receiver} />}
-								ref={listRef}
-								inverted
-								extraData={currentMessageId}
-								data={totalMsgList}
-								keyExtractor={item => item.id.toString()}
-								renderItem={({ item, index }) => {
-									const previousMsg =
-										index > 0 ? totalMsgList[index - 1] : undefined;
-									return (
-										<MessageItem
-											message={item}
-											previousMsg={previousMsg}
-											currentMessageId={currentMessageId}
-											handlePress={handleSetCurrentMessageId}
+					{initialLastMsgId ? (
+						<View style={{ flex: 1 }}>
+							{totalMsgList && !isMessageLoading && receiver ? (
+								<FlashList
+									ListFooterComponent={<ProfileInfo userInfo={receiver} />}
+									ref={listRef}
+									inverted
+									extraData={currentMessageId}
+									data={totalMsgList}
+									keyExtractor={item => item.id.toString()}
+									renderItem={({ item, index }) => {
+										const previousMsg =
+											index > 0 ? totalMsgList[index - 1] : undefined;
+										return (
+											<MessageItem
+												message={item}
+												previousMsg={previousMsg}
+												currentMessageId={currentMessageId}
+												handlePress={handleSetCurrentMessageId}
+											/>
+										);
+									}}
+									showsVerticalScrollIndicator={false}
+									estimatedItemSize={100}
+									estimatedListSize={{
+										height: Dimensions.get('screen').height,
+										width: Dimensions.get('screen').width,
+									}}
+									refreshControl={
+										<RefreshControl
+											refreshing={refresh}
+											tintColor={customColor['patchwork-light-900']}
+											onRefresh={handleRefresh}
 										/>
-									);
-								}}
-								showsVerticalScrollIndicator={false}
-								estimatedItemSize={100}
-								estimatedListSize={{
-									height: Dimensions.get('screen').height,
-									width: Dimensions.get('screen').width,
-								}}
-								refreshControl={
-									<RefreshControl
-										refreshing={refresh}
-										tintColor={customColor['patchwork-light-900']}
-										onRefresh={handleRefresh}
-									/>
-								}
-								onScroll={handleScroll}
-							/>
-						) : (
-							<View className="flex-1 items-center justify-center">
-								<Flow size={25} color={customColor['patchwork-red-50']} />
-							</View>
-						)}
-						{showScrollToBottom && (
-							<Pressable
-								onPress={handleScrollToBottom}
-								className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 self-center bg-patchwork-light-100 p-3 rounded-full"
-							>
-								<DownIcon colorScheme={'light'} />
-							</Pressable>
-						)}
-					</View>
+									}
+									onScroll={handleScroll}
+								/>
+							) : (
+								<View className="flex-1 items-center justify-center">
+									<Flow size={25} color={customColor['patchwork-red-50']} />
+								</View>
+							)}
+							{showScrollToBottom && (
+								<Pressable
+									onPress={handleScrollToBottom}
+									className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 self-center bg-patchwork-light-100 p-3 rounded-full"
+								>
+									<DownIcon colorScheme={'light'} />
+								</Pressable>
+							)}
+						</View>
+					) : (
+						<View className="flex-1"></View>
+					)}
 					<Animated.View
 						style={imageCardWrapperStyle}
 						className="bg-patchwork-grey-70"
 					>
 						<ImageCard composeType="chat" />
 					</Animated.View>
-					{messageList && (
+					{totalMsgList && (
 						<MessageActionsBar
-							isFirstMsg={false}
 							currentConversation={currentConversation}
 							handleScroll={() => {}}
 							currentFocusMsgId={initialLastMsgId}

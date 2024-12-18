@@ -36,6 +36,14 @@ export type RootStackParamList = {
 			isLocal?: boolean;
 		};
 	};
+	ConversationDetail: {
+		id: string;
+		isFromNotification?: boolean;
+		isFromProfile?: boolean;
+	};
+	InitiateNewConversation: {
+		account: Pathchwork.Account;
+	};
 };
 
 export type BottomStackParamList = {
@@ -73,6 +81,7 @@ export type HomeStackParamList = {
 	Profile: { id: string };
 	ProfileOther: { id: string };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
+	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 };
 
 export type SearchStackParamList = {
@@ -119,9 +128,10 @@ export type ConversationsStackParamList = {
 	ConversationDetail: {
 		id: string;
 		isFromNotification?: boolean;
-		initiateCoversation?: {
-			recepiantId: string;
-		};
+		isFromProfile?: boolean;
+	};
+	InitiateNewConversation: {
+		account: Pathchwork.Account;
 	};
 	NotificationRequests: undefined;
 };

@@ -26,17 +26,15 @@ import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { cn } from '@/util/helper/twutil';
 
 type Props = {
-	currentConversation: Pathchwork.Conversations | undefined;
-	lastMsg: Pathchwork.Status;
-	handleScroll: () => void;
-	currentFocusMsgId: string;
+	account: Pathchwork.Account;
+	lastMsg?: Pathchwork.Status;
+	changeTotalMsgList: (status: Pathchwork.Status) => void;
 };
 
-const MessageActionsBar = ({
-	handleScroll,
-	currentConversation,
+const InitialMessageActionsBar = ({
 	lastMsg,
-	currentFocusMsgId,
+	account,
+	changeTotalMsgList,
 }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
@@ -47,11 +45,11 @@ const MessageActionsBar = ({
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (response: Pathchwork.Status) => {
-			changeLastMsgInConversationChache(response, currentConversation?.id);
-			addNewMsgToQueryCache(response, currentFocusMsgId);
+			// changeLastMsgInConversationChache(response, currentConversation?.id);
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
 			playSound('send');
+			changeTotalMsgList(response);
 		},
 		onError: e => {
 			Toast.show({
@@ -70,10 +68,9 @@ const MessageActionsBar = ({
 			payload.visibility = 'direct';
 			payload.in_reply_to_id = lastMsg?.id;
 			payload.status = addPrivateConvoHashtag(
-				removeOtherMentions(
-					`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
-				),
+				removeOtherMentions(`@${account.acct} ${payload.status}`),
 			);
+			console.log('lastMsg::', lastMsg);
 			mutate(payload);
 		}
 	};
@@ -164,4 +161,4 @@ const MessageActionsBar = ({
 	);
 };
 
-export default MessageActionsBar;
+export default InitialMessageActionsBar;
