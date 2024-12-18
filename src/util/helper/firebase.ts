@@ -6,6 +6,11 @@ import notifee, { AndroidImportance } from '@notifee/react-native';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
+import { queryClient } from '@/App';
+import {
+	FollowRequestQueryKey,
+	NotificationsQueryKey,
+} from '@/services/notification.service';
 
 /**
  * Function to request notification permissions for Android.
@@ -86,10 +91,20 @@ if (Platform.OS === 'android') {
 }
 
 const listenMessage = () => {
+	const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
+	const followRequestNotQueryKey: FollowRequestQueryKey = [
+		'follow-request-query-key',
+	];
+
 	const onSetNotifcationCount =
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
 		onSetNotifcationCount();
+		if (remoteMessage?.data?.noti_type === 'follow_request') {
+			queryClient.invalidateQueries({ queryKey: followRequestNotQueryKey });
+		} else {
+			queryClient.invalidateQueries({ queryKey: notiQueryKey });
+		}
 		await showNotification(remoteMessage);
 	});
 };
@@ -123,7 +138,12 @@ const handleNotiDetailPress = (
 						name: 'Notification',
 						state: {
 							routes: [
-								{ name: 'NotificationList' },
+								{
+									name: 'NotificationList',
+									params: {
+										tabIndex: 0,
+									},
+								},
 								{
 									name: 'FeedDetail',
 									params: {
@@ -150,10 +170,40 @@ const handleNotiProfileDetailPress = (destinationId: string) => {
 						name: 'Notification',
 						state: {
 							routes: [
-								{ name: 'NotificationList' },
+								{
+									name: 'NotificationList',
+									params: {
+										tabIndex: 0,
+									},
+								},
 								{
 									name: 'ProfileOther',
 									params: { id: destinationId, isFromNoti: true },
+								},
+							],
+						},
+					},
+				],
+			}),
+		);
+	}
+};
+
+const handleNotiFollowRequestPress = () => {
+	if (navigationRef.isReady()) {
+		navigationRef.dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [
+					{
+						name: 'Notification',
+						state: {
+							routes: [
+								{
+									name: 'NotificationList',
+									params: {
+										tabIndex: 2,
+									},
 								},
 							],
 						},
@@ -169,5 +219,6 @@ export {
 	listenMessage,
 	handleNotiDetailPress,
 	handleNotiProfileDetailPress,
+	handleNotiFollowRequestPress,
 	showNotification,
 };

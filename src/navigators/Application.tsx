@@ -20,17 +20,15 @@ import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { useEffect } from 'react';
 import {
 	handleNotiDetailPress,
+	handleNotiFollowRequestPress,
 	handleNotiProfileDetailPress,
 	listenMessage,
 	requestNotificationPermission,
 } from '@/util/helper/firebase';
 import notifee, { EventType } from '@notifee/react-native';
-import { NotificationsQueryKey } from '@/services/notification.service';
-import { queryClient } from '@/App';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
-import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -45,8 +43,6 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
-
-	const { setDomain } = useActiveDomainAction();
 
 	const { onRemoveNotifcationCount, onSetNotifcationCount } =
 		usePushNoticationActions();
@@ -64,12 +60,11 @@ function ApplicationNavigator() {
 
 	// ***** This method will be triggered if the app is already opened. ( Start ) ***** //
 	useEffect(() => {
-		const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
 		const unsubscribe = notifee.onForegroundEvent(({ type, detail }) => {
 			const { notification } = detail;
-			queryClient.invalidateQueries({ queryKey: notiQueryKey });
 			switch (type) {
 				case EventType.DISMISSED:
+					onRemoveNotifcationCount();
 					break;
 				case EventType.PRESS:
 					onRemoveNotifcationCount();
@@ -78,6 +73,8 @@ function ApplicationNavigator() {
 						const rebloggedId = notification?.data?.reblogged_id;
 						if (notification?.data?.noti_type === 'follow') {
 							handleNotiProfileDetailPress(destinationId as string);
+						} else if (notification?.data?.noti_type === 'follow_request') {
+							handleNotiFollowRequestPress();
 						} else {
 							handleNotiDetailPress(
 								destinationId as string,
@@ -101,6 +98,8 @@ function ApplicationNavigator() {
 				const { noti_type, destination_id, reblogged_id } = remoteMessage.data;
 				if (noti_type === 'follow') {
 					handleNotiProfileDetailPress(destination_id as string);
+				} else if (noti_type === 'follow_request') {
+					handleNotiFollowRequestPress();
 				} else {
 					handleNotiDetailPress(
 						destination_id as string,
@@ -114,7 +113,6 @@ function ApplicationNavigator() {
 		messaging()
 			.getInitialNotification()
 			.then(remoteMessage => {
-				// console.log('🚀 ~ useEffect ~ getInitialNotification:', remoteMessage);
 				onRemoveNotifcationCount();
 				if (remoteMessage?.data) {
 					const { noti_type, destination_id, reblogged_id } =
@@ -122,6 +120,10 @@ function ApplicationNavigator() {
 					if (noti_type === 'follow') {
 						setTimeout(() => {
 							handleNotiProfileDetailPress(destination_id as string);
+						}, 1000);
+					} else if (noti_type === 'follow_request') {
+						setTimeout(() => {
+							handleNotiFollowRequestPress();
 						}, 1000);
 					} else {
 						setTimeout(() => {

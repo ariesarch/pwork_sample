@@ -86,6 +86,23 @@ export const relationshipQueryFn = async ({
 	}
 };
 
+export const followRequestsQueryFn = async ({
+	accountId,
+	requestType,
+}: {
+	accountId: string;
+	requestType: 'authorize' | 'reject';
+}) => {
+	try {
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`follow_requests/${accountId}/${requestType}`, 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
 // type ProfileDetailStatusResponse = {
 // 	statuses_data: Pathchwork.Status[];
 // 	meta: {

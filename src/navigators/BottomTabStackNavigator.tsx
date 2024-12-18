@@ -110,6 +110,9 @@ export default function BottomTabs() {
 						notiCount !== 0 && onRemoveNotifcationCount();
 						navigation.navigate('Notification', {
 							screen: 'NotificationList',
+							params: {
+								tabIndex: 0,
+							},
 						});
 					},
 				})}

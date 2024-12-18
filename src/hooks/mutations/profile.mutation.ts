@@ -1,4 +1,8 @@
-import { relationshipQueryFn, updateProfile } from '@/services/profile.service';
+import {
+	followRequestsQueryFn,
+	relationshipQueryFn,
+	updateProfile,
+} from '@/services/profile.service';
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -21,4 +25,14 @@ export const useUserRelationshipMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: relationshipQueryFn, ...options });
+};
+
+export const useFollowRequestsMutation = (
+	options: UseMutationOptions<
+		Pathchwork.RelationShip,
+		AxiosError,
+		{ accountId: string; requestType: 'authorize' | 'reject' }
+	>,
+) => {
+	return useMutation({ mutationFn: followRequestsQueryFn, ...options });
 };

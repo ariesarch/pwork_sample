@@ -4,6 +4,7 @@ import {
 	CompositeScreenProps,
 	NavigationProp,
 	NavigatorScreenParams,
+	RouteProp,
 } from '@react-navigation/native';
 import type {
 	StackNavigationProp,
@@ -99,7 +100,9 @@ export type SearchStackParamList = {
 // ********** Notification Stack ********** //
 
 export type NotiStackParamList = {
-	NotificationList: undefined;
+	NotificationList: {
+		tabIndex: number;
+	};
 	FeedDetail: {
 		id: string;
 		isMainChannel?: boolean;
@@ -110,6 +113,10 @@ export type NotiStackParamList = {
 };
 
 export type NotificationScreenNavigationProp = NavigationProp<
+	NotiStackParamList,
+	'NotificationList'
+>;
+export type NotificationScreenRouteProp = RouteProp<
 	NotiStackParamList,
 	'NotificationList'
 >;
