@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, ScrollView, View } from 'react-native';
 import {
 	BottomBarHeight,
 	useGradualAnimation,
@@ -18,11 +18,15 @@ import MessageItem from '@/components/molecules/conversations/MessageItem/Messag
 import useGetCurrentConversation from '@/hooks/custom/useGetCurrentConversation';
 import { Flow } from 'react-native-animated-spinkit';
 import { useMessageListQuery } from '@/hooks/queries/conversations.queries';
-import { removeOldMsgListCacheAndCreateNewOne } from '@/util/cache/conversation/conversationCahce';
+import {
+	markAsReadInConversationCache,
+	removeOldMsgListCacheAndCreateNewOne,
+} from '@/util/cache/conversation/conversationCahce';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useActiveConversationActions } from '@/store/conversation/activeConversationStore';
+import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
 
 const ConversationDetail = ({
 	navigation,
@@ -49,6 +53,10 @@ const ConversationDetail = ({
 		refetch: refetchMessageList,
 	} = useMessageListQuery({
 		id: initialLastMsgId,
+	});
+
+	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
+		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
 
 	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
@@ -97,13 +105,15 @@ const ConversationDetail = ({
 			<ComposeStatusProvider type="chat">
 				<View className="flex-1">
 					<ConversationsHeader
-						onPressBackButton={() => navigation.navigate('ConversationList')}
+						onPressBackButton={() => {
+							markConversationAsRead({ id: currentConversation?.id! });
+							navigation.navigate('ConversationList');
+						}}
 						chatParticipant={receiver}
 					/>
 					<View style={{ flex: 1 }}>
 						{totalMsgList && !isMessageLoading && receiver ? (
 							<FlashList
-								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								inverted
 								extraData={currentMessageId}
 								data={totalMsgList}
@@ -120,6 +130,7 @@ const ConversationDetail = ({
 										/>
 									);
 								}}
+								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								showsVerticalScrollIndicator={false}
 								estimatedItemSize={100}
 								estimatedListSize={{

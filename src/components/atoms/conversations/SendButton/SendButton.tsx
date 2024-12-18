@@ -11,6 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useColorScheme } from 'nativewind';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { validateMsgText } from '@/util/helper/validateMsgText';
 
 type Props = {
 	extraClass?: string;
@@ -47,7 +48,10 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 			payload.status = addPrivateConvoHashtag(
 				removeOtherMentions(payload.status),
 			);
-			mutate(payload);
+			const pass = validateMsgText(payload.status);
+			if (pass) {
+				mutate(payload);
+			}
 		}
 	};
 

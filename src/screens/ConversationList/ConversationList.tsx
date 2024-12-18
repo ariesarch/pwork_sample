@@ -15,7 +15,10 @@ import {
 	useMarkAsReadMutation,
 	useMessageDeleteMutation,
 } from '@/hooks/mutations/conversations.mutation';
-import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import {
+	useGetAllNotiReq,
+	useGetConversationsList,
+} from '@/hooks/queries/conversations.queries';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
 	BottomStackParamList,
@@ -35,6 +38,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { DeleteIcon } from '@/util/svg/icon.common';
 import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
 import { delay } from 'lodash';
+import NofiReqButton from '@/components/atoms/conversations/NotificationRequestsButton/NotificationRequestsButton';
 
 type RowMap<T> = { [key: string]: T };
 
@@ -68,6 +72,9 @@ const ConversationList = ({
 	} = useGetConversationsList();
 	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
 
+	const { data: notiReqList, refetch: refetchNotiReq } = useGetAllNotiReq();
+
+	// mutation
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
 		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
@@ -103,19 +110,26 @@ const ConversationList = ({
 		rowData: ListRenderItemInfo<Pathchwork.Conversations>,
 		rowMap: RowMap<any>,
 	) => (
-		<View className="flex-1 bg-patchwork-dark-100 justify-center items-center">
-			<TouchableOpacity
-				className="p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
-				onPress={() => deleteRow(rowMap, rowData.item.id)}
-			>
-				<DeleteIcon fill={'white'} />
-			</TouchableOpacity>
-		</View>
+		<TouchableOpacity
+			className="flex-1 p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
+			onPress={() => deleteRow(rowMap, rowData.item.id)}
+		>
+			<DeleteIcon fill={'white'} />
+		</TouchableOpacity>
 	);
 
 	return (
 		<SafeScreen>
-			<Header title="Conversations" leftCustomComponent={<BackButton />} />
+			<Header
+				title="Conversations"
+				leftCustomComponent={<BackButton />}
+				rightCustomComponent={
+					<NofiReqButton
+						isThereData={notiReqList && notiReqList?.length > 0 ? true : false}
+						customOnPress={() => navigation.navigate('NotificationRequests')}
+					/>
+				}
+			/>
 			<SwipeListView
 				data={conversationsList}
 				keyExtractor={item => item.id}
@@ -143,7 +157,7 @@ const ConversationList = ({
 				onEndReached={handleEndReached}
 				renderHiddenItem={renderHiddenItem}
 				ListFooterComponent={renderListFooter}
-				rightOpenValue={-150}
+				rightOpenValue={-80}
 				disableRightSwipe
 				previewRowKey={'0'}
 				refreshControl={
@@ -155,12 +169,14 @@ const ConversationList = ({
 							setRefresh(true);
 							delay(() => setRefresh(false), 1500);
 							refetch();
+							refetchNotiReq();
 						}}
 					/>
 				}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
 				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ flexGrow: 1 }}
 			/>
 			<FloatingAddButton onPress={handlePressNewChat} />
 			<DeleteModal

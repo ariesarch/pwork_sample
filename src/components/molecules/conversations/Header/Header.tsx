@@ -42,16 +42,18 @@ const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 					source={{ uri: chatParticipant?.avatar }}
 					resizeMode={FastImage.resizeMode.contain}
 				/>
-				<ThemeText
-					numberOfLines={1}
-					ellipsizeMode="tail"
-					className="font-bold mx-3"
-				>
-					{chatParticipant?.display_name}
-				</ThemeText>
-				<VerifyIcon colorScheme={colorScheme} />
+				<View className="flex-row items-center flex-shrink ml-3">
+					<ThemeText
+						numberOfLines={1}
+						ellipsizeMode="tail"
+						className="flex-1 font-bold mr-2 max-w-[75%]"
+					>
+						{chatParticipant?.display_name}
+					</ThemeText>
+					<VerifyIcon colorScheme={colorScheme} />
+				</View>
 			</Pressable>
-			<View className="flex-1 absolute right-0 z-10">
+			<View className="right-0 z-10">
 				<InfoButton onPress={() => {}} />
 			</View>
 			<View />
