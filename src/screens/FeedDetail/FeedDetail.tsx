@@ -103,18 +103,18 @@ const FeedDetail = ({
 	};
 
 	// ***** Check Relationship To Other Accounts ***** //
-	const relationshipQueryKey: CheckRelationshipQueryKey = [
-		'check-relationship-to-other-accounts',
-		{
-			accountIds: [
-				feedDetail && feedDetail.account.id,
-				feedDetail && feedDetail.account.id,
-			],
-		},
-	];
+	// const relationshipQueryKey: CheckRelationshipQueryKey = [
+	// 	'check-relationship-to-other-accounts',
+	// 	{
+	// 		accountIds: [
+	// 			feedDetail && feedDetail.account.id,
+	// 			feedDetail && feedDetail.account.id,
+	// 		],
+	// 	},
+	// ];
 
-	const { data: relationships, isSuccess } =
-		useCheckRelationships(relationshipQueryKey);
+	// const { data: relationships, isSuccess } =
+	// 	useCheckRelationships(relationshipQueryKey);
 	// ***** Check Relationship To Other Accounts ***** //
 
 	return (
@@ -141,7 +141,7 @@ const FeedDetail = ({
 							ListHeaderComponent={() => (
 								<FeedDetailStatus
 									feedDetail={feedDetail as Pathchwork.Status}
-									relationships={isSuccess ? relationships : []}
+									// relationships={isSuccess ? relationships : []}
 								/>
 							)}
 							showsVerticalScrollIndicator={false}

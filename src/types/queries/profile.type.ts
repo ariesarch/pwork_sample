@@ -10,10 +10,18 @@ export type CheckRelationshipQueryParam = {
 	accountIds: string[];
 };
 
+export type SpecificServerProfileQueryParam = {
+	q: string;
+};
+
 export type AccountInfoQueryKey = ['get_account_info', AccountInfoQueryParam];
 export type CheckRelationshipQueryKey = [
 	'check-relationship-to-other-accounts',
 	CheckRelationshipQueryParam,
+];
+export type SpecificServerProfileQueryKey = [
+	'specify-server-profile',
+	SpecificServerProfileQueryParam,
 ];
 
 export type UpdateProfileCredentialsQueryParam = {

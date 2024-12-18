@@ -12,10 +12,10 @@ import { useAuthStore } from '@/store/auth/authStore';
 
 const FeedDetailStatus = ({
 	feedDetail,
-	relationships,
-}: {
+}: // relationships,
+{
 	feedDetail: Pathchwork.Status;
-	relationships: Pathchwork.RelationShip[];
+	// relationships: Pathchwork.RelationShip[];
 }) => {
 	const { userInfo } = useAuthStore();
 	const { setActiveFeed } = useActiveFeedAction();

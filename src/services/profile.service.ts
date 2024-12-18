@@ -2,6 +2,7 @@ import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	AccountInfoQueryKey,
 	CheckRelationshipQueryKey,
+	SpecificServerProfileQueryKey,
 	UpdateProfileCredentialsQueryParam,
 	UpdateProfilePayload,
 } from '@/types/queries/profile.type';
@@ -31,18 +32,29 @@ export const accountInfoQueryFn = async ({
 		return handleError(e);
 	}
 };
-// export const getRelationships = async (accountIds: string[]): Promise<any[]> => {
-//   const response = await apiClient.get('/accounts/relationships', {
-//     params: { id: accountIds },
-//   });
-//   return response.data;
-// };
 
-export const checkRelationshipQueryFn = async ({
-	queryKey,
-}: QueryFunctionContext<CheckRelationshipQueryKey>) => {
+export const getSpecificServerProfile = async (
+	qfContext: QueryFunctionContext<SpecificServerProfileQueryKey>,
+) => {
 	try {
-		const { accountIds } = queryKey[1];
+		const { q } = qfContext.queryKey[1];
+		const resp: AxiosResponse<Pathchwork.SearchResult> = await instance.get(
+			appendApiVersion(`search`, 'v2'),
+			{
+				params: { q: q, resolve: true, type: 'accounts' },
+			},
+		);
+		return resp.data;
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const checkRelationshipQueryFn = async (
+	qfContext: QueryFunctionContext<CheckRelationshipQueryKey>,
+) => {
+	try {
+		const { accountIds } = qfContext.queryKey[1];
 		const resp: AxiosResponse<Pathchwork.RelationShip[]> = await instance.get(
 			appendApiVersion(`accounts/relationships`, 'v1'),
 			{

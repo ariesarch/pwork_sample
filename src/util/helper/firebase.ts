@@ -1,11 +1,8 @@
 import messaging, {
 	FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
-import { DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
-import notifee, {
-	AndroidImportance,
-	Notification,
-} from '@notifee/react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
@@ -93,16 +90,17 @@ const listenMessage = () => {
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
 		onSetNotifcationCount();
-		await showNotification(remoteMessage.notification);
-		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
+		await showNotification(remoteMessage);
 	});
 };
 
 const showNotification = async (
-	notification: FirebaseMessagingTypes.Notification | Notification | undefined,
+	remoteMessage: FirebaseMessagingTypes.RemoteMessage,
 ) => {
 	await notifee.displayNotification({
-		...notification,
+		body: remoteMessage.notification?.body as string,
+		title: remoteMessage.notification?.title as string,
+		data: remoteMessage.data,
 		android: {
 			channelId: AndroidMessageChannelId,
 		},

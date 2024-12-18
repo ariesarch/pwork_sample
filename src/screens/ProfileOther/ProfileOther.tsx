@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
@@ -25,11 +25,9 @@ import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapp
 import {
 	useAccountInfo,
 	useCheckRelationships,
+	useSpecificServerProfile,
 } from '@/hooks/queries/profile.queries';
-import {
-	AccountInfoQueryKey,
-	CheckRelationshipQueryKey,
-} from '@/types/queries/profile.type';
+import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
@@ -57,14 +55,26 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		useAccountInfo(acctInfoQueryKey);
 	// ***** Get Account Info ***** //
 
-	// ***** Check Relationship To Other Accounts ***** //
-	const relationshipQueryKey: CheckRelationshipQueryKey = [
-		'check-relationship-to-other-accounts',
-		{ accountIds: [id, id] },
-	];
+	// ***** Get Specific Server Profile ***** //
+	const { data: specificServerProfile } = useSpecificServerProfile({
+		q: accountInfoData?.url as string,
+		options: {
+			enabled: !!accountInfoData?.url,
+		},
+	});
+	// ***** Get Specific Server Profile ***** //
 
+	// ***** Check Relationship To Other Accounts ***** //
 	const { data: relationships, refetch: refetchRelationships } =
-		useCheckRelationships(relationshipQueryKey);
+		useCheckRelationships({
+			accountIds: [
+				specificServerProfile?.accounts[0]?.id,
+				specificServerProfile?.accounts[0]?.id,
+			],
+			options: {
+				enabled: !!specificServerProfile?.accounts[0]?.id,
+			},
+		});
 	// ***** Check Relationship To Other Accounts ***** //
 
 	const {
@@ -127,6 +137,8 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									<CollapsibleFeedHeader
 										type="Profile"
 										profile={accountInfoData}
+										specifyServerAccId={specificServerProfile?.accounts[0]?.id}
+										otherUserId={id} // To invalidate query for specificServerProfile
 										relationships={relationships}
 									/>
 								);

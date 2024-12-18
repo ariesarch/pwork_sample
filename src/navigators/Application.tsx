@@ -24,13 +24,13 @@ import {
 	listenMessage,
 	requestNotificationPermission,
 } from '@/util/helper/firebase';
-import { DeviceEventEmitter } from 'react-native';
 import notifee, { EventType } from '@notifee/react-native';
 import { NotificationsQueryKey } from '@/services/notification.service';
 import { queryClient } from '@/App';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -45,6 +45,9 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
+
+	const { setDomain } = useActiveDomainAction();
+
 	const { onRemoveNotifcationCount, onSetNotifcationCount } =
 		usePushNoticationActions();
 
@@ -61,30 +64,33 @@ function ApplicationNavigator() {
 
 	// ***** This method will be triggered if the app is already opened. ( Start ) ***** //
 	useEffect(() => {
-		const eventEmitter = DeviceEventEmitter.addListener(
-			'patchwork.noti',
-			val => {
-				const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
-				return notifee.onForegroundEvent(({ type }) => {
-					queryClient.invalidateQueries({ queryKey: notiQueryKey });
-					switch (type) {
-						case EventType.DISMISSED:
-							break;
-						case EventType.PRESS:
-							onRemoveNotifcationCount();
-							const destinationId = val.data?.destination_id;
-							const rebloggedId = val.data?.reblogged_id;
-							if (val.data.noti_type === 'follow') {
-								handleNotiProfileDetailPress(destinationId);
-							} else {
-								handleNotiDetailPress(destinationId, rebloggedId);
-							}
-							break;
+		const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
+		const unsubscribe = notifee.onForegroundEvent(({ type, detail }) => {
+			const { notification } = detail;
+			queryClient.invalidateQueries({ queryKey: notiQueryKey });
+			switch (type) {
+				case EventType.DISMISSED:
+					break;
+				case EventType.PRESS:
+					onRemoveNotifcationCount();
+					setDomain('channel.org');
+					if (notification?.data) {
+						const destinationId = notification.data.destination_id;
+						const rebloggedId = notification?.data?.reblogged_id;
+						if (notification?.data?.noti_type === 'follow') {
+							handleNotiProfileDetailPress(destinationId as string);
+						} else {
+							handleNotiDetailPress(
+								destinationId as string,
+								rebloggedId as string,
+							);
+						}
 					}
-				});
-			},
-		);
-		return () => eventEmitter.remove();
+					break;
+			}
+		});
+
+		return unsubscribe;
 	}, []);
 	// ***** This method will be triggered if the app is already opened. ( End ) ***** //
 

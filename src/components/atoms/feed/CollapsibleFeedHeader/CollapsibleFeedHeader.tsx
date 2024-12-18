@@ -20,6 +20,7 @@ import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 import { useAuthStore } from '@/store/auth/authStore';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -39,6 +40,8 @@ type ProfileProps = {
 	is_my_account?: boolean;
 	relationships?: Pathchwork.RelationShip[];
 	myAcctId?: string;
+	specifyServerAccId?: string;
+	otherUserId?: string;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -46,8 +49,13 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	const navigation = useNavigation();
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const scrollY = useCurrentTabScrollY();
+
+	const domain_name = useSelectedDomain();
+
 	const isChannel = props.type == 'Channel';
 	const isProfile = props.type == 'Profile';
+	const acctId = isProfile && props.otherUserId;
+
 	useAnimatedReaction(
 		() => scrollY.value,
 		() => (sharedScrollYOffset.value = scrollY.value),
@@ -60,11 +68,19 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			const acctInfoQueryKey: AccountInfoQueryKey = [
 				'get_account_info',
 				{
-					id: isProfile && props.is_my_account ? userInfo?.id! : accountId,
-					domain_name: '',
-				}, // Need to fix later
+					id: acctId as string,
+					domain_name: domain_name,
+				},
+			];
+			const myAcctInfoQueryKey: AccountInfoQueryKey = [
+				'get_account_info',
+				{
+					id: userInfo?.id!,
+					domain_name: domain_name,
+				},
 			];
 			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
+			queryClient.invalidateQueries({ queryKey: myAcctInfoQueryKey });
 
 			const relationshipQueryKey = createRelationshipQueryKey([
 				accountId,
@@ -84,11 +100,12 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	});
 
 	const onMakeRelationship = () => {
-		if (isProfile && props.profile.id) {
+		if (isProfile && props.specifyServerAccId) {
 			mutate({
-				accountId: props.profile.id,
+				accountId: props.specifyServerAccId,
 				isFollowing: props.relationships
-					? props.relationships[0]?.following
+					? props.relationships[0]?.following ||
+					  props.relationships[0]?.requested
 					: false,
 			});
 		}
@@ -98,6 +115,8 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		if (isProfile) {
 			if (props.relationships && props.relationships[0]?.following) {
 				return 'Following';
+			} else if (props.relationships && props.relationships[0]?.requested) {
+				return 'Requested';
 			}
 			return 'Follow';
 		}
@@ -127,23 +146,22 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			);
 		}
 
-		// return (
-		// 	<Button
-		// 		variant="default"
-		// 		size="sm"
-		// 		className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-		// 		onPress={onMakeRelationship}
-		// 		disabled
-		// 	>
-		// 		{isPending ? (
-		// 			<Flow size={25} color={customColor['patchwork-dark-900']} />
-		// 		) : (
-		// 			<ThemeText className="text-black" size={'fs_13'}>
-		// 				{displayFollowActionText()}
-		// 			</ThemeText>
-		// 		)}
-		// 	</Button>
-		// );
+		return (
+			<Button
+				variant="default"
+				size="sm"
+				className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+				onPress={onMakeRelationship}
+			>
+				{isPending ? (
+					<Flow size={25} color={customColor['patchwork-dark-900']} />
+				) : (
+					<ThemeText className="text-black" size={'fs_13'}>
+						{displayFollowActionText()}
+					</ThemeText>
+				)}
+			</Button>
+		);
 	};
 
 	return (
