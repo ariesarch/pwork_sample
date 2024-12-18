@@ -5,7 +5,7 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 const ConversationsListLoading = () => {
 	return (
-		<View className="mb-1 mx-3">
+		<View className="mb-1 mx-3 my-3 ml-5">
 			<SkeletonPlaceholder
 				backgroundColor={customColor['skeleton-bg']}
 				highlightColor={customColor['skeleton-highlight']}

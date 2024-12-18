@@ -14,10 +14,15 @@ import {
 	addNewMsgToQueryCache,
 	changeLastMsgInConversationChache,
 } from '@/util/cache/conversation/conversationCahce';
-import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
+import {
+	useManageAttachmentActions,
+	useManageAttachmentStore,
+} from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { playSound } from '@/util/helper/conversation';
 import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
 import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
+import ThemeModal from '@/components/atoms/common/Modal/Modal';
+import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 
 type Props = {
 	isFirstMsg: boolean;
@@ -36,6 +41,7 @@ const MessageActionsBar = ({
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
 	const { composeState, composeDispatch } = useComposeStatus();
+	const { mediaModal } = useManageAttachmentStore();
 	const { onToggleMediaModal, resetAttachmentStore } =
 		useManageAttachmentActions();
 
@@ -134,6 +140,19 @@ const MessageActionsBar = ({
 					</ThemeText>
 				</Pressable>
 			</View>
+			<ThemeModal
+				hasNotch={false}
+				{...{
+					openThemeModal: mediaModal,
+					onCloseThemeModal: () => onToggleMediaModal(),
+				}}
+				modalPositionStyle={{
+					justifyContent: 'flex-end',
+				}}
+				containerStyle={{ borderRadius: 0 }}
+			>
+				<ManageAttachmentModal {...{ onToggleMediaModal }} />
+			</ThemeModal>
 		</View>
 	);
 };

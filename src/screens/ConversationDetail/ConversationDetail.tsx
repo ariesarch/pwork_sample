@@ -28,10 +28,17 @@ const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const { id: initialLastMsgId, isNewMessage } = route.params;
+	const {
+		id: initialLastMsgId,
+		isNewMessage,
+		isFromNotification,
+	} = route.params;
 	const { height, progress } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
-	const currentConversation = useGetCurrentConversation(initialLastMsgId);
+	const currentConversation = useGetCurrentConversation(
+		initialLastMsgId,
+		isFromNotification,
+	);
 	const { removeActiveConversation } = useActiveConversationActions();
 	const receiver = currentConversation?.accounts[0];
 	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
@@ -83,6 +90,8 @@ const ConversationDetail = ({
 		setCurrentMessageId(id);
 	}, []);
 
+	console.log('receiver::', receiver, currentConversation);
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
@@ -101,7 +110,7 @@ const ConversationDetail = ({
 								keyExtractor={item => item.id.toString()}
 								renderItem={({ item, index }) => {
 									const previousMsg =
-										index > 0 ? messageList?.ancestors[index - 1] : undefined;
+										index > 0 ? totalMsgList[index - 1] : undefined;
 									return (
 										<MessageItem
 											message={item}
@@ -111,6 +120,7 @@ const ConversationDetail = ({
 										/>
 									);
 								}}
+								showsVerticalScrollIndicator={false}
 								estimatedItemSize={100}
 								estimatedListSize={{
 									height: Dimensions.get('screen').height,
@@ -132,7 +142,7 @@ const ConversationDetail = ({
 					</View>
 					<Animated.View
 						style={imageCardWrapperStyle}
-						className="bg-patchwork-dark-400"
+						className="bg-patchwork-grey-70"
 					>
 						<ImageCard composeType="chat" />
 					</Animated.View>

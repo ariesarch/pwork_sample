@@ -72,12 +72,11 @@ function ApplicationNavigator() {
 							break;
 						case EventType.PRESS:
 							onRemoveNotifcationCount();
-							const destinationId = val.data?.destination_id;
-							const rebloggedId = val.data?.reblogged_id;
-							if (val.data.noti_type === 'follow') {
-								handleNotiProfileDetailPress(destinationId);
+							const notiResp = val.data as Pathchwork.PushNotiResponse['data'];
+							if (notiResp.noti_type === 'follow') {
+								handleNotiProfileDetailPress(notiResp.destination_id);
 							} else {
-								handleNotiDetailPress(destinationId, rebloggedId);
+								handleNotiDetailPress(notiResp);
 							}
 							break;
 					}
@@ -93,14 +92,12 @@ function ApplicationNavigator() {
 		messaging().onNotificationOpenedApp(remoteMessage => {
 			onRemoveNotifcationCount();
 			if (remoteMessage?.data) {
-				const { noti_type, destination_id, reblogged_id } = remoteMessage.data;
-				if (noti_type === 'follow') {
-					handleNotiProfileDetailPress(destination_id as string);
+				const notiResp =
+					remoteMessage.data as Pathchwork.PushNotiResponse['data'];
+				if (notiResp.reblogged_id === 'follow') {
+					handleNotiProfileDetailPress(notiResp.destination_id);
 				} else {
-					handleNotiDetailPress(
-						destination_id as string,
-						reblogged_id as string,
-					);
+					handleNotiDetailPress(notiResp);
 				}
 			}
 		});
@@ -112,18 +109,17 @@ function ApplicationNavigator() {
 				// console.log('🚀 ~ useEffect ~ getInitialNotification:', remoteMessage);
 				onRemoveNotifcationCount();
 				if (remoteMessage?.data) {
-					const { noti_type, destination_id, reblogged_id } =
-						remoteMessage.data;
-					if (noti_type === 'follow') {
+					// const { noti_type, destination_id, reblogged_id } =
+					// 	remoteMessage.data;
+					const notiResp =
+						remoteMessage.data as Pathchwork.PushNotiResponse['data'];
+					if (notiResp.noti_type === 'follow') {
 						setTimeout(() => {
-							handleNotiProfileDetailPress(destination_id as string);
+							handleNotiProfileDetailPress(notiResp.destination_id);
 						}, 1000);
 					} else {
 						setTimeout(() => {
-							handleNotiDetailPress(
-								destination_id as string,
-								reblogged_id as string,
-							);
+							handleNotiDetailPress(notiResp);
 						}, 1000);
 					}
 				}

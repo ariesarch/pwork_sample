@@ -9,7 +9,7 @@ export const EmptyListComponent = ({
 	onPress: () => void;
 }) => {
 	if (isLoading) {
-		return Array(8)
+		return Array(7)
 			.fill(null)
 			.map((_, index) => <ConversationsListLoading key={index} />);
 	}

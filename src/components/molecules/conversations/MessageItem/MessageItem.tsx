@@ -32,15 +32,14 @@ const MessageItem = ({
 		const newId = showMsgTime ? null : message.id;
 		handlePress(newId);
 	};
-
 	return (
 		<Pressable onPress={onPress} className="m-2 flex">
-			{/* {!isTwoMsgTimeClose && (
-				<ThemeText className="items-center justify-center text-center text-xs mt-2 mb-1 text-gray-400">
-					{formatMessageDate(message.created_at)}
-				</ThemeText>
-			)} */}
-			<MessageImage className="w-auto flex-1" {...{ message, isOwnMessage }} />
+			{message.media_attachments.length > 0 && (
+				<MessageImage
+					className="w-auto flex-1"
+					{...{ message, isOwnMessage }}
+				/>
+			)}
 			<View
 				className={cn(
 					'flex-row items-end',
@@ -65,6 +64,11 @@ const MessageItem = ({
 					)}
 				</View>
 			</View>
+			{!isTwoMsgTimeClose && previousMsg && !isTwoMsgFromSameUser && (
+				<ThemeText className="items-center justify-center text-center text-xs mt-5 mb-0 text-gray-400">
+					{formatMessageDate(previousMsg.created_at)}
+				</ThemeText>
+			)}
 		</Pressable>
 	);
 };

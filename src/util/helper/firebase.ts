@@ -10,6 +10,7 @@ import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
 import {
+	checkIsChatNoti,
 	checkIsConversationNoti,
 	handleIncommingMessage,
 } from './conversation';
@@ -96,6 +97,7 @@ const listenMessage = () => {
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
 		const isChatNoti = checkIsConversationNoti(remoteMessage);
+		console.log('remoteMessage::', remoteMessage.data);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
 		if (isChatNoti) handleIncommingMessage(remoteMessage);
 		else {
@@ -119,33 +121,73 @@ const showNotification = async (
 	});
 };
 
-const handleNotiDetailPress = (
-	destinationId: string,
-	reblogged_id?: string,
+const handleNotiDetailPress = async (
+	notiResp: Pathchwork.PushNotiResponse['data'],
 ) => {
 	if (navigationRef.isReady()) {
-		navigationRef.dispatch(
-			CommonActions.reset({
-				index: 0,
-				routes: [
-					{
-						name: 'Notification',
-						state: {
-							routes: [
-								{ name: 'NotificationList' },
-								{
-									name: 'FeedDetail',
-									params: {
-										id: reblogged_id !== '0' ? reblogged_id : destinationId,
-									},
-								},
-							],
-						},
-					},
-				],
-			}),
-		);
+		console.log('notiResp::', notiResp);
+		if (notiResp.noti_type == 'mention' && notiResp.visibility == 'direct') {
+			return navigateToConversationDetail(notiResp);
+		}
+		return navigateToFeedDetail(notiResp);
 	}
+};
+
+const navigateToConversationDetail = (
+	notiResp: Pathchwork.PushNotiResponse['data'],
+) => {
+	navigationRef.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [
+				{
+					name: 'Conversations',
+					state: {
+						routes: [
+							{ name: 'ConversationList' },
+							{
+								name: 'ConversationDetail',
+								params: {
+									id: notiResp.destination_id,
+									isNewMessage: false,
+									isFromNotification: true,
+								},
+							},
+						],
+					},
+				},
+			],
+		}),
+	);
+};
+
+const navigateToFeedDetail = (
+	notiResp: Pathchwork.PushNotiResponse['data'],
+) => {
+	navigationRef.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [
+				{
+					name: 'Notification',
+					state: {
+						routes: [
+							{ name: 'NotificationList' },
+							{
+								name: 'FeedDetail',
+								params: {
+									id:
+										notiResp.reblogged_id !== '0'
+											? notiResp.reblogged_id
+											: notiResp.destination_id,
+								},
+							},
+						],
+					},
+				},
+			],
+		}),
+	);
 };
 
 const handleNotiProfileDetailPress = (destinationId: string) => {

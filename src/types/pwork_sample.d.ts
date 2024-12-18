@@ -473,9 +473,10 @@ declare namespace Pathchwork {
 		priority: number;
 		sentTime: number;
 		data: {
-			noti_type: string;
+			noti_type: 'favourite' | 'mention' | 'follow' | 'reblog' | 'poll';
 			reblogged_id: string;
 			destination_id: string;
+			visibility: Pathchwork.ComposeVisibility;
 		};
 		from: string;
 		messageId: string;

@@ -5,14 +5,29 @@ import { log } from 'console';
 import dayjs from 'dayjs';
 import moment from 'moment';
 import Sound from 'react-native-sound';
+import { cleanText } from './cleanText';
+import { extractMessage } from './extractMessage';
 
 export const isMsgTimeClose = (
 	message: Pathchwork.Status,
 	prevMessage: Pathchwork.Status | undefined,
 ) => {
-	if (!prevMessage) return false;
+	// console.log('currentMsg::', extractMessage(cleanText(message.content)));
+	// console.log(
+	// 	'prevMsg::',
+	// 	extractMessage(cleanText(prevMessage?.content || '')),
+	// );
+	// console.log(
+	// 	'timediff::',
+	// 	dayjs(message.created_at).diff(dayjs(prevMessage?.created_at), 'minute'),
+	// );
+	// console.log('******');
+
+	if (!prevMessage) return true;
 	return (
-		dayjs(message.created_at).diff(dayjs(prevMessage.created_at), 'minute') < 60
+		Math.abs(
+			dayjs(message.created_at).diff(dayjs(prevMessage.created_at), 'minute'),
+		) < 5
 	);
 };
 
@@ -96,3 +111,45 @@ export const checkIsConversationNoti = (
 ) => {
 	return notiResp.data?.noti_type == 'mention';
 };
+
+export const checkIsChatNoti = (statusId: string, notiType: string) => {
+	try {
+		if (notiType == 'mention') {
+		}
+		return false;
+	} catch (e) {
+		return false;
+	}
+};
+
+export const navigateToConversationDetail = (
+	notiResp: Pathchwork.PushNotiResponse['data'],
+) => {};
+
+export const getCurrentTotalMessageListAtPageEntry = (
+	isFromNotification: boolean | undefined,
+	lastMsgId: string,
+) => {
+	if (isFromNotification) {
+		const messages = queryClient.getQueryData<Pathchwork.TimelineReplies>([
+			'message-list',
+			{ id: lastMsgId },
+		]);
+		const totalMessageList = messages
+			? [...messages?.descendants, ...messages?.ancestors]
+			: [];
+		return totalMessageList;
+	}
+	return [];
+};
+
+export const isFromNotificationMatch = (
+	conversation: Pathchwork.Conversations,
+	totalMsgList: Pathchwork.Status[],
+) => totalMsgList.some(message => message.id === conversation.last_status?.id);
+
+export const findMatchingStatus = (
+	statusId: string,
+	totalMsgList: Pathchwork.Status[],
+): Pathchwork.Status | undefined =>
+	totalMsgList.find(message => message.id === statusId);

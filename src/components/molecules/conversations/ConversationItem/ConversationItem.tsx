@@ -22,7 +22,7 @@ const ConversationItem: React.FC<ListItemProps> = ({
 	return (
 		<Pressable
 			onPress={() => onPress(item.id)}
-			className="flex-row items-center bg-patchwork-dark-100 p-3 mr-2"
+			className="flex-row items-center bg-patchwork-dark-100 p-3 mr-2 ml-2"
 		>
 			<FastImage
 				className="w-14 h-14 rounded-full mr-3"

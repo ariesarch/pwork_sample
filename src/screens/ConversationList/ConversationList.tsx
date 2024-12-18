@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import {
 	ActivityIndicator,
 	ListRenderItemInfo,
+	RefreshControl,
 	TouchableOpacity,
 	View,
 } from 'react-native';
@@ -33,6 +34,7 @@ import { FloatingAddButton } from '@/components/molecules/conversations/Floating
 import { SwipeListView } from 'react-native-swipe-list-view';
 import { DeleteIcon } from '@/util/svg/icon.common';
 import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
+import { delay } from 'lodash';
 
 type RowMap<T> = { [key: string]: T };
 
@@ -54,6 +56,7 @@ const ConversationList = ({
 	}>({
 		visible: false,
 	});
+	const [isRefreshing, setRefresh] = useState(false);
 
 	const {
 		data,
@@ -65,17 +68,16 @@ const ConversationList = ({
 	} = useGetConversationsList();
 	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
 
-	// mutation
 	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
 		onSuccess: data => markAsReadInConversationCache(data.id),
 	});
+
 	const { mutate: deleteMessage } = useMessageDeleteMutation({
 		onSuccess: (_, { id }) => {
 			removeDeletedMsgInConversationCache(id);
 		},
 	});
 
-	// handle
 	const handlePressNewChat = () => navigation.navigate('NewMessage');
 	const handleEndReached = () => {
 		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
@@ -88,7 +90,6 @@ const ConversationList = ({
 		setDelConf({ visible: true, id: rowKey, rowMap });
 	};
 
-	//render items
 	const renderListFooter = () =>
 		isFetchingNextPage ? (
 			<ActivityIndicator
@@ -145,6 +146,18 @@ const ConversationList = ({
 				rightOpenValue={-150}
 				disableRightSwipe
 				previewRowKey={'0'}
+				refreshControl={
+					<RefreshControl
+						className="mt-1"
+						refreshing={isRefreshing}
+						tintColor={customColor['patchwork-light-900']}
+						onRefresh={() => {
+							setRefresh(true);
+							delay(() => setRefresh(false), 1500);
+							refetch();
+						}}
+					/>
+				}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
 				showsVerticalScrollIndicator={false}
