@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Dimensions, ScrollView, View } from 'react-native';
+import { Dimensions, Pressable, View } from 'react-native';
 import {
 	BottomBarHeight,
 	useGradualAnimation,
@@ -27,6 +33,8 @@ import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useActiveConversationActions } from '@/store/conversation/activeConversationStore';
 import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
+import { DownIcon } from '@/util/svg/icon.common';
+import { useColorScheme } from 'nativewind';
 
 const ConversationDetail = ({
 	navigation,
@@ -42,6 +50,9 @@ const ConversationDetail = ({
 	const { removeActiveConversation } = useActiveConversationActions();
 	const receiver = currentConversation?.accounts[0];
 	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
+	const listRef = useRef<FlashList<any>>(null);
+	const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+	const { colorScheme } = useColorScheme();
 
 	const {
 		data: messageList,
@@ -94,7 +105,20 @@ const ConversationDetail = ({
 		setCurrentMessageId(id);
 	}, []);
 
-	console.log('receiver::', receiver, currentConversation);
+	const handleScrollToBottom = () => {
+		listRef.current?.scrollToOffset({ offset: 0, animated: true });
+		setShowScrollToBottom(false);
+	};
+
+	const handleScroll = useCallback(
+		(event: { nativeEvent: { contentOffset: { y: any } } }) => {
+			const offsetY = event.nativeEvent.contentOffset.y;
+			const showButtonThreshold = 200;
+
+			setShowScrollToBottom(offsetY > showButtonThreshold);
+		},
+		[],
+	);
 
 	return (
 		<SafeScreen>
@@ -110,6 +134,8 @@ const ConversationDetail = ({
 					<View style={{ flex: 1 }}>
 						{totalMsgList && !isMessageLoading && receiver ? (
 							<FlashList
+								ListFooterComponent={<ProfileInfo userInfo={receiver} />}
+								ref={listRef}
 								inverted
 								extraData={currentMessageId}
 								data={totalMsgList}
@@ -126,7 +152,6 @@ const ConversationDetail = ({
 										/>
 									);
 								}}
-								ListFooterComponent={() => <ProfileInfo userInfo={receiver} />}
 								showsVerticalScrollIndicator={false}
 								estimatedItemSize={100}
 								estimatedListSize={{
@@ -140,11 +165,20 @@ const ConversationDetail = ({
 										onRefresh={handleRefresh}
 									/>
 								}
+								onScroll={handleScroll}
 							/>
 						) : (
 							<View className="flex-1 items-center justify-center">
 								<Flow size={25} color={customColor['patchwork-red-50']} />
 							</View>
+						)}
+						{showScrollToBottom && (
+							<Pressable
+								onPress={handleScrollToBottom}
+								className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 self-center bg-patchwork-light-100 p-3 rounded-full"
+							>
+								<DownIcon colorScheme={'light'} />
+							</Pressable>
 						)}
 					</View>
 					<Animated.View

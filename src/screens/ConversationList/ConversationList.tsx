@@ -111,7 +111,7 @@ const ConversationList = ({
 		rowMap: RowMap<any>,
 	) => (
 		<TouchableOpacity
-			className="flex-1 p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
+			className="p-3 rounded-r-md absolute right-2 justify-center items-center h-5/6 w-2/12 bg-patchwork-red-50"
 			onPress={() => deleteRow(rowMap, rowData.item.id)}
 		>
 			<DeleteIcon fill={'white'} />
