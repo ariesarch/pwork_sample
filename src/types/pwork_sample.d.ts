@@ -99,6 +99,25 @@ declare namespace Pathchwork {
 		attributes: ChannelAttributes;
 	};
 
+	type CollectionList = {
+		id: string;
+		type: string;
+		attributes: CollectionAttributes;
+	};
+
+	type CollectionAttributes = {
+		id: number;
+		name: string;
+		slug: string;
+		sorting_index: number;
+		community_count: number;
+		banner_image_url: string;
+		avatar_image_url: string;
+		channels: {
+			data: ChannelList[];
+		};
+	};
+
 	type ChannelAttributes = {
 		id: number;
 		name: string;

@@ -21,3 +21,10 @@ export type GetChannelSearchQueryKey = [
 	'channel-search',
 	{ searchKeyword: string },
 ];
+
+export type GetCollectionChannelListQueryKey = ['collection-channels'];
+
+export type GetDetailChannelListQueryKey = [
+	'detail-channels',
+	{ slug: string },
+];

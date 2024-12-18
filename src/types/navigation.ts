@@ -92,6 +92,7 @@ export type SearchStackParamList = {
 	};
 	Profile: { id: string };
 	ProfileOther: { id: string };
+	CollectionDetail: { slug: string; title: string };
 };
 
 // ********** Notification Stack ********** //

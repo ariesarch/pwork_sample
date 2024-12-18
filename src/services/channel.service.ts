@@ -6,6 +6,8 @@ import {
 	GetChannelAdditionalInfoQueryKey,
 	GetChannelFeedQueryKey,
 	GetChannelSearchQueryKey,
+	GetCollectionChannelListQueryKey,
+	GetDetailChannelListQueryKey,
 	GetRecommendedChannelsQueryKey,
 } from '@/types/queries/channel.type';
 import mockInstance from './mockInstance';
@@ -109,6 +111,34 @@ export const getSearchChannelResult = async (
 				domain_name: 'https://dashboard.channel.org',
 				isDynamicDomain: true,
 				q: searchKeyword,
+			},
+		});
+	return resp.data.data;
+};
+
+export const getCollectionChannelList = async (
+	qfContext: QueryFunctionContext<GetCollectionChannelListQueryKey>,
+) => {
+	const resp: AxiosResponse<{ data: Pathchwork.CollectionList[] }> =
+		await instance.get(appendApiVersion('collections', 'v1'), {
+			params: {
+				domain_name: 'https://dashboard.channel.org',
+				isDynamicDomain: true,
+			},
+		});
+	return resp.data.data;
+};
+
+export const getDetailChannelList = async (
+	qfContext: QueryFunctionContext<GetDetailChannelListQueryKey>,
+) => {
+	const slug = qfContext.queryKey[1].slug;
+	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+		await instance.get(appendApiVersion('collections/fetch_channels', 'v1'), {
+			params: {
+				domain_name: 'https://dashboard.channel.org',
+				isDynamicDomain: true,
+				slug,
 			},
 		});
 	return resp.data.data;

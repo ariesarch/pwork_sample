@@ -109,14 +109,12 @@ const ConversationList = ({
 		rowData: ListRenderItemInfo<Pathchwork.Conversations>,
 		rowMap: RowMap<any>,
 	) => (
-		<View className="flex-1 bg-patchwork-dark-100 justify-center items-center">
-			<TouchableOpacity
-				className="p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
-				onPress={() => deleteRow(rowMap, rowData.item.id)}
-			>
-				<DeleteIcon fill={'white'} />
-			</TouchableOpacity>
-		</View>
+		<TouchableOpacity
+			className="flex-1 p-3 rounded-r-md absolute right-2 justify-center items-center h-full w-2/12 bg-patchwork-red-50"
+			onPress={() => deleteRow(rowMap, rowData.item.id)}
+		>
+			<DeleteIcon fill={'white'} />
+		</TouchableOpacity>
 	);
 
 	return (
@@ -168,12 +166,13 @@ const ConversationList = ({
 				onEndReached={handleEndReached}
 				renderHiddenItem={renderHiddenItem}
 				ListFooterComponent={renderListFooter}
-				rightOpenValue={-150}
+				rightOpenValue={-80}
 				disableRightSwipe
 				previewRowKey={'0'}
 				previewOpenValue={-40}
 				previewOpenDelay={3000}
 				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ flexGrow: 1 }}
 			/>
 			<FloatingAddButton onPress={handlePressNewChat} />
 			<DeleteModal

@@ -1,8 +1,6 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { useRecommendedChannels } from '@/hooks/queries/channel.queries';
-import { useActiveDomainAction } from '@/store/feed/activeDomain';
+import { useCollectionChannelList } from '@/hooks/queries/channel.queries';
 import { SearchStackParamList } from '@/types/navigation';
-import { ensureHttp } from '@/util/helper/helper';
 import { ChevronRightIcon } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,18 +10,12 @@ import FastImage from 'react-native-fast-image';
 
 const SearchChannelHeader = () => {
 	const navigation = useNavigation<StackNavigationProp<SearchStackParamList>>();
-	const { setDomain } = useActiveDomainAction();
-	const { data: channelList, isSuccess } = useRecommendedChannels();
+	const { data: collectionList, isSuccess } = useCollectionChannelList();
 
-	const handleChannelClick = (item: Pathchwork.ChannelList) => {
-		setDomain(item.attributes.domain_name);
-		navigation.navigate('ChannelProfile', {
-			domain_name: ensureHttp(item.attributes.domain_name),
-			channel_info: {
-				avatar_image_url: item.attributes.avatar_image_url,
-				banner_image_url: item.attributes.banner_image_url,
-				channel_name: item.attributes.name,
-			},
+	const handleCollectionClick = (item: Pathchwork.CollectionList) => {
+		navigation.navigate('CollectionDetail', {
+			slug: item.attributes?.slug,
+			title: item.attributes?.name,
 		});
 	};
 
@@ -31,16 +23,16 @@ const SearchChannelHeader = () => {
 		<View className="flex-1">
 			{isSuccess && (
 				<FlatList
-					data={channelList}
+					data={collectionList}
 					renderItem={({ item, index }) => {
-						const isLastItem = index == channelList.length - 1;
+						const isLastItem = index == collectionList.length - 1;
 						const isEvenLastItem = isLastItem && index % 2 === 0;
 						return (
 							<Pressable
 								className={`rounded-md ${
 									isEvenLastItem ? 'w-[45.8%] mx-2' : 'flex-1 mx-2'
 								} items-center mb-3`}
-								onPress={() => handleChannelClick(item)}
+								onPress={() => handleCollectionClick(item)}
 							>
 								<FastImage
 									className="bg-patchwork-dark-50 w-full h-[150] rounded-md"
@@ -56,6 +48,7 @@ const SearchChannelHeader = () => {
 										size={'fs_13'}
 									>
 										{item.attributes.name}
+										{` `}({item.attributes?.community_count})
 									</ThemeText>
 									<ChevronRightIcon className="ml-1" />
 								</View>

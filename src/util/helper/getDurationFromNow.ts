@@ -18,7 +18,7 @@ export function getDurationFromNow(timestamp: string): string {
 	}
 
 	if (diffInSeconds < 60) {
-		return `${diffInSeconds}s`;
+		return 'just now';
 	} else if (diffInSeconds < 3600) {
 		const diffInMinutes = now.diff(givenTime, 'minutes');
 		return `${diffInMinutes}m`;
