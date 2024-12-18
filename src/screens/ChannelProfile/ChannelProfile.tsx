@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
 	View,
 	TouchableOpacity,
@@ -15,6 +15,7 @@ import {
 	useGetChannelFeed,
 } from '@/hooks/queries/channel.queries';
 import { flattenPages } from '@/util/helper/timeline';
+import { useFocusEffect } from '@react-navigation/native';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { CircleFade } from 'react-native-animated-spinkit';
 import useAppropiateColorHash from '@/hooks/custom/useAppropiateColorHash';

@@ -24,9 +24,15 @@ import { TouchableOpacity, ViewProps } from 'react-native';
 type Props = {
 	status: Pathchwork.Status;
 	isFeedDetail?: boolean;
+	isFromNoti?: boolean;
 } & ViewProps;
 
-const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
+const StatusFavourtieButton = ({
+	status,
+	isFeedDetail,
+	isFromNoti,
+	...props
+}: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { domain_name } = useActiveDomainStore();
@@ -51,7 +57,7 @@ const StatusFavourtieButton = ({ status, isFeedDetail, ...props }: Props) => {
 				variables.status.in_reply_to_account_id,
 				status.reblog ? true : false,
 				// isAuthor ? process.env.API_URL ?? DEFAULT_API_URL : domain_name,
-				domain_name,
+				isFromNoti ? DEFAULT_API_URL : domain_name,
 			);
 			syncFavouriteAcrossCache({
 				response: status,

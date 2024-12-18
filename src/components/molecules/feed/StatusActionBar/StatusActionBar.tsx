@@ -12,9 +12,10 @@ import { useAuthStore } from '@/store/auth/authStore';
 type Props = {
 	status: Pathchwork.Status;
 	isFeedDetail?: boolean;
+	isFromNoti?: boolean;
 };
 
-const StatusActionBar = ({ status, isFeedDetail }: Props) => {
+const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
 
@@ -66,7 +67,10 @@ const StatusActionBar = ({ status, isFeedDetail }: Props) => {
 							  });
 					}}
 				/>
-				<StatusFavourtieButton className="mr-3" {...{ status, isFeedDetail }} />
+				<StatusFavourtieButton
+					className="mr-3"
+					{...{ status, isFeedDetail, isFromNoti }}
+				/>
 			</View>
 			<View className="flex flex-row ">
 				{/* <Tranlsate className="mr-3" />

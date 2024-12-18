@@ -24,6 +24,7 @@ import { MessageDotsIcon } from '@/util/svg/icon.profile';
 import { useColorScheme } from 'nativewind';
 import { useGetConversationByUserId } from '@/hooks/queries/conversations.queries';
 import { profile } from 'console';
+import { useSelectedDomain } from '@/store/feed/activeDomain';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -43,6 +44,8 @@ type ProfileProps = {
 	is_my_account?: boolean;
 	relationships?: Pathchwork.RelationShip[];
 	myAcctId?: string;
+	specifyServerAccId?: string;
+	otherUserId?: string;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -51,8 +54,13 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const scrollY = useCurrentTabScrollY();
 	const { colorScheme } = useColorScheme();
+
+	const domain_name = useSelectedDomain();
+
 	const isChannel = props.type == 'Channel';
 	const isProfile = props.type == 'Profile';
+	const acctId = isProfile && props.otherUserId;
+
 	useAnimatedReaction(
 		() => scrollY.value,
 		() => (sharedScrollYOffset.value = scrollY.value),
@@ -72,11 +80,19 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			const acctInfoQueryKey: AccountInfoQueryKey = [
 				'get_account_info',
 				{
-					id: isProfile && props.is_my_account ? userInfo?.id! : accountId,
-					domain_name: '',
-				}, // Need to fix later
+					id: acctId as string,
+					domain_name: domain_name,
+				},
+			];
+			const myAcctInfoQueryKey: AccountInfoQueryKey = [
+				'get_account_info',
+				{
+					id: userInfo?.id!,
+					domain_name: domain_name,
+				},
 			];
 			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
+			queryClient.invalidateQueries({ queryKey: myAcctInfoQueryKey });
 
 			const relationshipQueryKey = createRelationshipQueryKey([
 				accountId,
@@ -96,11 +112,12 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	});
 
 	const onMakeRelationship = () => {
-		if (isProfile && props.profile.id) {
+		if (isProfile && props.specifyServerAccId) {
 			mutate({
-				accountId: props.profile.id,
+				accountId: props.specifyServerAccId,
 				isFollowing: props.relationships
-					? props.relationships[0]?.following
+					? props.relationships[0]?.following ||
+					  props.relationships[0]?.requested
 					: false,
 			});
 		}
@@ -110,6 +127,8 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		if (isProfile) {
 			if (props.relationships && props.relationships[0]?.following) {
 				return 'Following';
+			} else if (props.relationships && props.relationships[0]?.requested) {
+				return 'Requested';
 			}
 			return 'Follow';
 		}

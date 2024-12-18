@@ -139,7 +139,7 @@ const ConversationDetail = ({
 					<ConversationsHeader
 						onPressBackButton={() => {
 							markConversationAsRead({ id: currentConversation?.id! });
-							isFromProfile
+							isFromProfile || isFromNotification
 								? navigation.goBack()
 								: navigation.navigate('ConversationList');
 						}}

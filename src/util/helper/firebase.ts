@@ -2,18 +2,19 @@ import messaging, {
 	FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import { DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
-import notifee, {
-	AndroidImportance,
-	Notification,
-} from '@notifee/react-native';
+import notifee, { AndroidImportance } from '@notifee/react-native';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
 import {
-	checkIsChatNoti,
 	checkIsConversationNoti,
 	handleIncommingMessage,
 } from './conversation';
+import { queryClient } from '@/App';
+import {
+	FollowRequestQueryKey,
+	NotificationsQueryKey,
+} from '@/services/notification.service';
 
 /**
  * Function to request notification permissions for Android.
@@ -93,6 +94,11 @@ if (Platform.OS === 'android') {
 }
 
 const listenMessage = () => {
+	const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
+	const followRequestNotQueryKey: FollowRequestQueryKey = [
+		'follow-request-query-key',
+	];
+
 	const onSetNotifcationCount =
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
@@ -102,16 +108,23 @@ const listenMessage = () => {
 		if (isChatNoti) handleIncommingMessage(remoteMessage);
 		else {
 			onSetNotifcationCount();
-			await showNotification(remoteMessage.notification);
+			if (remoteMessage?.data?.noti_type === 'follow_request') {
+				queryClient.invalidateQueries({ queryKey: followRequestNotQueryKey });
+			} else {
+				queryClient.invalidateQueries({ queryKey: notiQueryKey });
+			}
+			await showNotification(remoteMessage);
 		}
 	});
 };
 
 const showNotification = async (
-	notification: FirebaseMessagingTypes.Notification | Notification | undefined,
+	remoteMessage: FirebaseMessagingTypes.RemoteMessage,
 ) => {
 	await notifee.displayNotification({
-		...notification,
+		body: remoteMessage.notification?.body as string,
+		title: remoteMessage.notification?.title as string,
+		data: remoteMessage.data,
 		android: {
 			channelId: AndroidMessageChannelId,
 		},
@@ -171,7 +184,12 @@ const navigateToFeedDetail = (
 					name: 'Notification',
 					state: {
 						routes: [
-							{ name: 'NotificationList' },
+							{
+								name: 'NotificationList',
+								params: {
+									tabIndex: 0,
+								},
+							},
 							{
 								name: 'FeedDetail',
 								params: {
@@ -179,6 +197,7 @@ const navigateToFeedDetail = (
 										notiResp.reblogged_id !== '0'
 											? notiResp.reblogged_id
 											: notiResp.destination_id,
+									isMainChannel: true,
 								},
 							},
 						],
@@ -199,10 +218,40 @@ const handleNotiProfileDetailPress = (destinationId: string) => {
 						name: 'Notification',
 						state: {
 							routes: [
-								{ name: 'NotificationList' },
+								{
+									name: 'NotificationList',
+									params: {
+										tabIndex: 0,
+									},
+								},
 								{
 									name: 'ProfileOther',
-									params: { id: destinationId },
+									params: { id: destinationId, isFromNoti: true },
+								},
+							],
+						},
+					},
+				],
+			}),
+		);
+	}
+};
+
+const handleNotiFollowRequestPress = () => {
+	if (navigationRef.isReady()) {
+		navigationRef.dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [
+					{
+						name: 'Notification',
+						state: {
+							routes: [
+								{
+									name: 'NotificationList',
+									params: {
+										tabIndex: 2,
+									},
 								},
 							],
 						},
@@ -218,5 +267,6 @@ export {
 	listenMessage,
 	handleNotiDetailPress,
 	handleNotiProfileDetailPress,
+	handleNotiFollowRequestPress,
 	showNotification,
 };

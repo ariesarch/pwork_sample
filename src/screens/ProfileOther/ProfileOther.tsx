@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Platform, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useColorScheme } from 'nativewind';
@@ -25,12 +25,11 @@ import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapp
 import {
 	useAccountInfo,
 	useCheckRelationships,
+	useSpecificServerProfile,
 } from '@/hooks/queries/profile.queries';
-import {
-	AccountInfoQueryKey,
-	CheckRelationshipQueryKey,
-} from '@/types/queries/profile.type';
+import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	route,
@@ -39,7 +38,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
-	const { id } = route.params;
+	const { id, isFromNoti } = route.params;
 	const domain_name = useSelectedDomain();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
@@ -50,21 +49,33 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	// ***** Get Account Info ***** //
 	const acctInfoQueryKey: AccountInfoQueryKey = [
 		'get_account_info',
-		{ id, domain_name },
+		{ id, domain_name: isFromNoti ? DEFAULT_API_URL : domain_name },
 	];
 
 	const { data: accountInfoData, refetch: refetchAccountInfo } =
 		useAccountInfo(acctInfoQueryKey);
 	// ***** Get Account Info ***** //
 
-	// ***** Check Relationship To Other Accounts ***** //
-	const relationshipQueryKey: CheckRelationshipQueryKey = [
-		'check-relationship-to-other-accounts',
-		{ accountIds: [id, id] },
-	];
+	// ***** Get Specific Server Profile ***** //
+	const { data: specificServerProfile } = useSpecificServerProfile({
+		q: accountInfoData?.url as string,
+		options: {
+			enabled: !!accountInfoData?.url,
+		},
+	});
+	// ***** Get Specific Server Profile ***** //
 
+	// ***** Check Relationship To Other Accounts ***** //
 	const { data: relationships, refetch: refetchRelationships } =
-		useCheckRelationships(relationshipQueryKey);
+		useCheckRelationships({
+			accountIds: [
+				specificServerProfile?.accounts[0]?.id,
+				specificServerProfile?.accounts[0]?.id,
+			],
+			options: {
+				enabled: !!specificServerProfile?.accounts[0]?.id,
+			},
+		});
 	// ***** Check Relationship To Other Accounts ***** //
 
 	const {
@@ -74,7 +85,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		refetch: refreshProfileTimeline,
 		isFetching,
 	} = useAccountDetailFeed({
-		domain_name,
+		domain_name: isFromNoti ? DEFAULT_API_URL : domain_name,
 		account_id: id,
 		exclude_reblogs: false,
 		exclude_replies: true,
@@ -88,7 +99,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		isFetching: isFetchingReplies,
 		refetch: refetchReplies,
 	} = useAccountDetailFeed({
-		domain_name,
+		domain_name: isFromNoti ? DEFAULT_API_URL : domain_name,
 		account_id: id,
 		exclude_replies: false,
 		exclude_reblogs: true,
@@ -127,6 +138,8 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									<CollapsibleFeedHeader
 										type="Profile"
 										profile={accountInfoData}
+										specifyServerAccId={specificServerProfile?.accounts[0]?.id}
+										otherUserId={id} // To invalidate query for specificServerProfile
 										relationships={relationships}
 									/>
 								);
@@ -181,7 +194,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										return item.in_reply_to_id ? (
 											<></>
 										) : (
-											<StatusWrapper status={item} />
+											<StatusWrapper status={item} isFromNoti={isFromNoti} />
 										);
 									}}
 									estimatedItemSize={500}
@@ -221,7 +234,9 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									}}
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
-										return <StatusWrapper status={item} />;
+										return (
+											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+										);
 									}}
 									refreshControl={
 										<RefreshControl

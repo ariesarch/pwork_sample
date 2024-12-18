@@ -21,6 +21,7 @@ type Props = {
 	showFollowIcon?: boolean;
 	imageSize?: string;
 	relationships?: Pathchwork.RelationShip[];
+	isFromNoti?: boolean;
 } & ViewProps;
 
 const StatusHeader = ({
@@ -29,6 +30,7 @@ const StatusHeader = ({
 	showFollowIcon = false,
 	imageSize = '',
 	relationships,
+	isFromNoti,
 	...props
 }: Props) => {
 	const navigation = useNavigation();
@@ -72,9 +74,12 @@ const StatusHeader = ({
 		<View className="flex flex-row items-center mb-2" {...props}>
 			<Pressable
 				onPress={() => {
-					navigation.navigate(isAuthor ? 'Profile' : 'ProfileOther', {
-						id: status.account.id,
-					});
+					isAuthor
+						? navigation.navigate('Profile', { id: status.account.id })
+						: navigation.navigate('ProfileOther', {
+								id: status.account.id,
+								isFromNoti: isFromNoti,
+						  });
 				}}
 				className="flex-row items-center active:opacity-80"
 			>

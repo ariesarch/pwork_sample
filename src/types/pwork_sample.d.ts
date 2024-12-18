@@ -492,7 +492,13 @@ declare namespace Pathchwork {
 		priority: number;
 		sentTime: number;
 		data: {
-			noti_type: 'favourite' | 'mention' | 'follow' | 'reblog' | 'poll';
+			noti_type:
+				| 'favourite'
+				| 'mention'
+				| 'follow'
+				| 'reblog'
+				| 'poll'
+				| 'follow_request';
 			reblogged_id: string;
 			destination_id: string;
 			visibility: Pathchwork.ComposeVisibility;

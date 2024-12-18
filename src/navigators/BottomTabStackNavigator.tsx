@@ -46,6 +46,14 @@ export default function BottomTabs() {
 						<HomeTabIcon colorScheme={colorScheme} focused={focused} />
 					),
 				}}
+				listeners={({ navigation }) => ({
+					tabPress: event => {
+						event.preventDefault();
+						navigation.navigate('Home', {
+							screen: 'HomeFeed',
+						});
+					},
+				})}
 			/>
 			<Tab.Screen
 				name="Search"
@@ -99,6 +107,9 @@ export default function BottomTabs() {
 						notiCount !== 0 && onRemoveNotifcationCount();
 						navigation.navigate('Notification', {
 							screen: 'NotificationList',
+							params: {
+								tabIndex: 0,
+							},
 						});
 					},
 				})}

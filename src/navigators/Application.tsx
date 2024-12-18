@@ -20,14 +20,12 @@ import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { useEffect } from 'react';
 import {
 	handleNotiDetailPress,
+	handleNotiFollowRequestPress,
 	handleNotiProfileDetailPress,
 	listenMessage,
 	requestNotificationPermission,
 } from '@/util/helper/firebase';
-import { DeviceEventEmitter } from 'react-native';
 import notifee, { EventType } from '@notifee/react-native';
-import { NotificationsQueryKey } from '@/services/notification.service';
-import { queryClient } from '@/App';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
@@ -45,6 +43,7 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
+
 	const { onRemoveNotifcationCount, onSetNotifcationCount } =
 		usePushNoticationActions();
 
@@ -61,29 +60,30 @@ function ApplicationNavigator() {
 
 	// ***** This method will be triggered if the app is already opened. ( Start ) ***** //
 	useEffect(() => {
-		const eventEmitter = DeviceEventEmitter.addListener(
-			'patchwork.noti',
-			val => {
-				const notiQueryKey: NotificationsQueryKey = ['noti-query-key'];
-				return notifee.onForegroundEvent(({ type }) => {
-					queryClient.invalidateQueries({ queryKey: notiQueryKey });
-					switch (type) {
-						case EventType.DISMISSED:
-							break;
-						case EventType.PRESS:
-							onRemoveNotifcationCount();
-							const notiResp = val.data as Pathchwork.PushNotiResponse['data'];
-							if (notiResp.noti_type === 'follow') {
-								handleNotiProfileDetailPress(notiResp.destination_id);
-							} else {
-								handleNotiDetailPress(notiResp);
-							}
-							break;
+		const unsubscribe = notifee.onForegroundEvent(({ type, detail }) => {
+			const { notification } = detail;
+			switch (type) {
+				case EventType.DISMISSED:
+					onRemoveNotifcationCount();
+					break;
+				case EventType.PRESS:
+					onRemoveNotifcationCount();
+					if (notification?.data) {
+						const notiResp =
+							notification?.data as Pathchwork.PushNotiResponse['data'];
+						if (notification?.data?.noti_type === 'follow') {
+							handleNotiProfileDetailPress(notiResp?.destination_id);
+						} else if (notification?.data?.noti_type === 'follow_request') {
+							handleNotiFollowRequestPress();
+						} else {
+							handleNotiDetailPress(notiResp);
+						}
 					}
-				});
-			},
-		);
-		return () => eventEmitter.remove();
+					break;
+			}
+		});
+
+		return unsubscribe;
 	}, []);
 	// ***** This method will be triggered if the app is already opened. ( End ) ***** //
 
@@ -93,9 +93,11 @@ function ApplicationNavigator() {
 			onRemoveNotifcationCount();
 			if (remoteMessage?.data) {
 				const notiResp =
-					remoteMessage.data as Pathchwork.PushNotiResponse['data'];
-				if (notiResp.reblogged_id === 'follow') {
-					handleNotiProfileDetailPress(notiResp.destination_id);
+					remoteMessage?.data as Pathchwork.PushNotiResponse['data'];
+				if (notiResp.noti_type === 'follow') {
+					handleNotiProfileDetailPress(notiResp.destination_id as string);
+				} else if (notiResp.noti_type === 'follow_request') {
+					handleNotiFollowRequestPress();
 				} else {
 					handleNotiDetailPress(notiResp);
 				}
@@ -106,7 +108,6 @@ function ApplicationNavigator() {
 		messaging()
 			.getInitialNotification()
 			.then(remoteMessage => {
-				// console.log('🚀 ~ useEffect ~ getInitialNotification:', remoteMessage);
 				onRemoveNotifcationCount();
 				if (remoteMessage?.data) {
 					// const { noti_type, destination_id, reblogged_id } =
@@ -116,6 +117,10 @@ function ApplicationNavigator() {
 					if (notiResp.noti_type === 'follow') {
 						setTimeout(() => {
 							handleNotiProfileDetailPress(notiResp.destination_id);
+						}, 1000);
+					} else if (notiResp.noti_type === 'follow_request') {
+						setTimeout(() => {
+							handleNotiFollowRequestPress();
 						}, 1000);
 					} else {
 						setTimeout(() => {

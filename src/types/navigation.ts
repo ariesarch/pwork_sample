@@ -4,6 +4,7 @@ import {
 	CompositeScreenProps,
 	NavigationProp,
 	NavigatorScreenParams,
+	RouteProp,
 } from '@react-navigation/native';
 import type {
 	StackNavigationProp,
@@ -17,7 +18,7 @@ import type {
 export type RootStackParamList = {
 	AboutYou: undefined;
 	Profile: { id: string };
-	ProfileOther: { id: string };
+	ProfileOther: { id: string; isFromNoti?: boolean };
 	Index: NavigatorScreenParams<BottomStackParamList>;
 	Guest: NavigatorScreenParams<GuestStackParamList>;
 	EmailVerification: undefined;
@@ -68,6 +69,7 @@ export type HomeStackParamList = {
 	PeopleFollowing: undefined;
 	FeedDetail: {
 		id: string;
+		isMainChannel?: boolean;
 		openKeyboardAtMount?: boolean;
 	};
 	ChannelProfile: {
@@ -79,7 +81,7 @@ export type HomeStackParamList = {
 		};
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string };
+	ProfileOther: { id: string; isFromNoti?: boolean };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 };
@@ -97,26 +99,34 @@ export type SearchStackParamList = {
 	};
 	FeedDetail: {
 		id: string;
+		isMainChannel?: boolean;
 		openKeyboardAtMount?: boolean;
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string };
+	ProfileOther: { id: string; isFromNoti?: boolean };
 	CollectionDetail: { slug: string; title: string };
 };
 
 // ********** Notification Stack ********** //
 
 export type NotiStackParamList = {
-	NotificationList: undefined;
+	NotificationList: {
+		tabIndex: number;
+	};
 	FeedDetail: {
 		id: string;
+		isMainChannel?: boolean;
 		openKeyboardAtMount?: boolean;
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string };
+	ProfileOther: { id: string; isFromNoti?: boolean };
 };
 
 export type NotificationScreenNavigationProp = NavigationProp<
+	NotiStackParamList,
+	'NotificationList'
+>;
+export type NotificationScreenRouteProp = RouteProp<
 	NotiStackParamList,
 	'NotificationList'
 >;
