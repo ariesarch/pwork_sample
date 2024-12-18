@@ -32,11 +32,7 @@ const ConversationDetail = ({
 	navigation,
 	route,
 }: ConversationsStackScreenProps<'ConversationDetail'>) => {
-	const {
-		id: initialLastMsgId,
-		isNewMessage,
-		isFromNotification,
-	} = route.params;
+	const { id: initialLastMsgId, isFromNotification } = route.params;
 	const { height, progress } = useGradualAnimation();
 	const [refresh, setRefresh] = useState(false);
 	const currentConversation = useGetCurrentConversation(
@@ -159,7 +155,7 @@ const ConversationDetail = ({
 					</Animated.View>
 					{messageList && (
 						<MessageActionsBar
-							isFirstMsg={isNewMessage}
+							isFirstMsg={false}
 							currentConversation={currentConversation}
 							handleScroll={() => {}}
 							currentFocusMsgId={initialLastMsgId}

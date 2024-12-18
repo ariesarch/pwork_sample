@@ -1,11 +1,13 @@
 import {
 	getAllNotiReq,
 	getAllNotiReqWPagination,
+	getConversationByUserId,
 	getConversationsList,
 	getMessageList,
 	searchUsers,
 } from '@/services/conversations.service';
 import {
+	ConversationByUserIdQueryKey,
 	MessageListQueryKey,
 	NotiReqQueryKey,
 	SearchUsersQueryKey,
@@ -117,4 +119,15 @@ export const useGetAllNotiReq = (
 ) => {
 	const queryKey: NotiReqQueryKey = ['all-noti-req'];
 	return useQuery({ queryKey, queryFn: getAllNotiReq, ...options });
+};
+
+export const useGetConversationByUserId = ({
+	id,
+	options,
+}: ConversationByUserIdQueryKey[1] & {
+	options?: QueryOptionHelper<Pathchwork.Conversations>;
+}) => {
+	const queryKey: ConversationByUserIdQueryKey = ['user-conversation', { id }];
+	//@ts-expect-error
+	return useQuery({ queryKey, queryFn: getConversationByUserId, ...options });
 };

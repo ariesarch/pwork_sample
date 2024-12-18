@@ -1,5 +1,6 @@
 import { QueryFunctionContext } from '@tanstack/react-query';
 import {
+	ConversationByUserIdQueryKey,
 	ConversationsQueryParam,
 	MessageListQueryKey,
 	SearchUsersQueryKey,
@@ -120,6 +121,23 @@ export const dismissNotiReq = async ({ id }: { id: string }) => {
 			appendApiVersion(`notifications/requests/${id}/dismiss`),
 		);
 		return response.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const getConversationByUserId = async (
+	qfContext: QueryFunctionContext<ConversationByUserIdQueryKey>,
+) => {
+	try {
+		const { id } = qfContext.queryKey[1];
+		const resp: AxiosResponse<Pathchwork.Conversations> = await instance.get(
+			appendApiVersion(`patchwork/conversations/check_conversation`),
+			{
+				params: { target_account_id: id },
+			},
+		);
+		return resp.data;
 	} catch (error) {
 		return handleError(error);
 	}

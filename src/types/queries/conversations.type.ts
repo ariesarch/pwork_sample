@@ -21,3 +21,8 @@ export type PaginatedResponse<T, P extends object = {}> = {
 };
 
 export type NotiReqQueryKey = ['all-noti-req'];
+
+export type ConversationByUserIdQueryKey = [
+	'user-conversation',
+	{ id: string },
+];

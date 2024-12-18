@@ -149,7 +149,6 @@ const ConversationList = ({
 							}
 							navigation.navigate('ConversationDetail', {
 								id: item.last_status.id,
-								isNewMessage: false,
 							});
 						}}
 					/>

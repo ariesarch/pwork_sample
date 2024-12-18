@@ -27,7 +27,6 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 		onSuccess: (response: Pathchwork.Status) => {
 			navigation.navigate('ConversationDetail', {
 				id: response.id,
-				isNewMessage: true,
 			});
 			composeDispatch({ type: 'clear' });
 		},

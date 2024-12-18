@@ -118,8 +118,10 @@ export type ConversationsStackParamList = {
 	NewMessage: undefined;
 	ConversationDetail: {
 		id: string;
-		isNewMessage: boolean;
 		isFromNotification?: boolean;
+		initiateCoversation?: {
+			recepiantId: string;
+		};
 	};
 	NotificationRequests: undefined;
 };

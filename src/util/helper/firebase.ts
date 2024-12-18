@@ -149,7 +149,6 @@ const navigateToConversationDetail = (
 								name: 'ConversationDetail',
 								params: {
 									id: notiResp.destination_id,
-									isNewMessage: false,
 									isFromNotification: true,
 								},
 							},

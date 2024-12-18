@@ -20,6 +20,10 @@ import { Flow } from 'react-native-animated-spinkit';
 import customColor from '@/util/constant/color';
 import { AccountInfoQueryKey } from '@/types/queries/profile.type';
 import { useAuthStore } from '@/store/auth/authStore';
+import { MessageDotsIcon } from '@/util/svg/icon.profile';
+import { useColorScheme } from 'nativewind';
+import { useGetConversationByUserId } from '@/hooks/queries/conversations.queries';
+import { profile } from 'console';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -46,12 +50,20 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	const navigation = useNavigation();
 	const sharedScrollYOffset = useSharedScrollY('Channel');
 	const scrollY = useCurrentTabScrollY();
+	const { colorScheme } = useColorScheme();
 	const isChannel = props.type == 'Channel';
 	const isProfile = props.type == 'Profile';
 	useAnimatedReaction(
 		() => scrollY.value,
 		() => (sharedScrollYOffset.value = scrollY.value),
 	);
+
+	const { data: test } = useGetConversationByUserId({
+		id: props.type == 'Profile' ? props.profile.id : '',
+		options: {
+			enabled: props.type == 'Profile' && !props.is_my_account,
+		},
+	});
 
 	const { userInfo } = useAuthStore();
 
@@ -127,23 +139,40 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 			);
 		}
 
-		// return (
-		// 	<Button
-		// 		variant="default"
-		// 		size="sm"
-		// 		className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-		// 		onPress={onMakeRelationship}
-		// 		disabled
-		// 	>
-		// 		{isPending ? (
-		// 			<Flow size={25} color={customColor['patchwork-dark-900']} />
-		// 		) : (
-		// 			<ThemeText className="text-black" size={'fs_13'}>
-		// 				{displayFollowActionText()}
-		// 			</ThemeText>
-		// 		)}
-		// 	</Button>
-		// );
+		return (
+			<View className="flex-row items-center justify-center">
+				{renderChatIcon()}
+				<Button
+					variant="default"
+					size="sm"
+					className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+					onPress={onMakeRelationship}
+				>
+					{isPending ? (
+						<Flow size={25} color={customColor['patchwork-dark-900']} />
+					) : (
+						<ThemeText className="text-black" size={'fs_13'}>
+							{displayFollowActionText()}
+						</ThemeText>
+					)}
+				</Button>
+			</View>
+		);
+	};
+
+	const renderChatIcon = () => {
+		return (
+			<Pressable
+				className="w-8 h-8 rounded-full items-center justify-center border-[1px] border-gray-600 mr-2 active:opacity-80 mt-5"
+				onPress={handleChatIconPress}
+			>
+				<MessageDotsIcon width={19} height={19} {...{ colorScheme }} />
+			</Pressable>
+		);
+	};
+
+	const handleChatIconPress = () => {
+		console.log('chat icon press');
 	};
 
 	return (
@@ -208,7 +237,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 						showChannelFollowers
 					/>
 				) : (
-					<>
+					<View>
 						<VerticalInfo
 							hasRedMark
 							accountName={props.profile?.display_name}
@@ -228,7 +257,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							followers={props.profile?.followers_count}
 						/>
 						<Underline className="mb-2 mt-4" />
-					</>
+					</View>
 				)}
 			</View>
 		</View>
