@@ -49,13 +49,10 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const handleMentionPress = (mention: Pathchwork.Mention) => {
 		if (mention.id === userInfo?.id!) {
 			navigation.navigate('Profile', { id: userInfo?.id! });
-		} else if (mention.url?.includes('channel.org')) {
+		} else {
 			navigation.navigate('ProfileOther', {
 				id: mention.id,
 			});
-		} else {
-			// better if show some toast info
-			// console.log('Non-channel mention:', mention.url);
 		}
 	};
 
