@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
-import { ComposeGalleryIcon, ComposeGifIcon } from '@/util/svg/icon.compose';
+import { ComposeGalleryIcon } from '@/util/svg/icon.compose';
 import { useColorScheme } from 'nativewind';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
@@ -20,7 +20,6 @@ import {
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { playSound } from '@/util/helper/conversation';
 import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
-import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
@@ -83,10 +82,8 @@ const MessageActionsBar = ({
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
 			payload.in_reply_to_id = lastMsg?.id;
-			payload.status = addPrivateConvoHashtag(
-				removeOtherMentions(
-					`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
-				),
+			payload.status = removeOtherMentions(
+				`@${currentConversation?.accounts[0]?.acct} ${payload.status}`,
 			);
 			mutate(payload);
 		}
@@ -119,11 +116,6 @@ const MessageActionsBar = ({
 					}}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
-				<Pressable
-					className={'mr-3'}
-					children={<ComposeGifIcon {...{ colorScheme }} />}
-				/>
-
 				<View className="flex-1">
 					<TextInput
 						placeholder="Your message..."
