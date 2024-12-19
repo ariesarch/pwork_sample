@@ -12,6 +12,7 @@ import { FormattedText } from '@/components/atoms/compose/FormattedText/Formatte
 import {
 	addNewMsgToQueryCache,
 	changeLastMsgInConversationChache,
+	updateConversationCacheInProfile,
 } from '@/util/cache/conversation/conversationCahce';
 import {
 	useManageAttachmentActions,
@@ -24,12 +25,14 @@ import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { cn } from '@/util/helper/twutil';
+import { Flow } from 'react-native-animated-spinkit';
 
 type Props = {
 	currentConversation: Pathchwork.Conversations | undefined;
 	lastMsg: Pathchwork.Status;
 	handleScroll: () => void;
 	currentFocusMsgId: string;
+	isFromProfile: boolean;
 };
 
 const MessageActionsBar = ({
@@ -37,6 +40,7 @@ const MessageActionsBar = ({
 	currentConversation,
 	lastMsg,
 	currentFocusMsgId,
+	isFromProfile,
 }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const selectionColor = useAppropiateColorHash('patchwork-red-50');
@@ -52,6 +56,11 @@ const MessageActionsBar = ({
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
 			playSound('send');
+			isFromProfile &&
+				updateConversationCacheInProfile(
+					currentConversation?.accounts[0]?.id ?? '',
+					response,
+				);
 		},
 		onError: e => {
 			Toast.show({
@@ -64,7 +73,12 @@ const MessageActionsBar = ({
 	});
 
 	const sendMessage = () => {
-		if (composeState.text.count <= composeState.maxCount) {
+		if (
+			composeState.text.count <= composeState.maxCount &&
+			composeState.text.raw.trim() !== '' &&
+			composeState.text.raw &&
+			!isPending
+		) {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
@@ -128,23 +142,31 @@ const MessageActionsBar = ({
 					</TextInput>
 				</View>
 				<Pressable
-					disabled={!composeState.text.raw}
+					disabled={
+						!composeState.text.raw && composeState.text.raw.trim() == ''
+					}
 					onPress={sendMessage}
 					className={cn(
 						'rounded-full p-0 border ml-2',
-						composeState.text.raw
+						composeState.text.raw && composeState.text.raw.trim() !== ''
 							? ' border-white'
 							: 'border-patchwork-grey-100 ',
 					)}
 				>
-					<ThemeText
-						className={cn(
-							'py-[6] px-3 rounded-full',
-							composeState.text.raw ? 'text-white' : 'text-patchwork-grey-100',
-						)}
-					>
-						Send
-					</ThemeText>
+					{isPending ? (
+						<Flow size={15} color={'#fff'} className="my-3 mx-5" />
+					) : (
+						<ThemeText
+							className={cn(
+								'py-[6] px-3 rounded-full',
+								composeState.text.raw && composeState.text.raw.trim() !== ''
+									? 'text-white'
+									: 'text-patchwork-grey-100',
+							)}
+						>
+							Send
+						</ThemeText>
+					)}
 				</Pressable>
 			</View>
 			<ThemeModal

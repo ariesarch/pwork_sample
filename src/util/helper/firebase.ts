@@ -103,7 +103,6 @@ const listenMessage = () => {
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
 		const isChatNoti = checkIsConversationNoti(remoteMessage);
-		console.log('remoteMessage::', remoteMessage.data);
 		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
 		if (isChatNoti) handleIncommingMessage(remoteMessage);
 		else {

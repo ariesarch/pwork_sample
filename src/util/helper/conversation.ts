@@ -12,22 +12,11 @@ export const isMsgTimeClose = (
 	message: Pathchwork.Status,
 	prevMessage: Pathchwork.Status | undefined,
 ) => {
-	// console.log('currentMsg::', extractMessage(cleanText(message.content)));
-	// console.log(
-	// 	'prevMsg::',
-	// 	extractMessage(cleanText(prevMessage?.content || '')),
-	// );
-	// console.log(
-	// 	'timediff::',
-	// 	dayjs(message.created_at).diff(dayjs(prevMessage?.created_at), 'minute'),
-	// );
-	// console.log('******');
-
 	if (!prevMessage) return true;
 	return (
 		Math.abs(
 			dayjs(message.created_at).diff(dayjs(prevMessage.created_at), 'minute'),
-		) < 5
+		) < 60
 	);
 };
 
@@ -109,22 +98,11 @@ export const playSound = (soundType: SoundType = 'noti') => {
 export const checkIsConversationNoti = (
 	notiResp: FirebaseMessagingTypes.RemoteMessage,
 ) => {
-	return notiResp.data?.noti_type == 'mention';
+	return (
+		notiResp.data?.noti_type == 'mention' &&
+		notiResp.data?.visibility == 'direct'
+	);
 };
-
-export const checkIsChatNoti = (statusId: string, notiType: string) => {
-	try {
-		if (notiType == 'mention') {
-		}
-		return false;
-	} catch (e) {
-		return false;
-	}
-};
-
-export const navigateToConversationDetail = (
-	notiResp: Pathchwork.PushNotiResponse['data'],
-) => {};
 
 export const getCurrentTotalMessageListAtPageEntry = (
 	isFromNotification: boolean | undefined,

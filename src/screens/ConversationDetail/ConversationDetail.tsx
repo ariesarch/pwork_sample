@@ -211,6 +211,7 @@ const ConversationDetail = ({
 							handleScroll={() => {}}
 							currentFocusMsgId={initialLastMsgId}
 							lastMsg={totalMsgList[0]}
+							isFromProfile={!!isFromProfile}
 						/>
 					)}
 					<Animated.View style={virtualKeyboardContainerStyle} />

@@ -109,3 +109,17 @@ export const removeDismissedNotiReq = (id: string) => {
 			oldData ? oldData.filter(item => item.id !== id) : [],
 	);
 };
+
+export const updateConversationCacheInProfile = (
+	id: string,
+	lastStatus: Pathchwork.Status,
+) => {
+	queryClient.setQueryData(
+		['user-conversation', { id }],
+		(oldData: Pathchwork.Conversations | undefined) => {
+			if (!oldData) return;
+			console.log('oldData::', oldData);
+			return { ...oldData, last_status: lastStatus };
+		},
+	);
+};

@@ -149,6 +149,7 @@ const ReplyActionBar = ({
 			const crossChannelRequestIdentifier = uniqueId(
 				`CROS-Channel-Status::${selectedStatus.id}::Req-ID::`,
 			);
+			payload.status = '@' + selectedStatus.account.acct + ' ' + payload.status;
 			saveStatus(crossChannelRequestIdentifier, {
 				status: selectedStatus,
 				savedPayload: payload,

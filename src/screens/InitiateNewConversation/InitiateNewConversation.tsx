@@ -29,6 +29,9 @@ const InitiateNewConversation = ({
 	useEffect(() => {
 		return () => {
 			queryClient.invalidateQueries({ queryKey: ['conversations'] });
+			queryClient.invalidateQueries({
+				queryKey: ['user-conversation', { id: account.id }],
+			});
 		};
 	}, []);
 

@@ -106,8 +106,6 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 		exclude_original_statuses: true,
 	});
 
-	const timelineList = timeline ? flattenPages(timeline) : [];
-
 	const onTimelineContentLoadMore = () => {
 		if (hasNextPage && activeTab === 0) {
 			return fetchNextPage();
