@@ -18,14 +18,9 @@ const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 	const navigation = useNavigation();
 
 	const handleAvatarPress = () => {
-		if (chatParticipant?.url?.includes('channel.org')) {
-			navigation.navigate('ProfileOther', {
-				id: chatParticipant.id,
-			});
-		} else {
-			// better if show some toast info
-			// console.log('Non-channel participant:', chatParticipant?.url);
-		}
+		navigation.navigate('ProfileOther', {
+			id: chatParticipant?.id!,
+		});
 	};
 
 	return (
