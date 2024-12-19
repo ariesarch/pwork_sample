@@ -33,7 +33,7 @@ const MessageItem = ({
 		handlePress(newId);
 	};
 	return (
-		<Pressable onPress={onPress} className="m-2 flex">
+		<Pressable onPress={onPress} className="m-2">
 			{message.media_attachments.length > 0 && (
 				<MessageImage
 					className="w-auto flex-1"

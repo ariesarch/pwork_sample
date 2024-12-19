@@ -30,11 +30,10 @@ import {
 } from '@/util/cache/conversation/conversationCahce';
 import ProfileInfo from '@/components/molecules/conversations/ProfileInfo/ProfileInfo';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
-import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { useActiveConversationActions } from '@/store/conversation/activeConversationStore';
 import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
-import { DownIcon } from '@/util/svg/icon.common';
-import { useColorScheme } from 'nativewind';
+import { DownIcon } from '@/util/svg/icon.conversations';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 const ConversationDetail = ({
 	navigation,
@@ -190,9 +189,9 @@ const ConversationDetail = ({
 							{showScrollToBottom && (
 								<Pressable
 									onPress={handleScrollToBottom}
-									className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 self-center bg-patchwork-light-100 p-3 rounded-full"
+									className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 right-5 bg-patchwork-dark-900 p-3 rounded-full"
 								>
-									<DownIcon colorScheme={'light'} />
+									<DownIcon fill={customColor['patchwork-red-50']} />
 								</Pressable>
 							)}
 						</View>
