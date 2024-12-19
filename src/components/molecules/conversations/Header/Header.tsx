@@ -18,14 +18,9 @@ const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 	const navigation = useNavigation();
 
 	const handleAvatarPress = () => {
-		if (chatParticipant?.url?.includes('channel.org')) {
-			navigation.navigate('ProfileOther', {
-				id: chatParticipant.id,
-			});
-		} else {
-			// better if show some toast info
-			// console.log('Non-channel participant:', chatParticipant?.url);
-		}
+		navigation.navigate('ProfileOther', {
+			id: chatParticipant?.id!,
+		});
 	};
 
 	return (
@@ -46,16 +41,13 @@ const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 					<ThemeText
 						numberOfLines={1}
 						ellipsizeMode="tail"
-						className="flex-1 font-bold mr-2 max-w-[75%]"
+						className="font-bold mr-2"
 					>
 						{chatParticipant?.display_name}
 					</ThemeText>
 					<VerifyIcon colorScheme={colorScheme} />
 				</View>
 			</Pressable>
-			<View className="right-0 z-10">
-				<InfoButton onPress={() => {}} />
-			</View>
 			<View />
 		</View>
 	);
