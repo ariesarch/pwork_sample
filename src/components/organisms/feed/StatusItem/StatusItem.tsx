@@ -7,6 +7,7 @@ import { useActiveFeedAction } from '@/store/feed/activeFeed';
 import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useMemo } from 'react';
 import { View, Image, ViewProps, Pressable } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -20,6 +21,14 @@ const StatusItem = ({ status, isFromNoti, ...props }: Props) => {
 	const { setActiveFeed } = useActiveFeedAction();
 	const { userInfo } = useAuthStore();
 
+	const isAuthor = useMemo(() => {
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == status.account.id ||
+			status.account.acct == currentUserAccHandle
+		);
+	}, [status, userInfo?.id]);
+
 	const handleOnPress = (item: Pathchwork.Status) => {
 		setActiveFeed(item);
 		navigation.navigate('FeedDetail', { id: item.id });
@@ -31,7 +40,7 @@ const StatusItem = ({ status, isFromNoti, ...props }: Props) => {
 				<View className="flex-row">
 					<Pressable
 						onPress={() => {
-							userInfo?.id
+							isAuthor
 								? navigation.navigate('Profile', { id: status.account.id })
 								: navigation.navigate('ProfileOther', {
 										id: status.account.id,

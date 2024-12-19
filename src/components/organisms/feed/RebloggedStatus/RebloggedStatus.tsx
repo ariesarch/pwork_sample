@@ -10,7 +10,13 @@ import { HomeStackParamList } from '@/types/navigation';
 import { useNavigation } from '@react-navigation/native';
 import { useAuthStore } from '@/store/auth/authStore';
 
-const RebloggedStatus = ({ status }: { status: Pathchwork.Status }) => {
+const RebloggedStatus = ({
+	status,
+	isFromNoti,
+}: {
+	status: Pathchwork.Status;
+	isFromNoti?: boolean;
+}) => {
 	const { userInfo } = useAuthStore();
 
 	const { setActiveFeed } = useActiveFeedAction();
@@ -55,12 +61,13 @@ const RebloggedStatus = ({ status }: { status: Pathchwork.Status }) => {
 						<StatusHeader
 							imageSize="w-7 h-7"
 							status={status.reblog}
+							isFromNoti={isFromNoti}
 							showAvatarIcon
 						/>
 						<StatusContent status={status.reblog} className="mt-2" />
 					</Pressable>
 				)}
-				<StatusActionBar status={status} />
+				<StatusActionBar status={status} isFromNoti={isFromNoti} />
 			</View>
 			<Underline />
 		</View>
