@@ -13,11 +13,18 @@ import {
 import mockInstance from './mockInstance';
 import instance from './instance';
 
-export const getMyChannelList = async (): Promise<Pathchwork.ChannelList[]> => {
+export const getMyChannelList = async () => {
 	try {
-		const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
-			await mockInstance.get('my-channel');
-		return resp.data.data;
+		const resp: AxiosResponse<Pathchwork.MyChannel> = await instance.get(
+			appendApiVersion('channels/my_channel'),
+			{
+				params: {
+					domain_name: 'https://dashboard.channel.org',
+					isDynamicDomain: true,
+				},
+			},
+		);
+		return resp.data;
 	} catch (e) {
 		return handleError(e);
 	}

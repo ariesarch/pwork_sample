@@ -26,6 +26,8 @@ import { useEffect, useState } from 'react';
 import { delay } from 'lodash';
 import { usePushNotiTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
+import ProfileCard from '@/components/atoms/channel/ProfileCard/ProfileCard';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
@@ -74,16 +76,13 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 
 	return (
 		<SafeScreen>
-			<HomeFeedHeader
-				account={userInfo ?? mockUserList[0]}
-				showUnderLine={false}
-			/>
+			<HomeFeedHeader account={userInfo!} showUnderLine={false} />
 			{recommendedChannels && myChannels ? (
 				<FlatList
 					data={recommendedChannels}
 					showsVerticalScrollIndicator={false}
 					ListHeaderComponent={() => (
-						<>
+						<View>
 							<View className="flex-row items-center">
 								<ThemeText
 									className="font-SourceSans3_Bold my-2 flex-1"
@@ -92,25 +91,41 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									My Channel
 								</ThemeText>
 							</View>
-							{myChannels &&
-								myChannels.map((item, idx) => (
-									<View key={idx}>
-										<ChannelCard
-											channel={item.attributes}
-											handlePress={() => {
-												setDomain(item.attributes.domain_name);
-												navigation.navigate('ChannelProfile', {
-													domain_name: ensureHttp(item.attributes.domain_name),
-													channel_info: {
-														avatar_image_url: item.attributes.avatar_image_url,
-														banner_image_url: item.attributes.banner_image_url,
-														channel_name: item.attributes.name,
-													},
-												});
-											}}
-										/>
-									</View>
-								))}
+							{myChannels.channel.data && (
+								<View>
+									<ChannelCard
+										channel={myChannels.channel.data?.attributes}
+										handlePress={() => {
+											setDomain(myChannels.channel.data.attributes.domain_name);
+											navigation.navigate('ChannelProfile', {
+												domain_name: ensureHttp(
+													myChannels.channel.data.attributes.domain_name,
+												),
+												channel_info: {
+													avatar_image_url:
+														myChannels.channel.data.attributes.avatar_image_url,
+													banner_image_url:
+														myChannels.channel.data.attributes.banner_image_url,
+													channel_name: myChannels.channel.data.attributes.name,
+												},
+											});
+										}}
+									/>
+								</View>
+							)}
+							{myChannels.channel_feed.data && (
+								<View>
+									<ProfileCard
+										profile={myChannels.channel_feed.data.attributes}
+										handlePress={() => {
+											setDomain(process.env.API_URL ?? DEFAULT_API_URL);
+											navigation.navigate('ProfileOther', {
+												id: myChannels.channel_feed.data.id,
+											});
+										}}
+									/>
+								</View>
+							)}
 							<View className="flex-row items-center">
 								<ThemeText
 									className="font-SourceSans3_Bold my-2 flex-1"
@@ -122,7 +137,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									<ThemeText variant="textGrey">View All</ThemeText>
 								</Pressable>
 							</View>
-						</>
+						</View>
 					)}
 					renderItem={({ item }) => (
 						<ChannelCard
