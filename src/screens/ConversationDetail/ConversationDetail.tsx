@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { ConversationsStackScreenProps } from '@/types/navigation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { Dimensions, Pressable, View } from 'react-native';
+import { BackHandler, Dimensions, Pressable, View } from 'react-native';
 import {
 	BottomBarHeight,
 	useGradualAnimation,
@@ -131,17 +131,29 @@ const ConversationDetail = ({
 		[],
 	);
 
+	const handleBackPress = () => {
+		markConversationAsRead({ id: currentConversation?.id! });
+		if (isFromProfile || isFromNotification) {
+			navigation.goBack();
+		} else {
+			navigation.navigate('ConversationList');
+		}
+		return true;
+	};
+
+	useEffect(() => {
+		BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+		return () => {
+			BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+		};
+	}, [navigation, currentConversation, isFromProfile, isFromNotification]);
+
 	return (
 		<SafeScreen>
 			<ComposeStatusProvider type="chat">
 				<View className="flex-1">
 					<ConversationsHeader
-						onPressBackButton={() => {
-							markConversationAsRead({ id: currentConversation?.id! });
-							isFromProfile || isFromNotification
-								? navigation.goBack()
-								: navigation.navigate('ConversationList');
-						}}
+						onPressBackButton={handleBackPress}
 						chatParticipant={receiver}
 					/>
 					{initialLastMsgId ? (
