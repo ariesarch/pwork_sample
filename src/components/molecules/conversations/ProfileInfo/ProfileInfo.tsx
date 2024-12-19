@@ -16,12 +16,13 @@ const ProfileInfo = ({ userInfo }: Props) => {
 	const { colorScheme } = useColorScheme();
 
 	return (
-		<View className="-mt-3">
-			<FastImage
+		<View className="-mt-3 mb-4">
+			{/* <FastImage
 				className="w-full h-28 rounded-b-md"
 				source={{ uri: userInfo?.header_static }}
 				resizeMode={FastImage.resizeMode.cover}
-			/>
+			/> */}
+			<View className="w-full h-28"></View>
 			<FastImage
 				className={cn(
 					'w-[80] h-[80] mt-[-50] bg-patchwork-grey-50  border-patchwork-grey-50 border-2 rounded-full mx-auto',

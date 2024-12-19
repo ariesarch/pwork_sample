@@ -201,9 +201,9 @@ const ConversationDetail = ({
 							{showScrollToBottom && (
 								<Pressable
 									onPress={handleScrollToBottom}
-									className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 right-5 bg-patchwork-dark-900 p-3 rounded-full"
+									className="w-10 h-10 items-center justify-center absolute z-10 bottom-5 right-5 bg-patchwork-grey-70 p-3 rounded-full"
 								>
-									<DownIcon fill={customColor['patchwork-red-50']} />
+									<DownIcon fill={'white'} />
 								</Pressable>
 							)}
 						</View>
