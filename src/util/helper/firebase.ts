@@ -1,11 +1,15 @@
 import messaging, {
 	FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Platform } from 'react-native';
+import { DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '../navigation/navigationRef';
 import { CommonActions } from '@react-navigation/native';
+import {
+	checkIsConversationNoti,
+	handleIncommingMessage,
+} from './conversation';
 import { queryClient } from '@/App';
 import {
 	FollowRequestQueryKey,
@@ -42,7 +46,6 @@ const requestIOSPermission = async () => {
 	const enabled =
 		authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
 		authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
 	if (enabled) {
 		return await getFirebaseMessagingToken();
 	} else {
@@ -99,13 +102,18 @@ const listenMessage = () => {
 	const onSetNotifcationCount =
 		usePushNoticationStore.getState().actions.onSetNotifcationCount;
 	return messaging().onMessage(async remoteMessage => {
-		onSetNotifcationCount();
-		if (remoteMessage?.data?.noti_type === 'follow_request') {
-			queryClient.invalidateQueries({ queryKey: followRequestNotQueryKey });
-		} else {
-			queryClient.invalidateQueries({ queryKey: notiQueryKey });
+		const isChatNoti = checkIsConversationNoti(remoteMessage);
+		DeviceEventEmitter.emit('patchwork.noti', remoteMessage);
+		if (isChatNoti) handleIncommingMessage(remoteMessage);
+		else {
+			onSetNotifcationCount();
+			if (remoteMessage?.data?.noti_type === 'follow_request') {
+				queryClient.invalidateQueries({ queryKey: followRequestNotQueryKey });
+			} else {
+				queryClient.invalidateQueries({ queryKey: notiQueryKey });
+			}
+			await showNotification(remoteMessage);
 		}
-		await showNotification(remoteMessage);
 	});
 };
 
@@ -125,39 +133,78 @@ const showNotification = async (
 	});
 };
 
-const handleNotiDetailPress = (
-	destinationId: string,
-	reblogged_id?: string,
+const handleNotiDetailPress = async (
+	notiResp: Pathchwork.PushNotiResponse['data'],
 ) => {
 	if (navigationRef.isReady()) {
-		navigationRef.dispatch(
-			CommonActions.reset({
-				index: 0,
-				routes: [
-					{
-						name: 'Notification',
-						state: {
-							routes: [
-								{
-									name: 'NotificationList',
-									params: {
-										tabIndex: 0,
-									},
-								},
-								{
-									name: 'FeedDetail',
-									params: {
-										id: reblogged_id !== '0' ? reblogged_id : destinationId,
-										isMainChannel: true,
-									},
-								},
-							],
-						},
-					},
-				],
-			}),
-		);
+		console.log('notiResp::', notiResp);
+		if (notiResp.noti_type == 'mention' && notiResp.visibility == 'direct') {
+			return navigateToConversationDetail(notiResp);
+		}
+		return navigateToFeedDetail(notiResp);
 	}
+};
+
+const navigateToConversationDetail = (
+	notiResp: Pathchwork.PushNotiResponse['data'],
+) => {
+	navigationRef.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [
+				{
+					name: 'Conversations',
+					state: {
+						routes: [
+							{ name: 'ConversationList' },
+							{
+								name: 'ConversationDetail',
+								params: {
+									id: notiResp.destination_id,
+									isFromNotification: true,
+								},
+							},
+						],
+					},
+				},
+			],
+		}),
+	);
+};
+
+const navigateToFeedDetail = (
+	notiResp: Pathchwork.PushNotiResponse['data'],
+) => {
+	navigationRef.dispatch(
+		CommonActions.reset({
+			index: 0,
+			routes: [
+				{
+					name: 'Notification',
+					state: {
+						routes: [
+							{
+								name: 'NotificationList',
+								params: {
+									tabIndex: 0,
+								},
+							},
+							{
+								name: 'FeedDetail',
+								params: {
+									id:
+										notiResp.reblogged_id !== '0'
+											? notiResp.reblogged_id
+											: notiResp.destination_id,
+									isMainChannel: true,
+								},
+							},
+						],
+					},
+				},
+			],
+		}),
+	);
 };
 
 const handleNotiProfileDetailPress = (destinationId: string) => {

@@ -1,8 +1,7 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import {
 	View,
 	TouchableOpacity,
-	StatusBar,
 	Dimensions,
 	RefreshControl,
 } from 'react-native';
@@ -76,15 +75,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 			return fetchNextPage();
 		}
 	};
-
-	useFocusEffect(
-		useCallback(() => {
-			if (Platform.OS === 'android') {
-				StatusBar.setTranslucent(true);
-				StatusBar.setBackgroundColor('transparent');
-			}
-		}, [barColor]),
-	);
 
 	const handleRefresh = () => {
 		setIsRefresh(true);

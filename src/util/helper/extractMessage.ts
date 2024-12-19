@@ -1,9 +1,9 @@
 /**
- * Extracts the message after the first @mention in the input string.
- * @param {string} input - The input string containing an @mention.
- * @returns {string} - The extracted message text.
+ * Removes all @mentions extracts the message.
+ * @param {string} input - The input string containing @mentions.
+ * @returns {string} - The message text without mentions.
  */
-
 export function extractMessage(input: string): string {
-	return input.replace(/^@\S+\s/, '');
+	const output = input.replace(/@\S+/g, '').trim();
+	return output;
 }

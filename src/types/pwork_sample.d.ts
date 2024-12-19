@@ -99,6 +99,25 @@ declare namespace Pathchwork {
 		attributes: ChannelAttributes;
 	};
 
+	type CollectionList = {
+		id: string;
+		type: string;
+		attributes: CollectionAttributes;
+	};
+
+	type CollectionAttributes = {
+		id: number;
+		name: string;
+		slug: string;
+		sorting_index: number;
+		community_count: number;
+		banner_image_url: string;
+		avatar_image_url: string;
+		channels: {
+			data: ChannelList[];
+		};
+	};
+
 	type ChannelAttributes = {
 		id: number;
 		name: string;
@@ -461,5 +480,41 @@ declare namespace Pathchwork {
 		accounts: Account[];
 		hashtags: HashTag[];
 		statuses: Status[];
+	};
+
+	type PushNotiResponse = {
+		notification: {
+			android: {};
+			body: string;
+			title: string;
+		};
+		originalPriority: number;
+		priority: number;
+		sentTime: number;
+		data: {
+			noti_type:
+				| 'favourite'
+				| 'mention'
+				| 'follow'
+				| 'reblog'
+				| 'poll'
+				| 'follow_request';
+			reblogged_id: string;
+			destination_id: string;
+			visibility: Pathchwork.ComposeVisibility;
+		};
+		from: string;
+		messageId: string;
+		ttl: number;
+		collapseKey: string;
+	};
+
+	type NotiReq = {
+		id: string;
+		created_at: string | Date;
+		updated_at: string | Date | null;
+		notifications_count: string;
+		account: Pathchwork.Account;
+		last_status: Pathchwork.Status;
 	};
 }

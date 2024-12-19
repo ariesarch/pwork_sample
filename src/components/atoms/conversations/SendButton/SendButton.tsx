@@ -2,6 +2,7 @@ import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.c
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
 import { ConversationsStackParamList } from '@/types/navigation';
 import { prepareComposePayload } from '@/util/helper/compose';
+import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
 import { cn } from '@/util/helper/twutil';
 import { SendIcon } from '@/util/svg/icon.conversations';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useColorScheme } from 'nativewind';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Toast from 'react-native-toast-message';
+import { validateMsgText } from '@/util/helper/validateMsgText';
 
 type Props = {
 	extraClass?: string;
@@ -24,7 +26,6 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 		onSuccess: (response: Pathchwork.Status) => {
 			navigation.navigate('ConversationDetail', {
 				id: response.id,
-				isNewMessage: true,
 			});
 			composeDispatch({ type: 'clear' });
 		},
@@ -42,7 +43,12 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
-			mutate(payload);
+			payload.status = removeOtherMentions(payload.status);
+
+			const pass = validateMsgText(payload.status);
+			if (pass) {
+				mutate(payload);
+			}
 		}
 	};
 

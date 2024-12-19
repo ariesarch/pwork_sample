@@ -9,6 +9,7 @@ import {
 import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { HomeStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
+import ConversationsStack from './ConversationsStackNavigator';
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
@@ -22,6 +23,7 @@ const HomeStack = () => {
 			<Stack.Screen name="ProfileOther" component={ProfileOther} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
 			<Stack.Screen name="HashTagDetail" component={HashTagDetail} />
+			<Stack.Screen name="Conversations" component={ConversationsStack} />
 		</Stack.Navigator>
 	);
 };

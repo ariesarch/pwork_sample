@@ -89,7 +89,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									className="font-SourceSans3_Bold my-2 flex-1"
 									size="lg_18"
 								>
-									My Channels
+									My Channel
 								</ThemeText>
 							</View>
 							{myChannels &&
@@ -148,12 +148,12 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 						/>
 					}
 					className="mx-6 my-2"
-					keyExtractor={item => item.id.toString()}
+					keyExtractor={item => item.id.toString() + Math.random()}
 					showsHorizontalScrollIndicator={false}
 				/>
 			) : (
 				<ScrollView className="mx-6 my-2" showsVerticalScrollIndicator={false}>
-					<ChannelLoading title="My Channels" />
+					<ChannelLoading title="My Channel" />
 					<ChannelLoading title="Explore Channels" cardCount={3} />
 				</ScrollView>
 			)}

@@ -3,15 +3,11 @@ import {
 	AccountInfoQueryKey,
 	CheckRelationshipQueryKey,
 	SpecificServerProfileQueryKey,
-	UpdateProfileCredentialsQueryParam,
 	UpdateProfilePayload,
 } from '@/types/queries/profile.type';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
 import axios, { AxiosResponse } from 'axios';
 import instance from './instance';
-
-// temporary token
-const token = 'uVsshEFJVC-1_F8xDXbWD1RViBxwBcAjKAp6xlztZzA';
 
 export const accountInfoQueryFn = async ({
 	queryKey,
@@ -130,25 +126,6 @@ export const followRequestsQueryFn = async ({
 // 		return handleError(e);
 // 	}
 // };
-
-export const updateProfileCredendials = async (
-	params: UpdateProfileCredentialsQueryParam,
-): Promise<Pathchwork.Account> => {
-	try {
-		const resp = await axios.patch<Pathchwork.Account>(
-			`https://backend.newsmast.org/api/v1/users/update_credentials`,
-			params,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			},
-		);
-		return resp.data;
-	} catch (e) {
-		return handleError(e);
-	}
-};
 
 export const updateProfile = async (
 	params: UpdateProfilePayload,

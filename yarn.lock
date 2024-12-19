@@ -11685,7 +11685,9 @@ __metadata:
     react-native-screens: 3.31.1
     react-native-size-matters: ^0.4.2
     react-native-skeleton-placeholder: ^5.2.4
+    react-native-sound: ^0.11.2
     react-native-svg: ^15.3.0
+    react-native-swipe-list-view: ^3.2.9
     react-native-tab-view: ^3.5.2
     react-native-toast-message: ^2.2.1
     react-native-walkthrough-tooltip: ^1.6.0
@@ -12611,6 +12613,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-sound@npm:^0.11.2":
+  version: 0.11.2
+  resolution: "react-native-sound@npm:0.11.2"
+  peerDependencies:
+    react-native: ">=0.8.0"
+  checksum: d019de415c5f7bc8af51bc50adff7b9c307cb990aad3ea193933f89df743bbcdbfaa33c4a12bb1143a223137cea39f8b69baf5e1c29f77cf80476616bccc6f91
+  languageName: node
+  linkType: hard
+
 "react-native-svg@npm:^15.3.0":
   version: 15.10.1
   resolution: "react-native-svg@npm:15.10.1"
@@ -12629,6 +12640,17 @@ __metadata:
   version: 1.0.5
   resolution: "react-native-swipe-gestures@npm:1.0.5"
   checksum: d637bc40baa50fa0ce3b6cf2b494efeceaea03cc3875cb7cf7d76922914a21d5e6b098d4a084fb291ce61bfbb0a241c03cff24b15bebf0cfae1c146f4ad10d92
+  languageName: node
+  linkType: hard
+
+"react-native-swipe-list-view@npm:^3.2.9":
+  version: 3.2.9
+  resolution: "react-native-swipe-list-view@npm:3.2.9"
+  peerDependencies:
+    prop-types: ">=15.5.0"
+    react: ">=0.14.8"
+    react-native: ">=0.23.1"
+  checksum: e6fa7f60bcdffdffe0567144e01f4e53b78eff2dfb7f5bad0f560336d039afc5b02603281b5ef0c8b0de86f1cd94c50f943676f25c3f42cc390bedb02df9536d
   languageName: node
   linkType: hard
 

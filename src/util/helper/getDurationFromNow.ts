@@ -1,12 +1,24 @@
 import moment from 'moment';
+import { handleError } from './helper';
 
 export function getDurationFromNow(timestamp: string): string {
 	const now = moment();
-	const givenTime = moment(timestamp);
-	const diffInSeconds = now.diff(givenTime, 'seconds');
+	let givenTime = moment(timestamp);
+
+	if (!givenTime.isValid()) {
+		handleError('Invalid timestamp format');
+	}
+
+	let diffInSeconds = now.diff(givenTime, 'seconds');
+
+	// Note: Added an extra sec to future timestamp to align with query cache updates
+	if (givenTime.isAfter(now)) {
+		const adjustedTime = givenTime.add(1, 'seconds');
+		diffInSeconds = adjustedTime.diff(now, 'seconds');
+	}
 
 	if (diffInSeconds < 60) {
-		return `${diffInSeconds}s`;
+		return 'just now';
 	} else if (diffInSeconds < 3600) {
 		const diffInMinutes = now.diff(givenTime, 'minutes');
 		return `${diffInMinutes}m`;

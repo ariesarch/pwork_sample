@@ -47,7 +47,6 @@ const ImageCard = ({ composeType }: Props) => {
 			});
 		},
 		onError: error => {
-			console.log('error::', error);
 			Toast.show({
 				type: 'errorToast',
 				text1:
@@ -98,14 +97,17 @@ const ImageCard = ({ composeType }: Props) => {
 
 	return (
 		<View>
-			{composeType == 'reply' ? (
+			{['reply', 'chat'].includes(composeType) ? (
 				<View>
 					<View className="flex-row flex-wrap rounded-xl overflow-hidden">
 						{selectedMedia.map((item, index) => {
 							const imageUri = isAsset(item) ? item.uri : item.url;
 							return (
 								<View
-									className="w-1/4 h-16 rounded-md border-patchwork-dark-400 border-2 mb-2"
+									className={cn(
+										'w-1/4 h-16 rounded-md border-patchwork-dark-400 border-2 mb-2',
+										composeType == 'chat' && 'mt-2',
+									)}
 									key={index}
 								>
 									<FastImage

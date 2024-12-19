@@ -51,17 +51,17 @@ const StatusReplyButton = ({
 				type: 'reply_id_change',
 				payload: status.id,
 			});
-			composeStatus.composeDispatch({
-				type: 'text',
-				payload: {
-					count: status.account.acct.length,
-					raw: '@' + status.account.acct + ' ',
-				},
-			});
-			composeStatus.composeDispatch({
-				type: 'disableUserSuggestionsModal',
-				payload: true,
-			});
+			// composeStatus.composeDispatch({
+			// 	type: 'text',
+			// 	payload: {
+			// 		count: status.account.acct.length,
+			// 		raw: '@' + status.account.acct + ' ',
+			// 	},
+			// });
+			// composeStatus.composeDispatch({
+			// 	type: 'disableUserSuggestionsModal',
+			// 	payload: true,
+			// });
 		}
 
 		changeCurrentStatus(status);

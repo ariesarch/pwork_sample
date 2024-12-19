@@ -1,37 +1,46 @@
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
 	ActivityIndicator,
-	Dimensions,
-	Pressable,
+	ListRenderItemInfo,
 	RefreshControl,
+	TouchableOpacity,
 	View,
 } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
-import FastImage from 'react-native-fast-image';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
 import Header from '@/components/atoms/common/Header/Header';
-import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import ConversationsListLoading from '@/components/atoms/loading/ConversationsListLoading';
-import StartConversation from '@/components/organisms/conversations/StartConversation/StartConversation';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { useMarkAsReadMutation } from '@/hooks/mutations/conversations.mutation';
-import { useGetConversationsList } from '@/hooks/queries/conversations.queries';
+import {
+	useMarkAsReadMutation,
+	useMessageDeleteMutation,
+} from '@/hooks/mutations/conversations.mutation';
+import {
+	useGetAllNotiReq,
+	useGetConversationsList,
+} from '@/hooks/queries/conversations.queries';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
 	BottomStackParamList,
 	ConversationsStackParamList,
 } from '@/types/navigation';
 import customColor from '@/util/constant/color';
-import { cleanText } from '@/util/helper/cleanText';
-import { extractMessage } from '@/util/helper/extractMessage';
-import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
-import { PlusIcon } from '@/util/svg/icon.conversations';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
+import {
+	markAsReadInConversationCache,
+	removeDeletedMsgInConversationCache,
+} from '@/util/cache/conversation/conversationCahce';
+import ConversationItem from '@/components/molecules/conversations/ConversationItem/ConversationItem';
+import { EmptyListComponent } from '@/components/molecules/conversations/EmptyListItem/EmptyListItem';
+import { FloatingAddButton } from '@/components/molecules/conversations/FloatingAddButton/FloatingAddButton';
+import { SwipeListView } from 'react-native-swipe-list-view';
+import { DeleteIcon } from '@/util/svg/icon.common';
+import DeleteModal from '@/components/atoms/conversations/DeleteModal/DeleteModal';
+import { delay } from 'lodash';
+import NofiReqButton from '@/components/atoms/conversations/NotificationRequestsButton/NotificationRequestsButton';
 
-const { width, height } = Dimensions.get('window');
+type RowMap<T> = { [key: string]: T };
 
 type MessageScreenNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<BottomStackParamList, 'Conversations'>,
@@ -43,131 +52,147 @@ const ConversationList = ({
 }: {
 	navigation: MessageScreenNavigationProp;
 }) => {
-	// const { userInfo } = useAuthStore();
-	// const {
-	//  data,
-	//  fetchNextPage,
-	//  hasNextPage,
-	//  isFetchingNextPage,
-	//  isLoading,
-	//  refetch,
-	// } = useGetConversationsList();
+	const { userInfo } = useAuthStore();
+	const [delConf, setDelConf] = useState<{
+		visible: boolean;
+		id?: string;
+		rowMap?: RowMap<any>;
+	}>({
+		visible: false,
+	});
+	const [isRefreshing, setRefresh] = useState(false);
 
-	// const { mutate: markConversationAsRead } = useMarkAsReadMutation();
-	// const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
+	const {
+		data,
+		fetchNextPage,
+		hasNextPage,
+		isFetchingNextPage,
+		isLoading,
+		refetch,
+	} = useGetConversationsList();
+	const conversationsList = useMemo(() => data?.pages.flat() || [], [data]);
 
-	// // Handlers
-	// const handlePressNewChat = () => navigation.navigate('NewMessage');
+	const { data: notiReqList, refetch: refetchNotiReq } = useGetAllNotiReq();
 
-	// const handleRead = (id: string) => markConversationAsRead({ id });
+	// mutation
+	const { mutate: markConversationAsRead } = useMarkAsReadMutation({
+		onSuccess: data => markAsReadInConversationCache(data.id),
+	});
 
-	// const handleEndReached = () => {
-	//  if (!isFetchingNextPage && hasNextPage) fetchNextPage();
-	// };
+	const { mutate: deleteMessage } = useMessageDeleteMutation({
+		onSuccess: (_, { id }) => {
+			removeDeletedMsgInConversationCache(id);
+		},
+	});
 
-	// // Render items
-	// const renderConversationItem = ({
-	//  item,
-	// }: {
-	//  item: Pathchwork.Conversations;
-	// }) => (
-	//  <Pressable
-	//    onPress={() => {
-	//      if (item.unread) handleRead(item.id);
-	//      navigation.navigate('ConversationDetail', {
-	//        id: item.last_status.id,
-	//        isNewMessage: false,
-	//      });
-	//    }}
-	//    className="flex-row items-center rounded-2xl p-3 mr-2 my-1"
-	//  >
-	//    <FastImage
-	//      className="w-10 h-10 rounded-full mr-3"
-	//      source={{ uri: item.accounts[0].avatar }}
-	//      resizeMode={FastImage.resizeMode.contain}
-	//    />
-	//    <View className="flex-1 mr-6">
-	//      <View className="flex-row items-center">
-	//        <ThemeText size={'fs_13'} variant={'textOrange'}>
-	//          {item.accounts[0].display_name}
-	//        </ThemeText>
-	//        <ThemeText size={'fs_13'} className="text-patchwork-grey-400 ml-3">
-	//          {item.last_status
-	//            ? getDurationFromNow(item.last_status.created_at)
-	//            : ''}
-	//        </ThemeText>
-	//      </View>
-	//      <ThemeText size={'xs_12'} className="text-patchwork-grey-400 my-0.5">
-	//        @{item.accounts[0].acct}
-	//      </ThemeText>
-	//      <View className="flex-row items-center">
-	//        <ThemeText size={'xs_12'}>
-	//          {item.last_status?.account?.id === userInfo?.id ? 'You: ' : ''}
-	//        </ThemeText>
-	//        <ThemeText
-	//          className={`w-full ${item.unread ? 'font-bold' : 'font-normal'}`}
-	//          size={'xs_12'}
-	//          numberOfLines={1}
-	//          ellipsizeMode="tail"
-	//        >
-	//          {extractMessage(cleanText(item.last_status?.content))}
-	//        </ThemeText>
-	//      </View>
-	//    </View>
-	//    {item.unread && (
-	//      <View className="w-2 h-2 bg-patchwork-red-50 rounded-full mr-2" />
-	//    )}
-	//  </Pressable>
-	// );
+	const handlePressNewChat = () => navigation.navigate('NewMessage');
+	const handleEndReached = () => {
+		if (!isFetchingNextPage && hasNextPage) fetchNextPage();
+	};
 
-	// const renderListFooter = () =>
-	//  isFetchingNextPage ? (
-	//    <ActivityIndicator
-	//      color={customColor['patchwork-red-50']}
-	//      size={'large'}
-	//      className="my-5"
-	//    />
-	//  ) : null;
+	const closeRow = (rowMap: RowMap<any>, rowKey: string) => {
+		if (rowMap && rowMap[rowKey]) rowMap[rowKey].closeRow();
+	};
+	const deleteRow = (rowMap: RowMap<any>, rowKey: string) => {
+		setDelConf({ visible: true, id: rowKey, rowMap });
+	};
 
-	// const renderListEmptyComponent = () =>
-	//  !isLoading ? (
-	//    <StartConversation onPress={handlePressNewChat} />
-	//  ) : (
-	//    Array(8)
-	//      .fill(null)
-	//      .map((_, index) => <ConversationsListLoading key={index} />)
-	//  );
+	const renderListFooter = () =>
+		isFetchingNextPage ? (
+			<ActivityIndicator
+				color={customColor['patchwork-red-50']}
+				size={'large'}
+				className="my-5"
+			/>
+		) : null;
+
+	const renderHiddenItem = (
+		rowData: ListRenderItemInfo<Pathchwork.Conversations>,
+		rowMap: RowMap<any>,
+	) => (
+		<TouchableOpacity
+			className="p-3 rounded-r-md absolute right-2 justify-center items-center h-5/6 w-2/12 bg-patchwork-red-50"
+			onPress={() => deleteRow(rowMap, rowData.item.id)}
+		>
+			<DeleteIcon fill={'white'} />
+		</TouchableOpacity>
+	);
 
 	return (
 		<SafeScreen>
-			<Header title="Conversations" leftCustomComponent={<BackButton />} />
-			<StartConversation onPress={() => {}} />
-			{/* <FlashList
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            tintColor={customColor['patchwork-light-900']}
-            onRefresh={refetch}
-          />
-        }
-        ListEmptyComponent={renderListEmptyComponent}
-        estimatedItemSize={100}
-        estimatedListSize={{ width, height }}
-        contentContainerStyle={{ paddingHorizontal: 10 }}
-        data={conversationsList}
-        showsVerticalScrollIndicator={false}
-        keyExtractor={item => item.id.toString()}
-        renderItem={renderConversationItem}
-        onEndReachedThreshold={0.15}
-        onEndReached={handleEndReached}
-        ListFooterComponent={renderListFooter}
-      />
-      <Pressable
-        onPress={handlePressNewChat}
-        className="bg-patchwork-red-50 rounded-full p-3 absolute bottom-5 right-5"
-      >
-        <PlusIcon />
-      </Pressable> */}
+			<Header
+				title="Conversations"
+				leftCustomComponent={<BackButton />}
+				rightCustomComponent={
+					<NofiReqButton
+						isThereData={notiReqList && notiReqList?.length > 0 ? true : false}
+						customOnPress={() => navigation.navigate('NotificationRequests')}
+					/>
+				}
+			/>
+			<SwipeListView
+				data={conversationsList}
+				keyExtractor={item => item.id}
+				ListEmptyComponent={
+					<EmptyListComponent
+						isLoading={isLoading}
+						onPress={handlePressNewChat}
+					/>
+				}
+				renderItem={({ item }) => (
+					<ConversationItem
+						item={item}
+						userInfoId={userInfo?.id!}
+						onPress={() => {
+							if (item.unread) {
+								markConversationAsRead({ id: item.id });
+							}
+							navigation.navigate('ConversationDetail', {
+								id: item.last_status.id,
+							});
+						}}
+					/>
+				)}
+				onEndReached={handleEndReached}
+				renderHiddenItem={renderHiddenItem}
+				ListFooterComponent={renderListFooter}
+				rightOpenValue={-80}
+				disableRightSwipe
+				previewRowKey={'0'}
+				refreshControl={
+					<RefreshControl
+						className="mt-1"
+						refreshing={isRefreshing}
+						tintColor={customColor['patchwork-light-900']}
+						onRefresh={() => {
+							setRefresh(true);
+							delay(() => setRefresh(false), 1500);
+							refetch();
+							refetchNotiReq();
+						}}
+					/>
+				}
+				previewOpenValue={-40}
+				previewOpenDelay={3000}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{ flexGrow: 1 }}
+			/>
+			<FloatingAddButton onPress={handlePressNewChat} />
+			<DeleteModal
+				visibile={delConf?.visible}
+				onPressCancel={() => {
+					if (delConf.rowMap && delConf.id) {
+						setDelConf({ visible: false });
+						closeRow(delConf.rowMap, delConf.id);
+					}
+				}}
+				onPressDelete={() => {
+					if (delConf?.id) {
+						setDelConf({ visible: false });
+						deleteMessage({ id: delConf.id });
+					}
+				}}
+			/>
 		</SafeScreen>
 	);
 };

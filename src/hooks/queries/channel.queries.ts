@@ -1,12 +1,16 @@
 import {
 	GetChannelAdditionalInfoQueryKey,
 	GetChannelSearchQueryKey,
+	GetCollectionChannelListQueryKey,
+	GetDetailChannelListQueryKey,
 	GetMyChannelListQueryKey,
 } from './../../types/queries/channel.type';
 import {
 	getChannelAbout,
 	getChannelAdditionalInfo,
 	getChannelFeed,
+	getCollectionChannelList,
+	getDetailChannelList,
 	getMyChannelList,
 	getRecommendedChannel,
 	getSearchChannelResult,
@@ -81,5 +85,18 @@ export const useSearchChannel = ({
 		queryKey,
 		queryFn: getSearchChannelResult,
 		enabled,
+	});
+};
+
+export const useCollectionChannelList = () => {
+	const queryKey: GetCollectionChannelListQueryKey = ['collection-channels'];
+	return useQuery({ queryKey, queryFn: getCollectionChannelList });
+};
+
+export const useDetailChannelList = ({ slug }: { slug: string }) => {
+	const queryKey: GetDetailChannelListQueryKey = ['detail-channels', { slug }];
+	return useQuery({
+		queryKey,
+		queryFn: getDetailChannelList,
 	});
 };

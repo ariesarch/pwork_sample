@@ -69,17 +69,14 @@ function ApplicationNavigator() {
 				case EventType.PRESS:
 					onRemoveNotifcationCount();
 					if (notification?.data) {
-						const destinationId = notification.data.destination_id;
-						const rebloggedId = notification?.data?.reblogged_id;
+						const notiResp =
+							notification?.data as Pathchwork.PushNotiResponse['data'];
 						if (notification?.data?.noti_type === 'follow') {
-							handleNotiProfileDetailPress(destinationId as string);
+							handleNotiProfileDetailPress(notiResp?.destination_id);
 						} else if (notification?.data?.noti_type === 'follow_request') {
 							handleNotiFollowRequestPress();
 						} else {
-							handleNotiDetailPress(
-								destinationId as string,
-								rebloggedId as string,
-							);
+							handleNotiDetailPress(notiResp);
 						}
 					}
 					break;
@@ -95,16 +92,14 @@ function ApplicationNavigator() {
 		messaging().onNotificationOpenedApp(remoteMessage => {
 			onRemoveNotifcationCount();
 			if (remoteMessage?.data) {
-				const { noti_type, destination_id, reblogged_id } = remoteMessage.data;
-				if (noti_type === 'follow') {
-					handleNotiProfileDetailPress(destination_id as string);
-				} else if (noti_type === 'follow_request') {
+				const notiResp =
+					remoteMessage?.data as Pathchwork.PushNotiResponse['data'];
+				if (notiResp.noti_type === 'follow') {
+					handleNotiProfileDetailPress(notiResp.destination_id as string);
+				} else if (notiResp.noti_type === 'follow_request') {
 					handleNotiFollowRequestPress();
 				} else {
-					handleNotiDetailPress(
-						destination_id as string,
-						reblogged_id as string,
-					);
+					handleNotiDetailPress(notiResp);
 				}
 			}
 		});
@@ -115,22 +110,21 @@ function ApplicationNavigator() {
 			.then(remoteMessage => {
 				onRemoveNotifcationCount();
 				if (remoteMessage?.data) {
-					const { noti_type, destination_id, reblogged_id } =
-						remoteMessage.data;
-					if (noti_type === 'follow') {
+					// const { noti_type, destination_id, reblogged_id } =
+					// 	remoteMessage.data;
+					const notiResp =
+						remoteMessage.data as Pathchwork.PushNotiResponse['data'];
+					if (notiResp.noti_type === 'follow') {
 						setTimeout(() => {
-							handleNotiProfileDetailPress(destination_id as string);
+							handleNotiProfileDetailPress(notiResp.destination_id);
 						}, 1000);
-					} else if (noti_type === 'follow_request') {
+					} else if (notiResp.noti_type === 'follow_request') {
 						setTimeout(() => {
 							handleNotiFollowRequestPress();
 						}, 1000);
 					} else {
 						setTimeout(() => {
-							handleNotiDetailPress(
-								destination_id as string,
-								reblogged_id as string,
-							);
+							handleNotiDetailPress(notiResp);
 						}, 1000);
 					}
 				}
