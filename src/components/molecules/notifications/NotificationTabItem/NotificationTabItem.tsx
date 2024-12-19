@@ -9,6 +9,7 @@ import {
 	NotificationUpdateIcon,
 	NotificationPostedIcon,
 	NotificationPollIcon,
+	NotificationAdminReportIcon,
 } from '@/util/svg/icon.notification';
 import Image from '@/components/atoms/common/Image/Image';
 import {
@@ -30,6 +31,7 @@ const notificationMessages: Record<NotificationItem['type'], string> = {
 	poll: 'polled has ended',
 	status: 'posted',
 	update: 'updated their post',
+	'admin.report': 'reported a post',
 };
 
 const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
@@ -41,10 +43,11 @@ const notificationTypeIcons: Record<NotificationItem['type'], React.ReactNode> =
 		poll: <NotificationPollIcon />,
 		status: <NotificationPostedIcon />,
 		update: <NotificationUpdateIcon />,
+		'admin.report': <NotificationAdminReportIcon />,
 	};
 
 const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
-	const { account, status, type, created_at } = item;
+	const { account, report, status, type, created_at } = item;
 
 	const navigation = useNavigation<NotificationScreenNavigationProp>();
 
@@ -77,10 +80,32 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					</Pressable>
 					<View>
 						<ThemeText size={'md_16'} className="opacity-80 my-1">
-							{account.display_name} {notificationMessages[type]}
+							{type === 'admin.report'
+								? `@${account.username}`
+								: account.display_name}{' '}
+							{notificationMessages[type]}
 						</ThemeText>
 					</View>
 					{/* Notification Account and Types */}
+
+					{report && (
+						<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-lg">
+							<View className="flex-row justify-between">
+								<ThemeText className="flex-1">id</ThemeText>
+								<ThemeText className="flex-1">{report.id}</ThemeText>
+							</View>
+							<View className="flex-row justify-between">
+								<ThemeText className="flex-1">account</ThemeText>
+								<ThemeText className="flex-1">
+									@{report.target_account.username}
+								</ThemeText>
+							</View>
+							<View className="flex-row justify-between">
+								<ThemeText className="flex-1">comment</ThemeText>
+								<ThemeText className="flex-1">{report.comment}</ThemeText>
+							</View>
+						</View>
+					)}
 
 					{/* Notification Status */}
 					{status && (
