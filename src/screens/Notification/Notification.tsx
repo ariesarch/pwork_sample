@@ -60,7 +60,6 @@ const Notification = ({ route }: { route: NotificationScreenRouteProp }) => {
 							borderBottomWidth: 1,
 							borderBottomColor: colorScheme === 'dark' ? '#434A4F' : '#E2E8F0',
 						}}
-						tabStyle={{ width: layout.width / 3.1 }}
 						renderLabel={({ route, focused }) => (
 							<NotiTabBarItemLabel {...{ route, focused }} />
 						)}

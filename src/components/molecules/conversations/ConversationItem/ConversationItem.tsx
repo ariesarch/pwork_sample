@@ -3,7 +3,6 @@ import { appendInstance } from '@/util/helper/appendInstance';
 import { cleanText } from '@/util/helper/cleanText';
 import { extractMessage } from '@/util/helper/extractMessage';
 import { getDurationFromNow } from '@/util/helper/getDurationFromNow';
-import { removePrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -52,9 +51,7 @@ const ConversationItem: React.FC<ListItemProps> = ({
 						numberOfLines={1}
 						ellipsizeMode="tail"
 					>
-						{removePrivateConvoHashtag(
-							extractMessage(cleanText(item.last_status?.content)),
-						)}
+						{extractMessage(cleanText(item.last_status?.content))}
 					</ThemeText>
 				</View>
 			</View>
