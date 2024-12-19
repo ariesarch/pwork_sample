@@ -19,7 +19,6 @@ import {
 } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { playSound } from '@/util/helper/conversation';
 import { removeOtherMentions } from '@/util/helper/removeOtherMentions';
-import { addPrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
@@ -67,10 +66,9 @@ const InitialMessageActionsBar = ({
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';
 			payload.in_reply_to_id = lastMsg?.id;
-			payload.status = addPrivateConvoHashtag(
-				removeOtherMentions(`@${account.acct} ${payload.status}`),
+			payload.status = removeOtherMentions(
+				`@${account.acct} ${payload.status}`,
 			);
-			console.log('lastMsg::', lastMsg);
 			mutate(payload);
 		}
 	};
