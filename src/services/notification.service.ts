@@ -16,6 +16,7 @@ export interface NotificationItem {
 		| 'reblog'
 		| 'poll'
 		| 'update'
+		| 'admin.report'
 		| 'status';
 	latest_page_notification_at: string;
 	account: Pathchwork.Account;
@@ -31,11 +32,17 @@ export interface INotificationResponse {
 		| 'reblog'
 		| 'poll'
 		| 'update'
+		| 'admin.report'
 		| 'status';
 	group_key: string;
 	status: Pathchwork.Status;
 	account: Pathchwork.Account;
 	created_at: string;
+	report: {
+		id: number;
+		comment: string;
+		target_account: Pathchwork.Account;
+	};
 }
 
 export const getNotifications = async (
