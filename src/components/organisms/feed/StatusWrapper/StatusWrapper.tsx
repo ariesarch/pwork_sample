@@ -11,7 +11,7 @@ export const StatusWrapper = ({
 }) => {
 	const checkStatusType = () => {
 		if (status.reblog) {
-			return <RebloggedStatus status={status} />;
+			return <RebloggedStatus status={status} isFromNoti={isFromNoti} />;
 		}
 		return <StatusItem status={status} isFromNoti={isFromNoti} />;
 	};
