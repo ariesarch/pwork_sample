@@ -18,10 +18,10 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 		{renderImage(
 			media_attachments[0],
 			[
-				styles.leftRoundRadius,
 				{
-					height: 150,
+					height: 232,
 					width: '100%',
+					borderRadius: 10,
 				},
 			],
 			0,
@@ -29,18 +29,12 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 		<View style={styles.rightContainer}>
 			{renderImage(
 				media_attachments[1],
-				[
-					styles.topRightRadius,
-					{ height: 72, marginBottom: 1.2, width: '100%' },
-				],
+				[{ height: 109, width: '100%', borderRadius: 10 }],
 				1,
 			)}
 			{renderImage(
 				media_attachments[2],
-				[
-					styles.bottomRightRadius,
-					{ height: 72, marginTop: 1.2, width: '100%' },
-				],
+				[{ height: 109, marginTop: 1, width: '100%', borderRadius: 10 }],
 				2,
 			)}
 		</View>
@@ -50,7 +44,6 @@ const ThreeImageGrid: React.FC<ThreeImageGridProps> = ({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		height: 150,
 		width: '100%',
 		flexDirection: 'row',
 		borderRadius: 10,
@@ -58,7 +51,7 @@ const styles = StyleSheet.create({
 	},
 	rightContainer: {
 		flex: 1,
-		marginLeft: 3.5,
+		marginLeft: 3,
 	},
 	leftRoundRadius: {
 		borderTopLeftRadius: 10,

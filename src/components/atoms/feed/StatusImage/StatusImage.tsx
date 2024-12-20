@@ -94,7 +94,7 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 				<Blurhash
 					blurhash={item.blurhash as string}
 					style={{
-						height: length === 3 && index === 0 ? 148 : length > 2 ? 73 : 150,
+						height: length === 3 && index === 0 ? 232 : length > 2 ? 113 : 232,
 					}}
 				/>
 				<SensitiveMedia

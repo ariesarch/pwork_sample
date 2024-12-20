@@ -31,10 +31,10 @@ export const getBorderRadiusStyle = (index: number, length: number) => {
 			};
 		}
 		if (index === 1) {
-			return { ...baseStyle, borderTopRightRadius: 10, marginBottom: 2 };
+			return { ...baseStyle, borderTopRightRadius: 10, marginBottom: 8 };
 		}
 		if (index === 2) {
-			return { ...baseStyle, borderBottomRightRadius: 10, marginTop: 2 };
+			return { ...baseStyle, borderBottomRightRadius: 10, marginTop: 8 };
 		}
 	}
 	if (length === 4) {

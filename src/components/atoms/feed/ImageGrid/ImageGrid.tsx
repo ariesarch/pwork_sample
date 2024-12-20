@@ -19,24 +19,22 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 	const isTwoColumns = numColumns === 2;
 
 	return (
-		<View className="flex-1 flex-row rounded-lg mt-2">
+		<View className="flex-1 flex-row mt-2">
 			{media_attachments.map((attachment, index) => {
-				let style: any = { height: 150 };
+				let style: any = { height: 232 };
 
 				if (isTwoColumns) {
 					style =
 						index % 2 === 0
 							? {
 									width: '100%',
-									borderTopLeftRadius: 10,
-									borderBottomLeftRadius: 10,
+									borderRadius: 10,
 									...style,
 							  }
 							: {
 									marginLeft: 2,
 									width: '100%',
-									borderTopRightRadius: 10,
-									borderBottomRightRadius: 10,
+									borderRadius: 10,
 									...style,
 							  };
 				} else {
@@ -44,10 +42,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({
 				}
 
 				return (
-					<View
-						key={index}
-						className={`${index % 2 === 0 ? 'flex-1 mr-0.5' : 'flex-1 ml-0.5'}`}
-					>
+					<View key={index} className="flex-1">
 						{renderImage(attachment, style, index)}
 					</View>
 				);

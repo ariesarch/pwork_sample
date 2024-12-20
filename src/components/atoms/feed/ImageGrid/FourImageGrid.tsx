@@ -18,24 +18,24 @@ const FourImageGrid: React.FC<FourImageGridProps> = ({
 		<View style={styles.leftContainer}>
 			{renderImage(
 				media_attachments[0],
-				[styles.topLeftRadius, { height: 73, marginBottom: 1, width: '100%' }],
+				[{ height: 114, borderRadius: 10 }],
 				0,
 			)}
 			{renderImage(
 				media_attachments[1],
-				[styles.bottomLeftRadius, { height: 73, marginTop: 1, width: '100%' }],
+				[{ height: 114, marginTop: 1, borderRadius: 10 }],
 				1,
 			)}
 		</View>
 		<View style={styles.rightContainer}>
 			{renderImage(
 				media_attachments[2],
-				[styles.topRightRadius, { height: 73, marginBottom: 1, width: '100%' }],
+				[{ height: 114, borderRadius: 10 }],
 				2,
 			)}
 			{renderImage(
 				media_attachments[3],
-				[styles.bottomRightRadius, { height: 73, marginTop: 1, width: '100%' }],
+				[{ height: 114, marginTop: 1, borderRadius: 10 }],
 				3,
 			)}
 		</View>
@@ -47,15 +47,13 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		borderRadius: 10,
-		marginTop: 10,
 	},
 	leftContainer: {
 		flex: 1,
-		marginRight: 2,
 	},
 	rightContainer: {
 		flex: 1,
-		marginLeft: 2,
+		marginLeft: 5,
 	},
 	topLeftRadius: {
 		borderTopLeftRadius: 10,

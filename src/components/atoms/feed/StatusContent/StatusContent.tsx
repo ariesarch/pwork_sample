@@ -52,7 +52,7 @@ const StatusContent = ({
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
 					(!isFromNotiStatusImage ? (
-						<View className="h-[150]">
+						<View className="h-[232]">
 							<StatusImage
 								media_attachments={status?.media_attachments}
 								isFeedDetail={isFeedDetail}
