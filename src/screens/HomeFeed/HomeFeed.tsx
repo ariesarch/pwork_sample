@@ -38,13 +38,14 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 		refetch: refetchChannels,
 	} = useRecommendedChannels();
 
-	const { data: myChannels } = useGetMyChannels();
+	const { data: myChannels, refetch: refetchMyChannel } = useGetMyChannels();
 	const { userInfo } = useAuthStore();
 	const [isRefreshing, setIsRefreshing] = useState(false);
 
 	const handleRefresh = () => {
 		setIsRefreshing(true);
 		refetchChannels();
+		refetchMyChannel();
 		delay(() => setIsRefreshing(false), 1500);
 	};
 
