@@ -39,7 +39,12 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 		},
 	});
 	const handleSend = () => {
-		if (composeState.text.count <= composeState.maxCount) {
+		if (
+			composeState.text.count <= composeState.maxCount &&
+			composeState.text.raw.trim() !== '' &&
+			composeState.text.raw &&
+			!isPending
+		) {
 			let payload;
 			payload = prepareComposePayload(composeState);
 			payload.visibility = 'direct';

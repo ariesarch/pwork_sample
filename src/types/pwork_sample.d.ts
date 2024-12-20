@@ -95,8 +95,34 @@ declare namespace Pathchwork {
 
 	type ChannelList = {
 		id: string;
-		type: string;
+		type: 'channel';
 		attributes: ChannelAttributes;
+	};
+
+	type ProfileList = {
+		id: string;
+		type: 'account';
+		attributes: ProfileAttributes;
+	};
+
+	type ProfileAttributes = {
+		id: string;
+		username: string;
+		email: string;
+		display_name: string;
+		confirmed_at: string;
+		suspended_at: string | undefined;
+		domain_name: string;
+		avatar_image_url: string;
+	};
+
+	type MyChannel = {
+		channel: {
+			data: ChannelList;
+		};
+		channel_feed: {
+			data: ProfileList;
+		};
 	};
 
 	type CollectionList = {
