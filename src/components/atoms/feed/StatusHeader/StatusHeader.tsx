@@ -90,7 +90,9 @@ const StatusHeader = ({
 					/>
 				)}
 				<ThemeText className="font-SourceSans3_Bold">
-					{status.account.display_name}
+					{status.account.display_name
+						? status.account.display_name
+						: status.account.username}
 				</ThemeText>
 			</Pressable>
 			<ThemeText variant="textGrey" className="ml-2 mt-[2]" size="xs_12">

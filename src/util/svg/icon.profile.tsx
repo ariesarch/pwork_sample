@@ -223,6 +223,15 @@ const PreviewImageIcon = (props: SvgProps) => (
 	</Svg>
 );
 
+const AccountNotFoundIcon = (props: SvgProps) => (
+	<Svg fill="none" width="40" height="40" viewBox="0 0 40 40" {...props}>
+		<Path
+			fill="#FFFFFF"
+			d="M10.313 16 16 10.312 5.687 0 0 5.688 10.313 16ZM29.688 16 40 5.687 34.312 0 24 10.313 29.688 16ZM34.313 40 40 34.312 29.687 24 24 29.688 34.313 40ZM4.938 40 16 29.687 10.312 24 0 34.313 4.938 40Z"
+		/>
+	</Svg>
+);
+
 export {
 	ProfileNameRedMark,
 	EllipsisIcon,
@@ -246,4 +255,5 @@ export {
 	AppIcon,
 	PlusIcon,
 	PreviewImageIcon,
+	AccountNotFoundIcon,
 };

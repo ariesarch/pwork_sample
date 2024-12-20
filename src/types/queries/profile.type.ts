@@ -15,13 +15,31 @@ export type SpecificServerProfileQueryParam = {
 };
 
 export type AccountInfoQueryKey = ['get_account_info', AccountInfoQueryParam];
+
 export type CheckRelationshipQueryKey = [
 	'check-relationship-to-other-accounts',
 	CheckRelationshipQueryParam,
 ];
+
 export type SpecificServerProfileQueryKey = [
 	'specify-server-profile',
 	SpecificServerProfileQueryParam,
+];
+
+export type FollowingAccountsQueryKey = [
+	'following-accounts',
+	{
+		accountId: Pathchwork.Account['id'];
+		domain_name: string;
+	},
+];
+
+export type FollowerAccountsQueryKey = [
+	'follower-accounts',
+	{
+		accountId: Pathchwork.Account['id'];
+		domain_name: string;
+	},
 ];
 
 export type UpdateProfilePayload = {

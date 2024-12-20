@@ -1,27 +1,23 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
-import { NotificationEmptyIcon } from '@/util/svg/icon.notification';
+import { AccountNotFoundIcon } from '@/util/svg/icon.profile';
 
-const NotificationListEmpty = () => {
+const AccountListEmpty = () => {
 	return (
 		<View style={styles.container}>
-			<NotificationEmptyIcon />
+			<AccountNotFoundIcon />
 			<ThemeText
 				size={'lg_18'}
 				className="my-2 tracking-widest text-center font-SourceSans3_Bold"
 			>
-				No Notifications
-			</ThemeText>
-			<ThemeText size={'fs_15'} className="tracking-wider text-center px-3">
-				You don't have any notifications yet. When other people interact with
-				you, you will see it here.
+				No accounts found
 			</ThemeText>
 		</View>
 	);
 };
 
-export default NotificationListEmpty;
+export default AccountListEmpty;
 
 const styles = StyleSheet.create({
 	container: {

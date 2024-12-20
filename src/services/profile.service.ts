@@ -2,6 +2,8 @@ import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	AccountInfoQueryKey,
 	CheckRelationshipQueryKey,
+	FollowerAccountsQueryKey,
+	FollowingAccountsQueryKey,
 	SpecificServerProfileQueryKey,
 	UpdateProfilePayload,
 } from '@/types/queries/profile.type';
@@ -54,7 +56,7 @@ export const checkRelationshipQueryFn = async (
 		const resp: AxiosResponse<Pathchwork.RelationShip[]> = await instance.get(
 			appendApiVersion(`accounts/relationships`, 'v1'),
 			{
-				params: { id: accountIds },
+				params: { with_suspended: true, id: accountIds },
 			},
 		);
 		return resp.data;
@@ -96,6 +98,78 @@ export const followRequestsQueryFn = async ({
 		return resp.data;
 	} catch (error) {
 		return handleError(error);
+	}
+};
+
+export const getFollowingAccountsQueryFn = async (
+	qfContext: QueryFunctionContext<FollowingAccountsQueryKey>,
+) => {
+	try {
+		const { domain_name, accountId } = qfContext.queryKey[1];
+		const max_id = qfContext.pageParam as string;
+
+		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+			appendApiVersion(`accounts/${accountId}/following`),
+			{
+				params: {
+					domain_name,
+					isDynamicDomain: true,
+					max_id,
+				},
+			},
+		);
+		const linkHeader = resp.headers.link as string;
+		let maxId = null;
+		if (linkHeader) {
+			const regex = /max_id=(\d+)/;
+			const match = linkHeader.match(regex);
+			if (match) {
+				maxId = match[1];
+			}
+		}
+
+		return {
+			data: resp.data,
+			links: { next: { max_id: maxId } },
+		};
+	} catch (e) {
+		return handleError(e);
+	}
+};
+
+export const getFollowerAccountsQueryFn = async (
+	qfContext: QueryFunctionContext<FollowerAccountsQueryKey>,
+) => {
+	try {
+		const { domain_name, accountId } = qfContext.queryKey[1];
+		const max_id = qfContext.pageParam as string;
+
+		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+			appendApiVersion(`accounts/${accountId}/followers`),
+			{
+				params: {
+					domain_name,
+					isDynamicDomain: true,
+					max_id,
+				},
+			},
+		);
+		const linkHeader = resp.headers.link as string;
+		let maxId = null;
+		if (linkHeader) {
+			const regex = /max_id=(\d+)/;
+			const match = linkHeader.match(regex);
+			if (match) {
+				maxId = match[1];
+			}
+		}
+
+		return {
+			data: resp.data,
+			links: { next: { max_id: maxId } },
+		};
+	} catch (e) {
+		return handleError(e);
 	}
 };
 

@@ -21,3 +21,5 @@ export { default as ConversationList } from './ConversationList/ConversationList
 export { default as LocalImageViewer } from './LocalImageViewer/LocalImageViewer';
 export { default as NotificationRequests } from './NotificationRequests/NotificationRequests';
 export { default as CollectionDetail } from './CollectionDetail/CollectionDetail';
+export { default as FollowingAccounts } from './FollowingAccounts/FollowingAccounts';
+export { default as FollowerAccounts } from './FollowerAccounts/FollowerAccounts';

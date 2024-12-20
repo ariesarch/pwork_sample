@@ -84,6 +84,14 @@ export type HomeStackParamList = {
 	ProfileOther: { id: string; isFromNoti?: boolean };
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
+	FollowingAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
+	FollowerAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
 };
 
 export type SearchStackParamList = {
@@ -105,6 +113,14 @@ export type SearchStackParamList = {
 	Profile: { id: string };
 	ProfileOther: { id: string; isFromNoti?: boolean };
 	CollectionDetail: { slug: string; title: string };
+	FollowingAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
+	FollowerAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
 };
 
 // ********** Notification Stack ********** //
@@ -120,6 +136,14 @@ export type NotiStackParamList = {
 	};
 	Profile: { id: string };
 	ProfileOther: { id: string; isFromNoti?: boolean };
+	FollowingAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
+	FollowerAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
 };
 
 export type NotificationScreenNavigationProp = NavigationProp<
@@ -144,6 +168,16 @@ export type ConversationsStackParamList = {
 		account: Pathchwork.Account;
 	};
 	NotificationRequests: undefined;
+	Profile: { id: string };
+	ProfileOther: { id: string; isFromNoti?: boolean };
+	FollowingAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
+	FollowerAccounts: {
+		accountId: string;
+		isMainChannel?: boolean;
+	};
 };
 
 export type GuestStackParamList = {
@@ -154,6 +188,11 @@ export type GuestStackParamList = {
 	ForgotPasswordOTP: { email: string; reset_password_token: string };
 	ChangePassword: { reset_password_token: string };
 };
+
+export type CommonCompositeNavigationProp = CompositeNavigationProp<
+	StackNavigationProp<HomeStackParamList>,
+	StackNavigationProp<BottomStackParamList>
+>;
 
 export type RootScreenProps<
 	S extends keyof RootStackParamList = keyof RootStackParamList,

@@ -5,8 +5,12 @@ import {
 	ConversationDetail,
 	ConversationList,
 	NotificationRequests,
+	Profile,
+	FollowingAccounts,
+	FollowerAccounts,
 } from '@/screens';
 import InitiateNewConversation from '@/screens/InitiateNewConversation/InitiateNewConversation';
+import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 
 const Stack = createStackNavigator<ConversationsStackParamList>();
 
@@ -27,6 +31,10 @@ const ConversationsStack = () => {
 				name="NotificationRequests"
 				component={NotificationRequests}
 			/>
+			<Stack.Screen name="Profile" component={Profile} />
+			<Stack.Screen name="ProfileOther" component={ProfileOther} />
+			<Stack.Screen name="FollowingAccounts" component={FollowingAccounts} />
+			<Stack.Screen name="FollowerAccounts" component={FollowerAccounts} />
 		</Stack.Navigator>
 	);
 };

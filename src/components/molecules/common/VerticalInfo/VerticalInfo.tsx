@@ -27,7 +27,7 @@ const VerticalInfo = ({
 	showChannelFollowers,
 }: VerticalInfoProps) => {
 	return (
-		<View className="flex-col px-4">
+		<View className="flex-1 flex-col px-4">
 			<AccountName {...{ accountName, acctNameTextStyle, hasRedMark }} />
 			<UserName {...{ username, joinedDate }} />
 			{showChannelFollowers && <ChannelFollowers followers="7.3k" />}

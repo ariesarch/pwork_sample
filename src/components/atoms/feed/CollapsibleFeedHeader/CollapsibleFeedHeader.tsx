@@ -46,6 +46,7 @@ type ProfileProps = {
 	myAcctId?: string;
 	specifyServerAccId?: string;
 	otherUserId?: string;
+	isMainChannel?: boolean;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -272,13 +273,17 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							props.channel.contact?.account?.created_at,
 						).format('MMM YYYY')}
 						userBio={props.channel?.description}
-						showChannelFollowers
+						// showChannelFollowers
 					/>
 				) : (
 					<View>
 						<VerticalInfo
 							hasRedMark
-							accountName={props.profile?.display_name}
+							accountName={
+								props.profile?.display_name
+									? props.profile?.display_name
+									: props.profile?.username
+							}
 							username={props.profile?.acct}
 							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
 							userBio={props.profile?.note}
@@ -293,6 +298,8 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							posts={props.profile.statuses_count}
 							following={props.profile?.following_count}
 							followers={props.profile?.followers_count}
+							isMainChannel={props.isMainChannel}
+							accountId={props.profile?.id}
 						/>
 						<Underline className="mb-2 mt-4" />
 					</View>

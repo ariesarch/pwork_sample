@@ -2,6 +2,8 @@ import {
 	ChannelProfile,
 	CollectionDetail,
 	FeedDetail,
+	FollowingAccounts,
+	FollowerAccounts,
 	Profile,
 	Search,
 	SearchResults,
@@ -22,6 +24,8 @@ const SearchStack = () => {
 			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="ProfileOther" component={ProfileOther} />
 			<Stack.Screen name="CollectionDetail" component={CollectionDetail} />
+			<Stack.Screen name="FollowingAccounts" component={FollowingAccounts} />
+			<Stack.Screen name="FollowerAccounts" component={FollowerAccounts} />
 		</Stack.Navigator>
 	);
 };

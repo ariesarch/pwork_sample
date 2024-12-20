@@ -5,6 +5,8 @@ import {
 	HomeFeed,
 	Profile,
 	HashTagDetail,
+	FollowingAccounts,
+	FollowerAccounts,
 } from '@/screens';
 import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { HomeStackParamList } from '@/types/navigation';
@@ -21,6 +23,8 @@ const HomeStack = () => {
 			<Stack.Screen name="ChannelProfile" component={ChannelProfile} />
 			<Stack.Screen name="Profile" component={Profile} />
 			<Stack.Screen name="ProfileOther" component={ProfileOther} />
+			<Stack.Screen name="FollowingAccounts" component={FollowingAccounts} />
+			<Stack.Screen name="FollowerAccounts" component={FollowerAccounts} />
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
 			<Stack.Screen name="HashTagDetail" component={HashTagDetail} />
 			<Stack.Screen name="Conversations" component={ConversationsStack} />

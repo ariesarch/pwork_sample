@@ -139,6 +139,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										specifyServerAccId={specificServerProfile?.accounts[0]?.id}
 										otherUserId={id} // To invalidate query for specificServerProfile
 										relationships={relationships}
+										isMainChannel={isFromNoti}
 									/>
 								);
 							}}
