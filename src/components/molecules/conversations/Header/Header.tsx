@@ -7,6 +7,8 @@ import InfoButton from '@/components/atoms/conversations/InfoButton/InfoButton';
 import { VerifyIcon } from '@/util/svg/icon.conversations';
 import { useColorScheme } from 'nativewind';
 import { useNavigation } from '@react-navigation/native';
+import { useActiveDomainAction } from '@/store/feed/activeDomain';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 type Props = {
 	onPressBackButton: () => void;
@@ -16,8 +18,10 @@ type Props = {
 const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const navigation = useNavigation();
+	const { setDomain } = useActiveDomainAction();
 
 	const handleAvatarPress = () => {
+		setDomain(process.env.API_URL ?? DEFAULT_API_URL);
 		navigation.navigate('ProfileOther', {
 			id: chatParticipant?.id!,
 		});
