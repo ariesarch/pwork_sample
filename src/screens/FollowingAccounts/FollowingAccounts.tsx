@@ -18,6 +18,7 @@ import { FlashList } from '@shopify/flash-list';
 import AccountListEmpty from '@/components/atoms/profile/AccountListEmpty/AccountListEmpty';
 import { RouteProp } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type FollowingAccountsScreenRouteProp = RouteProp<
 	HomeStackParamList,
@@ -32,11 +33,17 @@ const FollowingAccounts = ({
 	const { accountId, isMainChannel } = route.params;
 	const domain_name = useSelectedDomain();
 
-	const { data, isFetching, hasNextPage, fetchNextPage, refetch } =
-		useFollowingAccountsQuery({
-			accountId: accountId,
-			domain_name: isMainChannel ? DEFAULT_API_URL : domain_name,
-		});
+	const {
+		data,
+		isFetching,
+		hasNextPage,
+		fetchNextPage,
+		refetch,
+		isLoading: isFollowListLoading,
+	} = useFollowingAccountsQuery({
+		accountId: accountId,
+		domain_name: isMainChannel ? DEFAULT_API_URL : domain_name,
+	});
 
 	const followerIds = useMemo(() => {
 		return data ? flattenPages(data).map(follower => follower.id) : [];
@@ -124,6 +131,11 @@ const FollowingAccounts = ({
 				<View className="flex-1 items-center justify-center">
 					<Flow size={50} color={customColor['patchwork-red-50']} />
 				</View>
+			)}
+			{!isFollowListLoading && (
+				<ThemeText className="text-center pb-3">
+					Follows from other servers are not displayed
+				</ThemeText>
 			)}
 		</SafeScreen>
 	);

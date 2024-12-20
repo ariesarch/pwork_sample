@@ -92,6 +92,7 @@ export type HomeStackParamList = {
 		accountId: string;
 		isMainChannel?: boolean;
 	};
+	WebViewer: { url: string };
 };
 
 export type SearchStackParamList = {
