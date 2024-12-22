@@ -78,55 +78,74 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	return (
 		<SafeScreen>
 			<HomeFeedHeader account={userInfo!} showUnderLine={false} />
-			{recommendedChannels && myChannels ? (
+			{recommendedChannels ? (
 				<FlatList
 					data={recommendedChannels}
 					showsVerticalScrollIndicator={false}
-					ListHeaderComponent={() => (
-						<View>
-							<View className="flex-row items-center">
-								<ThemeText
-									className="font-SourceSans3_Bold my-2 flex-1"
-									size="lg_18"
-								>
-									My Channel
-								</ThemeText>
-							</View>
-							{myChannels.channel.data && (
-								<View>
-									<ChannelCard
-										channel={myChannels.channel.data?.attributes}
-										handlePress={() => {
-											setDomain(myChannels.channel.data.attributes.domain_name);
-											navigation.navigate('ChannelProfile', {
-												domain_name: ensureHttp(
+					ListHeaderComponent={() => {
+						return myChannels ? (
+							<View>
+								<View className="flex-row items-center">
+									<ThemeText
+										className="font-SourceSans3_Bold my-2 flex-1"
+										size="lg_18"
+									>
+										My Channel
+									</ThemeText>
+								</View>
+								{myChannels.channel.data && (
+									<View>
+										<ChannelCard
+											channel={myChannels.channel.data?.attributes}
+											handlePress={() => {
+												setDomain(
 													myChannels.channel.data.attributes.domain_name,
-												),
-												channel_info: {
-													avatar_image_url:
-														myChannels.channel.data.attributes.avatar_image_url,
-													banner_image_url:
-														myChannels.channel.data.attributes.banner_image_url,
-													channel_name: myChannels.channel.data.attributes.name,
-												},
-											});
-										}}
-									/>
+												);
+												navigation.navigate('ChannelProfile', {
+													domain_name: ensureHttp(
+														myChannels.channel.data.attributes.domain_name,
+													),
+													channel_info: {
+														avatar_image_url:
+															myChannels.channel.data.attributes
+																.avatar_image_url,
+														banner_image_url:
+															myChannels.channel.data.attributes
+																.banner_image_url,
+														channel_name:
+															myChannels.channel.data.attributes.name,
+													},
+												});
+											}}
+										/>
+									</View>
+								)}
+								{myChannels.channel_feed.data && (
+									<View>
+										<ProfileCard
+											profile={myChannels.channel_feed.data.attributes}
+											handlePress={() => {
+												setDomain(process.env.API_URL ?? DEFAULT_API_URL);
+												navigation.navigate('ProfileOther', {
+													id: myChannels.channel_feed.data.id,
+												});
+											}}
+										/>
+									</View>
+								)}
+								<View className="flex-row items-center">
+									<ThemeText
+										className="font-SourceSans3_Bold my-2 flex-1"
+										size="lg_18"
+									>
+										Explore Channels
+									</ThemeText>
+									<Pressable onPress={() => navigation.navigate('SearchFeed')}>
+										<ThemeText variant="textGrey">View All</ThemeText>
+									</Pressable>
 								</View>
-							)}
-							{myChannels.channel_feed.data && (
-								<View>
-									<ProfileCard
-										profile={myChannels.channel_feed.data.attributes}
-										handlePress={() => {
-											setDomain(process.env.API_URL ?? DEFAULT_API_URL);
-											navigation.navigate('ProfileOther', {
-												id: myChannels.channel_feed.data.id,
-											});
-										}}
-									/>
-								</View>
-							)}
+							</View>
+						) : (
 							<View className="flex-row items-center">
 								<ThemeText
 									className="font-SourceSans3_Bold my-2 flex-1"
@@ -138,8 +157,8 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									<ThemeText variant="textGrey">View All</ThemeText>
 								</Pressable>
 							</View>
-						</View>
-					)}
+						);
+					}}
 					renderItem={({ item }) => (
 						<ChannelCard
 							channel={item.attributes}

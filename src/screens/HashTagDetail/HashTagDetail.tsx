@@ -119,9 +119,9 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 										)} posts today`}</ThemeText>
 									</View>
 								</View>
-								<Button variant={'outline'}>
+								{/* <Button variant={'outline'}>
 									<ThemeText>Follow</ThemeText>
-								</Button>
+								</Button> */}
 							</View>
 						);
 					}}
