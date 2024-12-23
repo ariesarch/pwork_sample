@@ -292,6 +292,7 @@ declare namespace Pathchwork {
 		history: HashtagHistory[];
 		name: string;
 		url: string;
+		following?: boolean;
 	};
 
 	type HashtagHistory = {

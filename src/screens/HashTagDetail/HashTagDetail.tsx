@@ -3,12 +3,15 @@ import { Button } from '@/components/atoms/common/Button/Button';
 import Header from '@/components/atoms/common/Header/Header';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import HashtagHeader from '@/components/molecules/feed/HashtagHeader/HashtagHeader';
 import StatusItem from '@/components/organisms/feed/StatusItem/StatusItem';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { useHashtagFollowMutation } from '@/hooks/mutations/feed.mutation';
 import { useHashtagDetailFeedQuery } from '@/hooks/queries/feed.queries';
 import { useHashTagDetailQuery } from '@/hooks/queries/hashtag.queries';
 import { HomeStackScreenProps } from '@/types/navigation';
+import { DEFAULT_API_URL } from '@/util/constant';
 import customColor from '@/util/constant/color';
 import { calculateHashTagCount } from '@/util/helper/helper';
 import { flattenPages } from '@/util/helper/timeline';
@@ -37,7 +40,7 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 
 	const { data: hashtagDetail, refetch: refetchHashTagDetail } =
 		useHashTagDetailQuery({
-			domain_name,
+			domain_name: process.env.API_URL ?? DEFAULT_API_URL,
 			hashtag,
 		});
 
@@ -45,26 +48,6 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 		if (hasNextPage) {
 			return fetchNextPage();
 		}
-	};
-
-	const totalPosts = useMemo(() => {
-		if (hashtagDetail)
-			return calculateHashTagCount(hashtagDetail.history, 'uses');
-	}, [hashtagDetail]);
-
-	const totalParticipant = useMemo(() => {
-		if (hashtagDetail) {
-			return calculateHashTagCount(hashtagDetail.history, 'accounts');
-		}
-	}, [hashtagDetail]);
-
-	const getTodayPostCount = (hashtag: Pathchwork.HashtagHistory) => {
-		const date = dayjs.unix(parseInt(hashtag.day));
-		const isToday = date.isSame(dayjs(), 'day');
-		if (isToday) {
-			return hashtag.uses;
-		}
-		return 0;
 	};
 
 	const handleRefresh = () => {
@@ -89,42 +72,18 @@ const HashTagDetail: React.FC<HomeStackScreenProps<'HashTagDetail'>> = ({
 					data={flattenPages(timeline)}
 					keyExtractor={item => item.id}
 					renderItem={({ item }) => {
-						return <StatusWrapper status={item} />;
-					}}
-					ListHeaderComponent={() => {
 						return (
-							<View className="flex-row m-4">
-								<View className="flex-1">
-									<ThemeText
-										size="md_16"
-										className="font-bold"
-									>{`#${hashtagDetail.name}`}</ThemeText>
-									<View className="flex-row">
-										<ThemeText
-											variant="textGrey"
-											size="xs_12"
-											className="font-bold mr-2"
-										>{`${totalPosts} posts`}</ThemeText>
-										<ThemeText
-											variant="textGrey"
-											size="xs_12"
-											className="font-bold mr-2"
-										>{`${totalParticipant} participants`}</ThemeText>
-										<ThemeText
-											variant="textGrey"
-											size="xs_12"
-											className="font-bold"
-										>{`${getTodayPostCount(
-											hashtagDetail.history[0],
-										)} posts today`}</ThemeText>
-									</View>
-								</View>
-								{/* <Button variant={'outline'}>
-									<ThemeText>Follow</ThemeText>
-								</Button> */}
-							</View>
+							<StatusWrapper
+								status={item}
+								currentPage="Hashtag"
+								statusType={item.reblog ? 'reblog' : 'normal'}
+								extraPayload={{ hashtag, domain_name }}
+							/>
 						);
 					}}
+					ListHeaderComponent={() => (
+						<HashtagHeader hashtagDetail={hashtagDetail} hashtag={hashtag} />
+					)}
 					ListEmptyComponent={() => (
 						<ListEmptyComponent title="No Hashtag Found" />
 					)}

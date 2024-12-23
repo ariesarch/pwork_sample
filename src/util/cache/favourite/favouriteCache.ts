@@ -2,6 +2,8 @@ import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
 import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { updateQueryCacheGeneric } from '../queryCacheHelper';
 import { queryClient } from '@/App';
+import { InfiniteData } from '@tanstack/react-query';
+import { PagedResponse } from '@/util/helper/timeline';
 
 export type FavouriteQueryKeys =
 	| GetChannelFeedQueryKey
@@ -105,8 +107,27 @@ const updateFavouriteForDescendentReply = (
 	});
 };
 
+const updateHashtagFavourite = (
+	extraPayload: Record<string, any> | undefined,
+	status: Pathchwork.Status,
+) => {
+	if (extraPayload && extraPayload.hashtag && extraPayload.domain_name) {
+		const hashtagQueryKey = [
+			'hashtag-detail-feed',
+			{ domain_name: extraPayload.domain_name, hashtag: extraPayload.hashtag },
+		];
+		const previousData =
+			queryClient.getQueryData<IFeedQueryFnData>(hashtagQueryKey);
+		if (!previousData) return;
+
+		const updatedData = updateFeedWithFavourite(previousData, status);
+		queryClient.setQueryData(hashtagQueryKey, updatedData);
+	}
+};
+
 export {
 	toggleFavouriteState,
 	syncFavouriteAcrossCache,
 	updateFavouriteForDescendentReply,
+	updateHashtagFavourite,
 };

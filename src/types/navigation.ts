@@ -14,11 +14,16 @@ import type {
 	BottomTabNavigationProp,
 	BottomTabScreenProps,
 } from '@react-navigation/bottom-tabs';
+import { StatusCurrentPage } from '@/context/statusItemContext/statusItemContext.type';
 
 export type RootStackParamList = {
 	AboutYou: undefined;
 	Profile: { id: string };
-	ProfileOther: { id: string; isFromNoti?: boolean };
+	ProfileOther: {
+		id: string;
+		isFromNoti?: boolean;
+		isOwnChannelFeed?: boolean;
+	};
 	Index: NavigatorScreenParams<BottomStackParamList>;
 	Guest: NavigatorScreenParams<GuestStackParamList>;
 	EmailVerification: undefined;
@@ -58,7 +63,8 @@ export type BottomStackParamList = {
 		| {
 				type: 'repost' | 'edit';
 				incomingStatus: Pathchwork.Status;
-				isFeedDetail?: boolean;
+				statusCurrentPage?: StatusCurrentPage;
+				extraPayload?: Record<string, any>;
 		  };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 };
@@ -81,7 +87,11 @@ export type HomeStackParamList = {
 		};
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string; isFromNoti?: boolean };
+	ProfileOther: {
+		id: string;
+		isFromNoti?: boolean;
+		isOwnChannelFeed?: boolean;
+	};
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 	FollowingAccounts: {
@@ -112,7 +122,11 @@ export type SearchStackParamList = {
 		openKeyboardAtMount?: boolean;
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string; isFromNoti?: boolean };
+	ProfileOther: {
+		id: string;
+		isFromNoti?: boolean;
+		isOwnChannelFeed?: boolean;
+	};
 	CollectionDetail: { slug: string; title: string };
 	FollowingAccounts: {
 		accountId: string;
@@ -136,7 +150,11 @@ export type NotiStackParamList = {
 		openKeyboardAtMount?: boolean;
 	};
 	Profile: { id: string };
-	ProfileOther: { id: string; isFromNoti?: boolean };
+	ProfileOther: {
+		id: string;
+		isFromNoti?: boolean;
+		isOwnChannelFeed?: boolean;
+	};
 	FollowingAccounts: {
 		accountId: string;
 		isMainChannel?: boolean;
@@ -170,7 +188,11 @@ export type ConversationsStackParamList = {
 	};
 	NotificationRequests: undefined;
 	Profile: { id: string };
-	ProfileOther: { id: string; isFromNoti?: boolean };
+	ProfileOther: {
+		id: string;
+		isFromNoti?: boolean;
+		isOwnChannelFeed?: boolean;
+	};
 	FollowingAccounts: {
 		accountId: string;
 		isMainChannel?: boolean;

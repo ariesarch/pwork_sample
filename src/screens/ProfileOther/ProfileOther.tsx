@@ -38,7 +38,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
-	const { id, isFromNoti } = route.params;
+	const { id, isFromNoti, isOwnChannelFeed } = route.params;
 	const domain_name = useSelectedDomain();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
@@ -140,6 +140,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										otherUserId={id} // To invalidate query for specificServerProfile
 										relationships={relationships}
 										isMainChannel={isFromNoti}
+										isOwnChannelFeed={isOwnChannelFeed}
 									/>
 								);
 							}}
@@ -193,7 +194,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										return item.in_reply_to_id ? (
 											<></>
 										) : (
-											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+											<StatusWrapper
+												status={item}
+												isFromNoti={isFromNoti}
+												currentPage="ProfileOther"
+												statusType={item.reblog ? 'reblog' : 'normal'}
+											/>
 										);
 									}}
 									estimatedItemSize={500}
@@ -234,7 +240,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
 										return (
-											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+											<StatusWrapper
+												status={item}
+												isFromNoti={isFromNoti}
+												currentPage="ProfileOther"
+												statusType={item.reblog ? 'reblog' : 'normal'}
+											/>
 										);
 									}}
 									refreshControl={

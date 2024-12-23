@@ -47,6 +47,7 @@ type ProfileProps = {
 	specifyServerAccId?: string;
 	otherUserId?: string;
 	isMainChannel?: boolean;
+	isOwnChannelFeed?: boolean;
 };
 
 const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
@@ -160,22 +161,26 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		}
 
 		return (
-			<View className="flex-row items-center justify-center">
-				{renderChatIcon()}
-				<Button
-					variant="default"
-					size="sm"
-					className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-					onPress={onMakeRelationship}
-				>
-					{isPending ? (
-						<Flow size={25} color={customColor['patchwork-dark-900']} />
-					) : (
-						<ThemeText className="text-black" size={'fs_13'}>
-							{displayFollowActionText()}
-						</ThemeText>
-					)}
-				</Button>
+			<View>
+				{props.type == 'Profile' && !props.isOwnChannelFeed && (
+					<View className="flex-row items-center justify-center">
+						{renderChatIcon()}
+						<Button
+							variant="default"
+							size="sm"
+							className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
+							onPress={onMakeRelationship}
+						>
+							{isPending ? (
+								<Flow size={25} color={customColor['patchwork-dark-900']} />
+							) : (
+								<ThemeText className="text-black" size={'fs_13'}>
+									{displayFollowActionText()}
+								</ThemeText>
+							)}
+						</Button>
+					</View>
+				)}
 			</View>
 		);
 	};

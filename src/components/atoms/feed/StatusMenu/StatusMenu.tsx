@@ -39,6 +39,7 @@ import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { uniqueId } from 'lodash';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 const StatusMenu = ({
 	status,
@@ -58,6 +59,7 @@ const StatusMenu = ({
 	const goBackToPreviousPage = isFeedDetail && currentFeed?.id == status.id;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { saveStatus } = useSubchannelStatusActions();
+	const { currentPage, extraPayload } = useStatusContext();
 
 	const { userInfo } = useAuthStore();
 
@@ -200,7 +202,8 @@ const StatusMenu = ({
 						...status,
 						text,
 					},
-					isFeedDetail,
+					statusCurrentPage: currentPage,
+					extraPayload,
 				},
 			});
 			hideMenu();

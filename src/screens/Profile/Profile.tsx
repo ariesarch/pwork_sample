@@ -274,7 +274,11 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 											return item.in_reply_to_id ? (
 												<></>
 											) : (
-												<StatusWrapper status={item} />
+												<StatusWrapper
+													status={item}
+													currentPage="Profile"
+													statusType={item.reblog ? 'reblog' : 'normal'}
+												/>
 											);
 										}}
 										ListEmptyComponent={() => (
@@ -317,7 +321,13 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 										}}
 										keyExtractor={item => item.id.toString()}
 										renderItem={({ item }) => {
-											return <StatusWrapper status={item} />;
+											return (
+												<StatusWrapper
+													status={item}
+													currentPage="Profile"
+													statusType={item.reblog ? 'reblog' : 'normal'}
+												/>
+											);
 										}}
 										ListEmptyComponent={() => (
 											<ListEmptyComponent

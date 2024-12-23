@@ -128,6 +128,7 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 												setDomain(process.env.API_URL ?? DEFAULT_API_URL);
 												navigation.navigate('ProfileOther', {
 													id: myChannels.channel_feed.data.id,
+													isOwnChannelFeed: true,
 												});
 											}}
 										/>

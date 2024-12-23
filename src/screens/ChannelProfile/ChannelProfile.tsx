@@ -147,7 +147,13 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 									}}
 									// ListHeaderComponent={<HorizontalScrollMenu />}
 									keyExtractor={item => item.id.toString()}
-									renderItem={({ item }) => <StatusWrapper status={item} />}
+									renderItem={({ item }) => (
+										<StatusWrapper
+											status={item}
+											currentPage="Channel"
+											statusType={item.reblog ? 'reblog' : 'normal'}
+										/>
+									)}
 									refreshControl={
 										<RefreshControl
 											refreshing={isRefresh}

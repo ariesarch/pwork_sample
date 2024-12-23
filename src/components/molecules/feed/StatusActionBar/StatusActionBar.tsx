@@ -8,6 +8,7 @@ import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 import { cn } from '@/util/helper/twutil';
 import { useMemo } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -18,6 +19,7 @@ type Props = {
 const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
+	const { currentPage, extraPayload } = useStatusContext();
 
 	const reblogsCount = status.reblog
 		? status.reblog.reblogs_count
@@ -62,7 +64,8 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 									params: {
 										type: 'repost',
 										incomingStatus: status,
-										isFeedDetail,
+										statusCurrentPage: currentPage,
+										extraPayload,
 									},
 							  });
 					}}

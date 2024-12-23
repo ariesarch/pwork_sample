@@ -29,6 +29,7 @@ import { useStatusReplyStore } from '@/store/compose/statusReply/statusReplyStor
 import _ from 'lodash';
 import ReplyPollForm from '@/components/organisms/compose/ReplyPollForm/ReplyPollForm';
 import { DEFAULT_API_URL } from '@/util/constant';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 
 const FeedDetail = ({
 	navigation,
@@ -122,8 +123,10 @@ const FeedDetail = ({
 							renderItem={({ item, index }) => {
 								const nextItem = statusReplies?.descendants[index + 1];
 								return (
-									<ReplyStatus
+									<StatusWrapper
 										status={item}
+										currentPage="FeedDetail"
+										statusType="reply"
 										feedDetailId={feedDetail.id}
 										nextStatus={nextItem}
 										isNestedNodeInclude={isNestedNodeInclude}
@@ -132,9 +135,10 @@ const FeedDetail = ({
 							}}
 							keyExtractor={item => item.id.toString()}
 							ListHeaderComponent={() => (
-								<FeedDetailStatus
-									feedDetail={feedDetail as Pathchwork.Status}
-									// relationships={isSuccess ? relationships : []}
+								<StatusWrapper
+									status={feedDetail as Pathchwork.Status}
+									currentPage="FeedDetail"
+									statusType="feedDetail"
 								/>
 							)}
 							showsVerticalScrollIndicator={false}
