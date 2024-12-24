@@ -1,26 +1,25 @@
 import Underline from '@/components/atoms/common/Underline/Underline';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
-import { AddCommunityIcon, SettingIcon } from '@/util/svg/icon.common';
+import { SettingIcon } from '@/util/svg/icon.common';
 import { useColorScheme } from 'nativewind';
-import {
-	View,
-	ImageProps,
-	Image,
-	Pressable,
-	TouchableOpacity,
-	Alert,
-} from 'react-native';
+import { View, Pressable, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import { removeAppToken } from '@/util/helper/helper';
 import { useAuthStoreAction } from '@/store/auth/authStore';
-import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import { useState } from 'react';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
-import customColor from '@/util/constant/color';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
+import {
+	Menu,
+	MenuOption,
+	MenuOptions,
+	MenuTrigger,
+	renderers,
+} from 'react-native-popup-menu';
+import { queryClient } from '@/App';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -38,34 +37,27 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 
 	const fcmToken = usePushNoticationStore(state => state.fcmToken);
 
-	const handleLogout = async () => {
+	const handlePressLogoutOption = () => {
 		setMenuVisibility(false);
-		Alert.alert(
-			'Confirmation',
-			'Are you sure you want to logout?',
-			[
-				{
-					text: 'Cancel',
-					onPress: () => {},
-					style: 'cancel',
-				},
-				{
-					text: 'OK',
-					onPress: async () => {
-						if (fcmToken) {
-							await mutateAsync({
-								notification_token: fcmToken,
-							});
-						}
-						await removeAppToken();
-						clearAuthState();
-					},
-				},
-			],
-			{ cancelable: false },
-		);
+		setAlert(true);
 	};
 
+	const handlePressLogoutConf = async () => {
+		setAlert(false);
+		try {
+			if (fcmToken) {
+				await mutateAsync({
+					notification_token: fcmToken,
+				});
+			}
+		} catch (error) {
+			console.error('Error during logout process:', error);
+		} finally {
+			await removeAppToken();
+			clearAuthState();
+			queryClient.clear();
+		}
+	};
 	return (
 		<View className="mt-4">
 			<View className="flex flex-row items-center mx-6 pb-2">
@@ -97,36 +89,59 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 					</View>
 				</TouchableOpacity>
 				<Menu
-					visible={isMenuOpen}
-					anchor={
+					renderer={renderers.Popover}
+					rendererProps={{
+						placement: 'left',
+						anchorStyle: {
+							width: 0,
+							height: 0,
+						},
+					}}
+					opened={isMenuOpen}
+					style={{ zIndex: 1000 }}
+					onBackdropPress={() => setMenuVisibility(false)}
+					onSelect={option => {
+						if (option === 'logout') handlePressLogoutOption();
+					}}
+				>
+					<MenuTrigger>
 						<Pressable
 							className="p-3 border border-slate-200 rounded-full active:opacity-80"
 							onPress={() => setMenuVisibility(true)}
 						>
 							<SettingIcon colorScheme={colorScheme} />
 						</Pressable>
-					}
-					style={{ marginTop: 50 }}
-					onRequestClose={() => setMenuVisibility(false)}
-				>
-					<MenuItem onPress={handleLogout} textStyle={{ color: '#000' }}>
-						Logout
-					</MenuItem>
-					<MenuDivider />
+					</MenuTrigger>
+					<MenuOptions
+						customStyles={{
+							optionsContainer: {
+								borderRadius: 3,
+							},
+						}}
+					>
+						<MenuOption
+							value={'logout'}
+							style={{
+								paddingVertical: 10,
+								paddingHorizontal: 15,
+								borderRadius: 3,
+							}}
+							text="Logout"
+						/>
+					</MenuOptions>
 				</Menu>
 			</View>
 			{showUnderLine && <Underline className="mt-2" />}
-			{isAlertOpen && (
-				<CustomAlert
-					message={'Are u sure you want to logout'}
-					title="Logout"
-					hasCancel
-					handleCancel={() => {
-						setAlert(false);
-					}}
-					handleOk={() => {}}
-				/>
-			)}
+			<CustomAlert
+				isVisible={isAlertOpen}
+				message={'Are u sure you want to logout?'}
+				hasCancel
+				handleCancel={() => {
+					setAlert(false);
+				}}
+				handleOk={handlePressLogoutConf}
+				type="error"
+			/>
 		</View>
 	);
 };

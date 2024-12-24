@@ -46,6 +46,8 @@ import { useManageAttachmentActions } from '@/store/compose/manageAttachments/ma
 import { cleanText } from '@/util/helper/cleanText';
 import { delay } from 'lodash';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -56,20 +58,20 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
-
-	// const domain_name = useSelectedDomain();
+	const [delConfAction, setDelConfAction] = useState<{
+		visible: boolean;
+		title?: string;
+	}>({ visible: false });
 
 	const {
 		userInfo,
 		actions: { setUserInfo },
 	} = useAuthStore();
-
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-
 	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	// ***** Get Account Info ***** //
@@ -366,24 +368,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									handleSocialLinkChange(link, username, 'edit')
 								}
 								onPressDelete={link =>
-									Alert.alert(
-										'Confirmation',
-										`Are u sure you want to delete the ${link} link?`,
-										[
-											{
-												text: 'Cancel',
-												onPress: () => {},
-												style: 'cancel',
-											},
-											{
-												text: 'OK',
-												onPress: () => {
-													handleSocialLinkChange(link, ' ', 'delete');
-												},
-											},
-										],
-										{ cancelable: false },
-									)
+									setDelConfAction({ visible: true, title: link })
 								}
 								formType={socialLinkAction.formType}
 								data={accountInfoData.fields?.filter(v => v.value)}
@@ -409,6 +394,19 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					)}
 				</View>
 			)}
+			<CustomAlert
+				isVisible={delConfAction.visible}
+				message={`Are u sure you want to delete the ${delConfAction?.title} link?`}
+				hasCancel
+				handleCancel={() => setDelConfAction({ visible: false })}
+				handleOk={() => {
+					if (delConfAction.title) {
+						setDelConfAction({ visible: false });
+						handleSocialLinkChange(delConfAction.title, ' ', 'delete');
+					}
+				}}
+				type="error"
+			/>
 		</ScrollProvider>
 	);
 };

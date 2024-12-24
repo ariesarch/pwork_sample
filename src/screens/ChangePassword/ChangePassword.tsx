@@ -15,6 +15,7 @@ import { forgetPWSchema } from '@/util/schema/forgotPwSchema';
 import { resetPasswordSchema } from '@/util/schema/resetPasswordSchema';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { isSupported } from '@react-native-firebase/messaging';
 import { useColorScheme } from 'nativewind';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -168,23 +169,23 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 						<ThemeText className="text-white">Submit</ThemeText>
 					)}
 				</Button>
-				{alertState.isOpen && (
-					<CustomAlert
-						message={
-							alertState.isSuccess
-								? 'Updated Password Successfully'
-								: 'Something went wrong'
-						}
-						title={alertState.isSuccess ? 'Success' : 'Failed'}
-						handleCancel={() => {
-							setAlert(prev => ({ ...prev, isOpen: false }));
-						}}
-						handleOk={() => {
-							setAlert(prev => ({ ...prev, isOpen: false }));
-							navigation.navigate('Login');
-						}}
-					/>
-				)}
+				<CustomAlert
+					isVisible={alertState.isOpen}
+					message={
+						alertState.isSuccess
+							? 'Updated Password Successfully!'
+							: 'Something went wrong!'
+					}
+					title={alertState.isSuccess ? 'Success' : 'Failed'}
+					handleCancel={() => {
+						setAlert(prev => ({ ...prev, isOpen: false }));
+					}}
+					handleOk={() => {
+						setAlert(prev => ({ ...prev, isOpen: false }));
+						navigation.navigate('Login');
+					}}
+					type={alertState.isSuccess ? 'success' : 'error'}
+				/>
 			</View>
 		</SafeScreen>
 	);

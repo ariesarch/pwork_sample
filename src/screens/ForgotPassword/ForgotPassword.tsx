@@ -89,34 +89,25 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 						<ThemeText className="text-white">Submit</ThemeText>
 					)}
 				</Button>
-				{alertState.isOpen && (
-					<CustomAlert
-						message={
-							alertState.isSuccess
-								? 'Please check your mail'
-								: 'Record not found'
+				<CustomAlert
+					isVisible={alertState.isOpen}
+					message={
+						alertState.isSuccess
+							? 'Please check your mail!'
+							: 'Record not found!'
+					}
+					title={alertState.isSuccess ? 'Success' : 'Failed'}
+					handleOk={() => {
+						setAlert(prev => ({ ...prev, isOpen: false }));
+						if (alertState.isSuccess) {
+							navigation.navigate('ForgotPasswordOTP', {
+								email: getValues('email'),
+								reset_password_token: token,
+							});
 						}
-						title={alertState.isSuccess ? 'Success' : 'Failed'}
-						handleCancel={() => {
-							setAlert(prev => ({ ...prev, isOpen: false }));
-							if (alertState.isSuccess) {
-								navigation.navigate('ForgotPasswordOTP', {
-									email: getValues('email'),
-									reset_password_token: token,
-								});
-							}
-						}}
-						handleOk={() => {
-							setAlert(prev => ({ ...prev, isOpen: false }));
-							if (alertState.isSuccess) {
-								navigation.navigate('ForgotPasswordOTP', {
-									email: getValues('email'),
-									reset_password_token: token,
-								});
-							}
-						}}
-					/>
-				)}
+					}}
+					type={alertState.isSuccess ? 'success' : 'error'}
+				/>
 			</View>
 		</SafeScreen>
 	);
