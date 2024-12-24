@@ -53,7 +53,10 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 		});
 	};
 
-	const calculateHeight = (length: number, index: number): number => {
+	const calculateHeightForBlurHash = (
+		length: number,
+		index: number,
+	): number => {
 		if (length === 3 && index === 0) return fullHeight;
 		if (length === 3 && (index === 1 || index === 2)) return halfHeight;
 		return length > 2 ? halfHeight : fullHeight;
@@ -73,7 +76,7 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 				<Blurhash
 					blurhash={item.blurhash as string}
 					style={{
-						height: calculateHeight(media_attachments.length, index),
+						height: calculateHeightForBlurHash(media_attachments.length, index),
 					}}
 				/>
 				<SensitiveMedia

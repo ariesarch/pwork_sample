@@ -41,7 +41,11 @@ const StatusContent = ({
 	return (
 		<View>
 			<Pressable onPress={handlePressStatus} disabled={isReposting}>
-				<HTMLParser status={status} />
+				<HTMLParser
+					isFeedDetail={isFeedDetail}
+					status={status}
+					handleSeeMorePress={handlePressStatus}
+				/>
 				{status?.poll && (
 					<PollVotingStatus
 						status={status}
