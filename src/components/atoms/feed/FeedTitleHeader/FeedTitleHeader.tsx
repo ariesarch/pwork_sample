@@ -53,6 +53,7 @@ const FeedTitleHeader = ({ title }: Props) => {
 
 	return (
 		<Animated.View
+			pointerEvents="none"
 			className={'flex-row items-center absolute px-2 z-40 py-2'}
 			style={[{ paddingTop: top + 10 }, animatedHeaderStyle]}
 		>

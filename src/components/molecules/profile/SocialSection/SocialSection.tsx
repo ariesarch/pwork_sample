@@ -51,7 +51,10 @@ const SocialSection = ({
 			<ScrollView
 				horizontal
 				showsHorizontalScrollIndicator={false}
-				contentContainerStyle={{ paddingHorizontal: scale(24) }}
+				contentContainerStyle={{
+					paddingHorizontal: scale(24),
+					paddingVertical: 15,
+				}}
 			>
 				{isMyAccount && (
 					<>
@@ -88,7 +91,7 @@ const SocialSection = ({
 					</ThemeText>
 				</ThemeText>
 			</View>
-			<View className="flex-row pt-2 mt-1">{renderAccountSocialLink()}</View>
+			<View>{renderAccountSocialLink()}</View>
 		</View>
 	);
 };

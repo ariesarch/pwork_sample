@@ -39,7 +39,6 @@ import { handleError } from '@/util/helper/helper';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
 import { verifyAuthToken } from '@/services/auth.service';
-import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
