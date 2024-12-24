@@ -5,15 +5,17 @@ import ReplyStatus from '../ReplyStatus/ReplyStatus';
 import FeedDetailStatus from '@/components/atoms/feed/FeedDetailStatus/FeedDetailStatus';
 import {
 	StatusCurrentPage,
+	StatusOrigin,
 	StatusType,
 } from '@/context/statusItemContext/statusItemContext.type';
 import { StatusContextProvider } from '@/context/statusItemContext/statusItemContext';
 import NotificationStatus from '../NotificationStatus/NotificationStatus';
+import RepostingStatusItem from '../RepostingStatusItem/RepostingStatusItem';
 
 type DefaultStatusProps = {
 	status: Pathchwork.Status;
 	currentPage: StatusCurrentPage;
-	isFromNoti?: boolean;
+	comeFrom?: StatusOrigin;
 	extraPayload?: Record<string, any> | undefined;
 };
 
@@ -31,7 +33,7 @@ type ReplyStatusProps = DefaultStatusProps & {
 type StatusWrapperProps = NormalStatusProps | ReplyStatusProps;
 
 export const StatusWrapper = (props: StatusWrapperProps) => {
-	const { status, isFromNoti, currentPage, statusType, extraPayload } = props;
+	const { status, comeFrom, currentPage, statusType, extraPayload } = props;
 
 	const renderStatusComponent = () => {
 		switch (statusType) {
@@ -45,7 +47,9 @@ export const StatusWrapper = (props: StatusWrapperProps) => {
 			}
 
 			case 'reblog':
-				return <RebloggedStatus status={status} isFromNoti={isFromNoti} />;
+				return (
+					<RebloggedStatus status={status} isFromNoti={comeFrom == 'noti'} />
+				);
 
 			case 'feedDetail':
 				return <FeedDetailStatus feedDetail={status} />;
@@ -53,8 +57,11 @@ export const StatusWrapper = (props: StatusWrapperProps) => {
 			case 'notification':
 				return <NotificationStatus status={status} />;
 
+			case 'reposting':
+				return <RepostingStatusItem status={status} />;
+
 			case 'normal':
-				return <StatusItem status={status} isFromNoti={isFromNoti} />;
+				return <StatusItem status={status} isFromNoti={comeFrom == 'noti'} />;
 
 			default:
 				return <></>;
@@ -65,7 +72,7 @@ export const StatusWrapper = (props: StatusWrapperProps) => {
 		<StatusContextProvider
 			value={{
 				parentStatus: status,
-				comeFrom: isFromNoti ? 'noti' : 'other',
+				comeFrom: comeFrom || 'other',
 				currentPage,
 				statusType,
 				extraPayload,

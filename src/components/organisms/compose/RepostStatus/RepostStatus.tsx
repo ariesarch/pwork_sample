@@ -8,6 +8,7 @@ import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import { ComposeRepostInputExplorerIcon } from '@/util/svg/icon.compose';
 import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
+import StatusWrapper from '../../feed/StatusWrapper/StatusWrapper';
 
 const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 	const { colorScheme } = useColorScheme();
@@ -25,10 +26,15 @@ const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
 			<ComposeTextInput />
 			<LinkCard composeType="repost" />
 			<ImageCard composeType="repost" />
-			<View className="border flex-1 border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl">
+			{/* <View className="border flex-1 border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-xl">
 				<StatusHeader status={status} showAvatarIcon />
 				<StatusContent status={status} isReposting />
-			</View>
+			</View> */}
+			<StatusWrapper
+				status={status}
+				currentPage="Compose"
+				statusType="reposting"
+			/>
 		</ScrollView>
 	);
 };

@@ -112,7 +112,7 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 					{status && (
 						<StatusWrapper
 							status={status}
-							isFromNoti
+							comeFrom="noti"
 							currentPage="Notification"
 							statusType="notification"
 						/>

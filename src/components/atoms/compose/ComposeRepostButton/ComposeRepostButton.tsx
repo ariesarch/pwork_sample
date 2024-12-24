@@ -96,11 +96,10 @@ const ComposeRepostButton = ({
 				domain_name,
 			);
 			applyReblogCountCacheUpdates({ response: status, queryKeys });
-			statusCurrentPage == 'Hashtag' &&
+			['Hashtag', 'FeedDetail'].includes(statusCurrentPage ?? '') &&
 				updateReblogsCountForHashtag(extraPayload, status);
 
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
-			console.log('statusCurrentPage::', statusCurrentPage, extraPayload);
 
 			Toast.show({
 				type: 'successToast',

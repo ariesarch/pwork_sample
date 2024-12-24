@@ -4,6 +4,7 @@ import ThemeModal from '@/components/atoms/common/Modal/Modal';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import ManageAttachmentModal from '@/components/organisms/compose/modal/ManageAttachment/MakeAttachmentModal';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 import { useComposeMutation } from '@/hooks/mutations/feed.mutation';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
@@ -15,10 +16,18 @@ import {
 	useStatusReplyStore,
 } from '@/store/compose/statusReply/statusReplyStore';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
-import { useActiveFeedAction } from '@/store/feed/activeFeed';
+import {
+	useActiveFeedAction,
+	useActiveFeedStore,
+} from '@/store/feed/activeFeed';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
-import { updateReplyFeedCache } from '@/util/cache/reply/replyCache';
+import {
+	updateReplyCountInAccountFeedCache,
+	updateReplyCountChannelFeedCache,
+	updateReplyFeedCache,
+	updateReplyCountInHashtagFeed,
+} from '@/util/cache/reply/replyCache';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import { prepareComposePayload } from '@/util/helper/compose';
 import {
@@ -55,6 +64,7 @@ const ReplyActionBar = ({
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { userInfo } = useAuthStore();
 	const { saveStatus } = useSubchannelStatusActions();
+	const { extraPayload } = useActiveFeedStore();
 
 	const { onToggleMediaModal, resetAttachmentStore } =
 		useManageAttachmentActions();
@@ -77,33 +87,6 @@ const ReplyActionBar = ({
 		{ id: feedDetailId, domain_name },
 	];
 
-	const accountDetailFeedQueryKey = [
-		'account-detail-feed',
-		{
-			domain_name: domain_name,
-			account_id: isAuthor ? userInfo?.id! : feedDetailStatus.account.id,
-			exclude_replies: true,
-			exclude_reblogs: false,
-			exclude_original_statuses: false,
-		},
-	];
-
-	const accountDetailReplyFeedQueryKey = [
-		'account-detail-feed',
-		{
-			domain_name: domain_name,
-			account_id: isAuthor ? userInfo?.id! : feedDetailStatus.account.id,
-			exclude_replies: false,
-			exclude_reblogs: true,
-			exclude_original_statuses: true,
-		},
-	];
-
-	const channelFeedQueryKey = [
-		'channel-feed',
-		{ domain_name, remote: false, only_media: false },
-	];
-
 	useEffect(() => {
 		if (composeState.in_reply_to_id === undefined) {
 			composeDispatch({
@@ -118,16 +101,21 @@ const ReplyActionBar = ({
 		onSuccess: (newStatus: Pathchwork.Status) => {
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
-
-			currentFocusStatus?.id == feedDetailId &&
+			if (currentFocusStatus?.id == feedDetailId) {
 				changeActiveFeedReplyCount('increase');
-
+				updateReplyCountInAccountFeedCache(
+					domain_name,
+					isAuthor ? userInfo?.id! : feedDetailStatus.account.id,
+					feedDetailStatus.id,
+				);
+				updateReplyCountChannelFeedCache(domain_name, feedDetailStatus.id);
+				extraPayload?.comeFrom == 'hashtag' &&
+					updateReplyCountInHashtagFeed(
+						extraPayload?.carriedPayload,
+						feedDetailStatus.id,
+					);
+			}
 			updateReplyFeedCache(feedReplyQueryKey, newStatus, feedDetailStatus.id);
-			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
-			queryClient.invalidateQueries({
-				queryKey: accountDetailReplyFeedQueryKey,
-			});
-			queryClient.invalidateQueries({ queryKey: channelFeedQueryKey });
 		},
 		onError: e => {
 			Toast.show({

@@ -2,6 +2,7 @@ import { FeedDetail } from '@/screens';
 import { queryClient } from '@/App';
 import { StatusCacheQueryKeys } from '../queryCacheHelper';
 import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
+import { DEFAULT_API_URL } from '@/util/constant';
 
 type DeleteStatusCacheParams = {
 	status_id: Pathchwork.Status['id'];
@@ -49,6 +50,7 @@ const deleteDescendentReply = (
 	domain_name: string,
 	statusId: string,
 ) => {
+	if (domain_name == DEFAULT_API_URL) return;
 	const feedDetailQueryKey = [
 		'feed-replies',
 		{ id: feedDetailId, domain_name: domain_name },

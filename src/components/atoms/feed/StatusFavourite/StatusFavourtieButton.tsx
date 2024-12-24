@@ -49,7 +49,7 @@ const StatusFavourtieButton = ({
 
 	const { mutate } = useFavouriteMutation({
 		onMutate: async variables => {
-			if (isFeedDetail && currentFeed?.id === status.id) {
+			if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				const updateFeedDatailData = toggleFavouriteState(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
@@ -71,7 +71,8 @@ const StatusFavourtieButton = ({
 				domain_name,
 				status.id,
 			);
-			currentPage == 'Hashtag' && updateHashtagFavourite(extraPayload, status);
+			['Hashtag', 'FeedDetail'].includes(currentPage) &&
+				updateHashtagFavourite(extraPayload, status);
 		},
 	});
 

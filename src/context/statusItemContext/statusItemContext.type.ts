@@ -4,12 +4,14 @@ export type StatusCurrentPage =
 	| 'Hashtag'
 	| 'FeedDetail'
 	| 'ProfileOther'
-	| 'Notification';
+	| 'Notification'
+	| 'Compose';
 
-export type StatusOrigin = 'other' | 'noti';
+export type StatusOrigin = 'other' | 'noti' | 'hashtag';
 export type StatusType =
 	| 'normal'
 	| 'reblog'
 	| 'feedDetail'
 	| 'reply'
+	| 'reposting'
 	| 'notification';

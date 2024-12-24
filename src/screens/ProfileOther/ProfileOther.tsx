@@ -196,7 +196,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										) : (
 											<StatusWrapper
 												status={item}
-												isFromNoti={isFromNoti}
+												comeFrom={isFromNoti ? 'noti' : 'other'}
 												currentPage="ProfileOther"
 												statusType={item.reblog ? 'reblog' : 'normal'}
 											/>
@@ -242,7 +242,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										return (
 											<StatusWrapper
 												status={item}
-												isFromNoti={isFromNoti}
+												comeFrom={isFromNoti ? 'noti' : 'other'}
 												currentPage="ProfileOther"
 												statusType={item.reblog ? 'reblog' : 'normal'}
 											/>
