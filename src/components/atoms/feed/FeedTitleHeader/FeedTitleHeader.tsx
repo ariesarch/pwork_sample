@@ -1,9 +1,5 @@
-import {
-	EllipsisIcon,
-	ProfileBackIcon,
-	SearchIconInProfile,
-} from '@/util/svg/icon.profile';
-import { Platform, TouchableOpacity, View } from 'react-native';
+import { ProfileBackIcon } from '@/util/svg/icon.profile';
+import { Platform, TouchableOpacity } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSharedScrollY } from '@/context/sharedScrollContext/sharedScroll.context';
@@ -51,37 +47,67 @@ const FeedTitleHeader = ({ title }: Props) => {
 		return { opacity };
 	});
 
+	const firstBackButtonStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(
+			sharedScrollYOffset.value,
+			[TitleDepth - 20, TitleDepth],
+			[1, 0],
+			'clamp',
+		);
+		return { opacity };
+	});
+
+	const secondBackButtonStyle = useAnimatedStyle(() => {
+		const opacity = interpolate(
+			sharedScrollYOffset.value,
+			[TitleDepth, TitleDepth + 20],
+			[0, 1],
+			'clamp',
+		);
+		return { opacity };
+	});
+
 	return (
-		<Animated.View
-			pointerEvents="none"
-			className={'flex-row items-center absolute px-2 z-40 py-2'}
-			style={[{ paddingTop: top + 10 }, animatedHeaderStyle]}
-		>
-			<View>
+		<>
+			{/* First Back Button */}
+			<Animated.View
+				className="absolute left-5 z-10"
+				style={[{ top: top + 10 }, firstBackButtonStyle]}
+			>
 				<TouchableOpacity
 					onPress={() => navigation.goBack()}
 					className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
 				>
 					<ProfileBackIcon />
 				</TouchableOpacity>
-			</View>
-			<Animated.View
-				className="flex-1 items-center justify-center"
-				style={animatedTitleStyle}
-			>
-				<ThemeText className="font-SourceSans3_Bold" size={'md_16'}>
-					{title}
-				</ThemeText>
 			</Animated.View>
-			{/* <View className="flex-row items-center gap-2">
-				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50">
-					<SearchIconInProfile />
-				</TouchableOpacity>
-				<TouchableOpacity className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1">
-					<EllipsisIcon />
-				</TouchableOpacity>
-			</View> */}
-		</Animated.View>
+
+			{/* Animated Header */}
+			<Animated.View
+				pointerEvents="none"
+				className={'flex-row items-center absolute px-2 z-40 py-2'}
+				style={[{ paddingTop: top + 10 }, animatedHeaderStyle]}
+			>
+				{/* Second Back Button */}
+				<Animated.View style={secondBackButtonStyle}>
+					<TouchableOpacity
+						onPress={() => navigation.goBack()}
+						className="w-8 h-8 items-center justify-center rounded-full bg-patchwork-dark-100 opacity-50 mr-1"
+					>
+						<ProfileBackIcon />
+					</TouchableOpacity>
+				</Animated.View>
+
+				<Animated.View
+					className="flex-1 items-center justify-center"
+					style={animatedTitleStyle}
+				>
+					<ThemeText className="font-SourceSans3_Bold" size={'md_16'}>
+						{title}
+					</ThemeText>
+				</Animated.View>
+			</Animated.View>
+		</>
 	);
 };
 

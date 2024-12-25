@@ -6,10 +6,16 @@ import { cn } from '@/util/helper/twutil';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { Button } from '@/components/atoms/common/Button/Button';
-import { useProfileMutation } from '@/hooks/mutations/profile.mutation';
+import {
+	useDeleteProfileMediaMutation,
+	useProfileMutation,
+} from '@/hooks/mutations/profile.mutation';
 import { useNavigation } from '@react-navigation/native';
 import { handleError } from '@/util/helper/helper';
-import { UpdateProfilePayload } from '@/types/queries/profile.type';
+import {
+	AccountInfoQueryKey,
+	UpdateProfilePayload,
+} from '@/types/queries/profile.type';
 import { queryClient } from '@/App';
 import { DEFAULT_API_URL } from '@/util/constant';
 import ThemeModal from '@/components/atoms/common/Modal/Modal';
@@ -26,12 +32,12 @@ import {
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { ProfileBackIcon } from '@/util/svg/icon.profile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { CloseIcon } from '@/util/svg/icon.common';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 
 type ProfileType = {
 	display_name?: string;
 	bio?: string;
-	avatar?: string;
-	header?: string;
 };
 
 const EditProfile = () => {
@@ -43,34 +49,39 @@ const EditProfile = () => {
 	const [profile, setProfile] = useState<ProfileType>();
 	const { header, avatar, actions } = useProfileMediaStore();
 	const { height, progress } = useGradualAnimation();
-
 	const { top } = useSafeAreaInsets();
+	const [delConfAction, setDelConfAction] = useState<{
+		visible: boolean;
+		title?: 'header' | 'avatar';
+	}>({ visible: false });
 
 	useEffect(() => {
 		if (userInfo) {
 			setProfile({
 				display_name: userInfo.display_name,
 				bio: cleanText(userInfo?.note) || '',
-				avatar: userInfo.avatar || '',
-				header: userInfo.header || '',
 			});
+			actions.onSelectMedia(
+				'avatar',
+				userInfo?.avatar || userInfo.avatar_static,
+			);
+			actions.onSelectMedia(
+				'header',
+				userInfo.header || userInfo.header_static,
+			);
 		}
 	}, [userInfo]);
 
-	const { mutateAsync, isPending } = useProfileMutation({
+	// Const
+	const acctInfoQueryKey: AccountInfoQueryKey = [
+		'get_account_info',
+		{ id: userInfo?.id!, domain_name: process.env.API_URL ?? DEFAULT_API_URL },
+	];
+
+	// mutations
+	const { mutateAsync, isPending: isUpdatingProfile } = useProfileMutation({
 		onSuccess: response => {
-			queryClient.invalidateQueries({
-				queryKey: [
-					'account-detail-feed',
-					{
-						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
-						account_id: userInfo?.id,
-						exclude_reblogs: false,
-						exclude_replies: true,
-						exclude_original_statuses: false,
-					},
-				],
-			});
+			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
 			setUserInfo(response);
 			Toast.show({
 				text1: 'Your profile has been updated successfully!',
@@ -106,24 +117,56 @@ const EditProfile = () => {
 			});
 		},
 	});
+	const { mutate: deleteMedia, isPending: isDeletingMedia } =
+		useDeleteProfileMediaMutation({
+			onSuccess: (response, variables) => {
+				queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
+				setUserInfo(response);
+				Toast.show({
+					text1: `Your ${variables.mediaType} is deleted successfully!`,
+					position: 'top',
+					topOffset: 15,
+					visibilityTime: 1000,
+				});
+			},
+			onError: error => {
+				Toast.show({
+					type: 'error',
+					text1: error?.message || 'Something went wrong!',
+					position: 'top',
+					topOffset: 15,
+					visibilityTime: 1000,
+				});
+			},
+		});
+
+	// handlers
 	const handleUpdateProfile = async () => {
-		try {
-			let payload: UpdateProfilePayload = {
-				display_name: profile?.display_name,
-				note: profile?.bio,
-			};
-			if (avatar?.selectedMedia?.length > 0) {
-				payload.avatar = avatar.selectedMedia[0];
-			}
-			if (header?.selectedMedia?.length > 0) {
-				payload.header = header.selectedMedia[0];
-			}
-			await mutateAsync(payload);
-		} catch (error) {
-			handleError(error);
+		let payload: UpdateProfilePayload = {
+			display_name: profile?.display_name,
+			note: profile?.bio,
+		};
+		payload.avatar =
+			typeof avatar.selectedMedia === 'string'
+				? avatar.selectedMedia
+				: avatar.selectedMedia[0] || null;
+		payload.header =
+			typeof header.selectedMedia === 'string'
+				? header.selectedMedia
+				: header.selectedMedia[0] || null;
+		mutateAsync(payload);
+	};
+
+	const handlePressDelConf = () => {
+		if (delConfAction.title) {
+			setDelConfAction({ visible: false });
+			actions.onSelectMedia(delConfAction.title, []);
+			actions.onToggleMediaModal(delConfAction.title);
+			deleteMedia({ mediaType: delConfAction.title });
 		}
 	};
 
+	// styles
 	const virtualKeyboardContainerStyle = useAnimatedStyle(() => {
 		return {
 			height:
@@ -167,13 +210,9 @@ const EditProfile = () => {
 							<ManageAttachmentModal
 								type="header"
 								onToggleMediaModal={() => actions.onToggleMediaModal('header')}
-								imageUrl={profile?.header ? profile.header : null}
-								canPreview={
-									header.selectedMedia.length > 0
-										? false
-										: profile?.header
-										? true
-										: true
+								imageUrl={header.selectedMedia}
+								handleOnPressDelete={() =>
+									setDelConfAction({ visible: true, title: 'header' })
 								}
 							/>
 						</ThemeModal>
@@ -192,13 +231,9 @@ const EditProfile = () => {
 							<ManageAttachmentModal
 								type="avatar"
 								onToggleMediaModal={() => actions.onToggleMediaModal('avatar')}
-								imageUrl={profile?.avatar ? profile.avatar : null}
-								canPreview={
-									avatar.selectedMedia.length > 0
-										? false
-										: profile?.avatar
-										? true
-										: true
+								imageUrl={avatar.selectedMedia}
+								handleOnPressDelete={() =>
+									setDelConfAction({ visible: true, title: 'avatar' })
 								}
 							/>
 						</ThemeModal>
@@ -208,7 +243,10 @@ const EditProfile = () => {
 							<FastImage
 								className="bg-patchwork-dark-50 h-36 w-full"
 								source={{
-									uri: header.selectedMedia[0]?.uri || profile?.header,
+									uri:
+										typeof header.selectedMedia === 'string'
+											? header?.selectedMedia
+											: header?.selectedMedia[0]?.uri,
 									priority: FastImage.priority.normal,
 								}}
 								resizeMode={FastImage.resizeMode.cover}
@@ -229,7 +267,10 @@ const EditProfile = () => {
 										'w-[100] h-[100] mt-[-25] bg-patchwork-dark-50 border-patchwork-dark-100 border-4 rounded-full',
 									)}
 									source={{
-										uri: avatar.selectedMedia[0]?.uri || profile?.avatar,
+										uri:
+											typeof avatar.selectedMedia === 'string'
+												? avatar?.selectedMedia
+												: avatar?.selectedMedia[0]?.uri,
 										priority: FastImage.priority.normal,
 									}}
 									resizeMode={FastImage.resizeMode.cover}
@@ -272,8 +313,18 @@ const EditProfile = () => {
 				>
 					<ThemeText>Save</ThemeText>
 				</Button>
-				<LoadingModal isVisible={isPending} />
 			</View>
+			<CustomAlert
+				isVisible={delConfAction.visible}
+				message={`Are u sure you want to delete the ${delConfAction?.title}?`}
+				hasCancel
+				handleCancel={() => setDelConfAction({ visible: false })}
+				handleOk={() => {
+					if (delConfAction.title) handlePressDelConf();
+				}}
+				type="error"
+			/>
+			<LoadingModal isVisible={isDeletingMedia || isUpdatingProfile} />
 		</>
 	);
 };

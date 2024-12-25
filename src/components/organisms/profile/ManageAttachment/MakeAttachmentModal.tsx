@@ -16,18 +16,21 @@ import ImagePicker from 'react-native-image-crop-picker';
 import Toast from 'react-native-toast-message';
 import { PreviewImageIcon } from '@/util/svg/icon.profile';
 import { useNavigation } from '@react-navigation/native';
+import { DeleteIcon } from '@/util/svg/icon.common';
+import { Asset } from 'react-native-image-picker';
+import { cn } from '@/util/helper/twutil';
 
 type ManageAttachmentModalProps = {
 	type: 'header' | 'avatar';
 	onToggleMediaModal: () => void;
-	imageUrl: string | null;
-	canPreview: boolean;
+	imageUrl: string | null | Asset[];
+	handleOnPressDelete: () => void;
 };
 const ManageAttachmentModal = ({
 	type,
 	onToggleMediaModal,
 	imageUrl,
-	canPreview,
+	handleOnPressDelete,
 }: ManageAttachmentModalProps) => {
 	const { colorScheme } = useColorScheme();
 	const { onSelectMedia } = useProfileMediaActions();
@@ -94,7 +97,7 @@ const ManageAttachmentModal = ({
 	};
 
 	const onPressPreview = () => {
-		if (imageUrl) {
+		if (typeof imageUrl === 'string') {
 			navigation.navigate('LocalImageViewer', {
 				imageUrl: {
 					url: imageUrl,
@@ -103,6 +106,13 @@ const ManageAttachmentModal = ({
 		}
 		onToggleMediaModal();
 	};
+
+	// const onPressDelete = () => {
+
+	// 	onSelectMedia(type, []);
+	// 	onToggleMediaModal();
+	// 	handleOnPressDelete();
+	// };
 
 	return (
 		<View className={Platform.OS === 'ios' ? 'pb-6' : 'pb-0'}>
@@ -128,18 +138,36 @@ const ManageAttachmentModal = ({
 					</Button>
 				</View>
 			</View>
-			<View className="flex-row items-center justify-between">
-				{canPreview && imageUrl && (
-					<Button
-						className="flex-1 flex-row items-center justify-center px-4 py-2 flex-shrink-0 border border-gray-300 rounded-md mb-4"
-						variant="outline"
-						onPress={onPressPreview}
+			{!imageUrl?.includes('/original/missing.png') && (
+				<View className="flex-row justify-between items-center mb-5">
+					{typeof imageUrl === 'string' && (
+						<View className="w-1/2 gap-2">
+							<Button
+								className="flex-row items-center"
+								variant="outline"
+								onPress={onPressPreview}
+							>
+								<PreviewImageIcon />
+								<ThemeText className="text-white pl-2">Preview Image</ThemeText>
+							</Button>
+						</View>
+					)}
+					<View
+						className={cn(
+							`${typeof imageUrl === 'string' ? 'w-1/2 gap-2' : 'w-full'}`,
+						)}
 					>
-						<PreviewImageIcon />
-						<ThemeText className="text-white pl-2">Preview Image</ThemeText>
-					</Button>
-				)}
-			</View>
+						<Button
+							className="flex-row items-center"
+							variant={'outline'}
+							onPress={handleOnPressDelete}
+						>
+							<DeleteIcon fill={'white'} />
+							<ThemeText className="text-white pl-2">Delete Image</ThemeText>
+						</Button>
+					</View>
+				</View>
+			)}
 		</View>
 	);
 };

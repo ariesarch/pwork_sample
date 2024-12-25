@@ -131,12 +131,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		username: string,
 		type: 'edit' | 'delete',
 	) => {
-		if (userInfo) {
+		if (accountInfoData) {
 			const updatedProfile: UpdateProfilePayload = {
-				display_name: userInfo?.display_name,
-				note: cleanText(userInfo?.note),
+				display_name: accountInfoData?.display_name,
+				note: cleanText(accountInfoData?.note),
 				fields_attributes: generateFieldsAttributes(
-					userInfo,
+					accountInfoData,
 					link,
 					username,
 					type,
@@ -150,18 +150,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	const { mutateAsync, isPending } = useProfileMutation({
 		onSuccess: async response => {
 			refetchAccountInfo();
-			queryClient.invalidateQueries({
-				queryKey: [
-					'account-detail-feed',
-					{
-						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
-						account_id: userInfo?.id,
-						exclude_reblogs: false,
-						exclude_replies: true,
-						exclude_original_statuses: false,
-					},
-				],
-			});
+			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
 			setUserInfo(response);
 		},
 		onError: error => {

@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 type MediaState = {
 	mediaModal: boolean;
-	selectedMedia: Asset[];
+	selectedMedia: Asset[] | string;
 };
 
 type State = {
@@ -11,7 +11,7 @@ type State = {
 	avatar: MediaState;
 	actions: {
 		onToggleMediaModal: (type: 'header' | 'avatar') => void;
-		onSelectMedia: (type: 'header' | 'avatar', media: Asset[]) => void;
+		onSelectMedia: (type: 'header' | 'avatar', media: Asset[] | string) => void;
 	};
 };
 

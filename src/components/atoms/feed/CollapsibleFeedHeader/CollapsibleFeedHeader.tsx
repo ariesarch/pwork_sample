@@ -136,11 +136,13 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	};
 
 	const onPressPreview = (imageUrl: string) => {
-		navigation.navigate('LocalImageViewer', {
-			imageUrl: {
-				url: imageUrl,
-			},
-		});
+		if (!imageUrl.includes('/original/missing.png')) {
+			navigation.navigate('LocalImageViewer', {
+				imageUrl: {
+					url: imageUrl,
+				},
+			});
+		}
 	};
 
 	const renderProfileActions = () => {
