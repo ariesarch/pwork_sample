@@ -14,6 +14,18 @@ import { Icons } from '@/util/constant/socialMediaLinks';
 import { generateSocialLinkURL } from '@/util/helper/generateSocialLinkURL';
 import { cleanText } from '@/util/helper/cleanText';
 
+const fieldNames = [
+	'Patreon',
+	'Twitter',
+	'TikTok',
+	'Youtube',
+	'Linkedin',
+	'Instagram',
+	'Reddit',
+	'Facebook',
+	'Twitch',
+];
+
 type SocialSectionProps = {
 	fields: Pathchwork.Field[];
 	isMyAccount?: boolean;
@@ -29,24 +41,53 @@ const SocialSection = ({
 }: SocialSectionProps) => {
 	const { colorScheme } = useColorScheme();
 
+	const linkCount = fields.filter(field => {
+		const { value } = field;
+		return (
+			(value &&
+				(value.toLowerCase().includes('https') ||
+					value.toLowerCase().includes('www'))) ||
+			value.toLocaleLowerCase().includes('.com')
+		);
+	}).length;
+
+	// render items
+	const renderSocialIcons = (field: Pathchwork.Field) => {
+		const { name, value } = field;
+		if (!value) return null;
+		const Icon = name.toLowerCase().includes('website') ? (
+			<GlobeIcon colorScheme={colorScheme} />
+		) : (
+			Icons[name] || null
+		);
+
+		const hrefValue = fieldNames.some(fieldName =>
+			name.toLowerCase().includes(fieldName.toLowerCase()),
+		)
+			? generateSocialLinkURL(name, value)
+			: cleanText(value);
+		const link = value.includes('href') ? cleanText(value) : value;
+
+		// Noted by sev: Here we will need to display the links and not links in a separate way.
+		const displayText =
+			name.toLowerCase().includes('website') ||
+			fieldNames.some(fieldName =>
+				name.toLowerCase().includes(fieldName.toLowerCase()),
+			)
+				? link
+				: `${name}: ${link}`;
+
+		return (
+			<Chip
+				className="mx-1"
+				startIcon={Icon}
+				title={displayText}
+				onPress={() => Linking.openURL(hrefValue)}
+			/>
+		);
+	};
+
 	const renderAccountSocialLink = () => {
-		const renderSocialIcons = (field: Pathchwork.Field) => {
-			const { name, value } = field;
-			if (!value) return null;
-			const Icon = Icons[name] || <GlobeIcon colorScheme={colorScheme} />;
-			const hrefValue = generateSocialLinkURL(name, value);
-			const link = value.includes('href') ? cleanText(value) : value;
-
-			return (
-				<Chip
-					className="mx-1"
-					startIcon={Icon}
-					title={link}
-					onPress={() => Linking.openURL(hrefValue)}
-				/>
-			);
-		};
-
 		return (
 			<ScrollView
 				horizontal
@@ -80,6 +121,7 @@ const SocialSection = ({
 			</ScrollView>
 		);
 	};
+
 	return (
 		<View className="pt-2">
 			<View className="flex-row items-center pl-4">
@@ -87,11 +129,11 @@ const SocialSection = ({
 				<ThemeText className="ml-1" size="fs_13">
 					Links{' '}
 					<ThemeText variant="textGrey" size="fs_13">
-						({fields?.filter(v => v.value)?.length})
+						({linkCount})
 					</ThemeText>
 				</ThemeText>
 			</View>
-			<View>{renderAccountSocialLink()}</View>
+			{renderAccountSocialLink()}
 		</View>
 	);
 };
