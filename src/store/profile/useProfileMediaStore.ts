@@ -1,7 +1,7 @@
 import { Asset } from 'react-native-image-picker';
 import { create } from 'zustand';
 
-type MediaState = {
+export type MediaState = {
 	mediaModal: boolean;
 	selectedMedia: Asset[] | string;
 };

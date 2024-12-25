@@ -107,13 +107,6 @@ const ManageAttachmentModal = ({
 		onToggleMediaModal();
 	};
 
-	// const onPressDelete = () => {
-
-	// 	onSelectMedia(type, []);
-	// 	onToggleMediaModal();
-	// 	handleOnPressDelete();
-	// };
-
 	return (
 		<View className={Platform.OS === 'ios' ? 'pb-6' : 'pb-0'}>
 			<View className="flex-row items-center justify-between mb-3">
@@ -138,7 +131,7 @@ const ManageAttachmentModal = ({
 					</Button>
 				</View>
 			</View>
-			{!imageUrl?.includes('/original/missing.png') && (
+			{!imageUrl?.includes('/original/missing.png') && imageUrl && (
 				<View className="flex-row justify-between items-center mb-5">
 					{typeof imageUrl === 'string' && (
 						<View className="w-1/2 gap-2">
