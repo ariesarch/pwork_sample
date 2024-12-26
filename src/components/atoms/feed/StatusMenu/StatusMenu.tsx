@@ -12,6 +12,9 @@ import {
 	StatusDeleteIcon,
 	StatusEditIcon,
 	StatusBlockIcon,
+	StatusFollowIcon,
+	StatusMuteIcon,
+	StatusReportIcon,
 } from '@/util/svg/icon.status_actions';
 import customColor from '@/util/constant/color';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -39,6 +42,7 @@ import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { uniqueId } from 'lodash';
+import FollowMenuOption from './FollowMenuOption/FollowMenuOption';
 
 const StatusMenu = ({
 	status,
@@ -248,9 +252,18 @@ const StatusMenu = ({
 							</MenuOption>
 						</>
 					) : (
-						<MenuOption disabled>
-							<MenuOptionIcon icon={<StatusBlockIcon />} name="Block" />
-						</MenuOption>
+						<>
+							<FollowMenuOption url={status.account.url} />
+							<MenuOption>
+								<MenuOptionIcon icon={<StatusMuteIcon />} name="Mute" />
+							</MenuOption>
+							<MenuOption>
+								<MenuOptionIcon icon={<StatusBlockIcon />} name="Block" />
+							</MenuOption>
+							<MenuOption>
+								<MenuOptionIcon icon={<StatusReportIcon />} name="Report" />
+							</MenuOption>
+						</>
 					)}
 				</MenuOptions>
 			</Menu>

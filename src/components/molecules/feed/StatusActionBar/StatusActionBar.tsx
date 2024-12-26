@@ -75,7 +75,8 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 			<View className="flex flex-row ">
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
-				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
+				{/* {isAuthor && <StatusMenu {...{ status, isFeedDetail }} />} */}
+				<StatusMenu {...{ status, isFeedDetail }} />
 			</View>
 		</View>
 	);
