@@ -145,7 +145,6 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 								);
 							}}
 							minHeaderHeight={Platform.OS == 'ios' ? 100 : 60}
-							lazy
 							tabBarHeight={400}
 							containerStyle={{ flex: 1 }}
 							renderTabBar={props => {

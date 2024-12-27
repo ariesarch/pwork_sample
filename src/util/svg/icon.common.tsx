@@ -662,3 +662,27 @@ export const AccountListIcon = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+export const AccountIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M18 19C18 16.7909 15.3137 15 12 15C8.68629 15 6 16.7909 6 19M12 12C9.79086 12 8 10.2091 8 8C8 5.79086 9.79086 4 12 4C14.2091 4 16 5.79086 16 8C16 10.2091 14.2091 12 12 12Z"
+			stroke="#96A6C2"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
+	</Svg>
+);
+
+export const Logout = (props: SvgProps) => (
+	<Svg width="18" height="18" viewBox="0 0 18 18" fill="none" {...props}>
+		<Path
+			d="M9 12L12 9M12 9L9 6M12 9H1M6 4.24859V4.2002C6 3.08009 6 2.51962 6.21799 2.0918C6.40973 1.71547 6.71547 1.40973 7.0918 1.21799C7.51962 1 8.08009 1 9.2002 1H13.8002C14.9203 1 15.4796 1 15.9074 1.21799C16.2837 1.40973 16.5905 1.71547 16.7822 2.0918C17 2.5192 17 3.07899 17 4.19691V13.8036C17 14.9215 17 15.4805 16.7822 15.9079C16.5905 16.2842 16.2837 16.5905 15.9074 16.7822C15.48 17 14.921 17 13.8031 17H9.19691C8.07899 17 7.5192 17 7.0918 16.7822C6.71547 16.5905 6.40973 16.2839 6.21799 15.9076C6 15.4798 6 14.9201 6 13.8V13.75"
+			stroke="white"
+			stroke-width="2"
+			stroke-linecap="round"
+			stroke-linejoin="round"
+		/>
+	</Svg>
+);

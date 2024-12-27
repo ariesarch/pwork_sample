@@ -94,6 +94,8 @@ export type HomeStackParamList = {
 	};
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
+	Search: NavigatorScreenParams<SearchStackParamList>;
+	Settings: undefined;
 	FollowingAccounts: {
 		accountId: string;
 		isMainChannel?: boolean;

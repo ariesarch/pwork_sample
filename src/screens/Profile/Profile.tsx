@@ -193,7 +193,6 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 							<FeedTitleHeader title={accountInfoData.display_name} />
 							<Tabs.Container
 								tabBarHeight={400}
-								lazy
 								renderHeader={() => {
 									return (
 										<CollapsibleFeedHeader

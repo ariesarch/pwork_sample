@@ -102,7 +102,6 @@ const ChannelProfile: React.FC<HomeStackScreenProps<'ChannelProfile'>> = ({
 							}}
 							minHeaderHeight={Platform.OS == 'ios' ? 100 : 60}
 							tabBarHeight={300}
-							lazy
 							containerStyle={{ flex: 1 }}
 							renderTabBar={props => {
 								return (

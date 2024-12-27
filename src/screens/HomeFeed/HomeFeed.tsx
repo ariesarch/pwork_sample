@@ -141,7 +141,14 @@ const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 									>
 										Explore Channels
 									</ThemeText>
-									<Pressable onPress={() => navigation.navigate('SearchFeed')}>
+									<Pressable
+										onPress={() => {
+											navigation.navigate('Search', {
+												screen: 'SearchFeed',
+											});
+										}}
+										className="active:opacity-80"
+									>
 										<ThemeText variant="textGrey">View All</ThemeText>
 									</Pressable>
 								</View>

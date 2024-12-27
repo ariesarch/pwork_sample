@@ -61,7 +61,7 @@ const CustomAlert = ({
 						onPress={handleOk}
 						size={'fs_15'}
 					>
-						{confirmBtnText || 'OK'}
+						{confirmBtnText || 'Ok'}
 					</ThemeText>
 					{hasCancel && (
 						<ThemeText
@@ -69,7 +69,7 @@ const CustomAlert = ({
 							onPress={handleCancel}
 							size={'fs_15'}
 						>
-							{cancelBtnText || 'CANCEL'}
+							{cancelBtnText || 'Cancel'}
 						</ThemeText>
 					)}
 				</View>
