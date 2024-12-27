@@ -151,14 +151,15 @@ const EmailLoginForm = () => {
 					<ThemeText className="text-white">Login</ThemeText>
 				)}
 			</Button>
-			<CustomAlert
-				isVisible={isAlertOpen}
-				message={'Invalid login credentials'}
-				title="Error"
-				handleCancel={() => setAlert(false)}
-				handleOk={() => setAlert(false)}
-				type="error"
-			/>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Invalid login credentials'}
+					title="Error"
+					handleCancel={() => setAlert(false)}
+					handleOk={() => setAlert(false)}
+					type="error"
+				/>
+			)}
 		</View>
 	);
 };

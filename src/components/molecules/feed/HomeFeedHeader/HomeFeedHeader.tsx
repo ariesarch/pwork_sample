@@ -132,16 +132,17 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				</Menu>
 			</View>
 			{showUnderLine && <Underline className="mt-2" />}
-			<CustomAlert
-				isVisible={isAlertOpen}
-				message={'Are u sure you want to logout?'}
-				hasCancel
-				handleCancel={() => {
-					setAlert(false);
-				}}
-				handleOk={handlePressLogoutConf}
-				type="error"
-			/>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Are u sure you want to logout?'}
+					hasCancel
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={handlePressLogoutConf}
+					type="error"
+				/>
+			)}
 		</View>
 	);
 };

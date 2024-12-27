@@ -169,23 +169,24 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 						<ThemeText className="text-white">Submit</ThemeText>
 					)}
 				</Button>
-				<CustomAlert
-					isVisible={alertState.isOpen}
-					message={
-						alertState.isSuccess
-							? 'Updated Password Successfully!'
-							: 'Something went wrong!'
-					}
-					title={alertState.isSuccess ? 'Success' : 'Failed'}
-					handleCancel={() => {
-						setAlert(prev => ({ ...prev, isOpen: false }));
-					}}
-					handleOk={() => {
-						setAlert(prev => ({ ...prev, isOpen: false }));
-						navigation.navigate('Login');
-					}}
-					type={alertState.isSuccess ? 'success' : 'error'}
-				/>
+				{alertState.isOpen && (
+					<CustomAlert
+						message={
+							alertState.isSuccess
+								? 'Updated Password Successfully!'
+								: 'Something went wrong!'
+						}
+						title={alertState.isSuccess ? 'Success' : 'Failed'}
+						handleCancel={() => {
+							setAlert(prev => ({ ...prev, isOpen: false }));
+						}}
+						handleOk={() => {
+							setAlert(prev => ({ ...prev, isOpen: false }));
+							navigation.navigate('Login');
+						}}
+						type={alertState.isSuccess ? 'success' : 'error'}
+					/>
+				)}
 			</View>
 		</SafeScreen>
 	);

@@ -79,16 +79,17 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 				<ShareTo className="mr-3" /> */}
 				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
 			</View>
-			<CustomAlert
-				isVisible={isAlertOpen}
-				message={'You have already re-posted this status!'}
-				hasCancel={false}
-				handleCancel={() => {
-					setAlert(false);
-				}}
-				handleOk={() => setAlert(false)}
-				type="error"
-			/>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'You have already re-posted this status!'}
+					hasCancel={false}
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={() => setAlert(false)}
+					type="error"
+				/>
+			)}
 		</View>
 	);
 };

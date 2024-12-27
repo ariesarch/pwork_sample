@@ -382,19 +382,20 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					)}
 				</View>
 			)}
-			<CustomAlert
-				isVisible={delConfAction.visible}
-				message={`Are u sure you want to delete the ${delConfAction?.title} link?`}
-				hasCancel
-				handleCancel={() => setDelConfAction({ visible: false })}
-				handleOk={() => {
-					if (delConfAction.title) {
-						setDelConfAction({ visible: false });
-						handleSocialLinkChange(delConfAction.title, ' ', 'delete');
-					}
-				}}
-				type="error"
-			/>
+			{delConfAction.visible && (
+				<CustomAlert
+					message={`Are u sure you want to delete the ${delConfAction?.title} link?`}
+					hasCancel
+					handleCancel={() => setDelConfAction({ visible: false })}
+					handleOk={() => {
+						if (delConfAction.title) {
+							setDelConfAction({ visible: false });
+							handleSocialLinkChange(delConfAction.title, ' ', 'delete');
+						}
+					}}
+					type="error"
+				/>
+			)}
 		</ScrollProvider>
 	);
 };
