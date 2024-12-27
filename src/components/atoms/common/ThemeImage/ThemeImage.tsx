@@ -22,7 +22,7 @@ const ThemeImage = memo(
 		};
 
 		return (
-			<View className="rounded-tl-lg rounded-tr-lg overflow-hidden">
+			<>
 				<FastImage
 					source={{
 						uri: url,
@@ -36,7 +36,7 @@ const ThemeImage = memo(
 				{blurHash && !imageLoaded && !isFeedDetail && (
 					<BlueHashComponent blurHash={blurHash} imageStyle={imageStyle} />
 				)}
-			</View>
+			</>
 		);
 	},
 );

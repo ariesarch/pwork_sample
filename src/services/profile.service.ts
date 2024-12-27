@@ -313,3 +313,15 @@ export const updateProfile = async (
 		return handleError(error);
 	}
 };
+
+export const deleteProfileMedia = async ({
+	mediaType,
+}: {
+	mediaType: 'avatar' | 'header';
+}): Promise<Pathchwork.Account> => {
+	const endpoint = mediaType === 'avatar' ? 'profile/avatar' : 'profile/header';
+	const resp: AxiosResponse<Pathchwork.Account> = await instance.delete(
+		appendApiVersion(endpoint, 'v1'),
+	);
+	return resp.data;
+};

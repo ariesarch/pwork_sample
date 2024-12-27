@@ -6,9 +6,10 @@ import StatusReblogButton from '@/components/atoms/feed/StatusReblog/StatusReblo
 import StatusFavourtieButton from '@/components/atoms/feed/StatusFavourite/StatusFavourtieButton';
 import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 import { cn } from '@/util/helper/twutil';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -20,6 +21,7 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
 	const { currentPage, extraPayload } = useStatusContext();
+	const [isAlertOpen, setAlert] = useState(false);
 
 	const reblogsCount = status.reblog
 		? status.reblog.reblogs_count
@@ -58,7 +60,7 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 					alreadyReblogged={status.reblogged || status.reblog?.reblogged}
 					onPress={() => {
 						status.reblogged || status.reblog?.reblogged
-							? Alert.alert('You have already re-posted this status!')
+							? setAlert(true)
 							: navigation.navigate('Index', {
 									screen: 'Compose',
 									params: {
@@ -80,6 +82,16 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 				<ShareTo className="mr-3" /> */}
 				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
 			</View>
+			<CustomAlert
+				isVisible={isAlertOpen}
+				message={'You have already re-posted this status!'}
+				hasCancel={false}
+				handleCancel={() => {
+					setAlert(false);
+				}}
+				handleOk={() => setAlert(false)}
+				type="error"
+			/>
 		</View>
 	);
 };

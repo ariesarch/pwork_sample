@@ -39,13 +39,14 @@ import { handleError } from '@/util/helper/helper';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import { generateFieldsAttributes } from '@/util/helper/generateFieldAttributes';
 import { verifyAuthToken } from '@/services/auth.service';
-import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAccountInfo } from '@/hooks/queries/profile.queries';
 import { useManageAttachmentActions } from '@/store/compose/manageAttachments/manageAttachmentStore';
 import { cleanText } from '@/util/helper/cleanText';
 import { delay } from 'lodash';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
+import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+
 const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	route,
 	navigation,
@@ -56,20 +57,20 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		visible: boolean;
 		formType: 'add' | 'edit';
 	}>({ visible: false, formType: 'add' });
-
-	// const domain_name = useSelectedDomain();
+	const [delConfAction, setDelConfAction] = useState<{
+		visible: boolean;
+		title?: string;
+	}>({ visible: false });
 
 	const {
 		userInfo,
 		actions: { setUserInfo },
 	} = useAuthStore();
-
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
 		'patchwork-light-900',
 		'patchwork-dark-100',
 	);
-
 	const { resetAttachmentStore } = useManageAttachmentActions();
 
 	// ***** Get Account Info ***** //
@@ -130,12 +131,12 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 		username: string,
 		type: 'edit' | 'delete',
 	) => {
-		if (userInfo) {
+		if (accountInfoData) {
 			const updatedProfile: UpdateProfilePayload = {
-				display_name: userInfo?.display_name,
-				note: cleanText(userInfo?.note),
+				display_name: accountInfoData?.display_name,
+				note: cleanText(accountInfoData?.note),
 				fields_attributes: generateFieldsAttributes(
-					userInfo,
+					accountInfoData,
 					link,
 					username,
 					type,
@@ -149,18 +150,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 	const { mutateAsync, isPending } = useProfileMutation({
 		onSuccess: async response => {
 			refetchAccountInfo();
-			queryClient.invalidateQueries({
-				queryKey: [
-					'account-detail-feed',
-					{
-						domain_name: process.env.API_URL ?? DEFAULT_API_URL,
-						account_id: userInfo?.id,
-						exclude_reblogs: false,
-						exclude_replies: true,
-						exclude_original_statuses: false,
-					},
-				],
-			});
+			queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
 			setUserInfo(response);
 		},
 		onError: error => {
@@ -378,24 +368,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 									handleSocialLinkChange(link, username, 'edit')
 								}
 								onPressDelete={link =>
-									Alert.alert(
-										'Confirmation',
-										`Are u sure you want to delete the ${link} link?`,
-										[
-											{
-												text: 'Cancel',
-												onPress: () => {},
-												style: 'cancel',
-											},
-											{
-												text: 'OK',
-												onPress: () => {
-													handleSocialLinkChange(link, ' ', 'delete');
-												},
-											},
-										],
-										{ cancelable: false },
-									)
+									setDelConfAction({ visible: true, title: link })
 								}
 								formType={socialLinkAction.formType}
 								data={accountInfoData.fields?.filter(v => v.value)}
@@ -421,6 +394,19 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 					)}
 				</View>
 			)}
+			<CustomAlert
+				isVisible={delConfAction.visible}
+				message={`Are u sure you want to delete the ${delConfAction?.title} link?`}
+				hasCancel
+				handleCancel={() => setDelConfAction({ visible: false })}
+				handleOk={() => {
+					if (delConfAction.title) {
+						setDelConfAction({ visible: false });
+						handleSocialLinkChange(delConfAction.title, ' ', 'delete');
+					}
+				}}
+				type="error"
+			/>
 		</ScrollProvider>
 	);
 };

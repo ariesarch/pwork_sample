@@ -1,32 +1,33 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { parseDocument, ElementType } from 'htmlparser2';
 import type { ChildNode } from 'domhandler';
-import { Platform, Pressable, View } from 'react-native';
+import { Platform } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
-import { layoutAnimation } from '@/util/helper/timeline';
 import { useAuthStore } from '@/store/auth/authStore';
 
 type Props = {
 	status: Pathchwork.Status;
-	numberOfLines?: number;
 	isMainStatus?: boolean;
+	handleSeeMorePress?: () => void;
+	isFeedDetail?: boolean;
 };
 
-const MAX_ALLOWED_LINES = 35;
+const MAX_CHAR_COUNT = 280;
 
-const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
-	const [totalLines, setTotalLines] = useState<number>();
-	const [expanded, setExpanded] = useState(false);
-
+const HTMLParser = ({
+	status,
+	isMainStatus,
+	handleSeeMorePress,
+	isFeedDetail,
+}: Props) => {
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
 	const document = useMemo(() => {
@@ -38,6 +39,8 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { userInfo } = useAuthStore();
+
+	// Handlers
 	const handleHashTahPress = (tag: string) => {
 		const specialTag = tag.replace(/#/g, '');
 		navigation.navigate('HashTagDetail', {

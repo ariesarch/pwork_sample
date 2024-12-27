@@ -417,12 +417,6 @@ declare namespace Pathchwork {
 		| 'direct'
 		| 'local';
 
-	// type Field = {
-	// 	name: string;
-	// 	value: string;
-	// 	// verified_at?: string | null;
-	// };
-
 	type FieldName =
 		| 'Patreon'
 		| 'Twitter'

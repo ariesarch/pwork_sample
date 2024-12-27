@@ -137,11 +137,13 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	};
 
 	const onPressPreview = (imageUrl: string) => {
-		navigation.navigate('LocalImageViewer', {
-			imageUrl: {
-				url: imageUrl,
-			},
-		});
+		if (!imageUrl.includes('/original/missing.png')) {
+			navigation.navigate('LocalImageViewer', {
+				imageUrl: {
+					url: imageUrl,
+				},
+			});
+		}
 	};
 
 	const renderProfileActions = () => {
@@ -220,96 +222,94 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 	};
 
 	return (
-		<View>
-			<View className="bg-white dark:bg-patchwork-dark-100">
-				<Pressable
-					onPress={() =>
-						onPressPreview(
-							isChannel
-								? props.channelInfo?.banner_image_url
-								: props.profile?.header,
-						)
-					}
-				>
-					<FastImage
-						className="bg-patchwork-dark-50 h-[140]"
-						source={{
-							uri: isChannel
-								? props.channelInfo?.banner_image_url
-								: props.profile?.header,
-							priority: FastImage.priority.normal,
-						}}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
-				</Pressable>
-				<View className="flex-row mx-4">
-					<Animated.View className="flex-1">
-						<Pressable
-							onPress={() =>
-								onPressPreview(
-									isChannel
-										? props.channelInfo?.avatar_image_url
-										: props.profile?.avatar,
-								)
-							}
-						>
-							<FastImage
-								className={cn(
-									'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50  border-patchwork-dark-100 border-4',
-									isChannel ? 'rounded-md' : 'rounded-full',
-								)}
-								source={{
-									uri: isChannel
-										? props.channelInfo?.avatar_image_url
-										: props.profile?.avatar,
-									priority: FastImage.priority.normal,
-								}}
-								resizeMode={FastImage.resizeMode.cover}
-							/>
-						</Pressable>
-					</Animated.View>
-					{renderProfileActions()}
-				</View>
-				{isChannel ? (
-					<VerticalInfo
-						accountName={props.channelInfo.channel_name}
-						username={props.channel.contact?.account?.username}
-						joinedDate={dayjs(
-							props.channel.contact?.account?.created_at,
-						).format('MMM YYYY')}
-						userBio={props.channel?.description}
-						// showChannelFollowers
-					/>
-				) : (
-					<View>
-						<VerticalInfo
-							hasRedMark
-							accountName={
-								props.profile?.display_name
-									? props.profile?.display_name
-									: props.profile?.username
-							}
-							username={props.profile?.acct}
-							joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
-							userBio={props.profile?.note}
+		<View className="bg-white dark:bg-patchwork-dark-100">
+			<Pressable
+				onPress={() =>
+					onPressPreview(
+						isChannel
+							? props.channelInfo?.banner_image_url
+							: props.profile?.header,
+					)
+				}
+			>
+				<FastImage
+					className="bg-patchwork-dark-50 h-[140]"
+					source={{
+						uri: isChannel
+							? props.channelInfo?.banner_image_url
+							: props.profile?.header,
+						priority: FastImage.priority.normal,
+					}}
+					resizeMode={FastImage.resizeMode.cover}
+				/>
+			</Pressable>
+			<View className="flex-row mx-4">
+				<Animated.View className="flex-1">
+					<Pressable
+						onPress={() =>
+							onPressPreview(
+								isChannel
+									? props.channelInfo?.avatar_image_url
+									: props.profile?.avatar,
+							)
+						}
+					>
+						<FastImage
+							className={cn(
+								'w-[70] h-[70] mt-[-25] bg-patchwork-dark-50  border-patchwork-dark-100 border-4',
+								isChannel ? 'rounded-md' : 'rounded-full',
+							)}
+							source={{
+								uri: isChannel
+									? props.channelInfo?.avatar_image_url
+									: props.profile?.avatar,
+								priority: FastImage.priority.normal,
+							}}
+							resizeMode={FastImage.resizeMode.cover}
 						/>
-						<SocialSection
-							isMyAccount={props.is_my_account}
-							fields={props.profile?.fields}
-							onPressEditIcon={props.onPressEditIcon}
-							onPressPlusIcon={props.onPressPlusIcon}
-						/>
-						<UserStats
-							posts={props.profile.statuses_count}
-							following={props.profile?.following_count}
-							followers={props.profile?.followers_count}
-							isMainChannel={props.isMainChannel}
-							accountId={props.profile?.id}
-						/>
-						<Underline className="mb-2 mt-4" />
-					</View>
-				)}
+					</Pressable>
+				</Animated.View>
+				{renderProfileActions()}
 			</View>
+			{isChannel ? (
+				<VerticalInfo
+					accountName={props.channelInfo.channel_name}
+					username={props.channel.contact?.account?.username}
+					joinedDate={dayjs(props.channel.contact?.account?.created_at).format(
+						'MMM YYYY',
+					)}
+					userBio={props.channel?.description}
+					// showChannelFollowers
+				/>
+			) : (
+				<View>
+					<VerticalInfo
+						hasRedMark
+						accountName={
+							props.profile?.display_name
+								? props.profile?.display_name
+								: props.profile?.username
+						}
+						username={props.profile?.acct}
+						joinedDate={dayjs(props.profile?.created_at).format('MMM YYYY')}
+						userBio={props.profile?.note}
+					/>
+					<SocialSection
+						isMyAccount={props.is_my_account}
+						fields={props.profile?.fields}
+						onPressEditIcon={props.onPressEditIcon}
+						onPressPlusIcon={props.onPressPlusIcon}
+					/>
+					<UserStats
+						posts={props.profile.statuses_count}
+						following={props.profile?.following_count}
+						followers={props.profile?.followers_count}
+						isMainChannel={props.isMainChannel}
+						accountId={props.profile?.id}
+					/>
+					<Underline className="mb-2 mt-4" />
+				</View>
+			)}
 		</View>
 	);
 };
