@@ -33,6 +33,9 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		() => parseDocument(status.content),
 		[status.content],
 	);
+	const isImageMissing = useMemo(() => {
+		return status?.media_attachments?.length !== 0;
+	}, [status?.image_url]);
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { userInfo } = useAuthStore();

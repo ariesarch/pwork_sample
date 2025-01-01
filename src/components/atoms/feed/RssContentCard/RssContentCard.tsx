@@ -44,6 +44,8 @@ const RssContentCard = ({ meta, extraStyle, isFeedDetail }: Props) => {
 					imageStyle={{
 						height: 180,
 						width: '100%',
+						borderTopLeftRadius: 8,
+						borderTopRightRadius: 8,
 					}}
 					blurHash={meta?.blurhash}
 					isFeedDetail={isFeedDetail}

@@ -1,6 +1,5 @@
 import { Modal, Pressable, View } from 'react-native';
 import { ThemeText } from '../ThemeText/ThemeText';
-import ThemeModal from '../Modal/Modal';
 import Underline from '../Underline/Underline';
 
 export type MenuProp = {
@@ -25,17 +24,6 @@ const CustomAlert = ({
 	type,
 }: MenuProp) => {
 	return (
-		// <ThemeModal
-		// 	openThemeModal={isVisible}
-		// 	parentPaddingEnabled={false}
-		// 	containerStyle={{ marginHorizontal: 36 }}
-		// 	modalPositionStyle={{
-		// 		flex: 1,
-		// 		justifyContent: 'center',
-		// 		alignItems: 'center',
-		// 	}}
-		// 	hasNotch={false}
-		// >
 		<>
 			<Modal transparent={true}>
 				<Pressable
@@ -84,7 +72,6 @@ const CustomAlert = ({
 				</Pressable>
 			</Modal>
 		</>
-		// </ThemeModal>
 	);
 };
 
