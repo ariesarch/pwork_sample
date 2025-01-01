@@ -1,4 +1,5 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 import { useFavouriteMutation } from '@/hooks/mutations/feed.mutation';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
@@ -12,6 +13,7 @@ import {
 	syncFavouriteAcrossCache,
 	updateFavouriteForDescendentReply,
 	toggleFavouriteState,
+	updateHashtagFavourite,
 } from '@/util/cache/favourite/favouriteCache';
 import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import { DEFAULT_API_URL } from '@/util/constant';
@@ -39,6 +41,7 @@ const StatusFavourtieButton = ({
 
 	const { saveStatus } = useSubchannelStatusActions();
 	const { userInfo } = useAuthStore();
+	const { currentPage, comeFrom, extraPayload } = useStatusContext();
 
 	const isAuthor = useMemo(() => {
 		return userInfo?.id === status.account.id;
@@ -46,7 +49,7 @@ const StatusFavourtieButton = ({
 
 	const { mutate } = useFavouriteMutation({
 		onMutate: async variables => {
-			if (isFeedDetail && currentFeed?.id === status.id) {
+			if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				const updateFeedDatailData = toggleFavouriteState(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
@@ -68,6 +71,8 @@ const StatusFavourtieButton = ({
 				domain_name,
 				status.id,
 			);
+			['Hashtag', 'FeedDetail'].includes(currentPage) &&
+				updateHashtagFavourite(extraPayload, status);
 		},
 	});
 

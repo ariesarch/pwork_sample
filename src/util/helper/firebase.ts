@@ -137,7 +137,6 @@ const handleNotiDetailPress = async (
 	notiResp: Pathchwork.PushNotiResponse['data'],
 ) => {
 	if (navigationRef.isReady()) {
-		console.log('notiResp::', notiResp);
 		if (notiResp.noti_type == 'mention' && notiResp.visibility == 'direct') {
 			return navigateToConversationDetail(notiResp);
 		}

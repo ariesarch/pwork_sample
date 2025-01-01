@@ -1,6 +1,7 @@
 import {
 	composeStatus,
 	favouriteStatus,
+	followHashtag,
 	repostStatus,
 	uploadComposeImage,
 } from '@/services/feed.service';
@@ -50,4 +51,14 @@ export const useFavouriteMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: favouriteStatus, ...options });
+};
+
+export const useHashtagFollowMutation = (
+	options: UseMutationOptions<
+		Pathchwork.HashtagDetail,
+		AxiosError,
+		{ hashtag: string; isAlreadyFollowing: boolean }
+	>,
+) => {
+	return useMutation({ mutationFn: followHashtag, ...options });
 };

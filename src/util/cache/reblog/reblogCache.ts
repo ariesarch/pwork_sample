@@ -1,13 +1,16 @@
+import { queryClient } from '@/App';
 import {
 	StatusCacheQueryKeys,
 	updateQueryCacheGeneric,
 } from '../queryCacheHelper';
+import { stat } from 'fs';
 
 const incrementReblogsCount = (
 	status: Pathchwork.Status,
 ): Pathchwork.Status => ({
 	...status,
 	reblogs_count: status.reblogs_count + 1,
+	reblogged: true,
 });
 
 const updateFeedData = (
@@ -44,4 +47,26 @@ const applyReblogCountCacheUpdates = ({
 	});
 };
 
-export { applyReblogCountCacheUpdates, incrementReblogsCount };
+const updateReblogsCountForHashtag = (
+	extraPayload: Record<string, any> | undefined,
+	status: Pathchwork.Status,
+) => {
+	if (extraPayload && extraPayload.hashtag && extraPayload.domain_name) {
+		const hashtagQueryKey = [
+			'hashtag-detail-feed',
+			{ domain_name: extraPayload.domain_name, hashtag: extraPayload.hashtag },
+		];
+		const previousData =
+			queryClient.getQueryData<IFeedQueryFnData>(hashtagQueryKey);
+		if (!previousData) return;
+
+		const updatedData = updateFeedData(previousData, status);
+		queryClient.setQueryData(hashtagQueryKey, updatedData);
+	}
+};
+
+export {
+	applyReblogCountCacheUpdates,
+	incrementReblogsCount,
+	updateReblogsCountForHashtag,
+};

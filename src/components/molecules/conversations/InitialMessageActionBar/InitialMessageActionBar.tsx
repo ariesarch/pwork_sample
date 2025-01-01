@@ -100,10 +100,10 @@ const InitialMessageActionsBar = ({
 					}}
 					children={<ComposeGalleryIcon {...{ colorScheme }} />}
 				/>
-				<Pressable
+				{/* <Pressable
 					className={'mr-3'}
 					children={<ComposeGifIcon {...{ colorScheme }} />}
-				/>
+				/> */}
 
 				<View className="flex-1">
 					<TextInput

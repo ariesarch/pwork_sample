@@ -38,7 +38,7 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 	const { colorScheme } = useColorScheme();
 	const { bottom, top } = useSafeAreaInsets();
 	const [activeTab, setActiveTab] = useState(0);
-	const { id, isFromNoti } = route.params;
+	const { id, isFromNoti, isOwnChannelFeed } = route.params;
 	const domain_name = useSelectedDomain();
 	const barColor = useAppropiateColorHash('patchwork-dark-100');
 	const tabBarTextColor = useAppropiateColorHash(
@@ -140,10 +140,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										otherUserId={id} // To invalidate query for specificServerProfile
 										relationships={relationships}
 										isMainChannel={isFromNoti}
+										isOwnChannelFeed={isOwnChannelFeed}
 									/>
 								);
 							}}
 							minHeaderHeight={Platform.OS == 'ios' ? 100 : 60}
+							tabBarHeight={400}
 							containerStyle={{ flex: 1 }}
 							renderTabBar={props => {
 								return (
@@ -193,7 +195,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 										return item.in_reply_to_id ? (
 											<></>
 										) : (
-											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+											<StatusWrapper
+												status={item}
+												comeFrom={isFromNoti ? 'noti' : 'other'}
+												currentPage="ProfileOther"
+												statusType={item.reblog ? 'reblog' : 'normal'}
+											/>
 										);
 									}}
 									estimatedItemSize={500}
@@ -234,7 +241,12 @@ const ProfileOther: React.FC<HomeStackScreenProps<'ProfileOther'>> = ({
 									keyExtractor={item => item.id.toString()}
 									renderItem={({ item }) => {
 										return (
-											<StatusWrapper status={item} isFromNoti={isFromNoti} />
+											<StatusWrapper
+												status={item}
+												comeFrom={isFromNoti ? 'noti' : 'other'}
+												currentPage="ProfileOther"
+												statusType={item.reblog ? 'reblog' : 'normal'}
+											/>
 										);
 									}}
 									refreshControl={

@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
 import PollVotingStatus from '@/components/organisms/poll/PollVotingStatus/PollVotingStatus';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -28,10 +29,13 @@ const StatusContent = ({
 }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const isImageMissing = status?.media_attachments?.length !== 0;
-	const { setActiveFeed } = useActiveFeedAction();
+	const { setActiveFeed, setExtraPayload } = useActiveFeedAction();
+	const { currentPage, extraPayload } = useStatusContext();
 
 	const handlePressStatus = () => {
 		setActiveFeed(status.reblog ? status.reblog : status);
+		currentPage === 'Hashtag' &&
+			setExtraPayload({ comeFrom: 'hashtag', carriedPayload: extraPayload });
 		navigation.navigate('FeedDetail', {
 			id: status.reblog ? status.reblog.id : status.id,
 			isMainChannel: isMainChannel,

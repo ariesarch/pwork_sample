@@ -140,6 +140,7 @@ const FFAccountListItem = ({
 						username={item.acct}
 						joinedDate={dayjs(item.created_at).format('MMM YYYY')}
 						userBio={''}
+						acctNameTextStyle="text-[14px]"
 					/>
 				</View>
 				{!isAuthor && (

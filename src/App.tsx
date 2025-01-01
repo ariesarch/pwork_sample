@@ -15,6 +15,15 @@ import { verifyAuthToken } from './services/auth.service';
 import { ThemeText } from './components/atoms/common/ThemeText/ThemeText';
 import Toast from 'react-native-toast-message';
 import { MenuProvider } from 'react-native-popup-menu';
+import {
+	configureReanimatedLogger,
+	ReanimatedLogLevel,
+} from 'react-native-reanimated';
+
+configureReanimatedLogger({
+	level: ReanimatedLogLevel.warn,
+	strict: false,
+});
 
 export const queryClient = new QueryClient();
 

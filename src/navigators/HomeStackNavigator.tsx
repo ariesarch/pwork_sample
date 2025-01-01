@@ -12,6 +12,8 @@ import ProfileOther from '@/screens/ProfileOther/ProfileOther';
 import { HomeStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
 import ConversationsStack from './ConversationsStackNavigator';
+import SearchStack from './SearchStackNavigator';
+import Settings from '@/screens/Settings/Settings';
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
@@ -28,6 +30,7 @@ const HomeStack = () => {
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
 			<Stack.Screen name="HashTagDetail" component={HashTagDetail} />
 			<Stack.Screen name="Conversations" component={ConversationsStack} />
+			<Stack.Screen name="Settings" component={Settings} />
 		</Stack.Navigator>
 	);
 };

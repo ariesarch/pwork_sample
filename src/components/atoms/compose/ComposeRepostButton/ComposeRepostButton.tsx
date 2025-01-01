@@ -1,5 +1,6 @@
 import { queryClient } from '@/App';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
+import { StatusCurrentPage } from '@/context/statusItemContext/statusItemContext.type';
 import { useRepostMutation } from '@/hooks/mutations/feed.mutation';
 import { useAuthStore } from '@/store/auth/authStore';
 import {
@@ -20,6 +21,7 @@ import {
 import {
 	applyReblogCountCacheUpdates,
 	incrementReblogsCount,
+	updateReblogsCountForHashtag,
 } from '@/util/cache/reblog/reblogCache';
 import { POLL_LIMITS } from '@/util/constant/pollOption';
 import { prepareRepostPayload } from '@/util/helper/compose';
@@ -36,15 +38,17 @@ import Toast from 'react-native-toast-message';
 type Props = {
 	status: Pathchwork.Status;
 	extraClass?: string;
-	isFeedDetail?: boolean;
+	statusCurrentPage?: StatusCurrentPage;
 	otherUserId: Pathchwork.Account['id'];
+	extraPayload?: Record<string, any>;
 };
 
 const ComposeRepostButton = ({
 	extraClass,
 	status,
-	isFeedDetail,
+	statusCurrentPage,
 	otherUserId,
+	extraPayload,
 }: Props) => {
 	const { colorScheme } = useColorScheme();
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -78,7 +82,7 @@ const ComposeRepostButton = ({
 
 	const { mutate, isPending } = useRepostMutation({
 		onMutate: ({ id: statusId }) => {
-			if (isFeedDetail && currentFeed?.id === statusId) {
+			if (statusCurrentPage == 'FeedDetail' && currentFeed?.id === statusId) {
 				const updateFeedDatailData = incrementReblogsCount(currentFeed);
 				setActiveFeed(updateFeedDatailData);
 			}
@@ -92,6 +96,8 @@ const ComposeRepostButton = ({
 				domain_name,
 			);
 			applyReblogCountCacheUpdates({ response: status, queryKeys });
+			['Hashtag', 'FeedDetail'].includes(statusCurrentPage ?? '') &&
+				updateReblogsCountForHashtag(extraPayload, status);
 
 			queryClient.invalidateQueries({ queryKey: accountDetailFeedQueryKey });
 

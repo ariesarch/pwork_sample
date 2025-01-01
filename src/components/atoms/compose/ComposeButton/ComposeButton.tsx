@@ -28,13 +28,14 @@ import {
 import { queryClient } from '@/App';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useAuthStore } from '@/store/auth/authStore';
+import { StatusCurrentPage } from '@/context/statusItemContext/statusItemContext.type';
 
 const ComposeButton = ({
 	statusId,
-	isFeedDetail,
+	statusCurrentPage,
 }: {
 	statusId: string;
-	isFeedDetail?: boolean;
+	statusCurrentPage?: StatusCurrentPage;
 }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const navigation = useNavigation<StackNavigationProp<BottomStackParamList>>();
@@ -65,7 +66,7 @@ const ComposeButton = ({
 
 	const { mutate, isPending } = useComposeMutation({
 		onSuccess: (status: Pathchwork.Status) => {
-			if (isFeedDetail && currentFeed?.id === status.id) {
+			if (statusCurrentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				setActiveFeed(status);
 			}
 

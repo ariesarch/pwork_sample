@@ -118,7 +118,6 @@ export const updateConversationCacheInProfile = (
 		['user-conversation', { id }],
 		(oldData: Pathchwork.Conversations | undefined) => {
 			if (!oldData) return;
-			console.log('oldData::', oldData);
 			return { ...oldData, last_status: lastStatus };
 		},
 	);

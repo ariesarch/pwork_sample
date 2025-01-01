@@ -22,6 +22,8 @@ import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
 import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import { useNavigation } from '@react-navigation/native';
 import { NotificationScreenNavigationProp } from '@/types/navigation';
+import NotificationStatus from '@/components/organisms/feed/NotificationStatus/NotificationStatus';
+import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 
 const notificationMessages: Record<NotificationItem['type'], string> = {
 	follow: 'followed you',
@@ -107,18 +109,14 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 						</View>
 					)}
 
-					{/* Notification Status */}
 					{status && (
-						<View className="border border-slate-200 dark:border-patchwork-grey-70 my-2 p-3 rounded-lg">
-							<StatusHeader status={status} isFromNoti showAvatarIcon />
-							<StatusContent
-								status={status}
-								isMainChannel
-								isFromNotiStatusImage
-							/>
-						</View>
+						<StatusWrapper
+							status={status}
+							comeFrom="noti"
+							currentPage="Notification"
+							statusType="notification"
+						/>
 					)}
-					{/* Notification Status */}
 				</View>
 			</View>
 		</View>

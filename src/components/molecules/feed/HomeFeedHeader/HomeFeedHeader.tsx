@@ -5,21 +5,9 @@ import { useColorScheme } from 'nativewind';
 import { View, Pressable, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
-import { removeAppToken } from '@/util/helper/helper';
-import { useAuthStoreAction } from '@/store/auth/authStore';
-import { useState } from 'react';
-import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import { useActiveDomainAction } from '@/store/feed/activeDomain';
-import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
-import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
-import {
-	Menu,
-	MenuOption,
-	MenuOptions,
-	MenuTrigger,
-	renderers,
-} from 'react-native-popup-menu';
-import { queryClient } from '@/App';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '@/types/navigation';
 
 type Props = {
 	account: Pathchwork.Account;
@@ -27,37 +15,10 @@ type Props = {
 };
 
 const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
-	const navigation = useNavigation();
+	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { colorScheme } = useColorScheme();
-	const { clearAuthState } = useAuthStoreAction();
-	const [isMenuOpen, setMenuVisibility] = useState(false);
-	const [isAlertOpen, setAlert] = useState(false);
 	const { setDomain } = useActiveDomainAction();
-	const { mutateAsync, isPending } = usePushNotiRevokeTokenMutation({});
 
-	const fcmToken = usePushNoticationStore(state => state.fcmToken);
-
-	const handlePressLogoutOption = () => {
-		setMenuVisibility(false);
-		setAlert(true);
-	};
-
-	const handlePressLogoutConf = async () => {
-		setAlert(false);
-		try {
-			if (fcmToken) {
-				await mutateAsync({
-					notification_token: fcmToken,
-				});
-			}
-		} catch (error) {
-			console.error('Error during logout process:', error);
-		} finally {
-			await removeAppToken();
-			clearAuthState();
-			queryClient.clear();
-		}
-	};
 	return (
 		<View className="mt-4">
 			<View className="flex flex-row items-center mx-6 pb-2">
@@ -88,61 +49,16 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 						</ThemeText>
 					</View>
 				</TouchableOpacity>
-				<Menu
-					renderer={renderers.Popover}
-					rendererProps={{
-						placement: 'left',
-						anchorStyle: {
-							width: 0,
-							height: 0,
-						},
-					}}
-					opened={isMenuOpen}
-					style={{ zIndex: 1000 }}
-					onBackdropPress={() => setMenuVisibility(false)}
-					onSelect={option => {
-						if (option === 'logout') handlePressLogoutOption();
+				<Pressable
+					className="p-3 border border-slate-200 rounded-full active:opacity-80"
+					onPress={() => {
+						navigation.navigate('Settings');
 					}}
 				>
-					<MenuTrigger>
-						<Pressable
-							className="p-3 border border-slate-200 rounded-full active:opacity-80"
-							onPress={() => setMenuVisibility(true)}
-						>
-							<SettingIcon colorScheme={colorScheme} />
-						</Pressable>
-					</MenuTrigger>
-					<MenuOptions
-						customStyles={{
-							optionsContainer: {
-								borderRadius: 3,
-							},
-						}}
-					>
-						<MenuOption
-							value={'logout'}
-							style={{
-								paddingVertical: 10,
-								paddingHorizontal: 15,
-								borderRadius: 3,
-							}}
-							text="Logout"
-						/>
-					</MenuOptions>
-				</Menu>
+					<SettingIcon colorScheme={colorScheme} />
+				</Pressable>
 			</View>
 			{showUnderLine && <Underline className="mt-2" />}
-			{isAlertOpen && (
-				<CustomAlert
-					message={'Are u sure you want to logout?'}
-					hasCancel
-					handleCancel={() => {
-						setAlert(false);
-					}}
-					handleOk={handlePressLogoutConf}
-					type="error"
-				/>
-			)}
 		</View>
 	);
 };

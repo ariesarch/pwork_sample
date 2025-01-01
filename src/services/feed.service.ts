@@ -207,3 +207,21 @@ export const favouriteStatus = async ({
 		return handleError(error);
 	}
 };
+
+export const followHashtag = async ({
+	hashtag,
+	isAlreadyFollowing,
+}: {
+	hashtag: string;
+	isAlreadyFollowing: boolean;
+}) => {
+	const toggleFollow = isAlreadyFollowing ? 'unfollow' : 'follow';
+	try {
+		const resp: AxiosResponse<Pathchwork.HashtagDetail> = await instance.post(
+			appendApiVersion(`tags/${hashtag}/${toggleFollow}`),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

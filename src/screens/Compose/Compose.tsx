@@ -57,13 +57,16 @@ const Compose = ({ route }: TabBarScreenProps<'Compose'>) => {
 								<ComposeRepostButton
 									status={composeParams.incomingStatus}
 									otherUserId={composeParams.incomingStatus.account.id}
-									isFeedDetail={composeParams.isFeedDetail}
+									statusCurrentPage={composeParams.statusCurrentPage}
+									extraPayload={composeParams.extraPayload}
 								/>
 							) : (
 								<ComposeButton
 									{...{
 										statusId: isEdit ? composeParams.incomingStatus.id : '',
-										isFeedDetail: isEdit ? composeParams.isFeedDetail : false,
+										statusCurrentPage: isEdit
+											? composeParams.statusCurrentPage
+											: undefined,
 									}}
 								/>
 							)

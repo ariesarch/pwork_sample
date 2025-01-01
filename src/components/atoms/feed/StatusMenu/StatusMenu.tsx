@@ -29,6 +29,7 @@ import Toast from 'react-native-toast-message';
 import StatusDeleteModal from '../../common/StatusDeleteModal/StatusDeleteModal';
 import {
 	useActiveFeedAction,
+	useActiveFeedStore,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
 import { useNavigation } from '@react-navigation/native';
@@ -39,23 +40,31 @@ import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { uniqueId } from 'lodash';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
+import {
+	updateReplyCountChannelFeedCache,
+	updateReplyCountInAccountFeedCache,
+	updateReplyCountInHashtagFeed,
+} from '@/util/cache/reply/replyCache';
 
 const StatusMenu = ({
 	status,
-	isFeedDetail,
 }: {
 	status: Pathchwork.Status;
 	isFeedDetail?: boolean;
 }) => {
 	const navigation = useNavigation();
 	const { domain_name } = useActiveDomainStore();
-	const currentFeed = useCurrentActiveFeed();
+	const { activeFeed: currentFeed } = useActiveFeedStore();
+	const { currentPage, extraPayload, comeFrom } = useStatusContext();
 
 	const [menuVisible, setMenuVisible] = useState(false);
 	const hideMenu = () => setMenuVisible(false);
 	const showMenu = () => setMenuVisible(true);
-	const showEditIcon = !isFeedDetail || currentFeed?.id == status.id;
-	const goBackToPreviousPage = isFeedDetail && currentFeed?.id == status.id;
+	const showEditIcon =
+		currentPage !== 'FeedDetail' || currentFeed?.id == status.id;
+	const goBackToPreviousPage =
+		currentPage == 'FeedDetail' && currentFeed?.id == status.id;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { saveStatus } = useSubchannelStatusActions();
 
@@ -69,36 +78,9 @@ const StatusMenu = ({
 		);
 	}, [status, userInfo?.id]);
 
-	const accountDetailFeedQueryKey = [
-		'account-detail-feed',
-		{
-			domain_name: domain_name,
-			account_id: userInfo?.id!,
-			exclude_replies: true,
-			exclude_reblogs: false,
-			exclude_original_statuses: false,
-		},
-	];
-
-	const accountDetailReplyFeedQueryKey = [
-		'account-detail-feed',
-		{
-			domain_name: domain_name,
-			account_id: userInfo?.id!,
-			exclude_replies: false,
-			exclude_reblogs: true,
-			exclude_original_statuses: true,
-		},
-	];
-
 	const feedReplyQueryKey = [
 		'feed-replies',
 		{ id: currentFeed?.id, domain_name },
-	];
-
-	const channelFeedQueryKey = [
-		'channel-feed',
-		{ domain_name, remote: false, only_media: false },
 	];
 
 	//********** Delete Status **********//
@@ -122,44 +104,37 @@ const StatusMenu = ({
 				process.env.API_URL ?? DEFAULT_API_URL,
 			);
 			deleteStatusCacheData({ status_id, queryKeys });
-			deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
 
-			isFeedDetail &&
-				status.in_reply_to_id == currentFeed?.id &&
+			if (
+				currentPage == 'FeedDetail' &&
+				currentFeed?.id &&
+				status.in_reply_to_id == currentFeed?.id
+			) {
 				changeActiveFeedReplyCount('decrease');
+				updateReplyCountInAccountFeedCache(
+					domain_name,
+					currentFeed?.account.id,
+					currentFeed?.id,
+					'decrease',
+				);
+				updateReplyCountChannelFeedCache(
+					domain_name,
+					currentFeed?.id,
+					'decrease',
+				);
+				deleteDescendentReply(currentFeed?.id, domain_name, status_id);
+				comeFrom == 'hashtag' &&
+					updateReplyCountInHashtagFeed(
+						extraPayload,
+						currentFeed.id,
+						'decrease',
+					);
+			}
 		},
-		// onSuccess(_, { status_id }) {
-		// if (goBackToPreviousPage) {
-		// 	navigation.goBack();
-		// }
-		// const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
-		// 	status.account.id,
-		// 	status.in_reply_to_id,
-		// 	status.in_reply_to_account_id,
-		// 	status.reblog ? true : false,
-		// 	process.env.API_URL ?? DEFAULT_API_URL,
-		// );
-		// deleteStatusCacheData({ status_id, queryKeys });
-		// deleteDescendentReply(currentFeed?.id || '', domain_name, status_id);
-
-		// isFeedDetail &&
-		// 	status.in_reply_to_id == currentFeed?.id &&
-		// 	changeActiveFeedReplyCount('decrease');
-
-		//temp
-		// queryClient.invalidateQueries({
-		// 	queryKey: accountDetailReplyFeedQueryKey,
-		// });
-		// queryClient.invalidateQueries({
-		// 	queryKey: feedReplyQueryKey,
-		// });
-		// queryClient.invalidateQueries({
-		// 	queryKey: accountDetailFeedQueryKey,
-		// });
-		// queryClient.invalidateQueries({
-		// 	queryKey: channelFeedQueryKey,
-		// });
-		// },
+		onSuccess: () => {
+			currentPage == 'FeedDetail' &&
+				queryClient.invalidateQueries({ queryKey: feedReplyQueryKey });
+		},
 		onError(error) {
 			Toast.show({
 				type: 'error',
@@ -200,7 +175,8 @@ const StatusMenu = ({
 						...status,
 						text,
 					},
-					isFeedDetail,
+					statusCurrentPage: currentPage,
+					extraPayload,
 				},
 			});
 			hideMenu();

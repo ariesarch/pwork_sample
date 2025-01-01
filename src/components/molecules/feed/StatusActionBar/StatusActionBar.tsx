@@ -7,6 +7,7 @@ import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 import { cn } from '@/util/helper/twutil';
 import { useMemo, useState } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import StatusShareMenu from '@/components/atoms/feed/StatusShareMenu/StatusShareMenu';
 import { moderateScale } from 'react-native-size-matters';
@@ -20,6 +21,7 @@ type Props = {
 const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
+	const { currentPage, extraPayload } = useStatusContext();
 	const [isAlertOpen, setAlert] = useState(false);
 	const [isShareVisible, setShareVisible] = useState(false);
 
@@ -66,7 +68,8 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 									params: {
 										type: 'repost',
 										incomingStatus: status,
-										isFeedDetail,
+										statusCurrentPage: currentPage,
+										extraPayload,
 									},
 							  });
 					}}

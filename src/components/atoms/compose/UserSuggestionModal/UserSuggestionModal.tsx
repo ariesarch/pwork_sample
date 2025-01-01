@@ -39,7 +39,7 @@ const UserSuggestionModal = () => {
 			startDebounce(() => {
 				setModal(true);
 				setDebounceVal(composeState.currentMention?.raw || '');
-			}, 1200);
+			}, 1900);
 		}
 	}, [composeState.currentMention?.raw]);
 

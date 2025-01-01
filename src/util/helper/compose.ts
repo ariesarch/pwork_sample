@@ -87,3 +87,28 @@ export const calculateImageWidth = (selectedMedia: Asset[], index: number) => {
 			: 'w-1/2 h-[140]';
 	}
 };
+
+export const updateReplyCountInFeed = (
+	data: IFeedQueryFnData,
+	statusId: string,
+	operation: 'increase' | 'decrease',
+) => {
+	return {
+		...data,
+		pages: data.pages.map(page => ({
+			...page,
+			data: page.data.map(status => {
+				if (status.id === statusId) {
+					return {
+						...status,
+						replies_count:
+							operation == 'increase'
+								? status.replies_count + 1
+								: status.replies_count - 1,
+					};
+				}
+				return status;
+			}),
+		})),
+	};
+};

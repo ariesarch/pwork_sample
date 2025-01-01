@@ -54,9 +54,12 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		}
 	};
 
+	const navigateToWebView = (url: string) => {
+		navigation.navigate('WebViewer', { url });
+	};
+
 	const renderNode = (node: ChildNode, index: number) => {
-		let classes;
-		// let href: string;
+		let classes, href: string;
 		switch (node?.type) {
 			case ElementType.Text:
 				let content: string = node.data;
@@ -72,7 +75,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 				switch (node.name) {
 					case 'a':
 						classes = node.attribs.class;
-						// href = node.attribs.href;
+						href = node.attribs.href;
 
 						if (classes) {
 							if (classes.includes('hashtag')) {
@@ -82,8 +85,9 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 									<ThemeText
 										key={index}
 										size={'fs_13'}
-										className="font-SourceSans3_SemiBold"
+										// className="font-SourceSans3_SemiBold"
 										children={`${children} `}
+										variant="textOrange"
 										onPress={() => handleHashTahPress(children)}
 									/>
 								);
@@ -122,6 +126,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 									variant="textOrange"
 									size="fs_13"
 									children={`${contentNode} `}
+									onPress={() => navigateToWebView(href)}
 								/>
 							);
 						}
@@ -138,6 +143,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 								size="fs_13"
 								variant="textOrange"
 								children={nodeContent}
+								onPress={() => navigateToWebView(href)}
 							/>
 						);
 
@@ -192,11 +198,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		return null;
 	};
 
-	return (
-		<>
-			<ThemeText children={document.children.map(renderNode)} />
-		</>
-	);
+	return <ThemeText children={document.children.map(renderNode)} />;
 };
 
 export default HTMLParser;
