@@ -60,3 +60,10 @@ export type ComposeImagePayload = {
 	image: Asset;
 	onProgressChange: (progress: number) => void;
 };
+
+export type BookmarkStatusQueryParams = {
+	statusesId: Pathchwork.Status['id'];
+	isBookmark: boolean;
+};
+
+export type BookmarkStatusQueryKey = ['Bookmark-Timeline'];

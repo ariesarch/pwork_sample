@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import instance from './instance';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
+import { BookmarkStatusQueryParams } from '@/types/queries/feed.type';
 
 export const statusDeleteFn = async ({
 	status_id,
@@ -28,6 +29,23 @@ export const getEditStatusSourceFn = async ({
 	try {
 		const resp: AxiosResponse<Pathchwork.Status> = await instance.get(
 			appendApiVersion(`statuses/${status_id}/source`, 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const bookmarkStatus = async ({
+	statusesId,
+	isBookmark,
+}: BookmarkStatusQueryParams) => {
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.get(
+			appendApiVersion(
+				`statuses/${statusesId}/${isBookmark ? 'bookmark' : 'unbookmark'}`,
+				'v1',
+			),
 		);
 		return resp.data;
 	} catch (error) {

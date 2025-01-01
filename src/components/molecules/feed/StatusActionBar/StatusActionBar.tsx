@@ -1,5 +1,4 @@
-import { Alert, View } from 'react-native';
-import { ShareTo, Tranlsate } from '@/util/svg/icon.common';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import StatusReplyButton from '@/components/atoms/feed/StatusReply/StatusReplyButton';
 import StatusReblogButton from '@/components/atoms/feed/StatusReblog/StatusReblogButton';
@@ -9,6 +8,8 @@ import { cn } from '@/util/helper/twutil';
 import { useMemo, useState } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import StatusShareMenu from '@/components/atoms/feed/StatusShareMenu/StatusShareMenu';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -20,6 +21,7 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
 	const [isAlertOpen, setAlert] = useState(false);
+	const [isShareVisible, setShareVisible] = useState(false);
 
 	const reblogsCount = status.reblog
 		? status.reblog.reblogs_count
@@ -74,9 +76,20 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 					{...{ status, isFeedDetail, isFromNoti }}
 				/>
 			</View>
-			<View className="flex flex-row ">
+			<View className="flex flex-row">
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
+				<View style={{ marginRight: moderateScale(12) }}>
+					<StatusShareMenu
+						// queryKey: queryKey as TimelineQueryTypeParams,
+						// queryKeySlug,
+						// isShareVisible
+						// hideShareMenu={() => setShareVisible(false)}
+						// showShareMenu={() => setShareVisible(true)}
+						status={status}
+						// page,
+					/>
+				</View>
 				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
 			</View>
 			{isAlertOpen && (
