@@ -13,26 +13,13 @@ import { useUserRelationshipMutation } from '@/hooks/mutations/profile.mutation'
 import { CheckRelationshipQueryKey } from '@/types/queries/profile.type';
 import { queryClient } from '@/App';
 
-const FollowMenuOption = ({ url }: { url: Pathchwork.Account['url'] }) => {
-	// ***** Get Specific Server Profile ***** //
-	const { data: specificServerProfile, isLoading } = useSpecificServerProfile({
-		q: url as string,
-		options: {
-			enabled: !!url,
-		},
-	});
-	// ***** Get Specific Server Profile ***** //
-
-	// ***** Check Relationship To Other Accounts ***** //
-	const { data: relationships, isLoading: isLoadingRelationships } =
-		useCheckRelationships({
-			accountIds: [specificServerProfile?.accounts[0]?.id],
-			options: {
-				enabled: !!specificServerProfile?.accounts[0]?.id,
-			},
-		});
-	// ***** Check Relationship To Other Accounts ***** //
-
+const FollowMenuOption = ({
+	accountId,
+	relationships,
+}: {
+	accountId: Pathchwork.Account['id'];
+	relationships: Pathchwork.RelationShip[];
+}) => {
 	const { mutate, isPending } = useUserRelationshipMutation({
 		onSuccess: (newRelationship, { accountId }) => {
 			const relationshipQueryKey: CheckRelationshipQueryKey = [
@@ -54,7 +41,7 @@ const FollowMenuOption = ({ url }: { url: Pathchwork.Account['url'] }) => {
 
 	const onMakeRelationship = () => {
 		mutate({
-			accountId: specificServerProfile?.accounts[0]?.id,
+			accountId: accountId,
 			isFollowing: relationships
 				? relationships[0]?.following || relationships[0]?.requested
 				: false,
@@ -67,7 +54,7 @@ const FollowMenuOption = ({ url }: { url: Pathchwork.Account['url'] }) => {
 		return 'Follow';
 	}, [relationships && relationships[0]]);
 
-	const followMenuLoading = isLoading || isLoadingRelationships || isPending;
+	const followMenuLoading = !accountId || !relationships || isPending;
 
 	return (
 		<MenuOption onSelect={onMakeRelationship} disabled={followMenuLoading}>

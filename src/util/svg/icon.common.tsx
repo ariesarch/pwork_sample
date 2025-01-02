@@ -662,3 +662,23 @@ export const AccountListIcon = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+export const SwitchOffIcon = (props: SvgProps) => (
+	<Svg width="52" height="32" viewBox="0 0 52 32" fill="none" {...props}>
+		<Rect x={2} y={3} width={50} height={26} rx={13} fill="#DCE0EB" />
+		<G filter="url(#filter0_d_5724_136038)">
+			<Circle cx={15.5} cy={16} r={11.5} fill="white" />
+		</G>
+		<Defs></Defs>
+	</Svg>
+);
+
+export const SwitchOnIcon = (props: SvgProps) => (
+	<Svg width="52" height="32" viewBox="0 0 52 32" fill="none" {...props}>
+		<Rect y={3} width={50} height={26} rx={13} fill="#D24A34" />
+		<G filter="url(#filter0_d_2419_107559)">
+			<Circle cx={36.5} cy={16} r={11.5} fill="white" />
+		</G>
+		<Defs></Defs>
+	</Svg>
+);

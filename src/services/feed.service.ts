@@ -6,6 +6,7 @@ import {
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
 	LinkPreviewQueryKey,
+	ReportMutationPayload,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
@@ -202,6 +203,52 @@ export const favouriteStatus = async ({
 			appendApiVersion(`statuses/${status.id}/${toggleFavourite}`, 'v1'),
 			{ crossChannelRequestIdentifier },
 		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const muteUnMuteUserMutationFn = async ({
+	accountId,
+	toMute,
+}: {
+	accountId: string;
+	toMute: boolean;
+}) => {
+	try {
+		const muteAction = toMute ? 'mute' : 'unmute';
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`accounts/${accountId}/${muteAction}`, 'v1'),
+			toMute && { duration: '0', notifications: true },
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const blockUnBlockUserMutationFn = async ({
+	accountId,
+	toBlock,
+}: {
+	accountId: string;
+	toBlock: boolean;
+}) => {
+	try {
+		const blockAction = toBlock ? 'block' : 'unblock';
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`accounts/${accountId}/${blockAction}`, 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const reportMutationFn = async (params: ReportMutationPayload) => {
+	try {
+		const resp = await instance.post(appendApiVersion('reports', 'v1'), params);
 		return resp.data;
 	} catch (error) {
 		return handleError(error);

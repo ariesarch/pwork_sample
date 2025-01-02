@@ -1,4 +1,12 @@
-import { Circle, Path, Svg, SvgProps } from 'react-native-svg';
+import {
+	Circle,
+	ClipPath,
+	Defs,
+	G,
+	Path,
+	Svg,
+	SvgProps,
+} from 'react-native-svg';
 
 export const StatusMenuIcon = (props: SvgProps) => (
 	<Svg width="14" height="18" viewBox="0 0 14 18" fill="none" {...props}>
@@ -89,5 +97,21 @@ export const StatusReportIcon = (props: SvgProps) => (
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		/>
+	</Svg>
+);
+
+export const RemoveCrossIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<G clipPath="url(#a)">
+			<Path
+				d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm2.466 4.26L12 10.727 9.536 8.26a.9.9 0 1 0-1.273 1.273l2.465 2.468-2.465 2.469a.9.9 0 0 0 1.273 1.273L12 13.275l2.466 2.468a.9.9 0 1 0 1.273-1.273l-2.467-2.469 2.466-2.468a.9.9 0 1 0-1.272-1.273Z"
+				fill={props.fill || '#9299A3'}
+			/>
+		</G>
+		<Defs>
+			<ClipPath id="a">
+				<Path fill="#fff" transform="translate(4 4)" d="M0 0h16v16H0z" />
+			</ClipPath>
+		</Defs>
 	</Svg>
 );

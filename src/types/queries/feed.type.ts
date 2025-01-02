@@ -60,3 +60,13 @@ export type ComposeImagePayload = {
 	image: Asset;
 	onProgressChange: (progress: number) => void;
 };
+
+export type ReportMutationPayload = {
+	comment: string;
+	account_id: Pathchwork.Account['id'] | undefined;
+	status_ids: Array<Pathchwork.Status['id'] | undefined>;
+	category: string;
+	forward?: boolean;
+	forward_to_domains?: string[];
+	rule_ids?: string[] | null;
+};
