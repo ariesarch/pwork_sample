@@ -6,6 +6,7 @@ import {
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
 	LinkPreviewQueryKey,
+	ReportMutationPayload,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
@@ -245,7 +246,7 @@ export const muteUnMuteUserMutationFn = async ({
 	}
 };
 
-export const blockUnblockUserMutationFn = async ({
+export const blockUnBlockUserMutationFn = async ({
 	accountId,
 	toBlock,
 }: {
@@ -256,8 +257,16 @@ export const blockUnblockUserMutationFn = async ({
 		const blockAction = toBlock ? 'block' : 'unblock';
 		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
 			appendApiVersion(`accounts/${accountId}/${blockAction}`, 'v1'),
-			toBlock && { duration: '0', notifications: true },
 		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const reportMutationFn = async (params: ReportMutationPayload) => {
+	try {
+		const resp = await instance.post(appendApiVersion('reports', 'v1'), params);
 		return resp.data;
 	} catch (error) {
 		return handleError(error);

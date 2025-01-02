@@ -80,7 +80,7 @@ const StatusActionBar = ({ status, isFromNoti }: Props) => {
 				<View style={{ marginRight: moderateScale(12) }}>
 					<StatusShareMenu {...{ status, isFromNoti }} />
 				</View>
-				{isAuthor && <StatusMenu status={status} />}
+				<StatusMenu status={status} />
 			</View>
 			{isAlertOpen && (
 				<CustomAlert

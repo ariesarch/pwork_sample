@@ -1,5 +1,13 @@
 import { moderateScale, scale } from 'react-native-size-matters';
-import { Path, Svg, SvgProps } from 'react-native-svg';
+import {
+	Circle,
+	ClipPath,
+	Defs,
+	G,
+	Path,
+	Svg,
+	SvgProps,
+} from 'react-native-svg';
 
 export const StatusMenuIcon = (props: SvgProps) => (
 	<Svg width="14" height="18" viewBox="0 0 14 18" fill="none" {...props}>
@@ -98,5 +106,67 @@ export const AccountUnBookmarkIcon = (props: SvgProps) => (
 			strokeLinecap="round"
 			strokeLinejoin="round"
 		/>
+	</Svg>
+);
+export const StatusFollowIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Circle cx={14} cy={12.833} fill="#FFFFFF" r={3.5} />
+		<Path
+			d="M14.583 19.834c-4.666-.467-6.222 3.11-6.416 4.666h11.666c.195-1.166-.583-4.2-5.25-4.666Z"
+			fill={props.stroke || '#FFFFFF'}
+		/>
+		<Path
+			d="M19.833 23.333c0-1.933-2.611-3.5-5.833-3.5s-5.833 1.567-5.833 3.5m16.333-3.5c0-1.435-1.44-2.668-3.5-3.208M3.5 19.833c0-1.435 1.44-2.668 3.5-3.208m14-4.683a3.5 3.5 0 1 0-4.667-5.218M7 11.942a3.5 3.5 0 1 1 4.667-5.218M14 16.333a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Z"
+			stroke={props.stroke || '#FFFFFF'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</Svg>
+);
+
+export const StatusMuteIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M15 17v1a3 3 0 1 1-6 0v-1m6 0H9m6 0h3.59c.383 0 .575 0 .73-.052a1 1 0 0 0 .627-.628c.053-.156.053-.348.053-.734 0-.169 0-.253-.014-.334a.998.998 0 0 0-.173-.42c-.048-.067-.108-.127-.227-.246l-.39-.39a.67.67 0 0 1-.196-.474V10a7 7 0 1 0-14 0v3.722a.67.67 0 0 1-.196.474l-.39.39c-.12.12-.179.179-.226.245a1 1 0 0 0-.175.421c-.013.08-.013.165-.013.334 0 .386 0 .578.052.734a1 1 0 0 0 .629.628c.155.052.346.052.729.052H9"
+			stroke={props?.stroke || '#FFFFFF'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+		<Path
+			stroke={props?.stroke || '#FFFFFF'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			d="m19.165 3.405-13.76 17.43"
+		/>
+	</Svg>
+);
+
+export const StatusReportIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M12.002 9v4m-7.621 2.2c-.91 1.575-1.364 2.363-1.296 3.01a2 2 0 0 0 .813 1.408C4.424 20 5.333 20 7.15 20h9.703c1.818 0 2.727 0 3.252-.382a2 2 0 0 0 .814-1.409c.068-.646-.386-1.434-1.296-3.01l-4.85-8.4c-.909-1.574-1.364-2.362-1.958-2.626a2 2 0 0 0-1.627 0c-.593.264-1.048 1.052-1.957 2.625L4.381 15.2Zm7.672.8v.1h-.1V16h.1Z"
+			stroke={props?.stroke || '#FFFFFF'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</Svg>
+);
+
+export const RemoveCrossIcon = (props: SvgProps) => (
+	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
+		<G clipPath="url(#a)">
+			<Path
+				d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16Zm2.466 4.26L12 10.727 9.536 8.26a.9.9 0 1 0-1.273 1.273l2.465 2.468-2.465 2.469a.9.9 0 0 0 1.273 1.273L12 13.275l2.466 2.468a.9.9 0 1 0 1.273-1.273l-2.467-2.469 2.466-2.468a.9.9 0 1 0-1.272-1.273Z"
+				fill={props.fill || '#9299A3'}
+			/>
+		</G>
+		<Defs>
+			<ClipPath id="a">
+				<Path fill="#fff" transform="translate(4 4)" d="M0 0h16v16H0z" />
+			</ClipPath>
+		</Defs>
 	</Svg>
 );

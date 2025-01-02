@@ -1,13 +1,17 @@
 import {
+	blockUnBlockUserMutationFn,
 	composeStatus,
 	favouriteStatus,
 	followHashtag,
+	muteUnMuteUserMutationFn,
+	reportMutationFn,
 	repostStatus,
 	uploadComposeImage,
 } from '@/services/feed.service';
 import {
 	ComposeImagePayload,
 	ComposeMutationPayload,
+	ReportMutationPayload,
 	RepostMutationPayload,
 } from '@/types/queries/feed.type';
 import { useMutation, UseMutationOptions } from '@tanstack/react-query';
@@ -61,4 +65,30 @@ export const useHashtagFollowMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: followHashtag, ...options });
+};
+
+export const useMuteUnmuteUserMutation = (
+	options: UseMutationOptions<
+		Pathchwork.RelationShip,
+		AxiosError,
+		{ accountId: string; toMute: boolean }
+	>,
+) => {
+	return useMutation({ mutationFn: muteUnMuteUserMutationFn, ...options });
+};
+
+export const useBlockUnBlockUserMutation = (
+	options: UseMutationOptions<
+		Pathchwork.RelationShip,
+		AxiosError,
+		{ accountId: string; toBlock: boolean }
+	>,
+) => {
+	return useMutation({ mutationFn: blockUnBlockUserMutationFn, ...options });
+};
+
+export const useReportMutation = (
+	options: UseMutationOptions<any, AxiosError, ReportMutationPayload>,
+) => {
+	return useMutation({ mutationFn: reportMutationFn, ...options });
 };

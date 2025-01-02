@@ -12,6 +12,7 @@ import {
 	StatusDeleteIcon,
 	StatusEditIcon,
 	StatusBlockIcon,
+	StatusReportIcon,
 } from '@/util/svg/icon.status_actions';
 import customColor from '@/util/constant/color';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -35,8 +36,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { getEditStatusSourceFn } from '@/services/statusActions.service';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
-import { FeedDetail } from '@/screens';
-import { queryClient } from '@/App';
 import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { uniqueId } from 'lodash';
@@ -46,6 +45,8 @@ import {
 	updateReplyCountInAccountFeedCache,
 	updateReplyCountInHashtagFeed,
 } from '@/util/cache/reply/replyCache';
+import MenuOptionsForOtherUser from './MenuOptionsForOtherUser/MenuOptionsForOtherUser';
+import { queryClient } from '@/App';
 
 const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 	const navigation = useNavigation();
@@ -219,9 +220,11 @@ const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 							</MenuOption>
 						</>
 					) : (
-						<MenuOption disabled>
-							<MenuOptionIcon icon={<StatusBlockIcon />} name="Block" />
-						</MenuOption>
+						<>
+							<MenuOptionsForOtherUser status={status} hideMenu={hideMenu} />
+							{/* <FollowMenuOption url={status.account.url} />
+							<MuteMenuOption url={status.account.url} /> */}
+						</>
 					)}
 				</MenuOptions>
 			</Menu>

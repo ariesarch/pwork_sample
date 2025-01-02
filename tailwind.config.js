@@ -30,6 +30,7 @@ module.exports = {
 				'patchwork-red-600': '#ED1800',
 				'skeleton-highlight': '#7A8288',
 				'skeleton-bg': '#585e82',
+				'modal-bg': 'rgba(0, 0, 0, 0.5)',
 			},
 		},
 	},
