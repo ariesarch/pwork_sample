@@ -83,15 +83,7 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
 				<View style={{ marginRight: moderateScale(12) }}>
-					<StatusShareMenu
-						// queryKey: queryKey as TimelineQueryTypeParams,
-						// queryKeySlug,
-						// isShareVisible
-						// hideShareMenu={() => setShareVisible(false)}
-						// showShareMenu={() => setShareVisible(true)}
-						status={status}
-						// page,
-					/>
+					<StatusShareMenu {...{ status, isFeedDetail, isFromNoti }} />
 				</View>
 				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
 			</View>

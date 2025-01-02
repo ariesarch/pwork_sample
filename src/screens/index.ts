@@ -23,3 +23,4 @@ export { default as NotificationRequests } from './NotificationRequests/Notifica
 export { default as CollectionDetail } from './CollectionDetail/CollectionDetail';
 export { default as FollowingAccounts } from './FollowingAccounts/FollowingAccounts';
 export { default as FollowerAccounts } from './FollowerAccounts/FollowerAccounts';
+export { default as BookmarkList } from './BookmarkList/BookmarkList';

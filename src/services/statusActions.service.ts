@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
 import instance from './instance';
 import { appendApiVersion, handleError } from '@/util/helper/helper';
-import { BookmarkStatusQueryParams } from '@/types/queries/feed.type';
+import { QueryFunctionContext } from '@tanstack/react-query';
+import { GetBookmarkListQueryKey } from '@/types/queries/statusActions';
 
 export const statusDeleteFn = async ({
 	status_id,
@@ -37,20 +38,56 @@ export const getEditStatusSourceFn = async ({
 };
 
 export const bookmarkStatus = async ({
-	statusId,
-	isBookmark,
-}: BookmarkStatusQueryParams) => {
+	status,
+	crossChannelRequestIdentifier,
+}: {
+	status: Pathchwork.Status;
+	crossChannelRequestIdentifier?: string;
+}) => {
 	try {
-		console.log(statusId, isBookmark);
-		const resp: AxiosResponse<Pathchwork.Status> = await instance.get(
-			appendApiVersion(
-				`statuses/${statusId}/${isBookmark ? 'bookmark' : 'unbookmark'}`,
-				'v1',
-			),
+		const toggleBookmark = status.bookmarked ? 'unbookmark' : 'bookmark';
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+			appendApiVersion(`statuses/${status.id}/${toggleBookmark}`, 'v1'),
+			{ crossChannelRequestIdentifier },
 		);
 		return resp.data;
 	} catch (error) {
-		console.log('error', error);
 		return handleError(error);
+	}
+};
+
+export const getBookmarkList = async (
+	qfContext: QueryFunctionContext<GetBookmarkListQueryKey>,
+) => {
+	try {
+		const { domain_name } = qfContext.queryKey[1];
+		const max_id = qfContext.pageParam as string;
+
+		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+			appendApiVersion(`bookmarks`),
+			{
+				params: {
+					domain_name,
+					isDynamicDomain: true,
+					max_id,
+				},
+			},
+		);
+		const linkHeader = resp.headers.link as string;
+		let maxId = null;
+		if (linkHeader) {
+			const regex = /max_id=(\d+)/;
+			const match = linkHeader.match(regex);
+			if (match) {
+				maxId = match[1];
+			}
+		}
+
+		return {
+			data: resp.data,
+			links: { next: { max_id: maxId } },
+		};
+	} catch (e) {
+		return handleError(e);
 	}
 };

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Platform, Pressable, View } from 'react-native';
+import React, { useMemo, useState } from 'react';
+import { Platform, Pressable } from 'react-native';
 import {
 	Menu,
 	MenuOptions,
@@ -8,7 +8,6 @@ import {
 	renderers,
 } from 'react-native-popup-menu';
 import Share from 'react-native-share';
-import { ThemeText } from '../../common/ThemeText/ThemeText';
 import {
 	AccountBookmarkIcon,
 	AccountUnBookmarkIcon,
@@ -18,78 +17,95 @@ import Underline from '../../common/Underline/Underline';
 import { handleError } from '@/util/helper/helper';
 import { DEFAULT_API_URL } from '@/util/constant';
 import { useBookmarkStatusMutation } from '@/hooks/mutations/statusActions.mutation';
-import { queryClient } from '@/App';
-import { InfiniteData } from '@tanstack/react-query';
 import customColor from '@/util/constant/color';
 import MenuOptionIcon from '../StatusMenu/MenuOptionIcon/MenuOptionIcon';
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
-import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
-import { BookmarkStatusQueryKey } from '@/types/queries/feed.type';
+import {
+	useActiveFeedAction,
+	useCurrentActiveFeed,
+} from '@/store/feed/activeFeed';
+import { useAuthStore } from '@/store/auth/authStore';
+import {
+	BookmarkQueryKeys,
+	syncBookmarkAcrossCache,
+	toggleBookmarkState,
+	updateBookmarkForDescendentReply,
+	updateHashtagBookmark,
+} from '@/util/cache/bookmark/bookmarkCache';
+import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
+import { useSubchannelStatusActions } from '@/store/feed/subChannelStatusStore';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
+import { uniqueId } from 'lodash';
 
-const MenuIconButton = ({ icon, title }: { icon: any; title: string }) => {
-	return (
-		<View className="flex-row items-center py-1 px-2">
-			<View className="mr-3">{icon}</View>
-			<ThemeText variant={'textGrey'}>{title}</ThemeText>
-		</View>
-	);
-};
-
-type TimelineShareMenuProps = {
+type Props = {
 	status: Pathchwork.Status;
-	page?: 'timeline' | 'detail' | 'profile';
+	isFromNoti?: boolean;
 };
 
-const StatusShareMenu: React.FC<TimelineShareMenuProps> = ({
-	status,
-}: TimelineShareMenuProps) => {
+const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 	const [isShareVisible, setShareVisible] = useState(false);
 	const toggleMenu = () => setShareVisible(!isShareVisible);
-	const { currentPage } = useStatusContext();
 	const currentFeed = useCurrentActiveFeed();
+	const { setActiveFeed } = useActiveFeedAction();
+	const { domain_name } = useActiveDomainStore();
+	const { userInfo } = useAuthStore();
+	const { currentPage, extraPayload } = useStatusContext();
+
+	const isAuthor = useMemo(() => {
+		return userInfo?.id === status.account.id;
+	}, [userInfo, status.account.id]);
+
+	// noted by sev: check this
+	const { saveStatus } = useSubchannelStatusActions();
+
 	const toggleBookmarkStatus = useBookmarkStatusMutation({
-		onMutate: params => {
-			console.log('mutating');
-		},
-		onSuccess: res => {
-			console.log('success');
+		onMutate: async variables => {
+			if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
+				const updateFeedDatailData = toggleBookmarkState(currentFeed);
+				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
+			}
+
+			const queryKeys = getCacheQueryKeys<BookmarkQueryKeys>(
+				isAuthor ? userInfo?.id! : status.account.id,
+				variables.status.in_reply_to_id!,
+				variables.status.in_reply_to_account_id,
+				status.reblog ? true : false,
+				isFromNoti ? DEFAULT_API_URL : domain_name,
+			);
+			syncBookmarkAcrossCache({
+				response: status,
+				queryKeys,
+			});
+			updateBookmarkForDescendentReply(
+				currentFeed?.id || '',
+				domain_name,
+				status.id,
+			);
+			['Hashtag', 'FeedDetail'].includes(currentPage) &&
+				updateHashtagBookmark(extraPayload, status);
 		},
 	});
 
-	// const { mutate } = useBookmarkStatusMutation({
-	// 	onMutate: async variables => {
-	// 		if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
-	// 			const updateFeedDatailData = toggleFavouriteState(currentFeed);
-	// 			status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
-	// 		}
-
-	// 		const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
-	// 			variables.status.in_reply_to_id,
-	// 			variables.status.in_reply_to_account_id,
-	// 			status.reblog ? true : false,
-	// 			// isAuthor ? process.env.API_URL ?? DEFAULT_API_URL : domain_name,
-	// 			isFromNoti ? DEFAULT_API_URL : domain_name,
-	// 		);
-	// 		syncFavouriteAcrossCache({
-	// 			response: status,
-	// 			queryKeys,
-	// 		});
-	// 		updateFavouriteForDescendentReply(
-	// 			currentFeed?.id || '',
-	// 			domain_name,
-	// 			status.id,
-	// 		);
-	// 		['Hashtag', 'FeedDetail'].includes(currentPage) &&
-	// 			updateHashtagFavourite(extraPayload, status);
-	// 	},
-	// });
-
 	const onBookmarkStatus = (status: Pathchwork.Status) => {
-		console.log('press bookmark');
+		const stat = status.reblog ? status.reblog : status;
+		const crossChannelRequestIdentifier = uniqueId(
+			`CROS-Channel-Status::${status.id}::Req-ID::`,
+		);
+		saveStatus(crossChannelRequestIdentifier, {
+			status: stat,
+			savedPayload: {
+				id: status.reblog ? status.reblog.id : status.id,
+				account: status.account,
+			},
+			crossChannelRequestIdentifier,
+			specificResponseMapping: {
+				id: 'id',
+				account: 'account',
+			},
+		});
 		toggleBookmarkStatus.mutate({
-			statusId: status.id,
-			isBookmark: !status?.bookmarked,
-			// queryKey: queryKey,
+			status: stat,
+			crossChannelRequestIdentifier,
 		});
 		toggleMenu();
 	};
@@ -170,7 +186,7 @@ const StatusShareMenu: React.FC<TimelineShareMenuProps> = ({
 							optionText: { color: 'red' },
 						}}
 						onSelect={() => onBookmarkStatus(status)}
-						// disabled={toggleBookmarkStatus.isLoading}
+						disabled={toggleBookmarkStatus.isPending}
 					>
 						<MenuOptionIcon
 							name={status?.bookmarked ? 'Remove Bookmark' : 'Bookmark'}

@@ -2,7 +2,6 @@ import {
 	bookmarkStatus,
 	statusDeleteFn,
 } from '@/services/statusActions.service';
-import { BookmarkStatusQueryParams } from '@/types/queries/feed.type';
 import {
 	MutationOptions,
 	UseMutationOptions,
@@ -27,7 +26,7 @@ export const useBookmarkStatusMutation = (
 	options: MutationOptions<
 		Pathchwork.Status,
 		AxiosError,
-		BookmarkStatusQueryParams
+		{ status: Pathchwork.Status; crossChannelRequestIdentifier?: string }
 	>,
 ) => {
 	return useMutation({ mutationFn: bookmarkStatus, ...options });

@@ -32,7 +32,7 @@ const RssContentCard = ({ meta, extraStyle, isFeedDetail }: Props) => {
 	const navigateToWebView = (url: string) => {
 		navigation.navigate('WebViewer', { url });
 	};
-	//noted by sev: border top left right radius Fix by splitting
+
 	return (
 		<View className={cn('border border-gray-800 rounded-lg', extraStyle)}>
 			<Pressable

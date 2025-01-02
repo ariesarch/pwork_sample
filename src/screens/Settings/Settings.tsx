@@ -10,6 +10,7 @@ import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import { handleError, removeAppToken } from '@/util/helper/helper';
 import { AccountIcon, ChevronRightIcon, Logout } from '@/util/svg/icon.common';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 
@@ -20,6 +21,7 @@ const Settings = () => {
 	const fcmToken = usePushNoticationStore(state => state.fcmToken);
 	const { mutateAsync: mutateRevokeToken } = useTokenRevokeMutation({});
 	const { access_token } = useAuthStore();
+	const navigation = useNavigation();
 	const handleLogout = async () => {
 		setAlert(false);
 		try {
@@ -41,6 +43,11 @@ const Settings = () => {
 			}
 		}
 	};
+
+	const handleBookmarksPress = () => {
+		navigation.navigate('BookmarkList');
+	};
+
 	return (
 		<SafeScreen>
 			<Header title="Settings" leftCustomComponent={<BackButton />} />
@@ -68,6 +75,13 @@ const Settings = () => {
 					onPress={() => {}}
 				>
 					<ThemeText>Mute and Blocks</ThemeText>
+					<ChevronRightIcon width={12} height={12} />
+				</Pressable>
+				<Pressable
+					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"
+					onPress={handleBookmarksPress}
+				>
+					<ThemeText>Bookmarks</ThemeText>
 					<ChevronRightIcon width={12} height={12} />
 				</Pressable>
 				<Pressable
