@@ -37,18 +37,20 @@ export const getEditStatusSourceFn = async ({
 };
 
 export const bookmarkStatus = async ({
-	statusesId,
+	statusId,
 	isBookmark,
 }: BookmarkStatusQueryParams) => {
 	try {
+		console.log(statusId, isBookmark);
 		const resp: AxiosResponse<Pathchwork.Status> = await instance.get(
 			appendApiVersion(
-				`statuses/${statusesId}/${isBookmark ? 'bookmark' : 'unbookmark'}`,
+				`statuses/${statusId}/${isBookmark ? 'bookmark' : 'unbookmark'}`,
 				'v1',
 			),
 		);
 		return resp.data;
 	} catch (error) {
+		console.log('error', error);
 		return handleError(error);
 	}
 };

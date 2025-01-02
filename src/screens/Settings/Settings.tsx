@@ -32,7 +32,6 @@ const Settings = () => {
 			handleError(error);
 		} finally {
 			if (access_token) {
-				console.log('before');
 				await mutateRevokeToken({
 					token: access_token,
 				});

@@ -62,7 +62,7 @@ export type ComposeImagePayload = {
 };
 
 export type BookmarkStatusQueryParams = {
-	statusesId: Pathchwork.Status['id'];
+	statusId: Pathchwork.Status['id'];
 	isBookmark: boolean;
 };
 

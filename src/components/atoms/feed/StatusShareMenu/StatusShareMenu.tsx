@@ -20,6 +20,11 @@ import { DEFAULT_API_URL } from '@/util/constant';
 import { useBookmarkStatusMutation } from '@/hooks/mutations/statusActions.mutation';
 import { queryClient } from '@/App';
 import { InfiniteData } from '@tanstack/react-query';
+import customColor from '@/util/constant/color';
+import MenuOptionIcon from '../StatusMenu/MenuOptionIcon/MenuOptionIcon';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
+import { useCurrentActiveFeed } from '@/store/feed/activeFeed';
+import { BookmarkStatusQueryKey } from '@/types/queries/feed.type';
 
 const MenuIconButton = ({ icon, title }: { icon: any; title: string }) => {
 	return (
@@ -40,157 +45,49 @@ const StatusShareMenu: React.FC<TimelineShareMenuProps> = ({
 }: TimelineShareMenuProps) => {
 	const [isShareVisible, setShareVisible] = useState(false);
 	const toggleMenu = () => setShareVisible(!isShareVisible);
-
+	const { currentPage } = useStatusContext();
+	const currentFeed = useCurrentActiveFeed();
 	const toggleBookmarkStatus = useBookmarkStatusMutation({
 		onMutate: params => {
-			const timelineQueryKey = ['BookMark'];
-			queryClient.setQueryData<InfiniteData<TimelineData> | undefined>(
-				timelineQueryKey,
-				old => {
-					if (!old) return;
-					return {
-						...old,
-						pages: old.pages.map(page => ({
-							...page,
-							data: (page.data as Newsmast.Status[]).map(item => {
-								if (item.reblog) {
-									if (item.reblog.id === params?.statusesId) {
-										return {
-											...item,
-											reblog: {
-												...item?.reblog,
-												bookmarked: params?.isBookmark,
-											},
-										};
-									}
-								}
-								if (item?.id === params?.statusesId) {
-									return { ...item, bookmarked: params?.isBookmark };
-								} else {
-									return item;
-								}
-							}),
-						})),
-					};
-				},
-			);
-
-			const timelineDetailQueryKey: TimelineDetailQueryKey = [
-				'Timeline-Detail',
-				{
-					postId: status.id,
-					pageType: queryKey,
-				},
-			];
-			queryClient.setQueryData<InfiniteData<TimelineData> | undefined>(
-				timelineDetailQueryKey,
-				old => {
-					if (!old) return;
-
-					if (old) {
-						return {
-							...old,
-							bookmarked: params?.isBookmark,
-						};
-					}
-				},
-			);
-
-			// const bookmarkStatusQueryKey: BookmarkStatusQueryKey = [
-			//   "Bookmark-Timeline",
-			// ];
-
-			// queryClient.setQueryData<InfiniteData<TimelineData> | undefined>(
-			//   bookmarkStatusQueryKey,
-			//   (old) => {
-			//     if (!old) return;
-
-			//     return {
-			//       ...old,
-			//       pages: old.pages.map((page) => ({
-			//         ...page,
-			//         data: (page.data as Newsmast.Status[]).filter(
-			//           (status) => status?.id !== params?.statusesId,
-			//         ),
-			//       })),
-			//     };
-			//   },
-			// );
-
-			const accountStatusesQueryKey: AccountStatusesQueryKey = [
-				'Account-Statuses',
-				{
-					accountId: otherUserId ? otherUserId : (userId as string),
-					domain: INSTANCE_CONNECT,
-				},
-			];
-
-			queryClient.invalidateQueries(accountStatusesQueryKey);
-			const profileStatusesQuery = queryClient.getQueryData<Newsmast.Account>(
-				accountStatusesQueryKey,
-			);
-
-			if (profileStatusesQuery) {
-				queryClient.setQueryData<InfiniteData<TimelineData> | undefined>(
-					accountStatusesQueryKey,
-					old => {
-						if (!old) return;
-
-						return {
-							...old,
-							pages: old.pages.map(page => ({
-								...page,
-								data: (page.data as Newsmast.Status[]).map(item => {
-									if (item.reblog) {
-										if (item.reblog.id === params?.statusesId) {
-											return {
-												...item,
-												reblog: {
-													...item?.reblog,
-													bookmarked: params?.isBookmark,
-												},
-											};
-										}
-									}
-									if (item?.id === params?.statusesId) {
-										return { ...item, bookmarked: params?.isBookmark };
-									} else {
-										return item;
-									}
-								}),
-							})),
-						};
-					},
-				);
-			}
+			console.log('mutating');
 		},
 		onSuccess: res => {
-			const bookmarkStatusQueryKey: BookmarkStatusQueryKey = [
-				'Bookmark-Timeline',
-			];
-
-			queryClient.setQueryData<InfiniteData<TimelineData> | undefined>(
-				bookmarkStatusQueryKey,
-				old => {
-					if (!old) return;
-
-					return {
-						...old,
-						pages: old.pages.map(page => ({
-							...page,
-							data: (page.data as Newsmast.Status[]).filter(
-								status => status?.id !== res.id,
-							),
-						})),
-					};
-				},
-			);
+			console.log('success');
 		},
 	});
 
+	// const { mutate } = useBookmarkStatusMutation({
+	// 	onMutate: async variables => {
+	// 		if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
+	// 			const updateFeedDatailData = toggleFavouriteState(currentFeed);
+	// 			status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
+	// 		}
+
+	// 		const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
+	// 			variables.status.in_reply_to_id,
+	// 			variables.status.in_reply_to_account_id,
+	// 			status.reblog ? true : false,
+	// 			// isAuthor ? process.env.API_URL ?? DEFAULT_API_URL : domain_name,
+	// 			isFromNoti ? DEFAULT_API_URL : domain_name,
+	// 		);
+	// 		syncFavouriteAcrossCache({
+	// 			response: status,
+	// 			queryKeys,
+	// 		});
+	// 		updateFavouriteForDescendentReply(
+	// 			currentFeed?.id || '',
+	// 			domain_name,
+	// 			status.id,
+	// 		);
+	// 		['Hashtag', 'FeedDetail'].includes(currentPage) &&
+	// 			updateHashtagFavourite(extraPayload, status);
+	// 	},
+	// });
+
 	const onBookmarkStatus = (status: Pathchwork.Status) => {
+		console.log('press bookmark');
 		toggleBookmarkStatus.mutate({
-			statusesId: status.id,
+			statusId: status.id,
 			isBookmark: !status?.bookmarked,
 			// queryKey: queryKey,
 		});
@@ -263,15 +160,20 @@ const StatusShareMenu: React.FC<TimelineShareMenuProps> = ({
 					optionsContainer: {
 						borderRadius: 3,
 						paddingHorizontal: 10,
+						backgroundColor: customColor['patchwork-dark-400'],
 					},
 				}}
 			>
 				<>
 					<MenuOption
+						customStyles={{
+							optionText: { color: 'red' },
+						}}
 						onSelect={() => onBookmarkStatus(status)}
 						// disabled={toggleBookmarkStatus.isLoading}
 					>
-						<MenuIconButton
+						<MenuOptionIcon
+							name={status?.bookmarked ? 'Remove Bookmark' : 'Bookmark'}
 							icon={
 								status?.bookmarked ? (
 									<AccountUnBookmarkIcon />
@@ -279,12 +181,11 @@ const StatusShareMenu: React.FC<TimelineShareMenuProps> = ({
 									<AccountBookmarkIcon />
 								)
 							}
-							title={status?.bookmarked ? 'Remove Bookmark' : 'Bookmark'}
 						/>
 					</MenuOption>
 					<Underline />
 					<MenuOption onSelect={onSocialShare}>
-						<MenuIconButton icon={<StatusShareIcon />} title="Share via ..." />
+						<MenuOptionIcon name="Share via ..." icon={<StatusShareIcon />} />
 					</MenuOption>
 				</>
 			</MenuOptions>
