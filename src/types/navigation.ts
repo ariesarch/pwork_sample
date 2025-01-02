@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-namespace */
 import {
 	CompositeNavigationProp,
 	CompositeScreenProps,
@@ -26,6 +25,7 @@ export type RootStackParamList = {
 	};
 	Index: NavigatorScreenParams<BottomStackParamList>;
 	Guest: NavigatorScreenParams<GuestStackParamList>;
+	SettingStack: NavigatorScreenParams<SettingStackParamList>;
 	EmailVerification: undefined;
 	ChannelCreate: undefined;
 	WebViewer: { url: string };
@@ -95,7 +95,6 @@ export type HomeStackParamList = {
 	HashTagDetail: { hashtag: string; hashtagDomain: string };
 	Conversations: NavigatorScreenParams<ConversationsStackParamList>;
 	Search: NavigatorScreenParams<SearchStackParamList>;
-	Settings: undefined;
 	FollowingAccounts: {
 		accountId: string;
 		isMainChannel?: boolean;
@@ -105,6 +104,7 @@ export type HomeStackParamList = {
 		isMainChannel?: boolean;
 	};
 	WebViewer: { url: string };
+	SettingStack: NavigatorScreenParams<SettingStackParamList>;
 };
 
 export type SearchStackParamList = {
@@ -214,6 +214,13 @@ export type GuestStackParamList = {
 	ChangePassword: { reset_password_token: string };
 };
 
+export type SettingStackParamList = {
+	Settings: undefined;
+	UpdatePassword: undefined;
+	MuteAndBlockList: undefined;
+	MyInformation: undefined;
+};
+
 export type CommonCompositeNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<HomeStackParamList>,
 	StackNavigationProp<BottomStackParamList>
@@ -235,6 +242,9 @@ export type ConversationsStackScreenProps<
 
 export type GuestStackScreenProps<S extends keyof GuestStackParamList> =
 	StackScreenProps<GuestStackParamList, S>;
+
+export type SettingStackScreenProps<S extends keyof SettingStackParamList> =
+	StackScreenProps<SettingStackParamList, S>;
 
 export type TabBarScreenProps<
 	S extends keyof BottomStackParamList = keyof BottomStackParamList,

@@ -13,11 +13,10 @@ import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 
 type Props = {
 	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
 	isFromNoti?: boolean;
 };
 
-const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
+const StatusActionBar = ({ status, isFromNoti }: Props) => {
 	const navigation = useNavigation();
 	const { userInfo } = useAuthStore();
 	const { currentPage, extraPayload } = useStatusContext();
@@ -43,7 +42,7 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 		<View
 			className={cn(
 				`flex flex-row justify-between mt-3 items-center ${
-					!isFeedDetail && status.reblog ? 'ml-9' : null
+					currentPage !== 'FeedDetail' && status.reblog ? 'ml-9' : null
 				}`,
 			)}
 		>
@@ -52,7 +51,6 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 					className="mr-3"
 					count={repliesCount}
 					status={status}
-					isFeedDetail={isFeedDetail}
 				/>
 				<StatusReblogButton
 					className="mr-3"
@@ -72,15 +70,12 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 							  });
 					}}
 				/>
-				<StatusFavourtieButton
-					className="mr-3"
-					{...{ status, isFeedDetail, isFromNoti }}
-				/>
+				<StatusFavourtieButton className="mr-3" {...{ status, isFromNoti }} />
 			</View>
 			<View className="flex flex-row ">
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
-				{isAuthor && <StatusMenu {...{ status, isFeedDetail }} />}
+				{isAuthor && <StatusMenu status={status} />}
 			</View>
 			<CustomAlert
 				isVisible={isAlertOpen}

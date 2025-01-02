@@ -1,9 +1,11 @@
 import {
+	blockUnblockUserMutationFn,
 	fetchLinkPreview,
 	getAccountDetailFeed,
 	getFeedDetail,
 	getFeedReplies,
 	getHashtagDetailFeed,
+	muteUnMuteUserMutationFn,
 } from '@/services/feed.service';
 import {
 	AccountDetailFeedQueryKey,
@@ -23,6 +25,8 @@ import {
 	useInfiniteQuery,
 	UseInfiniteQueryOptions,
 	UseInfiniteQueryResult,
+	useMutation,
+	UseMutationOptions,
 	useQuery,
 	UseQueryOptions,
 } from '@tanstack/react-query';
@@ -107,4 +111,24 @@ export const useLinkPreviewQueries = ({
 }) => {
 	const queryKey: LinkPreviewQueryKey = ['link-preview', { url }];
 	return useQuery({ queryKey, queryFn: fetchLinkPreview, enabled, retry: 0 });
+};
+
+export const useMuteUnmuteUserMutation = (
+	options: UseMutationOptions<
+		Pathchwork.RelationShip,
+		AxiosError,
+		{ accountId: string; toMute: boolean }
+	>,
+) => {
+	return useMutation({ mutationFn: muteUnMuteUserMutationFn, ...options });
+};
+
+export const useBlockUnBlockUserMutation = (
+	options: UseMutationOptions<
+		Pathchwork.RelationShip,
+		AxiosError,
+		{ accountId: string; toBlock: boolean }
+	>,
+) => {
+	return useMutation({ mutationFn: blockUnblockUserMutationFn, ...options });
 };

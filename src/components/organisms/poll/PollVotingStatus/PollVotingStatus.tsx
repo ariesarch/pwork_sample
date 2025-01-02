@@ -18,14 +18,13 @@ import { getCacheQueryKeys } from '@/util/cache/queryCacheHelper';
 import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import { useAuthStore } from '@/store/auth/authStore';
 import { queryClient } from '@/App';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 const PollVotingStatus = ({
 	status,
-	isFeedDetail,
 	isReposting,
 }: {
 	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
 	isReposting?: boolean;
 }) => {
 	const { domain_name } = useActiveDomainStore();
@@ -33,6 +32,7 @@ const PollVotingStatus = ({
 
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
+	const { currentPage } = useStatusContext();
 
 	const [checkResults, setCheckResults] = useState(false);
 	const onToggleCheckResults = () => setCheckResults(prevState => !prevState);
@@ -73,7 +73,7 @@ const PollVotingStatus = ({
 
 	const { mutate, isPending } = useVoteMutation({
 		onSuccess: response => {
-			if (isFeedDetail && currentFeed?.id === status.id) {
+			if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				const updateFeedDatailData = updatePollStatus(
 					currentFeed,
 					selectedIndices,

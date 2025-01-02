@@ -96,7 +96,9 @@ const ForgotPassword: React.FC<GuestStackScreenProps<'ForgotPassword'>> = ({
 							? 'Please check your mail!'
 							: 'Record not found!'
 					}
-					title={alertState.isSuccess ? 'Success' : 'Failed'}
+					title={alertState.isSuccess ? 'Success' : 'Error'}
+					extraTitleStyle="text-center text-white"
+					extraOkBtnStyle="text-white"
 					handleOk={() => {
 						setAlert(prev => ({ ...prev, isOpen: false }));
 						if (alertState.isSuccess) {

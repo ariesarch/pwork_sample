@@ -73,6 +73,7 @@ const EmailLoginForm = () => {
 							value={value}
 							onBlur={onBlur}
 							maxLength={40}
+							inputMode="email"
 							extraContainerStyle="mb-6 mt-8"
 						/>
 						{errors.email && (
@@ -153,6 +154,8 @@ const EmailLoginForm = () => {
 			</Button>
 			<CustomAlert
 				isVisible={isAlertOpen}
+				extraTitleStyle="text-white text-center -ml-2"
+				extraOkBtnStyle="text-white"
 				message={'Invalid login credentials'}
 				title="Error"
 				handleCancel={() => setAlert(false)}

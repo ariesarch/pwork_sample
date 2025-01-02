@@ -72,7 +72,7 @@ const ReplyStatus = ({
 						</Pressable>
 					</View>
 					<View className="ml-10">
-						<StatusActionBar status={status} isFeedDetail />
+						<StatusActionBar status={status} />
 					</View>
 				</View>
 			</View>

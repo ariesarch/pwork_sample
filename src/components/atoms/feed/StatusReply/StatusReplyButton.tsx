@@ -3,6 +3,7 @@ import {
 	safeUseComposeStatus,
 	useComposeStatus,
 } from '@/context/composeStatusContext/composeStatus.context';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 import {
 	useStatusReplyAction,
 	useStatusReplyStore,
@@ -19,23 +20,18 @@ import { Pressable, ViewProps } from 'react-native';
 type Props = {
 	count: number;
 	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
 } & ViewProps;
 
-const StatusReplyButton = ({
-	count,
-	isFeedDetail,
-	status,
-	...props
-}: Props) => {
+const StatusReplyButton = ({ count, status, ...props }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { textInputRef, currentFocusStatus } = useStatusReplyStore();
 	const { setActiveFeed } = useActiveFeedAction();
 	const composeStatus = safeUseComposeStatus();
 	const { changeCurrentStatus } = useStatusReplyAction();
+	const { currentPage } = useStatusContext();
 
 	const handlePress = () => {
-		if (!isFeedDetail) {
+		if (currentPage !== 'FeedDetail') {
 			setActiveFeed(status.reblog ? status.reblog : status);
 			return navigation.navigate('FeedDetail', {
 				id: status.reblog ? status.reblog.id : status.id,
@@ -77,7 +73,7 @@ const StatusReplyButton = ({
 			<Reply
 				stroke={
 					currentFocusStatus &&
-					!!isFeedDetail &&
+					currentPage == 'FeedDetail' &&
 					currentFocusStatus.id == status.id
 						? customColor['patchwork-grey-50']
 						: '#828689'

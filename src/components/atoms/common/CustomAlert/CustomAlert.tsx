@@ -2,6 +2,8 @@ import { View } from 'react-native';
 import { ThemeText } from '../ThemeText/ThemeText';
 import ThemeModal from '../Modal/Modal';
 import Underline from '../Underline/Underline';
+import { ClassValue } from 'clsx';
+import { cn } from '@/util/helper/twutil';
 
 export type MenuProp = {
 	title?: string;
@@ -11,6 +13,9 @@ export type MenuProp = {
 	hasCancel?: boolean;
 	confirmBtnText?: string;
 	cancelBtnText?: string;
+	extraTitleStyle?: ClassValue;
+	extraOkBtnStyle?: ClassValue;
+	extraCancelBtnStyle?: ClassValue;
 	isVisible: boolean;
 	type: 'error' | 'success' | 'info';
 };
@@ -23,6 +28,9 @@ const CustomAlert = ({
 	hasCancel,
 	handleCancel,
 	confirmBtnText,
+	extraTitleStyle,
+	extraOkBtnStyle,
+	extraCancelBtnStyle,
 	isVisible,
 	type,
 }: MenuProp) => {
@@ -39,12 +47,15 @@ const CustomAlert = ({
 			hasNotch={false}
 		>
 			<>
-				<View className="px-8 pb-5">
+				<View className="px-8 pb-5 min-w-[250]">
 					{title && (
 						<ThemeText
 							variant={type === 'error' ? 'textOrange' : 'default'}
 							size={'lg_18'}
-							className="font-SourceSans3_Bold mb-3"
+							className={cn(
+								'font-SourceSans3_Bold mb-3 text-center',
+								extraTitleStyle,
+							)}
 						>
 							{title}
 						</ThemeText>
@@ -56,8 +67,11 @@ const CustomAlert = ({
 				<Underline />
 				<View className="flex-row items-center justify-around my-3">
 					<ThemeText
-						className="flex-1 text-center"
 						variant={'textOrange'}
+						className={cn(
+							'flex-1 text-center active:opacity-80',
+							extraOkBtnStyle,
+						)}
 						onPress={handleOk}
 						size={'fs_15'}
 					>
@@ -65,7 +79,10 @@ const CustomAlert = ({
 					</ThemeText>
 					{hasCancel && (
 						<ThemeText
-							className="flex-1 text-center"
+							className={cn(
+								'flex-1 text-center active:opacity-80',
+								extraCancelBtnStyle,
+							)}
 							onPress={handleCancel}
 							size={'fs_15'}
 						>

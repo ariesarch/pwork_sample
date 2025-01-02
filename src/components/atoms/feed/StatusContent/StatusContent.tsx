@@ -15,7 +15,6 @@ import { useStatusContext } from '@/context/statusItemContext/statusItemContext'
 type Props = {
 	status: Pathchwork.Status;
 	isFromNotiStatusImage?: boolean;
-	isFeedDetail?: boolean;
 	isReposting?: boolean;
 	isMainChannel?: boolean;
 } & ViewProps;
@@ -23,7 +22,6 @@ type Props = {
 const StatusContent = ({
 	status,
 	isFromNotiStatusImage,
-	isFeedDetail,
 	isReposting,
 	isMainChannel,
 }: Props) => {
@@ -45,17 +43,9 @@ const StatusContent = ({
 	return (
 		<View>
 			<Pressable onPress={handlePressStatus} disabled={isReposting}>
-				<HTMLParser
-					isFeedDetail={isFeedDetail}
-					status={status}
-					handleSeeMorePress={handlePressStatus}
-				/>
+				<HTMLParser status={status} handleSeeMorePress={handlePressStatus} />
 				{status?.poll && (
-					<PollVotingStatus
-						status={status}
-						isFeedDetail={isFeedDetail}
-						isReposting={isReposting}
-					/>
+					<PollVotingStatus status={status} isReposting={isReposting} />
 				)}
 				{!status?.is_rss_content &&
 					status?.media_attachments?.length >= 1 &&
@@ -63,7 +53,6 @@ const StatusContent = ({
 						<View className="h-[232]">
 							<StatusImage
 								media_attachments={status?.media_attachments}
-								isFeedDetail={isFeedDetail}
 								sensitive={status?.sensitive}
 							/>
 						</View>
@@ -77,7 +66,6 @@ const StatusContent = ({
 								meta: status?.card,
 							},
 						}}
-						isFeedDetail={isFeedDetail}
 					/>
 				)}
 				{status?.is_rss_content &&
@@ -92,7 +80,6 @@ const StatusContent = ({
 								},
 							}}
 							extraStyle="mt-4"
-							isFeedDetail={isFeedDetail}
 						/>
 					)}
 				{!isImageMissing && !status?.is_rss_content && status?.card && (
@@ -108,7 +95,6 @@ const StatusContent = ({
 									},
 								}}
 								extraStyle="mt-4"
-								isFeedDetail={isFeedDetail}
 							/>
 						)}
 					</View>

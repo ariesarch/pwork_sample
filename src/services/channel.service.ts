@@ -10,7 +10,6 @@ import {
 	GetDetailChannelListQueryKey,
 	GetRecommendedChannelsQueryKey,
 } from '@/types/queries/channel.type';
-import mockInstance from './mockInstance';
 import instance from './instance';
 
 export const getMyChannelList = async () => {

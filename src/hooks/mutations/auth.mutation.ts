@@ -3,6 +3,7 @@ import {
 	login,
 	requestForgotPassword,
 	resetPassword,
+	updatePassword,
 } from '@/services/auth.service';
 import { LoginMutationPayload } from '@/types/queries/auth.type';
 import {
@@ -59,4 +60,20 @@ export const useResetPWMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: resetPassword, ...options });
+};
+
+export const useUpdatePasswordMutation = (
+	options: UseMutationOptions<
+		{
+			message: string;
+		},
+		AxiosError,
+		{
+			current_password: string;
+			password: string;
+			password_confirmation: string;
+		}
+	>,
+) => {
+	return useMutation({ mutationFn: updatePassword, ...options });
 };

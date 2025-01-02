@@ -5,41 +5,40 @@ import { Blurhash } from 'react-native-blurhash';
 import type { ImageStyle } from 'react-native-fast-image';
 import type { StyleProp } from 'react-native';
 import customColor from '@/util/constant/color';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 export interface Props {
 	url: string;
 	blurHash?: string;
 	imageStyle?: StyleProp<ImageStyle>;
-	isFeedDetail?: boolean;
 }
 
-const ThemeImage = memo(
-	({ url, blurHash, imageStyle, isFeedDetail }: Props) => {
-		const [imageLoaded, setImageLoaded] = useState(false);
+const ThemeImage = memo(({ url, blurHash, imageStyle }: Props) => {
+	const [imageLoaded, setImageLoaded] = useState(false);
+	const { currentPage } = useStatusContext();
 
-		const imageOnLoad = () => {
-			setImageLoaded(true);
-		};
+	const imageOnLoad = () => {
+		setImageLoaded(true);
+	};
 
-		return (
-			<>
-				<FastImage
-					source={{
-						uri: url,
-					}}
-					style={[
-						imageStyle,
-						{ backgroundColor: customColor['patchwork-dark-50'] },
-					]}
-					onLoad={imageOnLoad}
-				/>
-				{blurHash && !imageLoaded && !isFeedDetail && (
-					<BlueHashComponent blurHash={blurHash} imageStyle={imageStyle} />
-				)}
-			</>
-		);
-	},
-);
+	return (
+		<>
+			<FastImage
+				source={{
+					uri: url,
+				}}
+				style={[
+					imageStyle,
+					{ backgroundColor: customColor['patchwork-dark-50'] },
+				]}
+				onLoad={imageOnLoad}
+			/>
+			{blurHash && !imageLoaded && currentPage !== 'FeedDetail' && (
+				<BlueHashComponent blurHash={blurHash} imageStyle={imageStyle} />
+			)}
+		</>
+	);
+});
 
 const BlueHashComponent = ({
 	blurHash,

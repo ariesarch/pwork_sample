@@ -23,3 +23,7 @@ export { default as NotificationRequests } from './NotificationRequests/Notifica
 export { default as CollectionDetail } from './CollectionDetail/CollectionDetail';
 export { default as FollowingAccounts } from './FollowingAccounts/FollowingAccounts';
 export { default as FollowerAccounts } from './FollowerAccounts/FollowerAccounts';
+export { default as Settings } from './Settings/Settings';
+export { default as UpdatePassword } from './UpdatePassword/UpdatePassword';
+export { default as MuteAndBlockList } from './MuteAndBlockList/MuteAndBlockList';
+export { default as MyInformation } from './MyInformation/MyInformation';

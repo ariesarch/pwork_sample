@@ -29,6 +29,7 @@ import notifee, { EventType } from '@notifee/react-native';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
+import SettingStack from './SettingsStackNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -170,6 +171,7 @@ function ApplicationNavigator() {
 								name="LocalImageViewer"
 								component={LocalImageViewer}
 							/>
+							<Stack.Screen name="SettingStack" component={SettingStack} />
 						</>
 					)}
 				</Stack.Navigator>

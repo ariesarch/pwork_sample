@@ -7,6 +7,7 @@ import PhoneLoginForm from '@/components/molecules/login/PhoneLoginForm/PhoneLog
 import { GuestStackScreenProps } from '@/types/navigation';
 import EmailLoginForm from '@/components/molecules/login/EmailLoginForm/EmailLoginForm';
 import BackButton from '@/components/atoms/common/BackButton/BackButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const Login: React.FC<GuestStackScreenProps<'Login'>> = ({ navigation }) => {
 	const [activeTab, setActiveTab] = useState('1');
@@ -18,9 +19,9 @@ const Login: React.FC<GuestStackScreenProps<'Login'>> = ({ navigation }) => {
 				title="Log in"
 				leftCustomComponent={<BackButton />}
 			/>
-			<View className="mx-8">
+			<KeyboardAwareScrollView className="mx-8">
 				<EmailLoginForm />
-			</View>
+			</KeyboardAwareScrollView>
 		</SafeScreen>
 	);
 };

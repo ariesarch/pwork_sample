@@ -25,16 +25,10 @@ import { TouchableOpacity, ViewProps } from 'react-native';
 
 type Props = {
 	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
 	isFromNoti?: boolean;
 } & ViewProps;
 
-const StatusFavourtieButton = ({
-	status,
-	isFeedDetail,
-	isFromNoti,
-	...props
-}: Props) => {
+const StatusFavourtieButton = ({ status, isFromNoti, ...props }: Props) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
 	const { domain_name } = useActiveDomainStore();
@@ -53,7 +47,7 @@ const StatusFavourtieButton = ({
 				const updateFeedDatailData = toggleFavouriteState(currentFeed);
 				status.id == currentFeed.id && setActiveFeed(updateFeedDatailData);
 			}
-
+			console.log('status account id::', status.account.id);
 			const queryKeys = getCacheQueryKeys<FavouriteQueryKeys>(
 				isAuthor ? userInfo?.id! : status.account.id,
 				variables.status.in_reply_to_id,

@@ -686,3 +686,27 @@ export const Logout = (props: SvgProps) => (
 		/>
 	</Svg>
 );
+
+export const ProfileEmailIcon = (props: SvgProps) => (
+	<Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M4.5 6.5l5.608 4.112.002.002c.678.497 1.017.746 1.389.842.328.085.673.085 1.002 0 .372-.096.712-.345 1.392-.844L19.5 6.5M3 15.8V8.2c0-1.12 0-1.68.218-2.108.192-.377.497-.682.874-.874C4.52 5 5.08 5 6.2 5h11.6c1.12 0 1.68 0 2.107.218.377.192.683.497.875.874.218.427.218.987.218 2.105v7.607c0 1.118 0 1.676-.218 2.104a2.002 2.002 0 01-.875.874c-.427.218-.986.218-2.104.218H6.197c-1.118 0-1.678 0-2.105-.218a2 2 0 01-.874-.874C3 17.48 3 16.92 3 15.8z"
+			stroke={props?.stroke || '#fff'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</Svg>
+);
+
+export const PhoneIcon = (props: SvgProps) => (
+	<Svg width={24} height={24} viewBox="0 0 24 24" fill="none" {...props}>
+		<Path
+			d="M9.502 4.257A2 2 0 007.646 3H4.895A1.895 1.895 0 003 4.895C3 13.789 10.21 21 19.105 21A1.895 1.895 0 0021 19.105v-2.751a2 2 0 00-1.257-1.857l-2.636-1.054a2 2 0 00-2.023.32l-.68.568a2.001 2.001 0 01-2.696-.122L9.792 12.29a2 2 0 01-.123-2.694l.567-.68a2 2 0 00.322-2.024L9.502 4.257z"
+			stroke={props?.stroke || '#fff'}
+			strokeWidth={2}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		/>
+	</Svg>
+);

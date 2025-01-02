@@ -30,7 +30,6 @@ const HomeStack = () => {
 			<Stack.Screen name="FeedDetail" component={FeedDetail} />
 			<Stack.Screen name="HashTagDetail" component={HashTagDetail} />
 			<Stack.Screen name="Conversations" component={ConversationsStack} />
-			<Stack.Screen name="Settings" component={Settings} />
 		</Stack.Navigator>
 	);
 };

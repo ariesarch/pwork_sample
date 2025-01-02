@@ -225,3 +225,41 @@ export const followHashtag = async ({
 		return handleError(error);
 	}
 };
+
+export const muteUnMuteUserMutationFn = async ({
+	accountId,
+	toMute,
+}: {
+	accountId: string;
+	toMute: boolean;
+}) => {
+	try {
+		const muteAction = toMute ? 'mute' : 'unmute';
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`accounts/${accountId}/${muteAction}`, 'v1'),
+			toMute && { duration: '0', notifications: true },
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const blockUnblockUserMutationFn = async ({
+	accountId,
+	toBlock,
+}: {
+	accountId: string;
+	toBlock: boolean;
+}) => {
+	try {
+		const blockAction = toBlock ? 'block' : 'unblock';
+		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+			appendApiVersion(`accounts/${accountId}/${blockAction}`, 'v1'),
+			toBlock && { duration: '0', notifications: true },
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

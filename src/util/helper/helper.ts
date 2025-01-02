@@ -16,11 +16,14 @@ import { useActiveFeedStore } from '@/store/feed/activeFeed';
 import { uniqueId } from 'lodash';
 
 export const handleError = (error: any) => {
-	console.error('API Request Failed::', error?.response.message);
+	console.error('API Request Failed::', error.response);
 	return Promise.reject({
 		status: error?.response.status,
 		message:
-			error?.response.data?.error || error?.response.message || 'Unknown error',
+			error?.response.data?.error ||
+			error?.response.data?.message ||
+			error?.response.message ||
+			'Unknown error',
 	});
 };
 

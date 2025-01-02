@@ -93,3 +93,23 @@ export const resetPassword = async (params: {
 		return handleError(error);
 	}
 };
+
+export const updatePassword = async (params: {
+	current_password: string;
+	password: string;
+	password_confirmation: string;
+}) => {
+	try {
+		const resp: AxiosResponse<{ message: string }> = await instance.post(
+			appendApiVersion(`custom_passwords/change_password`, 'v1'),
+			{
+				current_password: params.current_password,
+				password: params.password,
+				password_confirmation: params.password_confirmation,
+			},
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

@@ -18,11 +18,8 @@ import {
 } from '@/services/notification.service';
 import { timelineDateFormatter } from '@/util/helper/helper';
 import dayjs from 'dayjs';
-import StatusHeader from '@/components/atoms/feed/StatusHeader/StatusHeader';
-import StatusContent from '@/components/atoms/feed/StatusContent/StatusContent';
 import { useNavigation } from '@react-navigation/native';
 import { NotificationScreenNavigationProp } from '@/types/navigation';
-import NotificationStatus from '@/components/organisms/feed/NotificationStatus/NotificationStatus';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 
 const notificationMessages: Record<NotificationItem['type'], string> = {

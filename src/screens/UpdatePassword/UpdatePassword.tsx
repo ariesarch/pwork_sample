@@ -6,31 +6,33 @@ import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import {
-	useForgotPWMutation,
 	useResetPWMutation,
+	useUpdatePasswordMutation,
 } from '@/hooks/mutations/auth.mutation';
-import { requestForgotPassword } from '@/services/auth.service';
-import { GuestStackScreenProps } from '@/types/navigation';
-import { forgetPWSchema } from '@/util/schema/forgotPwSchema';
-import { resetPasswordSchema } from '@/util/schema/resetPasswordSchema';
+import { SettingStackScreenProps } from '@/types/navigation';
+import { cn } from '@/util/helper/twutil';
+import { updatePasswordSchema } from '@/util/schema/updatePasswordSchema';
 import { PasswordEyeCloseIcon, PasswordEyeIcon } from '@/util/svg/icon.common';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { isSupported } from '@react-native-firebase/messaging';
 import { useColorScheme } from 'nativewind';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Alert, Pressable, View } from 'react-native';
+import { KeyboardAvoidingView, Pressable, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
+const UpdatePassword: React.FC<SettingStackScreenProps<'UpdatePassword'>> = ({
 	navigation,
 	route,
 }) => {
-	const [alertState, setAlert] = useState({ isOpen: false, isSuccess: false });
-	const { reset_password_token } = route.params;
+	const [alertState, setAlert] = useState({
+		isOpen: false,
+		isSuccess: false,
+		message: '',
+	});
 	const [pwVisibility, setPwVissibility] = useState({
-		password: false,
+		old_password: false,
+		new_password: false,
 		confirm_password: false,
 	});
 	const { colorScheme } = useColorScheme();
@@ -38,25 +40,32 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 	const {
 		control,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isValid },
 	} = useForm({
-		resolver: yupResolver(resetPasswordSchema),
+		resolver: yupResolver(updatePasswordSchema),
+		mode: 'onChange',
 	});
-	const { mutate, isPending } = useResetPWMutation({
+	const { mutate, isPending } = useUpdatePasswordMutation({
 		onSuccess: async response => {
-			setAlert({ isOpen: true, isSuccess: true });
+			setAlert({ isOpen: true, isSuccess: true, message: response.message });
 		},
 		onError: error => {
-			setAlert({ isOpen: true, isSuccess: false });
+			console.log('error::', error);
+
+			setAlert({
+				isOpen: true,
+				isSuccess: false,
+				message: error.message || 'Something Went Wrong',
+			});
 		},
 	});
 
 	const onSubmit = (data: any) => {
 		if (!isPending) {
 			mutate({
-				reset_password_token,
-				password: data.password,
-				password_confirmation: data.confirmPassword,
+				current_password: data.currentPassword,
+				password: data.newPassword,
+				password_confirmation: data.repeatNewPassword,
 			});
 		}
 	};
@@ -65,32 +74,32 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 		<SafeScreen>
 			<Header
 				hideUnderline
-				title="Reset Password"
+				title="Change Password"
 				leftCustomComponent={<BackButton />}
 			/>
-			<KeyboardAwareScrollView className="mx-8">
+			<KeyboardAwareScrollView className="mx-8 my-6">
 				<Controller
-					name="password"
+					name="currentPassword"
 					control={control}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<TextInput
-								placeholder="Password"
+								placeholder="Current Password"
 								onChangeText={onChange}
 								onBlur={onBlur}
 								value={value}
-								secureTextEntry={!pwVisibility.password}
+								secureTextEntry={!pwVisibility.old_password}
 								endIcon={
 									<Pressable
 										className="px-2 py-2 -mt-2 active:opacity-80"
 										onPress={() =>
 											setPwVissibility(prev => ({
 												...prev,
-												password: !prev.password,
+												old_password: !prev.old_password,
 											}))
 										}
 									>
-										{pwVisibility.password ? (
+										{pwVisibility.old_password ? (
 											<PasswordEyeIcon
 												fill={colorScheme === 'dark' ? 'white' : 'gray'}
 												className=""
@@ -104,25 +113,72 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 								}
 								extraContainerStyle="mb-4"
 							/>
-							{errors.password && (
+							{errors.currentPassword && (
 								<ThemeText
 									size="xs_12"
 									variant={'textOrange'}
 									className="-mt-2 mb-2"
 								>
-									{'*' + errors.password.message}
+									{'*' + errors.currentPassword.message}
 								</ThemeText>
 							)}
 						</View>
 					)}
 				/>
 				<Controller
-					name="confirmPassword"
+					name="newPassword"
 					control={control}
 					render={({ field: { onChange, onBlur, value } }) => (
 						<View>
 							<TextInput
-								placeholder="Confirm Password"
+								placeholder="New Password"
+								onChangeText={onChange}
+								onBlur={onBlur}
+								value={value}
+								secureTextEntry={!pwVisibility.new_password}
+								endIcon={
+									<Pressable
+										className="px-2 py-2 -mt-2 active:opacity-80"
+										onPress={() =>
+											setPwVissibility(prev => ({
+												...prev,
+												new_password: !prev.new_password,
+											}))
+										}
+									>
+										{pwVisibility.new_password ? (
+											<PasswordEyeIcon
+												fill={colorScheme === 'dark' ? 'white' : 'gray'}
+												className=""
+											/>
+										) : (
+											<PasswordEyeCloseIcon
+												fill={colorScheme === 'dark' ? 'white' : 'gray'}
+											/>
+										)}
+									</Pressable>
+								}
+								extraContainerStyle="mb-4"
+							/>
+							{errors.newPassword && (
+								<ThemeText
+									size="xs_12"
+									variant={'textOrange'}
+									className="-mt-2 mb-2"
+								>
+									{'*' + errors.newPassword.message}
+								</ThemeText>
+							)}
+						</View>
+					)}
+				/>
+				<Controller
+					name="repeatNewPassword"
+					control={control}
+					render={({ field: { onChange, onBlur, value } }) => (
+						<View>
+							<TextInput
+								placeholder="Repeat New Password"
 								onChangeText={onChange}
 								onBlur={onBlur}
 								value={value}
@@ -151,32 +207,35 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 								}
 								extraContainerStyle="mb-4"
 							/>
-							{errors.confirmPassword && (
+							{errors.repeatNewPassword && (
 								<ThemeText
 									size="xs_12"
 									variant={'textOrange'}
 									className="-mt-2 mb-2"
 								>
-									{'*' + errors.confirmPassword.message}
+									{'*' + errors.repeatNewPassword.message}
 								</ThemeText>
 							)}
 						</View>
 					)}
 				/>
-				<Button onPress={handleSubmit(onSubmit)} className="h-[48]">
+				<Button
+					onPress={handleSubmit(onSubmit)}
+					className={cn(
+						'h-[48]',
+						isValid ? 'bg-patchwork-red-50' : 'opacity-90',
+					)}
+					disabled={!isValid}
+				>
 					{isPending ? (
 						<Flow size={25} color={'#fff'} />
 					) : (
-						<ThemeText className="text-white">Update</ThemeText>
+						<ThemeText className="text-white">Submit</ThemeText>
 					)}
 				</Button>
 				<CustomAlert
 					isVisible={alertState.isOpen}
-					message={
-						alertState.isSuccess
-							? 'Updated Password Successfully!'
-							: 'Something went wrong!'
-					}
+					message={alertState.message}
 					title={alertState.isSuccess ? 'Success' : 'Error'}
 					extraTitleStyle="text-center text-white"
 					extraOkBtnStyle="text-white"
@@ -185,7 +244,9 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 					}}
 					handleOk={() => {
 						setAlert(prev => ({ ...prev, isOpen: false }));
-						navigation.navigate('Login');
+						if (alertState.isSuccess) {
+							navigation.goBack();
+						}
 					}}
 					type={alertState.isSuccess ? 'success' : 'error'}
 				/>
@@ -193,4 +254,4 @@ const ChangePassword: React.FC<GuestStackScreenProps<'ChangePassword'>> = ({
 		</SafeScreen>
 	);
 };
-export default ChangePassword;
+export default UpdatePassword;

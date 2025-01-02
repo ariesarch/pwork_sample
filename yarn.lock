@@ -11690,6 +11690,7 @@ __metadata:
     react-native-swipe-list-view: ^3.2.9
     react-native-tab-view: ^3.5.2
     react-native-toast-message: ^2.2.1
+    react-native-version-info: ^1.1.1
     react-native-walkthrough-tooltip: ^1.6.0
     react-native-webview: ^13.12.3
     react-test-renderer: 18.2.0
@@ -12674,6 +12675,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: c6b5d231b3b617b3d3d893023673534fe2cc0c5f32bb5fc4aecfe239e9de2fb9f0e9a4086d776e53daf3bc2376dce16dcec13e1b5cf1554dbf51808695fc2441
+  languageName: node
+  linkType: hard
+
+"react-native-version-info@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "react-native-version-info@npm:1.1.1"
+  peerDependencies:
+    react-native: ">= 0.60.2"
+  checksum: ad9c05066f790980a1c4def49e1d6d3f4b63d570f611a09a4834ac48907c8e145461cdd014f8d809ac8c5a50aba996a025912ecf7d760001c3740d19181c193c
   languageName: node
   linkType: hard
 

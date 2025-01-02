@@ -17,17 +17,11 @@ type Props = {
 	status: Pathchwork.Status;
 	isMainStatus?: boolean;
 	handleSeeMorePress?: () => void;
-	isFeedDetail?: boolean;
 };
 
 const MAX_CHAR_COUNT = 280;
 
-const HTMLParser = ({
-	status,
-	isMainStatus,
-	handleSeeMorePress,
-	isFeedDetail,
-}: Props) => {
+const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
 	const document = useMemo(() => {

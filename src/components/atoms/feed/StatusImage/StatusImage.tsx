@@ -13,13 +13,12 @@ import { ThemeText } from '../../common/ThemeText/ThemeText';
 
 type Props = {
 	media_attachments: Pathchwork.Attachment[];
-	isFeedDetail?: boolean;
 	sensitive: boolean;
 };
 
 type NavigationProps = StackNavigationProp<RootStackParamList>;
 
-const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
+const StatusImage = ({ media_attachments, sensitive }: Props) => {
 	const navigation = useNavigation<NavigationProps>();
 	const { sensitiveMedia, toggleSensitiveMedia } = useSensitiveMediaStore();
 	const length = media_attachments.length;
@@ -102,7 +101,6 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 					url={imageAttachmentUrl.uri!}
 					blurHash={item.blurhash}
 					imageStyle={imageStyle}
-					isFeedDetail={isFeedDetail}
 				/>
 			</View>
 		);

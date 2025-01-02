@@ -98,7 +98,7 @@ const ConversationList = ({
 	};
 
 	const renderListFooter = () =>
-		isFetchingNextPage ? (
+		data && isFetchingNextPage ? (
 			<ActivityIndicator
 				color={customColor['patchwork-red-50']}
 				size={'large'}

@@ -75,6 +75,38 @@ declare namespace Pathchwork {
 		about_me: string;
 	};
 
+	type MuteBlockUserAccount = {
+		id: string;
+		username: string;
+		acct: string;
+		display_name: string;
+		locked: boolean;
+		bot: boolean;
+		discoverable: boolean;
+		indexable: boolean;
+		group: boolean;
+		created_at: string;
+		note: string;
+		url: string;
+		uri: string;
+		avatar: string;
+		avatar_static: string;
+		header: string;
+		header_static: string;
+		followers_count: number;
+		following_count: number;
+		statuses_count: number;
+		last_status_at: string;
+		hide_collections: boolean;
+		noindex: boolean;
+		mute_expires_at: string;
+		emojis: Array<string>;
+		roles: Array<string>;
+		fields: Array<string>;
+		isUnMutedNow?: boolean;
+		isUnBlockedNow?: boolean;
+	};
+
 	type RelationShip = {
 		blocked_by: boolean;
 		blocking: boolean;

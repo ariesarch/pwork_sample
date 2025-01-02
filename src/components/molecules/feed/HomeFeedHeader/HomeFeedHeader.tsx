@@ -52,7 +52,9 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 				<Pressable
 					className="p-3 border border-slate-200 rounded-full active:opacity-80"
 					onPress={() => {
-						navigation.navigate('Settings');
+						navigation.navigate('SettingStack', {
+							screen: 'Settings',
+						});
 					}}
 				>
 					<SettingIcon colorScheme={colorScheme} />

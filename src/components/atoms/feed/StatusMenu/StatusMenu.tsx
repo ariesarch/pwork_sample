@@ -47,12 +47,7 @@ import {
 	updateReplyCountInHashtagFeed,
 } from '@/util/cache/reply/replyCache';
 
-const StatusMenu = ({
-	status,
-}: {
-	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
-}) => {
+const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
 	const navigation = useNavigation();
 	const { domain_name } = useActiveDomainStore();
 	const { activeFeed: currentFeed } = useActiveFeedStore();
