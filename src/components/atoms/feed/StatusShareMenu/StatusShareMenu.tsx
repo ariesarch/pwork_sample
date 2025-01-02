@@ -152,6 +152,10 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 		}
 	};
 
+	const isBookmarked = status.reblog
+		? status.reblog.bookmarked
+		: status.bookmarked;
+
 	return (
 		<Menu
 			renderer={renderers.Popover}
@@ -189,12 +193,18 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 						disabled={toggleBookmarkStatus.isPending}
 					>
 						<MenuOptionIcon
-							name={status?.bookmarked ? 'Remove Bookmark' : 'Bookmark'}
+							name={
+								status?.bookmarked || isBookmarked
+									? 'Remove Bookmark'
+									: 'Bookmark'
+							}
 							icon={
 								status?.bookmarked ? (
 									<AccountUnBookmarkIcon />
 								) : (
-									<AccountBookmarkIcon />
+									<AccountBookmarkIcon
+										fill={isBookmarked ? '#828689' : 'none'}
+									/>
 								)
 							}
 						/>
