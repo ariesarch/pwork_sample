@@ -3,29 +3,20 @@ import Header from '@/components/atoms/common/Header/Header';
 import ListEmptyComponent from '@/components/atoms/common/ListEmptyComponent/ListEmptyComponent';
 import StatusWrapper from '@/components/organisms/feed/StatusWrapper/StatusWrapper';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
-import { useTokenRevokeMutation } from '@/hooks/mutations/auth.mutation';
-import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
-import { useGetChannelFeed } from '@/hooks/queries/channel.queries';
 import { useGetBookmarkList } from '@/hooks/queries/statusActions.queries';
-import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
-import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
-import { RootScreenProps } from '@/types/navigation';
 import customColor from '@/util/constant/color';
 import { flattenPages } from '@/util/helper/timeline';
 import { FlashList } from '@shopify/flash-list';
 import { useColorScheme } from 'nativewind';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Dimensions, RefreshControl, View } from 'react-native';
 import { CircleFade } from 'react-native-animated-spinkit';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const BookmarkList: React.FC<RootScreenProps<'BookmarkList'>> = ({
-	route,
-	navigation,
-}) => {
+const BookmarkList = () => {
 	const domain_name = useSelectedDomain();
-	const { bottom, top } = useSafeAreaInsets();
+	const { bottom } = useSafeAreaInsets();
 	const { colorScheme } = useColorScheme();
 
 	const queryParams = {
@@ -63,7 +54,7 @@ const BookmarkList: React.FC<RootScreenProps<'BookmarkList'>> = ({
 				renderItem={({ item }) => (
 					<StatusWrapper
 						status={item}
-						currentPage="Channel"
+						currentPage="BookmarkList"
 						statusType={item.reblog ? 'reblog' : 'normal'}
 					/>
 				)}

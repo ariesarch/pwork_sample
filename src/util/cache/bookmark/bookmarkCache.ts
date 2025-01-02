@@ -2,6 +2,8 @@ import { GetChannelFeedQueryKey } from '@/types/queries/channel.type';
 import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { updateQueryCacheGeneric } from '../queryCacheHelper';
 import { queryClient } from '@/App';
+import { GetBookmarkListQueryKey } from '@/types/queries/statusActions';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
 
 export type BookmarkQueryKeys =
 	| GetChannelFeedQueryKey
@@ -113,9 +115,28 @@ const updateHashtagBookmark = (
 	}
 };
 
+const removeBookmarkFromBookmarkList = (id: string, domain_name: string) => {
+	const queryParams = {
+		domain_name,
+		remote: false,
+		only_media: false,
+	};
+	queryClient.setQueryData(['bookmark-list', queryParams], (oldData: any) => {
+		if (!oldData) return oldData;
+		return {
+			...oldData,
+			pages: oldData.pages.map((page: any) => ({
+				...page,
+				data: page.data.filter((status: any) => status.id !== id),
+			})),
+		};
+	});
+};
+
 export {
 	toggleBookmarkState,
 	syncBookmarkAcrossCache,
 	updateBookmarkForDescendentReply,
 	updateHashtagBookmark,
+	removeBookmarkFromBookmarkList,
 };

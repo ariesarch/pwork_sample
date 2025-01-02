@@ -5,7 +5,8 @@ export type StatusCurrentPage =
 	| 'FeedDetail'
 	| 'ProfileOther'
 	| 'Notification'
-	| 'Compose';
+	| 'Compose'
+	| 'BookmarkList';
 
 export type StatusOrigin = 'other' | 'noti' | 'hashtag';
 export type StatusType =
