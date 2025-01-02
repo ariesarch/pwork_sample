@@ -93,3 +93,17 @@ export const resetPassword = async (params: {
 		return handleError(error);
 	}
 };
+
+export const revokeToken = async (params: { token: string }) => {
+	try {
+		const body = {
+			...params,
+			client_id: process.env.CLIENT_ID,
+			client_secret: process.env.CLIENT_SECRET_TOKEN,
+		};
+		const resp: AxiosResponse<{}> = await instance.post('/oauth/revoke', body);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};

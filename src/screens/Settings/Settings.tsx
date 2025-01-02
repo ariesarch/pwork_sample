@@ -4,10 +4,11 @@ import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import Header from '@/components/atoms/common/Header/Header';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { useTokenRevokeMutation } from '@/hooks/mutations/auth.mutation';
 import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
-import { useAuthStoreAction } from '@/store/auth/authStore';
+import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
-import { removeAppToken } from '@/util/helper/helper';
+import { handleError, removeAppToken } from '@/util/helper/helper';
 import { AccountIcon, ChevronRightIcon, Logout } from '@/util/svg/icon.common';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
@@ -17,7 +18,8 @@ const Settings = () => {
 	const { mutateAsync, isPending } = usePushNotiRevokeTokenMutation({});
 	const { clearAuthState } = useAuthStoreAction();
 	const fcmToken = usePushNoticationStore(state => state.fcmToken);
-
+	const { mutateAsync: mutateRevokeToken } = useTokenRevokeMutation({});
+	const { access_token } = useAuthStore();
 	const handleLogout = async () => {
 		setAlert(false);
 		try {
@@ -27,11 +29,17 @@ const Settings = () => {
 				});
 			}
 		} catch (error) {
-			console.error('Error during logout process:', error);
+			handleError(error);
 		} finally {
-			await removeAppToken();
-			clearAuthState();
-			queryClient.clear();
+			if (access_token) {
+				console.log('before');
+				await mutateRevokeToken({
+					token: access_token,
+				});
+				await removeAppToken();
+				clearAuthState();
+				queryClient.clear();
+			}
 		}
 	};
 	return (
@@ -82,16 +90,17 @@ const Settings = () => {
 					<ThemeText className="text-center">Log Out</ThemeText>
 				</Pressable>
 			</View>
-			<CustomAlert
-				isVisible={isAlertOpen}
-				message={'Are u sure you want to logout?'}
-				hasCancel
-				handleCancel={() => {
-					setAlert(false);
-				}}
-				handleOk={handleLogout}
-				type="error"
-			/>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'Are u sure you want to logout?'}
+					hasCancel
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={handleLogout}
+					type="error"
+				/>
+			)}
 		</SafeScreen>
 	);
 };
