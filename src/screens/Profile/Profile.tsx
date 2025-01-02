@@ -395,6 +395,7 @@ const Profile: React.FC<HomeStackScreenProps<'Profile'>> = ({
 			)}
 			{delConfAction.visible && (
 				<CustomAlert
+					isVisible={delConfAction.visible}
 					message={`Are u sure you want to delete the ${delConfAction?.title} link?`}
 					hasCancel
 					handleCancel={() => setDelConfAction({ visible: false })}

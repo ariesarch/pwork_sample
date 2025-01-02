@@ -126,6 +126,7 @@ const EditProfile = () => {
 			</ThemeModal>
 			{delConfAction.visible && (
 				<CustomAlert
+					isVisible={delConfAction.visible}
 					message={`Are u sure you want to delete the ${delConfAction?.title}?`}
 					hasCancel
 					handleCancel={() => setDelConfAction({ visible: false })}
