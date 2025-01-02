@@ -4,6 +4,7 @@ import {
 	requestForgotPassword,
 	resetPassword,
 	updatePassword,
+	revokeToken,
 } from '@/services/auth.service';
 import { LoginMutationPayload } from '@/types/queries/auth.type';
 import {
@@ -76,4 +77,10 @@ export const useUpdatePasswordMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: updatePassword, ...options });
+};
+
+export const useTokenRevokeMutation = (
+	options: UseMutationOptions<{}, AxiosError, { token: string }>,
+) => {
+	return useMutation({ mutationFn: revokeToken, ...options });
 };

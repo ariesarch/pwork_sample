@@ -33,7 +33,12 @@ const RssContentCard = ({ meta, extraStyle }: Props) => {
 	};
 
 	return (
-		<View className={cn('border border-gray-800 rounded-lg', extraStyle)}>
+		<View
+			className={cn(
+				'border border-gray-800 rounded-lg overflow-hidden',
+				extraStyle,
+			)}
+		>
 			<Pressable
 				onPress={() => navigateToWebView(meta?.url ?? '')}
 				className="rounded-xl"
@@ -43,6 +48,8 @@ const RssContentCard = ({ meta, extraStyle }: Props) => {
 					imageStyle={{
 						height: 180,
 						width: '100%',
+						borderTopLeftRadius: 8,
+						borderTopRightRadius: 8,
 					}}
 					blurHash={meta?.blurhash}
 				/>

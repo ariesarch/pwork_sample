@@ -27,3 +27,4 @@ export { default as Settings } from './Settings/Settings';
 export { default as UpdatePassword } from './UpdatePassword/UpdatePassword';
 export { default as MuteAndBlockList } from './MuteAndBlockList/MuteAndBlockList';
 export { default as MyInformation } from './MyInformation/MyInformation';
+export { default as BookmarkList } from './BookmarkList/BookmarkList';

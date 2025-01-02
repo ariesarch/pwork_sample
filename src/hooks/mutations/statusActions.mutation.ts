@@ -1,5 +1,12 @@
-import { statusDeleteFn } from '@/services/statusActions.service';
-import { UseMutationOptions, useMutation } from '@tanstack/react-query';
+import {
+	bookmarkStatus,
+	statusDeleteFn,
+} from '@/services/statusActions.service';
+import {
+	MutationOptions,
+	UseMutationOptions,
+	useMutation,
+} from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 
 export const useStatusDeleteMutation = (
@@ -13,4 +20,14 @@ export const useStatusDeleteMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: statusDeleteFn, ...options });
+};
+
+export const useBookmarkStatusMutation = (
+	options: MutationOptions<
+		Pathchwork.Status,
+		AxiosError,
+		{ status: Pathchwork.Status; crossChannelRequestIdentifier?: string }
+	>,
+) => {
+	return useMutation({ mutationFn: bookmarkStatus, ...options });
 };

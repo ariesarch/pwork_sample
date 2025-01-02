@@ -1,40 +1,43 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable default-case */
 
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { parseDocument, ElementType } from 'htmlparser2';
 import type { ChildNode } from 'domhandler';
-import { Platform } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
+import { layoutAnimation } from '@/util/helper/timeline';
 import { useAuthStore } from '@/store/auth/authStore';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 type Props = {
 	status: Pathchwork.Status;
+	numberOfLines?: number;
 	isMainStatus?: boolean;
-	handleSeeMorePress?: () => void;
 };
 
-const MAX_CHAR_COUNT = 280;
+const MAX_ALLOWED_LINES = 35;
+const MAX_CHAR_COUNT = 150;
 
-const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
+const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
+	const [totalLines, setTotalLines] = useState<number>();
+	const [expanded, setExpanded] = useState(false);
+
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
-	const document = useMemo(() => {
-		return parseDocument(status.content);
-	}, [status.content]);
-	const isImageMissing = useMemo(() => {
-		return status?.media_attachments?.length !== 0;
-	}, [status?.image_url]);
+	const document = useMemo(
+		() => parseDocument(status.content),
+		[status.content],
+	);
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { userInfo } = useAuthStore();
-
-	// Handlers
 	const handleHashTahPress = (tag: string) => {
 		const specialTag = tag.replace(/#/g, '');
 		navigation.navigate('HashTagDetail', {
@@ -42,6 +45,12 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 			hashtagDomain: domain_name,
 		});
 	};
+	const isImageMissing = useMemo(
+		() => status?.media_attachments?.length !== 0,
+		[status?.image_url],
+	);
+	const { currentPage } = useStatusContext();
+	const isFeedDetail = currentPage === 'FeedDetail';
 
 	const handleMentionPress = (mention: Pathchwork.Mention) => {
 		if (mention.id === userInfo?.id!) {
@@ -57,7 +66,15 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 		navigation.navigate('WebViewer', { url });
 	};
 
-	const renderNode = (node: ChildNode, index: number) => {
+	const handleSeeMorePress = () => {
+		navigation.navigate('FeedDetail', { id: status.id });
+	};
+
+	const renderNode = (
+		node: ChildNode,
+		index: number,
+		isTruncated: boolean = false,
+	) => {
 		let classes, href: string;
 		switch (node?.type) {
 			case ElementType.Text:
@@ -67,6 +84,9 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 					content = node?.data.replace(/^\s+/, '');
 				} else {
 					content = node.data.trim();
+				}
+				if (isTruncated && content.length > MAX_CHAR_COUNT) {
+					content = content.slice(0, MAX_CHAR_COUNT) + '...';
 				}
 				return <ParseEmojis content={content} key={index} />;
 
@@ -164,7 +184,7 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 						if (index < document.children.length - 1) {
 							return (
 								<ThemeText key={index}>
-									{node.children.map((c, i) => renderNode(c, i))}
+									{node.children.map((c, i) => renderNode(c, i, isTruncated))}
 									<ThemeText
 										style={{
 											lineHeight: adaptedLineheight
@@ -180,7 +200,9 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) => renderNode(c, i))}
+								children={node.children.map((c, i) =>
+									renderNode(c, i, isTruncated),
+								)}
 							/>
 						);
 
@@ -188,7 +210,9 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) => renderNode(c, i))}
+								children={node.children.map((c, i) =>
+									renderNode(c, i, isTruncated),
+								)}
 								variant="textOrange"
 							/>
 						);
@@ -197,24 +221,49 @@ const HTMLParser = ({ status, isMainStatus, handleSeeMorePress }: Props) => {
 		return null;
 	};
 
-	return <ThemeText children={document.children.map(renderNode)} />;
+	const renderContentWithSeeMore = () => {
+		const fullTextContent = document.children
+			.map(node => unwrapNode(node))
+			.join('');
+		if (fullTextContent.length > MAX_CHAR_COUNT && !isFeedDetail) {
+			return (
+				<ThemeText>
+					{document.children.map((node, index) =>
+						renderNode(node, index, true),
+					)}
+					<ThemeText
+						onPress={handleSeeMorePress}
+						variant="textOrange"
+						size="fs_13"
+					>
+						{' '}
+						See More
+					</ThemeText>
+				</ThemeText>
+			);
+		}
+
+		return (
+			<>{document.children.map((node, index) => renderNode(node, index))}</>
+		);
+	};
+
+	return <>{renderContentWithSeeMore()}</>;
 };
 
 export default HTMLParser;
 
+// Utility function to unwrap content from child nodes
 const unwrapNode = (node: ChildNode): string => {
 	switch (node.type) {
 		case ElementType.Text:
 			return node.data;
 		case ElementType.Tag:
 			if (node.name === 'span') {
-				if (node.attribs.class?.includes('invisible')) {
-					return '';
-				}
+				if (node.attribs.class?.includes('invisible')) return '';
 				if (node.attribs.class?.includes('ellipsis'))
 					return `${node.children.map(child => unwrapNode(child)).join('')}...`;
 			}
-
 			return node.children.map(child => unwrapNode(child)).join('');
 		default:
 			return '';

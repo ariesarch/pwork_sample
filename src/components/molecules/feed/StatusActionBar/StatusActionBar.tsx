@@ -1,5 +1,4 @@
-import { Alert, View } from 'react-native';
-import { ShareTo, Tranlsate } from '@/util/svg/icon.common';
+import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import StatusReplyButton from '@/components/atoms/feed/StatusReply/StatusReplyButton';
 import StatusReblogButton from '@/components/atoms/feed/StatusReblog/StatusReblogButton';
@@ -10,6 +9,8 @@ import { useMemo, useState } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
+import StatusShareMenu from '@/components/atoms/feed/StatusShareMenu/StatusShareMenu';
+import { moderateScale } from 'react-native-size-matters';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -21,6 +22,7 @@ const StatusActionBar = ({ status, isFromNoti }: Props) => {
 	const { userInfo } = useAuthStore();
 	const { currentPage, extraPayload } = useStatusContext();
 	const [isAlertOpen, setAlert] = useState(false);
+	const [isShareVisible, setShareVisible] = useState(false);
 
 	const reblogsCount = status.reblog
 		? status.reblog.reblogs_count
@@ -72,21 +74,26 @@ const StatusActionBar = ({ status, isFromNoti }: Props) => {
 				/>
 				<StatusFavourtieButton className="mr-3" {...{ status, isFromNoti }} />
 			</View>
-			<View className="flex flex-row ">
+			<View className="flex flex-row">
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
+				<View style={{ marginRight: moderateScale(12) }}>
+					<StatusShareMenu {...{ status, isFromNoti }} />
+				</View>
 				{isAuthor && <StatusMenu status={status} />}
 			</View>
-			<CustomAlert
-				isVisible={isAlertOpen}
-				message={'You have already re-posted this status!'}
-				hasCancel={false}
-				handleCancel={() => {
-					setAlert(false);
-				}}
-				handleOk={() => setAlert(false)}
-				type="error"
-			/>
+			{isAlertOpen && (
+				<CustomAlert
+					message={'You have already re-posted this status!'}
+					hasCancel={false}
+					isVisible={isAlertOpen}
+					handleCancel={() => {
+						setAlert(false);
+					}}
+					handleOk={() => setAlert(false)}
+					type="error"
+				/>
+			)}
 		</View>
 	);
 };

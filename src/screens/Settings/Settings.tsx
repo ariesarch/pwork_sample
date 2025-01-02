@@ -4,12 +4,14 @@ import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import Header from '@/components/atoms/common/Header/Header';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
+import { useTokenRevokeMutation } from '@/hooks/mutations/auth.mutation';
 import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
-import { useAuthStoreAction } from '@/store/auth/authStore';
+import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import { SettingStackScreenProps } from '@/types/navigation';
-import { removeAppToken } from '@/util/helper/helper';
+import { handleError, removeAppToken } from '@/util/helper/helper';
 import { AccountIcon, ChevronRightIcon, Logout } from '@/util/svg/icon.common';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import { Pressable, View } from 'react-native';
 import VersionInfo from 'react-native-version-info';
@@ -21,7 +23,8 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 	const { mutateAsync, isPending } = usePushNotiRevokeTokenMutation({});
 	const { clearAuthState } = useAuthStoreAction();
 	const fcmToken = usePushNoticationStore(state => state.fcmToken);
-
+	const { mutateAsync: mutateRevokeToken } = useTokenRevokeMutation({});
+	const { access_token } = useAuthStore();
 	const handleLogout = async () => {
 		setAlert(false);
 		try {
@@ -31,13 +34,23 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 				});
 			}
 		} catch (error) {
-			console.error('Error during logout process:', error);
+			handleError(error);
 		} finally {
-			await removeAppToken();
-			clearAuthState();
-			queryClient.clear();
+			if (access_token) {
+				await mutateRevokeToken({
+					token: access_token,
+				});
+				await removeAppToken();
+				clearAuthState();
+				queryClient.clear();
+			}
 		}
 	};
+
+	const handleBookmarksPress = () => {
+		// navigation.navigate('BookmarkList');
+	};
+
 	return (
 		<SafeScreen>
 			<Header title="Settings" leftCustomComponent={<BackButton />} />
@@ -70,6 +83,13 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 					<ChevronRightIcon width={12} height={12} />
 				</Pressable>
 				{/* <Pressable
+					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"
+					onPress={handleBookmarksPress}
+				>
+					<ThemeText>Bookmarks</ThemeText>
+					<ChevronRightIcon width={12} height={12} />
+				</Pressable>
+				<Pressable
 					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"
 					onPress={() => {}}
 				>

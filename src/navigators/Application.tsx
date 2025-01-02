@@ -8,6 +8,7 @@ import {
 	ChannelCreate,
 	ImageViewer,
 	LocalImageViewer,
+	BookmarkList,
 } from '@/screens';
 
 import type { RootStackParamList } from '@/types/navigation';
@@ -172,6 +173,7 @@ function ApplicationNavigator() {
 								component={LocalImageViewer}
 							/>
 							<Stack.Screen name="SettingStack" component={SettingStack} />
+							<Stack.Screen name="BookmarkList" component={BookmarkList} />
 						</>
 					)}
 				</Stack.Navigator>

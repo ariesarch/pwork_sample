@@ -50,6 +50,7 @@ export type RootStackParamList = {
 	InitiateNewConversation: {
 		account: Pathchwork.Account;
 	};
+	BookmarkList: undefined;
 };
 
 export type BottomStackParamList = {

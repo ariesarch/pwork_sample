@@ -124,16 +124,17 @@ const EditProfile = () => {
 					}
 				/>
 			</ThemeModal>
-			<CustomAlert
-				isVisible={delConfAction.visible}
-				message={`Are u sure you want to delete the ${delConfAction?.title}?`}
-				hasCancel
-				handleCancel={() => setDelConfAction({ visible: false })}
-				handleOk={() => {
-					if (delConfAction.title) handlePressDelConf();
-				}}
-				type="error"
-			/>
+			{delConfAction.visible && (
+				<CustomAlert
+					message={`Are u sure you want to delete the ${delConfAction?.title}?`}
+					hasCancel
+					handleCancel={() => setDelConfAction({ visible: false })}
+					handleOk={() => {
+						if (delConfAction.title) handlePressDelConf();
+					}}
+					type="error"
+				/>
+			)}
 			<LoadingModal isVisible={isDeletingMedia || isUpdatingProfile} />
 		</>
 	);

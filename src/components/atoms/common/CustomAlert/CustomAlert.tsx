@@ -1,9 +1,9 @@
-import { View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
 import { ThemeText } from '../ThemeText/ThemeText';
-import ThemeModal from '../Modal/Modal';
 import Underline from '../Underline/Underline';
 import { ClassValue } from 'clsx';
 import { cn } from '@/util/helper/twutil';
+import ThemeModal from '../Modal/Modal';
 
 export type MenuProp = {
 	title?: string;
