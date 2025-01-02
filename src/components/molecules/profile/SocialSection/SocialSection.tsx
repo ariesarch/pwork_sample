@@ -41,15 +41,19 @@ const SocialSection = ({
 }: SocialSectionProps) => {
 	const { colorScheme } = useColorScheme();
 
-	const linkCount = fields.filter(field => {
-		const { value } = field;
-		return (
-			(value &&
-				(value.toLowerCase().includes('https') ||
-					value.toLowerCase().includes('www'))) ||
-			value.toLocaleLowerCase().includes('.com')
-		);
-	}).length;
+	// Noted by sev: the link count should be the LINK TYPE's count.
+
+	// const linkCount = fields.filter(field => {
+	// 	const { value } = field;
+	// 	return (
+	// 		(value &&
+	// 			(value.toLowerCase().includes('https') ||
+	// 				value.toLowerCase().includes('www'))) ||
+	// 		value.toLocaleLowerCase().includes('.com')
+	// 	);
+	// }).length;
+
+	const linkCount = fields.length;
 
 	// render items
 	const renderSocialIcons = (field: Pathchwork.Field) => {
