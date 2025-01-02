@@ -34,7 +34,12 @@ const RssContentCard = ({ meta, extraStyle, isFeedDetail }: Props) => {
 	};
 
 	return (
-		<View className={cn('border border-gray-800 rounded-lg', extraStyle)}>
+		<View
+			className={cn(
+				'border border-gray-800 rounded-lg overflow-hidden',
+				extraStyle,
+			)}
+		>
 			<Pressable
 				onPress={() => navigateToWebView(meta?.url ?? '')}
 				className="rounded-xl"

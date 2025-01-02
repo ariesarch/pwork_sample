@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSensitiveMediaStore } from '@/store/feed/sensitiveMediaStore';
-import { ThemeText } from '../../common/ThemeText/ThemeText';
 
 type Props = {
 	media_attachments: Pathchwork.Attachment[];
@@ -101,7 +100,11 @@ const StatusImage = ({ media_attachments, isFeedDetail, sensitive }: Props) => {
 				<ThemeImage
 					url={imageAttachmentUrl.uri!}
 					blurHash={item.blurhash}
-					imageStyle={imageStyle}
+					imageStyle={{
+						width: '100%',
+						height: calculateHeightForBlurHash(media_attachments.length, index),
+						...imageStyle,
+					}}
 					isFeedDetail={isFeedDetail}
 				/>
 			</View>
