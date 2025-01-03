@@ -48,7 +48,7 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 	};
 
 	const handleBookmarksPress = () => {
-		// navigation.navigate('BookmarkList');
+		navigation.navigate('BookmarkList');
 	};
 
 	return (
@@ -82,14 +82,14 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 					<ThemeText>Mute and Blocks</ThemeText>
 					<ChevronRightIcon width={12} height={12} />
 				</Pressable>
-				{/* <Pressable
+				<Pressable
 					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"
 					onPress={handleBookmarksPress}
 				>
 					<ThemeText>Bookmarks</ThemeText>
 					<ChevronRightIcon width={12} height={12} />
 				</Pressable>
-				<Pressable
+				{/* <Pressable
 					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"
 					onPress={() => {}}
 				>

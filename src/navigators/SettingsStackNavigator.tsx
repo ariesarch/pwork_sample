@@ -1,4 +1,5 @@
 import {
+	BookmarkList,
 	MuteAndBlockList,
 	MyInformation,
 	Settings,
@@ -16,6 +17,7 @@ const SettingStack = () => {
 			<Stack.Screen name="UpdatePassword" component={UpdatePassword} />
 			<Stack.Screen name="MuteAndBlockList" component={MuteAndBlockList} />
 			<Stack.Screen name="MyInformation" component={MyInformation} />
+			<Stack.Screen name="BookmarkList" component={BookmarkList} />
 		</Stack.Navigator>
 	);
 };
