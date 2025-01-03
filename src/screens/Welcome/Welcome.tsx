@@ -24,7 +24,11 @@ const Welcome: React.FC<GuestStackScreenProps<'Welcome'>> = ({
 					<ThemeText className="text-white">Create account</ThemeText>
 				</Button>
 				<OrSeparator className="mb-5" /> */}
-					<Button variant="outline" className="w-full rounded-3xl h-12 mt-10">
+					<Button
+						variant="outline"
+						className="w-full rounded-3xl h-12 mt-10"
+						onPress={() => {}}
+					>
 						<View className="flex-row justify-center items-center">
 							<MastodonIcon />
 							<ThemeText className="ml-2"> Sign in with Mastodon</ThemeText>

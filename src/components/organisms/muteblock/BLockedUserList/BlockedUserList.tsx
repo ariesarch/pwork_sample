@@ -60,7 +60,9 @@ const BlockedUserList = () => {
 							}}
 						/>
 					}
-					ListEmptyComponent={<ListEmptyComponent />}
+					ListEmptyComponent={
+						<ListEmptyComponent title="No User Has Been Blocked" />
+					}
 					ListFooterComponent={
 						isFetchingNextPage ? (
 							<View className="my-3 items-center">
