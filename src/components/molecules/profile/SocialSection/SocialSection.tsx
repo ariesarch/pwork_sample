@@ -53,7 +53,7 @@ const SocialSection = ({
 	// 	);
 	// }).length;
 
-	const linkCount = fields.length;
+	const linkCount = fields.filter(field => field.value).length;
 
 	// render items
 	const renderSocialIcons = (field: Pathchwork.Field) => {
