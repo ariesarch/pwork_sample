@@ -15,6 +15,7 @@ import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { layoutAnimation } from '@/util/helper/timeline';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
+import { useActiveFeedAction } from '@/store/feed/activeFeed';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -50,6 +51,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		[status?.image_url],
 	);
 	const { currentPage } = useStatusContext();
+	const { setActiveFeed } = useActiveFeedAction();
 	const isFeedDetail = currentPage === 'FeedDetail';
 
 	const handleMentionPress = (mention: Pathchwork.Mention) => {
@@ -67,6 +69,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	};
 
 	const handleSeeMorePress = () => {
+		setActiveFeed(status);
 		navigation.navigate('FeedDetail', { id: status.id });
 	};
 

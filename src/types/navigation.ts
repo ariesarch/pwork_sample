@@ -220,6 +220,7 @@ export type SettingStackParamList = {
 	UpdatePassword: undefined;
 	MuteAndBlockList: undefined;
 	MyInformation: undefined;
+	WebViewer: { url: string };
 };
 
 export type CommonCompositeNavigationProp = CompositeNavigationProp<
