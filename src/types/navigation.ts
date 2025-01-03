@@ -50,7 +50,6 @@ export type RootStackParamList = {
 	InitiateNewConversation: {
 		account: Pathchwork.Account;
 	};
-	BookmarkList: undefined;
 };
 
 export type BottomStackParamList = {
@@ -220,6 +219,7 @@ export type SettingStackParamList = {
 	UpdatePassword: undefined;
 	MuteAndBlockList: undefined;
 	MyInformation: undefined;
+	BookmarkList: undefined;
 };
 
 export type CommonCompositeNavigationProp = CompositeNavigationProp<
