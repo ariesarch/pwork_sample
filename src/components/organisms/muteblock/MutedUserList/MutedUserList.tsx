@@ -58,7 +58,9 @@ const MutedUserList = () => {
 							}}
 						/>
 					}
-					ListEmptyComponent={<ListEmptyComponent />}
+					ListEmptyComponent={
+						<ListEmptyComponent title="No User Has Been Muted" />
+					}
 					ListFooterComponent={
 						isFetchingNextPage ? (
 							<View className="my-3 items-center">

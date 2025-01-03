@@ -49,6 +49,7 @@ const MuteBlockUserItem = ({ user, type }: Props) => {
 		});
 
 	const onToggleMuteBtn = (item: Pathchwork.MuteBlockUserAccount) => {
+		if (isMuteInProgress || isBlockInProgress) return;
 		if (type === 'block') {
 			return toggleBlock({
 				accountId: item.id,
@@ -95,16 +96,21 @@ const MuteBlockUserItem = ({ user, type }: Props) => {
 					size="sm"
 					className="bg-slate-100 dark:bg-white rounded-3xl px-6"
 					onPress={() => onToggleMuteBtn(user)}
-					disabled={isMuteInProgress || isBlockInProgress}
 				>
-					{type === 'block' ? (
-						<ThemeText className="text-black" size={'fs_13'}>
-							{user.isUnBlockedNow ? 'Block' : 'UnBlock'}
-						</ThemeText>
+					{isMuteInProgress || isBlockInProgress ? (
+						<Flow size={15} color={'#000'} />
 					) : (
-						<ThemeText className="text-black" size={'fs_13'}>
-							{user.isUnMutedNow ? 'Mute' : 'UnMute'}
-						</ThemeText>
+						<>
+							{type === 'block' ? (
+								<ThemeText className="text-black" size={'fs_13'}>
+									{user.isUnBlockedNow ? 'Block' : 'UnBlock'}
+								</ThemeText>
+							) : (
+								<ThemeText className="text-black" size={'fs_13'}>
+									{user.isUnMutedNow ? 'Mute' : 'UnMute'}
+								</ThemeText>
+							)}
+						</>
 					)}
 				</Button>
 			</Pressable>

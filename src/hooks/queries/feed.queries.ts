@@ -1,5 +1,5 @@
 import {
-	blockUnblockUserMutationFn,
+	blockUnBlockUserMutationFn,
 	fetchLinkPreview,
 	getAccountDetailFeed,
 	getFeedDetail,
@@ -130,5 +130,5 @@ export const useBlockUnBlockUserMutation = (
 		{ accountId: string; toBlock: boolean }
 	>,
 ) => {
-	return useMutation({ mutationFn: blockUnblockUserMutationFn, ...options });
+	return useMutation({ mutationFn: blockUnBlockUserMutationFn, ...options });
 };
