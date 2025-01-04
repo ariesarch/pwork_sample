@@ -13,8 +13,8 @@ import { HomeStackParamList } from '@/types/navigation';
 interface Props {
 	content: string;
 	numberOfLines?: number;
-	emojis?: Pathchwork.Emoji[];
-	mentions?: Pathchwork.Mention[];
+	emojis?: Patchwork.Emoji[];
+	mentions?: Patchwork.Mention[];
 }
 const MAX_ALLOWED_LINES = 2;
 

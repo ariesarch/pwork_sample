@@ -13,7 +13,7 @@ import customColor from '@/util/constant/color';
 import { queryClient } from '@/App';
 
 interface HashtagHeaderProps {
-	hashtagDetail: Pathchwork.HashtagDetail;
+	hashtagDetail: Patchwork.HashtagDetail;
 	hashtag: string;
 }
 
@@ -52,7 +52,7 @@ const HashtagHeader: React.FC<HashtagHeaderProps> = ({
 		}
 	}, [hashtagDetail]);
 
-	const getTodayPostCount = (hashtag: Pathchwork.HashtagHistory) => {
+	const getTodayPostCount = (hashtag: Patchwork.HashtagHistory) => {
 		const date = dayjs.unix(parseInt(hashtag.day));
 		const isToday = date.isSame(dayjs(), 'day');
 		if (isToday) {

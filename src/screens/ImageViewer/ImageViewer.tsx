@@ -48,7 +48,7 @@ const ImageViewer = ({
 		? insets.top
 		: insets.top + moderateScale(4) * moderateScale(1);
 
-	const renderItem = ({ item }: { item: Pathchwork.ImageUrl }) => {
+	const renderItem = ({ item }: { item: Patchwork.ImageUrl }) => {
 		if (!item || !item.url) return null;
 
 		const screenRatio = WINDOW_WIDTH / WINDOW_HEIGHT;

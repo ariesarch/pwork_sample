@@ -24,7 +24,7 @@ const InitiateNewConversation = ({
 	const { account } = route.params;
 	const { height, progress } = useGradualAnimation();
 	const [currentMessageId, setCurrentMessageId] = useState<string | null>(null);
-	const [totalMsgList, setTotalMsgList] = useState<Pathchwork.Status[]>();
+	const [totalMsgList, setTotalMsgList] = useState<Patchwork.Status[]>();
 
 	useEffect(() => {
 		return () => {
@@ -103,7 +103,7 @@ const InitiateNewConversation = ({
 						lastMsg={
 							totalMsgList ? totalMsgList[totalMsgList.length - 1] : undefined
 						}
-						changeTotalMsgList={(status: Pathchwork.Status) => {
+						changeTotalMsgList={(status: Patchwork.Status) => {
 							setTotalMsgList(prev => (prev ? [...prev, status] : [status]));
 						}}
 					/>

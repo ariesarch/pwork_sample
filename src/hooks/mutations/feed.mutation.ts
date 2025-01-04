@@ -19,7 +19,7 @@ import { AxiosError } from 'axios';
 
 export const useComposeMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Status,
+		Patchwork.Status,
 		AxiosError,
 		ComposeMutationPayload
 	>,
@@ -29,7 +29,7 @@ export const useComposeMutation = (
 
 export const useRepostMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Status,
+		Patchwork.Status,
 		AxiosError,
 		RepostMutationPayload
 	>,
@@ -39,7 +39,7 @@ export const useRepostMutation = (
 
 export const useUploadComposeImageMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Attachment,
+		Patchwork.Attachment,
 		AxiosError,
 		ComposeImagePayload
 	>,
@@ -49,9 +49,9 @@ export const useUploadComposeImageMutation = (
 
 export const useFavouriteMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Status,
+		Patchwork.Status,
 		AxiosError,
-		{ status: Pathchwork.Status; crossChannelRequestIdentifier?: string }
+		{ status: Patchwork.Status; crossChannelRequestIdentifier?: string }
 	>,
 ) => {
 	return useMutation({ mutationFn: favouriteStatus, ...options });
@@ -59,7 +59,7 @@ export const useFavouriteMutation = (
 
 export const useHashtagFollowMutation = (
 	options: UseMutationOptions<
-		Pathchwork.HashtagDetail,
+		Patchwork.HashtagDetail,
 		AxiosError,
 		{ hashtag: string; isAlreadyFollowing: boolean }
 	>,
@@ -69,7 +69,7 @@ export const useHashtagFollowMutation = (
 
 export const useMuteUnmuteUserMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; toMute: boolean }
 	>,
@@ -79,7 +79,7 @@ export const useMuteUnmuteUserMutation = (
 
 export const useBlockUnBlockUserMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; toBlock: boolean }
 	>,

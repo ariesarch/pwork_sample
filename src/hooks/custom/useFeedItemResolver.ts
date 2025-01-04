@@ -22,10 +22,10 @@ const useFeedItemResolver = (feedId: string) => {
 
 	useEffect(() => {
 		if (shouldFetch && feedDetail) {
-			setActiveFeed(feedDetail as Pathchwork.Status);
+			setActiveFeed(feedDetail as Patchwork.Status);
 		}
 	}, [shouldFetch, feedDetail]);
 
-	return shouldFetch ? (feedDetail as Pathchwork.Status) : currentFeed;
+	return shouldFetch ? (feedDetail as Patchwork.Status) : currentFeed;
 };
 export default useFeedItemResolver;

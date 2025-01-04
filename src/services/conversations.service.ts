@@ -14,7 +14,7 @@ export const searchUsers = async ({
 }: QueryFunctionContext<SearchUsersQueryKey>) => {
 	try {
 		const [, params] = queryKey;
-		const resp = await instance.get<Pathchwork.Conversations[]>(
+		const resp = await instance.get<Patchwork.Conversations[]>(
 			appendApiVersion('accounts/search'),
 			{ params },
 		);
@@ -28,11 +28,11 @@ export const getConversationsList = async ({
 	pageParam = null,
 }: {
 	pageParam?: string | null;
-}): Promise<Pathchwork.Conversations[]> => {
+}): Promise<Patchwork.Conversations[]> => {
 	try {
 		const limit = 10;
 		const params: ConversationsQueryParam = { limit, max_id: pageParam };
-		const { data } = await instance.get<Pathchwork.Conversations[]>(
+		const { data } = await instance.get<Patchwork.Conversations[]>(
 			appendApiVersion('conversations'),
 			{ params },
 		);
@@ -57,7 +57,7 @@ export const getMessageList = async (
 	qfContext: QueryFunctionContext<MessageListQueryKey>,
 ) => {
 	const { id } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.TimelineReplies> = await instance.get(
+	const resp: AxiosResponse<Patchwork.TimelineReplies> = await instance.get(
 		appendApiVersion(`statuses/${id}/context`),
 		{
 			params: { reverse_sort: true },
@@ -79,11 +79,11 @@ export const getAllNotiReqWPagination = async ({
 	pageParam = null,
 }: {
 	pageParam?: string | null;
-}): Promise<Pathchwork.NotiReq[]> => {
+}): Promise<Patchwork.NotiReq[]> => {
 	try {
 		const limit = 10;
 		const params: ConversationsQueryParam = { limit, max_id: pageParam };
-		const { data } = await instance.get<Pathchwork.NotiReq[]>(
+		const { data } = await instance.get<Patchwork.NotiReq[]>(
 			appendApiVersion('notifications/requests'),
 			{ params },
 		);
@@ -93,9 +93,9 @@ export const getAllNotiReqWPagination = async ({
 	}
 };
 
-export const getAllNotiReq = async (): Promise<Pathchwork.NotiReq[]> => {
+export const getAllNotiReq = async (): Promise<Patchwork.NotiReq[]> => {
 	try {
-		const { data } = await instance.get<Pathchwork.NotiReq[]>(
+		const { data } = await instance.get<Patchwork.NotiReq[]>(
 			appendApiVersion('notifications/requests'),
 		);
 		return data;
@@ -131,7 +131,7 @@ export const getConversationByUserId = async (
 ) => {
 	try {
 		const { id } = qfContext.queryKey[1];
-		const resp: AxiosResponse<Pathchwork.Conversations> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Conversations> = await instance.get(
 			appendApiVersion(`patchwork/conversations/check_conversation`),
 			{
 				params: { target_account_id: id },

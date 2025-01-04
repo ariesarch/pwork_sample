@@ -16,7 +16,7 @@ type Props = {
 	onClose: () => void;
 	onPressAdd: (linkTitle: string, username: string) => void;
 	onPressDelete: (linkTitle: string) => void;
-	data: Pathchwork.Field[];
+	data: Patchwork.Field[];
 	formType: 'add' | 'edit';
 };
 

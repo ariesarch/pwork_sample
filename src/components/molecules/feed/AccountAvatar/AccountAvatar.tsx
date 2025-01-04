@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Pressable, View, ViewProps } from 'react-native';
 
 type Props = {
-	account: Pathchwork.Account;
+	account: Patchwork.Account;
 	size?: 'md' | 'lg';
 	dotAlert?: boolean;
 } & ViewProps;

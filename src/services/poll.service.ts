@@ -10,7 +10,7 @@ export const vote = async ({
 	choices: number[];
 }) => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Status['poll']> = await instance.post(
+		const resp: AxiosResponse<Patchwork.Status['poll']> = await instance.post(
 			appendApiVersion(`polls/${id}/votes`, 'v1'),
 			{ choices },
 		);

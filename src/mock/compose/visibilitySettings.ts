@@ -1,6 +1,6 @@
 export type VisibilitySettingsProps = {
 	label: string;
-	icon: Pathchwork.ComposeVisibility;
+	icon: Patchwork.ComposeVisibility;
 };
 
 export const visibilitySettingsData: VisibilitySettingsProps[] = [

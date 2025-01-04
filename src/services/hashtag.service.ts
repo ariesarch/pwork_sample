@@ -8,7 +8,7 @@ export const getHashtagDetail = async (
 	qfContext: QueryFunctionContext<HashtagDetailQueryKey>,
 ) => {
 	const { hashtag, domain_name } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.HashtagDetail> = await instance.get(
+	const resp: AxiosResponse<Patchwork.HashtagDetail> = await instance.get(
 		appendApiVersion(`tags/${hashtag}`),
 		{
 			params: { domain_name, isDynamicDomain: true },

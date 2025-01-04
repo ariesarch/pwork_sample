@@ -134,7 +134,7 @@ const showNotification = async (
 };
 
 const handleNotiDetailPress = async (
-	notiResp: Pathchwork.PushNotiResponse['data'],
+	notiResp: Patchwork.PushNotiResponse['data'],
 ) => {
 	if (navigationRef.isReady()) {
 		if (notiResp.noti_type == 'mention' && notiResp.visibility == 'direct') {
@@ -145,7 +145,7 @@ const handleNotiDetailPress = async (
 };
 
 const navigateToConversationDetail = (
-	notiResp: Pathchwork.PushNotiResponse['data'],
+	notiResp: Patchwork.PushNotiResponse['data'],
 ) => {
 	navigationRef.dispatch(
 		CommonActions.reset({
@@ -171,9 +171,7 @@ const navigateToConversationDetail = (
 	);
 };
 
-const navigateToFeedDetail = (
-	notiResp: Pathchwork.PushNotiResponse['data'],
-) => {
+const navigateToFeedDetail = (notiResp: Patchwork.PushNotiResponse['data']) => {
 	navigationRef.dispatch(
 		CommonActions.reset({
 			index: 0,

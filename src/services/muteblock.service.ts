@@ -11,7 +11,7 @@ export const getMutedUserList = async (
 	try {
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.MuteBlockUserAccount[]> =
+		const resp: AxiosResponse<Patchwork.MuteBlockUserAccount[]> =
 			await instance.get(appendApiVersion(`mutes`), {
 				params: {
 					max_id,
@@ -42,7 +42,7 @@ export const getBlockedUserList = async (
 	try {
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.MuteBlockUserAccount[]> =
+		const resp: AxiosResponse<Patchwork.MuteBlockUserAccount[]> =
 			await instance.get(appendApiVersion(`blocks`), {
 				params: {
 					max_id,

@@ -44,7 +44,7 @@ export const useGetChannelFeed = ({
 	...queryParam
 }: GetChannelFeedQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>
+		InfiniteData<PagedResponse<Patchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: GetChannelFeedQueryKey = ['channel-feed', queryParam];

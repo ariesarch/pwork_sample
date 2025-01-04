@@ -3,7 +3,7 @@ import { AccountDetailFeedQueryKey } from '@/types/queries/feed.type';
 import { NavigationProp } from '@react-navigation/native';
 
 const useHandleOnPressStatus = (
-	feed: Pathchwork.Status[],
+	feed: Patchwork.Status[],
 	navigation: NavigationProp<any>,
 	queryKey?: GetChannelFeedQueryKey | AccountDetailFeedQueryKey,
 ) => {

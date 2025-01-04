@@ -6,7 +6,7 @@ import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { useNavigation } from '@react-navigation/native';
 
 type Props = {
-	profile: Pathchwork.ProfileAttributes;
+	profile: Patchwork.ProfileAttributes;
 	handlePress: () => void;
 };
 

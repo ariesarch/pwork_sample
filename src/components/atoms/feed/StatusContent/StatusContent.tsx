@@ -13,7 +13,7 @@ import PollVotingStatus from '@/components/organisms/poll/PollVotingStatus/PollV
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isFromNotiStatusImage?: boolean;
 	isReposting?: boolean;
 	isMainChannel?: boolean;

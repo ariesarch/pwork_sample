@@ -29,7 +29,7 @@ export type SpecificServerProfileQueryKey = [
 export type FollowingAccountsQueryKey = [
 	'following-accounts',
 	{
-		accountId: Pathchwork.Account['id'];
+		accountId: Patchwork.Account['id'];
 		domain_name: string;
 	},
 ];
@@ -37,7 +37,7 @@ export type FollowingAccountsQueryKey = [
 export type FollowerAccountsQueryKey = [
 	'follower-accounts',
 	{
-		accountId: Pathchwork.Account['id'];
+		accountId: Patchwork.Account['id'];
 		domain_name: string;
 	},
 ];

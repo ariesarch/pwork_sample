@@ -28,7 +28,7 @@ import {
 	updateMuteState,
 } from '@/util/cache/statusActions/muteblockCache';
 
-type Props = { user: Pathchwork.MuteBlockUserAccount; type: 'block' | 'mute' };
+type Props = { user: Patchwork.MuteBlockUserAccount; type: 'block' | 'mute' };
 
 const MuteBlockUserItem = ({ user, type }: Props) => {
 	const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -48,7 +48,7 @@ const MuteBlockUserItem = ({ user, type }: Props) => {
 			},
 		});
 
-	const onToggleMuteBtn = (item: Pathchwork.MuteBlockUserAccount) => {
+	const onToggleMuteBtn = (item: Patchwork.MuteBlockUserAccount) => {
 		if (isMuteInProgress || isBlockInProgress) return;
 		if (type === 'block') {
 			return toggleBlock({

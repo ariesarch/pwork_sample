@@ -11,10 +11,10 @@ import { AxiosError } from 'axios';
 
 export const useStatusDeleteMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Status,
+		Patchwork.Status,
 		AxiosError,
 		{
-			status_id: Pathchwork.Status['id'];
+			status_id: Patchwork.Status['id'];
 			crossChannelRequestIdentifier: string;
 		}
 	>,
@@ -24,9 +24,9 @@ export const useStatusDeleteMutation = (
 
 export const useBookmarkStatusMutation = (
 	options: MutationOptions<
-		Pathchwork.Status,
+		Patchwork.Status,
 		AxiosError,
-		{ status: Pathchwork.Status; crossChannelRequestIdentifier?: string }
+		{ status: Patchwork.Status; crossChannelRequestIdentifier?: string }
 	>,
 ) => {
 	return useMutation({ mutationFn: bookmarkStatus, ...options });

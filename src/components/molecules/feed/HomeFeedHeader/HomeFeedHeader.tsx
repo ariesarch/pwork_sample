@@ -10,7 +10,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamList } from '@/types/navigation';
 
 type Props = {
-	account: Pathchwork.Account;
+	account: Patchwork.Account;
 	showUnderLine?: boolean;
 };
 

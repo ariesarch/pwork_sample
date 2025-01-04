@@ -1,7 +1,7 @@
 import { UpdateProfilePayload } from '@/types/queries/profile.type';
 
 export const generateFieldsAttributes = (
-	userInfo: Pathchwork.Account,
+	userInfo: Patchwork.Account,
 	link: string,
 	username: string,
 	type: 'edit' | 'delete',

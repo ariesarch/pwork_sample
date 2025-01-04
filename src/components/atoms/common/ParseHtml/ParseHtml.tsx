@@ -18,7 +18,7 @@ import { useStatusContext } from '@/context/statusItemContext/statusItemContext'
 import { useActiveFeedAction } from '@/store/feed/activeFeed';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	numberOfLines?: number;
 	isMainStatus?: boolean;
 };
@@ -54,7 +54,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const { setActiveFeed } = useActiveFeedAction();
 	const isFeedDetail = currentPage === 'FeedDetail';
 
-	const handleMentionPress = (mention: Pathchwork.Mention) => {
+	const handleMentionPress = (mention: Patchwork.Mention) => {
 		if (mention.id === userInfo?.id!) {
 			navigation.navigate('Profile', { id: userInfo?.id! });
 		} else {
@@ -119,7 +119,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 								const mentionedText = node.children.map(unwrapNode).join('');
 
 								const matchedMention = (status?.mentions || []).find(
-									(mention: Pathchwork.Mention) =>
+									(mention: Patchwork.Mention) =>
 										`@${mention.username}` === mentionedText,
 								);
 

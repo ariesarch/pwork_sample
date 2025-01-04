@@ -31,8 +31,10 @@ export const login = async (params: LoginMutationPayload) => {
 	};
 
 	try {
-		const { data }: AxiosResponse<Pathchwork.LoginRespone> =
-			await instance.post('/oauth/token', body);
+		const { data }: AxiosResponse<Patchwork.LoginRespone> = await instance.post(
+			'/oauth/token',
+			body,
+		);
 		return data;
 	} catch (error) {
 		return handleError(error);
@@ -41,7 +43,7 @@ export const login = async (params: LoginMutationPayload) => {
 
 export const verifyAuthToken = async () => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Account> = await instance.get(
 			appendApiVersion('accounts/verify_credentials', 'v1'),
 		);
 		return resp.data;

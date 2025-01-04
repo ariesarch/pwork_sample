@@ -9,7 +9,7 @@ import PollVotingOptionIcon from '@/components/atoms/poll/PollVotingOptionIcon/P
 import { PollRadioCheckedIcon } from '@/util/svg/icon.common';
 
 interface PollVotingOptionProps {
-	poll: Pathchwork.Poll;
+	poll: Patchwork.Poll;
 	title: string;
 	votesCount: number;
 	isSelected: boolean;

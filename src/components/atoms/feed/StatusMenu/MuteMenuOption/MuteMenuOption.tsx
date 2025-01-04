@@ -15,9 +15,9 @@ const MuteMenuOption = ({
 	relationships,
 	hideMenu,
 }: {
-	status: Pathchwork.Status;
-	specifyServerAccId: Pathchwork.Account['id'];
-	relationships: Pathchwork.RelationShip[];
+	status: Patchwork.Status;
+	specifyServerAccId: Patchwork.Account['id'];
+	relationships: Patchwork.RelationShip[];
 	hideMenu: () => void;
 }) => {
 	const { domain_name } = useActiveDomainStore();

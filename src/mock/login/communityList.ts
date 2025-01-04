@@ -1,4 +1,4 @@
-export const MockCommunityList: Pathchwork.Collection[] = [
+export const MockCommunityList: Patchwork.Collection[] = [
 	{
 		id: 1,
 		name: 'Breaking News',

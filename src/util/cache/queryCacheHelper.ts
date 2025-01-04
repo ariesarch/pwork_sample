@@ -10,8 +10,8 @@ export type StatusCacheQueryKeys =
 
 export const updateFeedPage = (
 	data: IFeedQueryFnData,
-	shouldUpdate: (status: Pathchwork.Status) => boolean,
-	updateStatus: (status: Pathchwork.Status) => Pathchwork.Status,
+	shouldUpdate: (status: Patchwork.Status) => boolean,
+	updateStatus: (status: Patchwork.Status) => Patchwork.Status,
 ) => ({
 	...data,
 	pages: data.pages.map(page => ({

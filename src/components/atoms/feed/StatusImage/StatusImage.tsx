@@ -11,7 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useSensitiveMediaStore } from '@/store/feed/sensitiveMediaStore';
 
 type Props = {
-	media_attachments: Pathchwork.Attachment[];
+	media_attachments: Patchwork.Attachment[];
 	sensitive: boolean;
 };
 
@@ -62,7 +62,7 @@ const StatusImage = ({ media_attachments, sensitive }: Props) => {
 
 	// Render Items
 	const renderImage = (
-		item: Pathchwork.Attachment,
+		item: Patchwork.Attachment,
 		imageStyle: any,
 		index: number,
 	) => {

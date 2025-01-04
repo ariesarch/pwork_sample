@@ -27,8 +27,8 @@ import { cn } from '@/util/helper/twutil';
 import { Flow } from 'react-native-animated-spinkit';
 
 type Props = {
-	currentConversation: Pathchwork.Conversations | undefined;
-	lastMsg: Pathchwork.Status;
+	currentConversation: Patchwork.Conversations | undefined;
+	lastMsg: Patchwork.Status;
 	handleScroll: () => void;
 	currentFocusMsgId: string;
 	isFromProfile: boolean;
@@ -49,7 +49,7 @@ const MessageActionsBar = ({
 		useManageAttachmentActions();
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (response: Pathchwork.Status) => {
+		onSuccess: (response: Patchwork.Status) => {
 			changeLastMsgInConversationChache(response, currentConversation?.id);
 			addNewMsgToQueryCache(response, currentFocusMsgId);
 			composeDispatch({ type: 'clear' });

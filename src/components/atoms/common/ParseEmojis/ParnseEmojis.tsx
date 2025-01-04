@@ -8,7 +8,7 @@ const regexEmoji = /(:[A-Za-z0-9_]+:)/;
 
 export interface Props {
 	content?: string;
-	emojis?: Pathchwork.Emoji[];
+	emojis?: Patchwork.Emoji[];
 	style?: TextStyle;
 	color?: string;
 }

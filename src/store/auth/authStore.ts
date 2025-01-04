@@ -2,11 +2,11 @@ import { create } from 'zustand';
 
 export type AuthState = {
 	access_token: string | undefined;
-	userInfo: Pathchwork.Account | undefined;
+	userInfo: Patchwork.Account | undefined;
 	actions: {
 		setAuthToken: (token: string) => void;
 		clearAuthState: () => void;
-		setUserInfo: (user: Pathchwork.Account) => void;
+		setUserInfo: (user: Patchwork.Account) => void;
 	};
 };
 
@@ -20,7 +20,7 @@ export const useAuthStore = create<AuthState>()(set => ({
 				...state,
 				access_token: undefined,
 			})),
-		setUserInfo: (user: Pathchwork.Account) =>
+		setUserInfo: (user: Patchwork.Account) =>
 			set(state => ({ ...state, userInfo: user })),
 	},
 }));

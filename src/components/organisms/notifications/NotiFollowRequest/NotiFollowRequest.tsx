@@ -14,7 +14,7 @@ const NotiFollowRequest = () => {
 		useFollowRequestNotifications({});
 
 	const renderItem = useCallback(
-		({ item }: { item: Pathchwork.Account }) => (
+		({ item }: { item: Patchwork.Account }) => (
 			<NotiFollowRequestTabItem {...{ item }} />
 		),
 		[],

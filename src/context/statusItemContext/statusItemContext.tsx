@@ -6,7 +6,7 @@ import {
 } from './statusItemContext.type';
 
 interface StatusContextProps {
-	parentStatus: Pathchwork.Status;
+	parentStatus: Patchwork.Status;
 	currentPage: StatusCurrentPage;
 	statusType: StatusType;
 	comeFrom?: StatusOrigin;

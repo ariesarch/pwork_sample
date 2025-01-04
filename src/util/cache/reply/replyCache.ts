@@ -6,10 +6,10 @@ import { cloneDeep, get, set, times } from 'lodash';
 
 export const updateReplyFeedCache = (
 	feedReplyQueryKey: FeedRepliesQueryKey,
-	newStatus: Pathchwork.Status,
+	newStatus: Patchwork.Status,
 	feedDetailStatusId: string,
 ) => {
-	queryClient.setQueryData<Pathchwork.TimelineReplies>(
+	queryClient.setQueryData<Patchwork.TimelineReplies>(
 		feedReplyQueryKey,
 		oldData => {
 			const { domain_name } = feedReplyQueryKey[1];

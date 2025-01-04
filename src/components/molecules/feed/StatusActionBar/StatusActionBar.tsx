@@ -13,7 +13,7 @@ import StatusShareMenu from '@/components/atoms/feed/StatusShareMenu/StatusShare
 import { moderateScale } from 'react-native-size-matters';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isFromNoti?: boolean;
 };
 

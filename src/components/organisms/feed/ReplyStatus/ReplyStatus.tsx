@@ -19,9 +19,9 @@ const ReplyStatus = ({
 	feedDetailId,
 	isNestedNodeInclude,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	feedDetailId: string;
-	nextStatus: Pathchwork.Status | undefined;
+	nextStatus: Patchwork.Status | undefined;
 	isNestedNodeInclude: boolean | undefined;
 }) => {
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
@@ -30,7 +30,7 @@ const ReplyStatus = ({
 	const isTopLevelNode =
 		status.in_reply_to_id && status.in_reply_to_id == feedDetailId;
 
-	const handleOnPress = (item: Pathchwork.Status) => {
+	const handleOnPress = (item: Patchwork.Status) => {
 		setActiveFeed(item);
 		navigation.navigate('FeedDetail', { id: item.id });
 	};

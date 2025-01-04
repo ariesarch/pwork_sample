@@ -4,7 +4,7 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import Underline from '@/components/atoms/common/Underline/Underline';
 
 type Props = {
-	channelAbout: Pathchwork.ChannelAbout | undefined;
+	channelAbout: Patchwork.ChannelAbout | undefined;
 };
 const ChannelGuidelines = ({ channelAbout }: Props) => {
 	return (

@@ -5,8 +5,8 @@ interface CacheUpdateParams<TResponse, TQueryKeys> {
 interface IFeedQueryFnData {
 	pageParams: unknown[];
 	pages: Array<{
-		data: Pathchwork.Status[];
+		data: Patchwork.Status[];
 	}>;
 }
 
-interface IFeedDetailQueryFnData extends Pathchwork.Status {}
+interface IFeedDetailQueryFnData extends Patchwork.Status {}

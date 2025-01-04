@@ -50,7 +50,7 @@ const Message = ({
 		refetch,
 	} = useGetConversationsList();
 
-	const _conversationsList: Pathchwork.Conversations[] = data?.pages
+	const _conversationsList: Patchwork.Conversations[] = data?.pages
 		.flat()
 		.filter(
 			(item, index, self) => index === self.findIndex(t => t.id === item.id),
@@ -94,7 +94,7 @@ const Message = ({
 				data={_conversationsList}
 				showsVerticalScrollIndicator={false}
 				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }: { item: Pathchwork.Conversations }) => (
+				renderItem={({ item }: { item: Patchwork.Conversations }) => (
 					<Pressable
 						onPress={() =>
 							navigation.navigate('ConversationDetail', {

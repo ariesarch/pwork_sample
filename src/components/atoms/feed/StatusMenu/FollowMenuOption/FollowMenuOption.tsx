@@ -17,8 +17,8 @@ const FollowMenuOption = ({
 	accountId,
 	relationships,
 }: {
-	accountId: Pathchwork.Account['id'];
-	relationships: Pathchwork.RelationShip[];
+	accountId: Patchwork.Account['id'];
+	relationships: Patchwork.RelationShip[];
 }) => {
 	const { mutate, isPending } = useUserRelationshipMutation({
 		onSuccess: (newRelationship, { accountId }) => {
@@ -27,7 +27,7 @@ const FollowMenuOption = ({
 				{ accountIds: [accountId] },
 			];
 
-			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+			queryClient.setQueryData<Patchwork.RelationShip[]>(
 				relationshipQueryKey,
 				old => {
 					if (!old) return [newRelationship];

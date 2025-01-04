@@ -9,7 +9,7 @@ const ReportMenuOption = ({
 	status,
 	hideMenu,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	hideMenu: () => void;
 }) => {
 	const [showModal, setShowModal] = useState(false);

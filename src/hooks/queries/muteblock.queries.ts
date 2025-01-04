@@ -13,7 +13,7 @@ import { use } from 'i18next';
 
 export const useGetMutedUserList = (
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.MuteBlockUserAccount[]>>
+		InfiniteData<PagedResponse<Patchwork.MuteBlockUserAccount[]>>
 	>,
 ) => {
 	const queryKey: MutedUserListQueryKey = ['muted-user-list'];
@@ -28,7 +28,7 @@ export const useGetMutedUserList = (
 
 export const useGetBlockedUserList = (
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.MuteBlockUserAccount[]>>
+		InfiniteData<PagedResponse<Patchwork.MuteBlockUserAccount[]>>
 	>,
 ) => {
 	const queryKey: BlockedUserListQueryKey = ['blocked-user-list'];

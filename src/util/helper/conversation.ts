@@ -9,8 +9,8 @@ import { cleanText } from './cleanText';
 import { extractMessage } from './extractMessage';
 
 export const isMsgTimeClose = (
-	message: Pathchwork.Status,
-	prevMessage: Pathchwork.Status | undefined,
+	message: Patchwork.Status,
+	prevMessage: Patchwork.Status | undefined,
 ) => {
 	if (!prevMessage) return true;
 	return (
@@ -109,7 +109,7 @@ export const getCurrentTotalMessageListAtPageEntry = (
 	lastMsgId: string,
 ) => {
 	if (isFromNotification) {
-		const messages = queryClient.getQueryData<Pathchwork.TimelineReplies>([
+		const messages = queryClient.getQueryData<Patchwork.TimelineReplies>([
 			'message-list',
 			{ id: lastMsgId },
 		]);
@@ -122,12 +122,12 @@ export const getCurrentTotalMessageListAtPageEntry = (
 };
 
 export const isFromNotificationMatch = (
-	conversation: Pathchwork.Conversations,
-	totalMsgList: Pathchwork.Status[],
+	conversation: Patchwork.Conversations,
+	totalMsgList: Patchwork.Status[],
 ) => totalMsgList.some(message => message.id === conversation.last_status?.id);
 
 export const findMatchingStatus = (
 	statusId: string,
-	totalMsgList: Pathchwork.Status[],
-): Pathchwork.Status | undefined =>
+	totalMsgList: Patchwork.Status[],
+): Patchwork.Status | undefined =>
 	totalMsgList.find(message => message.id === statusId);

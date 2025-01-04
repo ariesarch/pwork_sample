@@ -25,9 +25,9 @@ import TextInput from '@/components/atoms/common/TextInput/TextInput';
 import { cn } from '@/util/helper/twutil';
 
 type Props = {
-	account: Pathchwork.Account;
-	lastMsg?: Pathchwork.Status;
-	changeTotalMsgList: (status: Pathchwork.Status) => void;
+	account: Patchwork.Account;
+	lastMsg?: Patchwork.Status;
+	changeTotalMsgList: (status: Patchwork.Status) => void;
 };
 
 const InitialMessageActionsBar = ({
@@ -43,7 +43,7 @@ const InitialMessageActionsBar = ({
 		useManageAttachmentActions();
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (response: Pathchwork.Status) => {
+		onSuccess: (response: Patchwork.Status) => {
 			// changeLastMsgInConversationChache(response, currentConversation?.id);
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();

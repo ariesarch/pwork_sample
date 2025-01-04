@@ -13,7 +13,7 @@ import NotificationStatus from '../NotificationStatus/NotificationStatus';
 import RepostingStatusItem from '../RepostingStatusItem/RepostingStatusItem';
 
 type DefaultStatusProps = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	currentPage: StatusCurrentPage;
 	comeFrom?: StatusOrigin;
 	extraPayload?: Record<string, any> | undefined;
@@ -26,7 +26,7 @@ type NormalStatusProps = DefaultStatusProps & {
 type ReplyStatusProps = DefaultStatusProps & {
 	statusType: 'reply';
 	feedDetailId: string;
-	nextStatus: Pathchwork.Status | undefined;
+	nextStatus: Patchwork.Status | undefined;
 	isNestedNodeInclude: boolean | undefined;
 };
 

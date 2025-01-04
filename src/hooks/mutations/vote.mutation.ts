@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 
 export const useVoteMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Status['poll'],
+		Patchwork.Status['poll'],
 		AxiosError,
 		{ id: string; choices: number[] }
 	>,

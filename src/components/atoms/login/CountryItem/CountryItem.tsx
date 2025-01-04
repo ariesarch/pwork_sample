@@ -2,7 +2,7 @@
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { Pressable } from 'react-native';
 
-const CountryItem = (country: Pathchwork.Country) => {
+const CountryItem = (country: Patchwork.Country) => {
 	return (
 		<Pressable className="flex flex-row items-center py-2">
 			<ThemeText>{country.emoji_flag}</ThemeText>

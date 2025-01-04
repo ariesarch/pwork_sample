@@ -10,7 +10,7 @@ import { AxiosError, AxiosResponse } from 'axios';
 
 export const useProfileMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Account,
+		Patchwork.Account,
 		AxiosError,
 		UpdateProfilePayload
 	>,
@@ -20,7 +20,7 @@ export const useProfileMutation = (
 
 export const useUserRelationshipMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; isFollowing: boolean }
 	>,
@@ -30,7 +30,7 @@ export const useUserRelationshipMutation = (
 
 export const useFollowRequestsMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; requestType: 'authorize' | 'reject' }
 	>,
@@ -40,7 +40,7 @@ export const useFollowRequestsMutation = (
 
 export const useDeleteProfileMediaMutation = (
 	options: UseMutationOptions<
-		Pathchwork.Account,
+		Patchwork.Account,
 		AxiosError,
 		{ mediaType: 'avatar' | 'header' }
 	>,

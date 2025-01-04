@@ -44,7 +44,7 @@ import { Flow } from 'react-native-animated-spinkit';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	feedDetailStatus: Pathchwork.Status;
+	feedDetailStatus: Patchwork.Status;
 	inputRef: RefObject<TextInput>;
 	feedDetailId: string;
 };
@@ -98,7 +98,7 @@ const ReplyActionBar = ({
 	}, [composeState]);
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (newStatus: Pathchwork.Status) => {
+		onSuccess: (newStatus: Patchwork.Status) => {
 			composeDispatch({ type: 'clear' });
 			resetAttachmentStore();
 			if (currentFocusStatus?.id == feedDetailId) {

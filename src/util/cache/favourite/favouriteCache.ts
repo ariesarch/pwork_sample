@@ -9,9 +9,7 @@ export type FavouriteQueryKeys =
 	| GetChannelFeedQueryKey
 	| AccountDetailFeedQueryKey;
 
-const toggleFavouriteState = (
-	status: Pathchwork.Status,
-): Pathchwork.Status => ({
+const toggleFavouriteState = (status: Patchwork.Status): Patchwork.Status => ({
 	...status,
 	favourited: !status.favourited,
 	favourites_count: status.favourited
@@ -19,9 +17,7 @@ const toggleFavouriteState = (
 		: status.favourites_count + 1,
 });
 
-const updateStatusFavourite = (
-	status: Pathchwork.Status,
-): Pathchwork.Status => {
+const updateStatusFavourite = (status: Patchwork.Status): Patchwork.Status => {
 	if (status.reblog) {
 		return {
 			...status,
@@ -33,7 +29,7 @@ const updateStatusFavourite = (
 
 const updateFeedWithFavourite = (
 	data: IFeedQueryFnData,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => {
 	return {
 		...data,
@@ -58,7 +54,7 @@ const updateFeedWithFavourite = (
 
 const updateFavouriteInCache = (
 	queryKey: FavouriteQueryKeys,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => {
 	updateQueryCacheGeneric<IFeedQueryFnData>(queryKey, previousData =>
 		updateFeedWithFavourite(previousData, response),
@@ -68,7 +64,7 @@ const updateFavouriteInCache = (
 const syncFavouriteAcrossCache = ({
 	response,
 	queryKeys,
-}: CacheUpdateParams<Pathchwork.Status, FavouriteQueryKeys>): void => {
+}: CacheUpdateParams<Patchwork.Status, FavouriteQueryKeys>): void => {
 	queryKeys.forEach(queryKey => {
 		updateFavouriteInCache(queryKey, response);
 	});
@@ -85,7 +81,7 @@ const updateFavouriteForDescendentReply = (
 	];
 
 	const previousData =
-		queryClient.getQueryData<Pathchwork.TimelineReplies>(feedDetailQueryKey);
+		queryClient.getQueryData<Patchwork.TimelineReplies>(feedDetailQueryKey);
 	if (!previousData) return;
 
 	const updatedData = previousData.descendants.map(item => {
@@ -109,7 +105,7 @@ const updateFavouriteForDescendentReply = (
 
 const updateHashtagFavourite = (
 	extraPayload: Record<string, any> | undefined,
-	status: Pathchwork.Status,
+	status: Patchwork.Status,
 ) => {
 	if (extraPayload && extraPayload.hashtag && extraPayload.domain_name) {
 		const hashtagQueryKey = [

@@ -17,7 +17,7 @@ const SearchChannelHeader = () => {
 		isSuccess,
 	} = useCollectionChannelList();
 
-	const handleCollectionClick = (item: Pathchwork.CollectionList) => {
+	const handleCollectionClick = (item: Patchwork.CollectionList) => {
 		navigation.navigate('CollectionDetail', {
 			slug: item.attributes?.slug,
 			title: item.attributes?.name,

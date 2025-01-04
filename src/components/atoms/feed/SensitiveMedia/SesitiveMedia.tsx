@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 
 type Props = {
-	attachmentId: Pathchwork.Attachment['id'];
+	attachmentId: Patchwork.Attachment['id'];
 	mediaType: 'photo' | 'video';
 	onViewSensitiveContent: (attachmentId: string) => void;
 	onViewMastodonSensitiveContent?: () => void;

@@ -14,14 +14,14 @@ const FeedDetailStatus = ({
 	feedDetail,
 }: // relationships,
 {
-	feedDetail: Pathchwork.Status;
-	// relationships: Pathchwork.RelationShip[];
+	feedDetail: Patchwork.Status;
+	// relationships: Patchwork.RelationShip[];
 }) => {
 	const { userInfo } = useAuthStore();
 	const { setActiveFeed } = useActiveFeedAction();
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
-	const handleOnPress = (status: Pathchwork.Status) => {
+	const handleOnPress = (status: Patchwork.Status) => {
 		setActiveFeed(status);
 		navigation.navigate('FeedDetail', { id: status.id });
 	};

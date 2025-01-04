@@ -3,15 +3,15 @@ import { DEFAULT_API_URL } from '@/util/constant';
 import { StatusCacheQueryKeys } from '../queryCacheHelper';
 
 type UpdateStatusCacheParams = {
-	status_id: Pathchwork.Status['id'];
-	updatedStatus: Partial<Pathchwork.Status>;
+	status_id: Patchwork.Status['id'];
+	updatedStatus: Partial<Patchwork.Status>;
 	queryKeys: StatusCacheQueryKeys[];
 };
 
 const updateEditedStatusInFeed = (
 	data: IFeedQueryFnData,
 	status_id: string,
-	updatedStatus: Partial<Pathchwork.Status>,
+	updatedStatus: Partial<Patchwork.Status>,
 ): IFeedQueryFnData => ({
 	...data,
 	pages: data.pages.map(page => ({
@@ -28,7 +28,7 @@ const updateEditedStatusInFeed = (
 const updateEditedStatusInQueryCache = (
 	queryKey: StatusCacheQueryKeys,
 	status_id: string,
-	updatedStatus: Partial<Pathchwork.Status>,
+	updatedStatus: Partial<Patchwork.Status>,
 ) => {
 	const previousData = queryClient.getQueryData<IFeedQueryFnData>(queryKey);
 	if (!previousData) return;
@@ -72,13 +72,13 @@ const getStatusCacheQueryKeys = (accountId: string): StatusCacheQueryKeys[] => {
 
 // Create Status Cache Update //
 type CreateStatusParams = {
-	newStatus: Pathchwork.Status;
+	newStatus: Patchwork.Status;
 	queryKeys: StatusCacheQueryKeys[];
 };
 
 const addNewStatusToFeed = (
 	data: IFeedQueryFnData,
-	newStatus: Pathchwork.Status,
+	newStatus: Patchwork.Status,
 ): IFeedQueryFnData => ({
 	...data,
 	pages: data.pages.map(page => ({
@@ -89,7 +89,7 @@ const addNewStatusToFeed = (
 
 const addNewStatusToQueryCache = (
 	queryKey: StatusCacheQueryKeys,
-	newStatus: Pathchwork.Status,
+	newStatus: Patchwork.Status,
 ) => {
 	const previousData = queryClient.getQueryData<IFeedQueryFnData>(queryKey);
 	if (!previousData) return;

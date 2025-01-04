@@ -5,7 +5,7 @@ import { Check } from '@/util/svg/icon.common';
 import styles from './CommunityItem.style';
 
 type Props = {
-	community: Pathchwork.Collection;
+	community: Patchwork.Collection;
 };
 
 const CommunityItem = ({ community }: Props) => {

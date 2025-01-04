@@ -9,7 +9,6 @@ import { View } from 'react-native';
 
 const MyInformation = () => {
 	const { userInfo } = useAuthStore();
-	console.log('userInfo::', userInfo);
 
 	return (
 		<SafeScreen>

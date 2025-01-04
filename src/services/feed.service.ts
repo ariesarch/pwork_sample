@@ -18,7 +18,7 @@ export const getFeedDetail = async (
 	qfContext: QueryFunctionContext<FeedDetailQueryKey>,
 ) => {
 	const { id, domain_name } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.StatusDetail> = await instance.get(
+	const resp: AxiosResponse<Patchwork.StatusDetail> = await instance.get(
 		appendApiVersion(`statuses/${id}`),
 		{
 			params: { domain_name, isDynamicDomain: true },
@@ -31,7 +31,7 @@ export const getFeedReplies = async (
 	qfContext: QueryFunctionContext<FeedRepliesQueryKey>,
 ) => {
 	const { id, domain_name } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.TimelineReplies> = await instance.get(
+	const resp: AxiosResponse<Patchwork.TimelineReplies> = await instance.get(
 		appendApiVersion(`statuses/${id}/context`),
 		{
 			params: { domain_name, isDynamicDomain: true },
@@ -53,7 +53,7 @@ export const getAccountDetailFeed = async (
 		} = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion(`accounts/${account_id}/statuses`),
 			{
 				params: {
@@ -92,7 +92,7 @@ export const getHashtagDetailFeed = async (
 		const { domain_name, hashtag } = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion(`timelines/tag/${hashtag}`),
 			{
 				params: {
@@ -117,7 +117,7 @@ export const fetchLinkPreview = async (
 ) => {
 	try {
 		const { url } = qfContext.queryKey[1];
-		const response: AxiosResponse<Pathchwork.LinkPreview> = await axios.get(
+		const response: AxiosResponse<Patchwork.LinkPreview> = await axios.get(
 			`https://backend.newsmast.org/api/v1/community_statuses/link_preview`,
 			{
 				params: { url },
@@ -136,7 +136,7 @@ export const composeStatus = async (params: ComposeMutationPayload) => {
 			params.statusId ? `statuses/${params.statusId}` : 'statuses',
 			'v1',
 		);
-		const resp: AxiosResponse<Pathchwork.Status> = await instance[method](
+		const resp: AxiosResponse<Patchwork.Status> = await instance[method](
 			url,
 			params,
 		);
@@ -148,7 +148,7 @@ export const composeStatus = async (params: ComposeMutationPayload) => {
 
 export const repostStatus = async (params: RepostMutationPayload) => {
 	try {
-		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+		const resp: AxiosResponse<Patchwork.Status> = await instance.post(
 			appendApiVersion(`statuses/${params.id}/reblog`, 'v1'),
 			params,
 		);
@@ -168,7 +168,7 @@ export const uploadComposeImage = async (params: ComposeImagePayload) => {
 	});
 
 	try {
-		const resp: AxiosResponse<Pathchwork.Attachment> = await instance.post(
+		const resp: AxiosResponse<Patchwork.Attachment> = await instance.post(
 			appendApiVersion('media', 'v2'),
 			formData,
 			{
@@ -194,12 +194,12 @@ export const favouriteStatus = async ({
 	status,
 	crossChannelRequestIdentifier,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	crossChannelRequestIdentifier?: string;
 }) => {
 	const toggleFavourite = status.favourited ? 'unfavourite' : 'favourite';
 	try {
-		const resp: AxiosResponse<Pathchwork.Status> = await instance.post(
+		const resp: AxiosResponse<Patchwork.Status> = await instance.post(
 			appendApiVersion(`statuses/${status.id}/${toggleFavourite}`, 'v1'),
 			{ crossChannelRequestIdentifier },
 		);
@@ -218,7 +218,7 @@ export const followHashtag = async ({
 }) => {
 	const toggleFollow = isAlreadyFollowing ? 'unfollow' : 'follow';
 	try {
-		const resp: AxiosResponse<Pathchwork.HashtagDetail> = await instance.post(
+		const resp: AxiosResponse<Patchwork.HashtagDetail> = await instance.post(
 			appendApiVersion(`tags/${hashtag}/${toggleFollow}`),
 		);
 		return resp.data;
@@ -236,7 +236,7 @@ export const muteUnMuteUserMutationFn = async ({
 }) => {
 	try {
 		const muteAction = toMute ? 'mute' : 'unmute';
-		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+		const resp: AxiosResponse<Patchwork.RelationShip> = await instance.post(
 			appendApiVersion(`accounts/${accountId}/${muteAction}`, 'v1'),
 			toMute && { duration: '0', notifications: true },
 		);
@@ -255,7 +255,7 @@ export const blockUnBlockUserMutationFn = async ({
 }) => {
 	try {
 		const blockAction = toBlock ? 'block' : 'unblock';
-		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+		const resp: AxiosResponse<Patchwork.RelationShip> = await instance.post(
 			appendApiVersion(`accounts/${accountId}/${blockAction}`, 'v1'),
 		);
 		return resp.data;

@@ -12,7 +12,7 @@ import { DEFAULT_API_URL } from '@/util/constant';
 
 type Props = {
 	onPressBackButton: () => void;
-	chatParticipant: Pathchwork.Account | undefined;
+	chatParticipant: Patchwork.Account | undefined;
 };
 
 const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {

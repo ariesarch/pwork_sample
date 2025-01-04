@@ -13,7 +13,7 @@ const MenuOptionsForOtherUser = ({
 	status,
 	hideMenu,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	hideMenu: () => void;
 }) => {
 	// ***** Get Specific Server Profile ***** //

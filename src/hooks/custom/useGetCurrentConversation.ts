@@ -17,7 +17,7 @@ const useGetCurrentConversation = (
 ) => {
 	if (!lastMsgId) return;
 	const [currentConversation, setConversation] =
-		useState<Pathchwork.Conversations>();
+		useState<Patchwork.Conversations>();
 	const { saveActiveConversation } = useActiveConversationActions();
 	const totalMsgList = getCurrentTotalMessageListAtPageEntry(
 		isFromNotification,
@@ -25,7 +25,7 @@ const useGetCurrentConversation = (
 	);
 
 	const cachedConversationList = queryClient.getQueryData<
-		PaginatedResponse<Pathchwork.Conversations[]>
+		PaginatedResponse<Patchwork.Conversations[]>
 	>(['conversations']);
 
 	const currentMsgFromCache = cachedConversationList?.pages
@@ -54,7 +54,7 @@ const useGetCurrentConversation = (
 			if (isFromNotification && statusItemClickedByNoti) {
 				setConversation({
 					...currentMsgFromCache,
-					last_status: statusItemClickedByNoti as Pathchwork.Status,
+					last_status: statusItemClickedByNoti as Patchwork.Status,
 				});
 				return;
 			}

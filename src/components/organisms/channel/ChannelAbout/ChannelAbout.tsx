@@ -4,8 +4,8 @@ import ChannelGuidelines from '@/components/molecules/channel/ChannelGuidelines/
 import ChannelInformation from '@/components/molecules/channel/ChannelInformation/ChannelInformation';
 
 type Props = {
-	channelAbout: Pathchwork.ChannelAbout | undefined;
-	channelAdditionalInfo: Pathchwork.ChannelAdditionalInfo;
+	channelAbout: Patchwork.ChannelAbout | undefined;
+	channelAdditionalInfo: Patchwork.ChannelAdditionalInfo;
 };
 const ChannelAbout = (prop: Props) => {
 	return (

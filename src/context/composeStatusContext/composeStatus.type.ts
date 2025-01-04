@@ -24,7 +24,7 @@ export type ComposeState = {
 	disableUserSuggestionsModal?: boolean;
 	maxCount: number;
 	media_ids: string[];
-	visibility: Pathchwork.ComposeVisibility;
+	visibility: Patchwork.ComposeVisibility;
 	in_reply_to_id?: string;
 	poll: Poll | null;
 };

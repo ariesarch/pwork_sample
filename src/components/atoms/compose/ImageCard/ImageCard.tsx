@@ -19,7 +19,7 @@ type Props = {
 	composeType: ComposeType;
 };
 
-function isAsset(item: Asset | Pathchwork.Attachment): item is Asset {
+function isAsset(item: Asset | Patchwork.Attachment): item is Asset {
 	return 'uri' in item && !!item.uri;
 }
 

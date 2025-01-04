@@ -23,7 +23,7 @@ const SendButton = ({ extraClass, disabled }: Props) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (response: Pathchwork.Status) => {
+		onSuccess: (response: Patchwork.Status) => {
 			navigation.navigate('ConversationDetail', {
 				id: response.id,
 			});

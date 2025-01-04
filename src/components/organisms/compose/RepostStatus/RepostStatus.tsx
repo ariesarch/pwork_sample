@@ -10,7 +10,7 @@ import { LinkCard } from '@/components/atoms/compose/LinkCard/LinkCard';
 import ImageCard from '@/components/atoms/compose/ImageCard/ImageCard';
 import StatusWrapper from '../../feed/StatusWrapper/StatusWrapper';
 
-const RepostStatus = ({ status }: { status: Pathchwork.Status }) => {
+const RepostStatus = ({ status }: { status: Patchwork.Status }) => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>

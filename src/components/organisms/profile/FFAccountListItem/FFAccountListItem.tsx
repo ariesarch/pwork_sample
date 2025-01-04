@@ -24,7 +24,7 @@ import dayjs from 'dayjs';
 interface IAccountFollowingQueryFnData {
 	pageParams: unknown[];
 	pages: Array<{
-		data: Pathchwork.Account[];
+		data: Patchwork.Account[];
 	}>;
 }
 const FFAccountListItem = ({
@@ -34,8 +34,8 @@ const FFAccountListItem = ({
 	isMainChannel,
 	followerIds,
 }: {
-	item: Pathchwork.Account;
-	relationship: Pathchwork.RelationShip | undefined;
+	item: Patchwork.Account;
+	relationship: Patchwork.RelationShip | undefined;
 	isLoadingRelationships: boolean;
 	isMainChannel: boolean | undefined;
 	followerIds: string[];
@@ -83,7 +83,7 @@ const FFAccountListItem = ({
 				{ accountIds: followerIds },
 			];
 
-			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+			queryClient.setQueryData<Patchwork.RelationShip[]>(
 				relationshipQueryKey,
 				old => {
 					if (!old) return [newRelationship];

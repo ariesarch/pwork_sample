@@ -8,15 +8,15 @@ export type PollCacheQueryKeys =
 	| AccountDetailFeedQueryKey;
 
 type UpdatePollCacheParams = {
-	response: Pathchwork.Status['poll'];
+	response: Patchwork.Status['poll'];
 	selectedIndices: Set<number>;
 	queryKeys: PollCacheQueryKeys[];
 };
 
 const updatePollStatus = (
-	status: Pathchwork.Status,
+	status: Patchwork.Status,
 	selectedIndices: Set<number>,
-): Pathchwork.Status => ({
+): Patchwork.Status => ({
 	...status,
 	poll: {
 		...status.poll,
@@ -35,7 +35,7 @@ const updatePollStatus = (
 
 const updateFeedQueryCache = (
 	data: IFeedQueryFnData,
-	response: Pathchwork.Status['poll'],
+	response: Patchwork.Status['poll'],
 	selectedIndices: Set<number>,
 ) => ({
 	...data,
@@ -52,7 +52,7 @@ const updateFeedQueryCache = (
 
 const updateQueryCache = (
 	queryKey: PollCacheQueryKeys,
-	response: Pathchwork.Status['poll'],
+	response: Patchwork.Status['poll'],
 	selectedIndices: Set<number>,
 ) => {
 	const previousData = queryClient.getQueryData<IFeedQueryFnData>(queryKey);
