@@ -7,7 +7,6 @@ import type { ChildNode } from 'domhandler';
 import { Platform, Pressable, View } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -15,6 +14,7 @@ import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { layoutAnimation } from '@/util/helper/timeline';
 import { useAuthStore } from '@/store/auth/authStore';
 import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
+import { useActiveFeedAction } from '@/store/feed/activeFeed';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -23,11 +23,9 @@ type Props = {
 };
 
 const MAX_ALLOWED_LINES = 35;
-const MAX_CHAR_COUNT = 150;
 
 const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const [totalLines, setTotalLines] = useState<number>();
-	const [expanded, setExpanded] = useState(false);
 
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
@@ -49,6 +47,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		() => status?.media_attachments?.length !== 0,
 		[status?.image_url],
 	);
+	const { setActiveFeed } = useActiveFeedAction();
 	const { currentPage } = useStatusContext();
 	const isFeedDetail = currentPage === 'FeedDetail';
 
@@ -67,14 +66,11 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	};
 
 	const handleSeeMorePress = () => {
+		setActiveFeed(status);
 		navigation.navigate('FeedDetail', { id: status.id });
 	};
 
-	const renderNode = (
-		node: ChildNode,
-		index: number,
-		isTruncated: boolean = false,
-	) => {
+	const renderNode = (node: ChildNode, index: number) => {
 		let classes, href: string;
 		switch (node?.type) {
 			case ElementType.Text:
@@ -85,9 +81,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 				} else {
 					content = node.data.trim();
 				}
-				if (isTruncated && content.length > MAX_CHAR_COUNT) {
-					content = content.slice(0, MAX_CHAR_COUNT) + '...';
-				}
+
 				return <ParseEmojis content={content} key={index} />;
 
 			case ElementType.Tag:
@@ -184,7 +178,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						if (index < document.children.length - 1) {
 							return (
 								<ThemeText key={index}>
-									{node.children.map((c, i) => renderNode(c, i, isTruncated))}
+									{node.children.map((c, i) => renderNode(c, i))}
 									<ThemeText
 										style={{
 											lineHeight: adaptedLineheight
@@ -200,9 +194,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) =>
-									renderNode(c, i, isTruncated),
-								)}
+								children={node.children.map((c, i) => renderNode(c, i))}
 							/>
 						);
 
@@ -210,9 +202,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) =>
-									renderNode(c, i, isTruncated),
-								)}
+								children={node.children.map((c, i) => renderNode(c, i))}
 								variant="textOrange"
 							/>
 						);
@@ -220,35 +210,51 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		}
 		return null;
 	};
+	// console.log('type of total lines => ', typeof totalLines);
 
-	const renderContentWithSeeMore = () => {
-		const fullTextContent = document.children
-			.map(node => unwrapNode(node))
-			.join('');
-		if (fullTextContent.length > MAX_CHAR_COUNT && !isFeedDetail) {
-			return (
-				<ThemeText>
-					{document.children.map((node, index) =>
-						renderNode(node, index, true),
-					)}
+	return (
+		<View style={{ overflow: 'hidden' }}>
+			<ThemeText
+				children={document.children.map(renderNode)}
+				variant="textOrange"
+				onTextLayout={({ nativeEvent }) => {
+					if (
+						numberOfLines === 1 ||
+						nativeEvent.lines.length >= numberOfLines + 8
+					) {
+						// console.log('***setting total lines');
+						setTotalLines(nativeEvent.lines.length);
+					}
+				}}
+				style={{
+					height: numberOfLines === 1 ? 0 : undefined,
+					lineHeight: adaptedLineheight,
+				}}
+				numberOfLines={
+					typeof totalLines === 'number'
+						? isFeedDetail
+							? 999
+							: numberOfLines
+						: Math.max(MAX_ALLOWED_LINES, numberOfLines)
+				}
+			/>
+			{!isFeedDetail &&
+			(typeof totalLines === 'number' || numberOfLines === 1) ? (
+				<Pressable
+					onPress={() => {
+						layoutAnimation();
+						handleSeeMorePress();
+					}}
+				>
 					<ThemeText
-						onPress={handleSeeMorePress}
-						variant="textOrange"
-						size="fs_13"
-					>
-						{' '}
-						See More
-					</ThemeText>
-				</ThemeText>
-			);
-		}
-
-		return (
-			<>{document.children.map((node, index) => renderNode(node, index))}</>
-		);
-	};
-
-	return <>{renderContentWithSeeMore()}</>;
+						className="underline"
+						variant={'textOrange'}
+						children={'See More'}
+					/>
+				</Pressable>
+			) : null}
+		</View>
+	);
 };
 
 export default HTMLParser;
