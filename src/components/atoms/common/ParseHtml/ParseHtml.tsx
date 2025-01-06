@@ -47,7 +47,6 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		() => status?.media_attachments?.length !== 0,
 		[status?.image_url],
 	);
-	const { setActiveFeed } = useActiveFeedAction();
 	const { currentPage } = useStatusContext();
 	const { setActiveFeed } = useActiveFeedAction();
 	const isFeedDetail = currentPage === 'FeedDetail';
