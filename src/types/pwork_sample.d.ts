@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="nativewind/types" />
 
-declare namespace Pathchwork {
+declare namespace Patchwork {
 	type User = {
 		name: string;
 		address: string;
@@ -429,14 +429,14 @@ declare namespace Pathchwork {
 	};
 
 	type ImageUrl = {
-		id: Pathchwork.Attachment['id'];
-		preview_url?: Pathchwork.Attachment['preview_url'];
-		url: Pathchwork.Attachment['url'];
-		remote_url?: Pathchwork.Attachment['remote_url'];
-		id: Pathchwork.Attachment['id'];
-		preview_url?: Pathchwork.Attachment['preview_url'];
-		url: Pathchwork.Attachment['url'];
-		remote_url?: Pathchwork.Attachment['remote_url'];
+		id: Patchwork.Attachment['id'];
+		preview_url?: Patchwork.Attachment['preview_url'];
+		url: Patchwork.Attachment['url'];
+		remote_url?: Patchwork.Attachment['remote_url'];
+		id: Patchwork.Attachment['id'];
+		preview_url?: Patchwork.Attachment['preview_url'];
+		url: Patchwork.Attachment['url'];
+		remote_url?: Patchwork.Attachment['remote_url'];
 		sensitive?: boolean;
 		width?: number;
 		height?: number;
@@ -525,8 +525,8 @@ declare namespace Pathchwork {
 	type Conversations = {
 		id: string;
 		unread: boolean;
-		accounts: Pathchwork.Account[];
-		last_status: Pathchwork.Status;
+		accounts: Patchwork.Account[];
+		last_status: Patchwork.Status;
 	};
 
 	type SearchResult = {
@@ -554,7 +554,7 @@ declare namespace Pathchwork {
 				| 'follow_request';
 			reblogged_id: string;
 			destination_id: string;
-			visibility: Pathchwork.ComposeVisibility;
+			visibility: Patchwork.ComposeVisibility;
 		};
 		from: string;
 		messageId: string;
@@ -567,7 +567,7 @@ declare namespace Pathchwork {
 		created_at: string | Date;
 		updated_at: string | Date | null;
 		notifications_count: string;
-		account: Pathchwork.Account;
-		last_status: Pathchwork.Status;
+		account: Patchwork.Account;
+		last_status: Patchwork.Status;
 	};
 }

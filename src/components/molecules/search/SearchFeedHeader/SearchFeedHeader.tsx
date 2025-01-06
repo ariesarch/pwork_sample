@@ -14,7 +14,7 @@ type Props = {
 		'SearchFeed',
 		undefined
 	>;
-	account: Pathchwork.Account;
+	account: Patchwork.Account;
 	showUnderLine?: boolean;
 };
 

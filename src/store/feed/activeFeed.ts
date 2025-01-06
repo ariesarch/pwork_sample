@@ -9,10 +9,10 @@ type ExtraPayloadType =
 	| undefined;
 
 type ActiveFeedState = {
-	activeFeed: Pathchwork.Status | undefined;
+	activeFeed: Patchwork.Status | undefined;
 	extraPayload: ExtraPayloadType;
 	actions: {
-		setActiveFeed: (feed: Pathchwork.Status) => void;
+		setActiveFeed: (feed: Patchwork.Status) => void;
 		changeActiveFeedReplyCount: (
 			operationType: 'increase' | 'decrease',
 		) => void;

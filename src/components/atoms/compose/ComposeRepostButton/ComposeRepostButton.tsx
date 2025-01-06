@@ -36,10 +36,10 @@ import { Pressable } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	extraClass?: string;
 	statusCurrentPage?: StatusCurrentPage;
-	otherUserId: Pathchwork.Account['id'];
+	otherUserId: Patchwork.Account['id'];
 	extraPayload?: Record<string, any>;
 };
 
@@ -87,7 +87,7 @@ const ComposeRepostButton = ({
 				setActiveFeed(updateFeedDatailData);
 			}
 		},
-		onSuccess: (status: Pathchwork.Status) => {
+		onSuccess: (status: Patchwork.Status) => {
 			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
 				isNotMyId ? otherUserId : status.account.id,
 				status.reblog?.in_reply_to_id,

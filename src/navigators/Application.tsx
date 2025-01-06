@@ -71,7 +71,7 @@ function ApplicationNavigator() {
 					onRemoveNotifcationCount();
 					if (notification?.data) {
 						const notiResp =
-							notification?.data as Pathchwork.PushNotiResponse['data'];
+							notification?.data as Patchwork.PushNotiResponse['data'];
 						if (notification?.data?.noti_type === 'follow') {
 							handleNotiProfileDetailPress(notiResp?.destination_id);
 						} else if (notification?.data?.noti_type === 'follow_request') {
@@ -94,7 +94,7 @@ function ApplicationNavigator() {
 			onRemoveNotifcationCount();
 			if (remoteMessage?.data) {
 				const notiResp =
-					remoteMessage?.data as Pathchwork.PushNotiResponse['data'];
+					remoteMessage?.data as Patchwork.PushNotiResponse['data'];
 				if (notiResp.noti_type === 'follow') {
 					handleNotiProfileDetailPress(notiResp.destination_id as string);
 				} else if (notiResp.noti_type === 'follow_request') {
@@ -114,7 +114,7 @@ function ApplicationNavigator() {
 					// const { noti_type, destination_id, reblogged_id } =
 					// 	remoteMessage.data;
 					const notiResp =
-						remoteMessage.data as Pathchwork.PushNotiResponse['data'];
+						remoteMessage.data as Patchwork.PushNotiResponse['data'];
 					if (notiResp.noti_type === 'follow') {
 						setTimeout(() => {
 							handleNotiProfileDetailPress(notiResp.destination_id);

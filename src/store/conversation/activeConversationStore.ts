@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 
 type ActiveConversationState = {
-	activeConversation: Pathchwork.Conversations | undefined;
+	activeConversation: Patchwork.Conversations | undefined;
 	actions: {
 		saveActiveConversation: (
-			conversation: Pathchwork.Conversations | undefined,
+			conversation: Patchwork.Conversations | undefined,
 		) => void;
 		removeActiveConversation: () => void;
 	};

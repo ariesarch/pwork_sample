@@ -24,7 +24,7 @@ const CollectionDetail: React.FC<
 		isSuccess,
 	} = useDetailChannelList({ slug });
 
-	const handleChannelClick = (item: Pathchwork.ChannelList) => {
+	const handleChannelClick = (item: Patchwork.ChannelList) => {
 		setDomain(item.attributes.domain_name);
 
 		navigation.navigate('ChannelProfile', {

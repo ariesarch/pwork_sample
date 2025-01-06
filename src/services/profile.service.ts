@@ -16,7 +16,7 @@ export const accountInfoQueryFn = async ({
 }: QueryFunctionContext<AccountInfoQueryKey>) => {
 	try {
 		const { id, domain_name } = queryKey[1];
-		const resp: AxiosResponse<Pathchwork.Account> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Account> = await instance.get(
 			appendApiVersion(`accounts/${id}`, 'v1'),
 			{
 				params: {
@@ -36,7 +36,7 @@ export const getSpecificServerProfile = async (
 ) => {
 	try {
 		const { q } = qfContext.queryKey[1];
-		const resp: AxiosResponse<Pathchwork.SearchResult> = await instance.get(
+		const resp: AxiosResponse<Patchwork.SearchResult> = await instance.get(
 			appendApiVersion(`search`, 'v2'),
 			{
 				params: { q: q, resolve: true, type: 'accounts' },
@@ -53,7 +53,7 @@ export const checkRelationshipQueryFn = async (
 ) => {
 	try {
 		const { accountIds } = qfContext.queryKey[1];
-		const resp: AxiosResponse<Pathchwork.RelationShip[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.RelationShip[]> = await instance.get(
 			appendApiVersion(`accounts/relationships`, 'v1'),
 			{
 				params: { with_suspended: true, id: accountIds },
@@ -74,7 +74,7 @@ export const relationshipQueryFn = async ({
 }) => {
 	try {
 		const relation = isFollowing ? 'unfollow' : 'follow';
-		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+		const resp: AxiosResponse<Patchwork.RelationShip> = await instance.post(
 			appendApiVersion(`accounts/${accountId}/${relation}`, 'v1'),
 			!isFollowing && { reblogs: true },
 		);
@@ -92,7 +92,7 @@ export const followRequestsQueryFn = async ({
 	requestType: 'authorize' | 'reject';
 }) => {
 	try {
-		const resp: AxiosResponse<Pathchwork.RelationShip> = await instance.post(
+		const resp: AxiosResponse<Patchwork.RelationShip> = await instance.post(
 			appendApiVersion(`follow_requests/${accountId}/${requestType}`, 'v1'),
 		);
 		return resp.data;
@@ -108,7 +108,7 @@ export const getFollowingAccountsQueryFn = async (
 		const { domain_name, accountId } = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion(`accounts/${accountId}/following`),
 			{
 				params: {
@@ -144,7 +144,7 @@ export const getFollowerAccountsQueryFn = async (
 		const { domain_name, accountId } = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion(`accounts/${accountId}/followers`),
 			{
 				params: {
@@ -174,7 +174,7 @@ export const getFollowerAccountsQueryFn = async (
 };
 
 // type ProfileDetailStatusResponse = {
-// 	statuses_data: Pathchwork.Status[];
+// 	statuses_data: Patchwork.Status[];
 // 	meta: {
 // 		pagination: { total_objects: number | null; has_more_objects: boolean };
 // 	};
@@ -203,7 +203,7 @@ export const getFollowerAccountsQueryFn = async (
 
 export const updateProfile = async (
 	params: UpdateProfilePayload,
-): Promise<Pathchwork.Account> => {
+): Promise<Patchwork.Account> => {
 	try {
 		const formData = new FormData();
 		if (params.avatar && typeof params.avatar !== 'string') {
@@ -299,7 +299,7 @@ export const updateProfile = async (
 			);
 		}
 
-		const resp: AxiosResponse<Pathchwork.Account> = await instance.patch(
+		const resp: AxiosResponse<Patchwork.Account> = await instance.patch(
 			appendApiVersion(`accounts/update_credentials`, 'v1'),
 			formData,
 			{
@@ -318,9 +318,9 @@ export const deleteProfileMedia = async ({
 	mediaType,
 }: {
 	mediaType: 'avatar' | 'header';
-}): Promise<Pathchwork.Account> => {
+}): Promise<Patchwork.Account> => {
 	const endpoint = mediaType === 'avatar' ? 'profile/avatar' : 'profile/header';
-	const resp: AxiosResponse<Pathchwork.Account> = await instance.delete(
+	const resp: AxiosResponse<Patchwork.Account> = await instance.delete(
 		appendApiVersion(endpoint, 'v1'),
 	);
 	return resp.data;

@@ -24,7 +24,7 @@ const PollVotingStatus = ({
 	status,
 	isReposting,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isReposting?: boolean;
 }) => {
 	const { domain_name } = useActiveDomainStore();

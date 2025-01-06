@@ -5,10 +5,10 @@ import { create } from 'zustand';
 
 type StatusReplyStoreState = {
 	textInputRef: RefObject<TextInput> | null;
-	currentFocusStatus: Pathchwork.Status | null;
+	currentFocusStatus: Patchwork.Status | null;
 	actions: {
 		setTextInputRef: (ref: React.RefObject<TextInput>) => void;
-		changeCurrentStatus: (status: Pathchwork.Status) => void;
+		changeCurrentStatus: (status: Patchwork.Status) => void;
 		focusInput: () => void;
 	};
 };

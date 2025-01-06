@@ -5,9 +5,7 @@ import {
 } from '../queryCacheHelper';
 import { stat } from 'fs';
 
-const incrementReblogsCount = (
-	status: Pathchwork.Status,
-): Pathchwork.Status => ({
+const incrementReblogsCount = (status: Patchwork.Status): Patchwork.Status => ({
 	...status,
 	reblogs_count: status.reblogs_count + 1,
 	reblogged: true,
@@ -15,7 +13,7 @@ const incrementReblogsCount = (
 
 const updateFeedData = (
 	data: IFeedQueryFnData,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => ({
 	...data,
 	pages: data.pages.map(page => ({
@@ -31,7 +29,7 @@ const updateFeedData = (
 
 const updateStatusCache = (
 	queryKey: StatusCacheQueryKeys,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => {
 	updateQueryCacheGeneric<IFeedQueryFnData>(queryKey, previousData =>
 		updateFeedData(previousData, response),
@@ -41,7 +39,7 @@ const updateStatusCache = (
 const applyReblogCountCacheUpdates = ({
 	response,
 	queryKeys,
-}: CacheUpdateParams<Pathchwork.Status, StatusCacheQueryKeys>): void => {
+}: CacheUpdateParams<Patchwork.Status, StatusCacheQueryKeys>): void => {
 	queryKeys.forEach(queryKey => {
 		updateStatusCache(queryKey, response);
 	});
@@ -49,7 +47,7 @@ const applyReblogCountCacheUpdates = ({
 
 const updateReblogsCountForHashtag = (
 	extraPayload: Record<string, any> | undefined,
-	status: Pathchwork.Status,
+	status: Patchwork.Status,
 ) => {
 	if (extraPayload && extraPayload.hashtag && extraPayload.domain_name) {
 		const hashtagQueryKey = [

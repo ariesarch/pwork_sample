@@ -8,7 +8,7 @@ import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface ListItemProps {
-	item: Pathchwork.NotiReq;
+	item: Patchwork.NotiReq;
 	onPressAccept: (id: string) => void;
 	onPressCancel: (id: string) => void;
 }

@@ -27,7 +27,7 @@ const fieldNames = [
 ];
 
 type SocialSectionProps = {
-	fields: Pathchwork.Field[];
+	fields: Patchwork.Field[];
 	isMyAccount?: boolean;
 	onPressPlusIcon?: () => void;
 	onPressEditIcon?: () => void;
@@ -56,7 +56,7 @@ const SocialSection = ({
 	const linkCount = fields.filter(field => field.value).length;
 
 	// render items
-	const renderSocialIcons = (field: Pathchwork.Field) => {
+	const renderSocialIcons = (field: Patchwork.Field) => {
 		const { name, value } = field;
 		if (!value) return null;
 		const Icon = name.toLowerCase().includes('website') ? (

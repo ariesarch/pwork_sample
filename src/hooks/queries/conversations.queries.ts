@@ -24,7 +24,7 @@ export const useSearchUsers = ({
 	options,
 	...queryParam
 }: SearchUsersQueryKey[1] & {
-	options?: QueryOptionHelper<AxiosResponse<Pathchwork.Account[]>>;
+	options?: QueryOptionHelper<AxiosResponse<Patchwork.Account[]>>;
 }) => {
 	const queryKey: SearchUsersQueryKey = ['users', queryParam];
 	return useQuery({
@@ -36,25 +36,25 @@ export const useSearchUsers = ({
 };
 
 export const useGetConversationsList = (
-	options?: QueryOptionHelper<Pathchwork.Conversations[]>,
+	options?: QueryOptionHelper<Patchwork.Conversations[]>,
 ) => {
 	return useInfiniteQuery<
-		Pathchwork.Conversations[],
+		Patchwork.Conversations[],
 		Error,
-		InfiniteData<Pathchwork.Conversations[]>
+		InfiniteData<Patchwork.Conversations[]>
 	>({
 		queryKey: ['conversations'],
 		//@ts-expect-error
 		queryFn: ({ pageParam }: { pageParam: string | null }) =>
 			getConversationsList({ pageParam }),
 		...options,
-		getNextPageParam: (lastPage: Pathchwork.Conversations[]) => {
+		getNextPageParam: (lastPage: Patchwork.Conversations[]) => {
 			if (!lastPage || lastPage.length === 0) return undefined;
 			const lastParam = lastPage[lastPage.length - 1]?.last_status?.id;
 			return lastParam;
 		},
 		select: data => {
-			const deduplicatedList: Pathchwork.Conversations[] = data.pages
+			const deduplicatedList: Patchwork.Conversations[] = data.pages
 				.flat()
 				.filter(
 					(item, index, self) =>
@@ -73,7 +73,7 @@ export const useMessageListQuery = ({
 	id,
 	options,
 }: MessageListQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.TimelineReplies>;
+	options?: QueryOptionHelper<Patchwork.TimelineReplies>;
 }) => {
 	const queryKey: MessageListQueryKey = ['message-list', { id }];
 	//@ts-expect-error
@@ -81,25 +81,25 @@ export const useMessageListQuery = ({
 };
 
 export const useGetAllNotiReqWPagination = (
-	options?: QueryOptionHelper<Pathchwork.NotiReq[]>,
+	options?: QueryOptionHelper<Patchwork.NotiReq[]>,
 ) => {
 	return useInfiniteQuery<
-		Pathchwork.NotiReq[],
+		Patchwork.NotiReq[],
 		Error,
-		InfiniteData<Pathchwork.NotiReq[]>
+		InfiniteData<Patchwork.NotiReq[]>
 	>({
 		queryKey: ['all-noti-req'],
 		//@ts-expect-error
 		queryFn: ({ pageParam }: { pageParam: string | null }) =>
 			getAllNotiReqWPagination({ pageParam }),
 		...options,
-		getNextPageParam: (lastPage: Pathchwork.NotiReq[]) => {
+		getNextPageParam: (lastPage: Patchwork.NotiReq[]) => {
 			if (!lastPage || lastPage.length === 0) return undefined;
 			const lastParam = lastPage[lastPage.length - 1]?.last_status?.id;
 			return lastParam;
 		},
 		select: data => {
-			const deduplicatedList: Pathchwork.NotiReq[] = data.pages
+			const deduplicatedList: Patchwork.NotiReq[] = data.pages
 				.flat()
 				.filter(
 					(item, index, self) =>
@@ -115,7 +115,7 @@ export const useGetAllNotiReqWPagination = (
 };
 
 export const useGetAllNotiReq = (
-	options?: QueryOptionHelper<Pathchwork.NotiReq[]>,
+	options?: QueryOptionHelper<Patchwork.NotiReq[]>,
 ) => {
 	const queryKey: NotiReqQueryKey = ['all-noti-req'];
 	return useQuery({ queryKey, queryFn: getAllNotiReq, ...options });
@@ -125,7 +125,7 @@ export const useGetConversationByUserId = ({
 	id,
 	options,
 }: ConversationByUserIdQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.Conversations>;
+	options?: QueryOptionHelper<Patchwork.Conversations>;
 }) => {
 	const queryKey: ConversationByUserIdQueryKey = ['user-conversation', { id }];
 	//@ts-expect-error

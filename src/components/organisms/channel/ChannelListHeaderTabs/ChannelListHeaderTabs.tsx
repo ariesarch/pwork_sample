@@ -8,7 +8,7 @@ import ChannelAbout from '../ChannelAbout/ChannelAbout';
 type Props = {
 	activeTab: number;
 	handleOnPressTab: (i: number) => void;
-	channelAbout: Pathchwork.ChannelAbout;
+	channelAbout: Patchwork.ChannelAbout;
 };
 const ChannelListHeaderTabs = ({
 	activeTab,

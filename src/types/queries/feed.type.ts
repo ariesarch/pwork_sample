@@ -45,7 +45,7 @@ export type ComposeMutationPayload = {
 	sensitive?: boolean;
 	spoiler_text?: string;
 	status: string;
-	visibility: Pathchwork.ComposeVisibility;
+	visibility: Patchwork.ComposeVisibility;
 	max_length?: number;
 	poll: Poll | null;
 	media_ids: string[];
@@ -62,15 +62,15 @@ export type ComposeImagePayload = {
 };
 
 export type BookmarkStatusQueryParams = {
-	statusId: Pathchwork.Status['id'];
+	statusId: Patchwork.Status['id'];
 	isBookmark: boolean;
 };
 
 export type BookmarkStatusQueryKey = ['Bookmark-Timeline'];
 export type ReportMutationPayload = {
 	comment: string;
-	account_id: Pathchwork.Account['id'] | undefined;
-	status_ids: Array<Pathchwork.Status['id'] | undefined>;
+	account_id: Patchwork.Account['id'] | undefined;
+	status_ids: Array<Patchwork.Status['id'] | undefined>;
 	category: string;
 	forward?: boolean;
 	forward_to_domains?: string[];

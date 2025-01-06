@@ -9,7 +9,7 @@ import { VerifyIcon } from '@/util/svg/icon.conversations';
 import { appendInstance } from '@/util/helper/appendInstance';
 
 type Props = {
-	userInfo: Pathchwork.Account;
+	userInfo: Patchwork.Account;
 };
 
 const ProfileInfo = ({ userInfo }: Props) => {

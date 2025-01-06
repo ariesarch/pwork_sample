@@ -1,5 +1,5 @@
 import {
-	blockUnblockUserMutationFn,
+	blockUnBlockUserMutationFn,
 	fetchLinkPreview,
 	getAccountDetailFeed,
 	getFeedDetail,
@@ -37,7 +37,7 @@ export const useFeedDetailQuery = ({
 	options,
 	...queryParam
 }: FeedDetailQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.StatusDetail>;
+	options?: QueryOptionHelper<Patchwork.StatusDetail>;
 }) => {
 	const queryKey: FeedDetailQueryKey = ['feed-detail', queryParam];
 	return useQuery({
@@ -53,7 +53,7 @@ export const useFeedRepliesQuery = ({
 	id,
 	options,
 }: FeedRepliesQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.TimelineReplies>;
+	options?: QueryOptionHelper<Patchwork.TimelineReplies>;
 }) => {
 	const queryKey: FeedRepliesQueryKey = ['feed-replies', { domain_name, id }];
 	//@ts-expect-error
@@ -65,7 +65,7 @@ export const useAccountDetailFeed = ({
 	...queryParam
 }: AccountDetailFeedQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>
+		InfiniteData<PagedResponse<Patchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: AccountDetailFeedQueryKey = [
@@ -86,7 +86,7 @@ export const useHashtagDetailFeedQuery = ({
 	...queryParam
 }: HashtagDetailFeedQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>
+		InfiniteData<PagedResponse<Patchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: HashtagDetailFeedQueryKey = [
@@ -115,7 +115,7 @@ export const useLinkPreviewQueries = ({
 
 export const useMuteUnmuteUserMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; toMute: boolean }
 	>,
@@ -125,10 +125,10 @@ export const useMuteUnmuteUserMutation = (
 
 export const useBlockUnBlockUserMutation = (
 	options: UseMutationOptions<
-		Pathchwork.RelationShip,
+		Patchwork.RelationShip,
 		AxiosError,
 		{ accountId: string; toBlock: boolean }
 	>,
 ) => {
-	return useMutation({ mutationFn: blockUnblockUserMutationFn, ...options });
+	return useMutation({ mutationFn: blockUnBlockUserMutationFn, ...options });
 };

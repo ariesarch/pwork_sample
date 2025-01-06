@@ -102,21 +102,33 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 					<ThemeText
 						className="my-4 active:opacity-80"
 						variant="textOrange"
-						onPress={() => {}}
+						onPress={() => {
+							navigation.navigate('WebViewer', {
+								url: 'https://channel.org/privacy-policy/',
+							});
+						}}
 					>
 						Term & Conditions,{' '}
 					</ThemeText>
 					<ThemeText
 						className="my-4 active:opacity-80"
 						variant="textOrange"
-						onPress={() => {}}
+						onPress={() => {
+							navigation.navigate('WebViewer', {
+								url: 'https://www.newsmastfoundation.org/terms-conditions/',
+							});
+						}}
 					>
 						Privacy Policy,{' '}
 					</ThemeText>
 					<ThemeText
 						className="my-4 active:opacity-80"
 						variant="textOrange"
-						onPress={() => {}}
+						onPress={() => {
+							navigation.navigate('WebViewer', {
+								url: 'https://www.newsmastfoundation.org/community-guidelines/',
+							});
+						}}
 					>
 						Community Guidelines
 					</ThemeText>

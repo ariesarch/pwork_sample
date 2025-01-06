@@ -48,7 +48,7 @@ import {
 import MenuOptionsForOtherUser from './MenuOptionsForOtherUser/MenuOptionsForOtherUser';
 import { queryClient } from '@/App';
 
-const StatusMenu = ({ status }: { status: Pathchwork.Status }) => {
+const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 	const navigation = useNavigation();
 	const { domain_name } = useActiveDomainStore();
 	const { activeFeed: currentFeed } = useActiveFeedStore();

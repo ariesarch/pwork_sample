@@ -9,7 +9,7 @@ import { AxiosError } from 'axios';
 
 export const useMarkAsReadMutation = (
 	options?: UseMutationOptions<
-		Pathchwork.Conversations,
+		Patchwork.Conversations,
 		AxiosError,
 		{ id: string }
 	>,

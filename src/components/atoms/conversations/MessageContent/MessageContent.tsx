@@ -10,7 +10,7 @@ const MessageContent = ({
 	item,
 	isOwnMessage,
 }: {
-	item: Pathchwork.Status;
+	item: Patchwork.Status;
 	isOwnMessage: boolean;
 }) => {
 	return (

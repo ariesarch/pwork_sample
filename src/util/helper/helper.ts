@@ -88,12 +88,12 @@ export const getMaxId = (resp: AxiosResponse) => {
 };
 
 export const calculateHashTagCount = (
-	hashTagList: Pathchwork.HashtagHistory[],
+	hashTagList: Patchwork.HashtagHistory[],
 	countType?: 'accounts' | 'uses',
 ) => {
 	if (!Array.isArray(hashTagList)) return 0;
 	return hashTagList.reduce(
-		(accumulator: number, hashtag: Pathchwork.HashtagHistory) =>
+		(accumulator: number, hashtag: Patchwork.HashtagHistory) =>
 			accumulator + parseInt(hashtag[countType ?? 'uses']),
 		0,
 	);
@@ -165,7 +165,7 @@ export const getSpecificServerStatus = async (q: string, authToken: string) => {
 	try {
 		const baseURl = process.env.API_URL ?? DEFAULT_API_URL;
 		const payload = { q, resolve: true, type: 'statuses' };
-		const resp: AxiosResponse<Pathchwork.SearchResult> = await axios.get(
+		const resp: AxiosResponse<Patchwork.SearchResult> = await axios.get(
 			`${baseURl}/api/v2/search`,
 			{
 				params: payload,
@@ -180,7 +180,7 @@ export const getSpecificServerStatus = async (q: string, authToken: string) => {
 	}
 };
 
-export function isPatchworkStatus(data: any): data is Pathchwork.Status {
+export function isPatchworkStatus(data: any): data is Patchwork.Status {
 	return (
 		typeof data === 'object' &&
 		typeof data.id === 'string' &&
@@ -192,7 +192,7 @@ export function isPatchworkStatus(data: any): data is Pathchwork.Status {
 
 export const replaceIdInUrl = (
 	url: string,
-	searchRes: Pathchwork.SearchResult,
+	searchRes: Patchwork.SearchResult,
 ) => {
 	const match = url.match(/\b\d{9,}\b/);
 	if (match && searchRes.statuses?.length > 0) {

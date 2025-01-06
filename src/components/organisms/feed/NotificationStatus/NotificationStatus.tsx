@@ -4,7 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 interface NotificationStatusProps {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 }
 
 const NotificationStatus: React.FC<NotificationStatusProps> = ({ status }) => {

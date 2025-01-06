@@ -9,7 +9,7 @@ export const useGetBookmarkList = ({
 	...queryParam
 }: GetBookmarkListQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Status[]>>
+		InfiniteData<PagedResponse<Patchwork.Status[]>>
 	>;
 }) => {
 	const queryKey: GetBookmarkListQueryKey = ['bookmark-list', queryParam];

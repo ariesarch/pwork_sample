@@ -142,7 +142,7 @@ const FeedDetail = ({
 							keyExtractor={item => item.id.toString()}
 							ListHeaderComponent={() => (
 								<StatusWrapper
-									status={feedDetail as Pathchwork.Status}
+									status={feedDetail as Patchwork.Status}
 									currentPage="FeedDetail"
 									statusType="feedDetail"
 									comeFrom={

@@ -12,7 +12,7 @@ import { View, Image, ViewProps, Pressable } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isFromNoti?: boolean;
 } & ViewProps;
 
@@ -29,7 +29,7 @@ const StatusItem = ({ status, isFromNoti, ...props }: Props) => {
 		);
 	}, [status, userInfo?.id]);
 
-	const handleOnPress = (item: Pathchwork.Status) => {
+	const handleOnPress = (item: Patchwork.Status) => {
 		setActiveFeed(item);
 		navigation.navigate('FeedDetail', { id: item.id });
 	};

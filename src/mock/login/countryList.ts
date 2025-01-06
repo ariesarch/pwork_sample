@@ -1,4 +1,4 @@
-export const MockCountryList: Pathchwork.Country[] = [
+export const MockCountryList: Patchwork.Country[] = [
 	{
 		alpha2: '1',
 		common_name: 'Afghanistan',

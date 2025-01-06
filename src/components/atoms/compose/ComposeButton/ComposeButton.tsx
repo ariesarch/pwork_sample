@@ -65,7 +65,7 @@ const ComposeButton = ({
 	];
 
 	const { mutate, isPending } = useComposeMutation({
-		onSuccess: (status: Pathchwork.Status) => {
+		onSuccess: (status: Patchwork.Status) => {
 			if (statusCurrentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				setActiveFeed(status);
 			}

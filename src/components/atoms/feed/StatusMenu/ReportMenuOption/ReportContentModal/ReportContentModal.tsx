@@ -12,7 +12,7 @@ import ReportContentWithComment from '../ReportContentWithComment/ReportContentW
 import { useReportMutation } from '@/hooks/mutations/feed.mutation';
 
 interface ReportContentModalProps {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	visible: boolean;
 	onClose: () => void;
 }

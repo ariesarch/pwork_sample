@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { NotificationStatusImagesIcon } from '@/util/svg/icon.notification';
 
-const NotiStatusImageView = ({ status }: { status: Pathchwork.Status }) => {
+const NotiStatusImageView = ({ status }: { status: Patchwork.Status }) => {
 	const mediaAttachmentCounts = status?.media_attachments?.length;
 	return (
 		<View className=" flex-row -ml-2 -mb-1 items-center">

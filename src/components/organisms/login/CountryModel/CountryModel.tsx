@@ -13,8 +13,8 @@ import { View, Pressable, FlatList } from 'react-native';
 type Props = {
 	isOpen: boolean;
 	onCloseThemeModal: () => void;
-	selectedCountry?: Pathchwork.Country;
-	onSelectCountry: (selectedCountry: Pathchwork.Country) => void;
+	selectedCountry?: Patchwork.Country;
+	onSelectCountry: (selectedCountry: Patchwork.Country) => void;
 };
 
 const CountryModel = ({

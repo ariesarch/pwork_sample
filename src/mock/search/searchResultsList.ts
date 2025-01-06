@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-export const mockSearchResultsList: Pathchwork.Status[] = [
+export const mockSearchResultsList: Patchwork.Status[] = [
 	{
 		id: 2000,
 		account: {
@@ -123,7 +123,7 @@ export const mockSearchResultsList: Pathchwork.Status[] = [
 	},
 ];
 
-export const mockUserList: Pathchwork.Account[] = [
+export const mockUserList: Patchwork.Account[] = [
 	{
 		id: '1',
 		account_id: '1',
@@ -254,7 +254,7 @@ export const mockUserList: Pathchwork.Account[] = [
 	},
 ];
 
-export const mockCommandStatusList: Pathchwork.Status[] = [
+export const mockCommandStatusList: Patchwork.Status[] = [
 	{
 		id: 12384,
 		account: {

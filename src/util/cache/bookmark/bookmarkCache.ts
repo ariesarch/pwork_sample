@@ -9,12 +9,12 @@ export type BookmarkQueryKeys =
 	| GetChannelFeedQueryKey
 	| AccountDetailFeedQueryKey;
 
-const toggleBookmarkState = (status: Pathchwork.Status): Pathchwork.Status => ({
+const toggleBookmarkState = (status: Patchwork.Status): Patchwork.Status => ({
 	...status,
 	bookmarked: !status.bookmarked,
 });
 
-const updateStatusBookmark = (status: Pathchwork.Status): Pathchwork.Status => {
+const updateStatusBookmark = (status: Patchwork.Status): Patchwork.Status => {
 	if (status.reblog) {
 		return {
 			...status,
@@ -26,7 +26,7 @@ const updateStatusBookmark = (status: Pathchwork.Status): Pathchwork.Status => {
 
 const updateFeedWithBookmark = (
 	data: IFeedQueryFnData,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => {
 	return {
 		...data,
@@ -51,7 +51,7 @@ const updateFeedWithBookmark = (
 
 const updateBookmarkInCache = (
 	queryKey: BookmarkQueryKeys,
-	response: Pathchwork.Status,
+	response: Patchwork.Status,
 ) => {
 	updateQueryCacheGeneric<IFeedQueryFnData>(queryKey, previousData =>
 		updateFeedWithBookmark(previousData, response),
@@ -61,7 +61,7 @@ const updateBookmarkInCache = (
 const syncBookmarkAcrossCache = ({
 	response,
 	queryKeys,
-}: CacheUpdateParams<Pathchwork.Status, BookmarkQueryKeys>): void => {
+}: CacheUpdateParams<Patchwork.Status, BookmarkQueryKeys>): void => {
 	queryKeys.forEach(queryKey => {
 		updateBookmarkInCache(queryKey, response);
 	});
@@ -78,7 +78,7 @@ const updateBookmarkForDescendentReply = (
 	];
 
 	const previousData =
-		queryClient.getQueryData<Pathchwork.TimelineReplies>(feedDetailQueryKey);
+		queryClient.getQueryData<Patchwork.TimelineReplies>(feedDetailQueryKey);
 	if (!previousData) return;
 
 	const updatedData = previousData.descendants.map(item => {
@@ -99,7 +99,7 @@ const updateBookmarkForDescendentReply = (
 
 const updateHashtagBookmark = (
 	extraPayload: Record<string, any> | undefined,
-	status: Pathchwork.Status,
+	status: Patchwork.Status,
 ) => {
 	if (extraPayload && extraPayload.hashtag && extraPayload.domain_name) {
 		const hashtagQueryKey = [

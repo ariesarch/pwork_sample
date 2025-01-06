@@ -9,8 +9,8 @@ import ParseNormalHtmlStr from '@/components/atoms/common/ParseHtml/ParseNormalH
 import { useNavigation } from '@react-navigation/native';
 
 type Props = {
-	channelAbout: Pathchwork.ChannelAbout | undefined;
-	channelAdditionalInfo: Pathchwork.ChannelAdditionalInfo;
+	channelAbout: Patchwork.ChannelAbout | undefined;
+	channelAdditionalInfo: Patchwork.ChannelAdditionalInfo;
 };
 const ChannelInformation = ({ channelAbout, channelAdditionalInfo }: Props) => {
 	const { colorScheme } = useColorScheme();

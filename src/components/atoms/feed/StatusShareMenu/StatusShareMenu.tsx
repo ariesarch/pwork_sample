@@ -42,7 +42,7 @@ import * as Clipboard from '@react-native-clipboard/clipboard';
 import Toast from 'react-native-toast-message';
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isFromNoti?: boolean;
 };
 
@@ -98,7 +98,7 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 		},
 	});
 
-	const onBookmarkStatus = (status: Pathchwork.Status) => {
+	const onBookmarkStatus = (status: Patchwork.Status) => {
 		const stat = status.reblog ? status.reblog : status;
 		const crossChannelRequestIdentifier = uniqueId(
 			`CROS-Channel-Status::${status.id}::Req-ID::`,

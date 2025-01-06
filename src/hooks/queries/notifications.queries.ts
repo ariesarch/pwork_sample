@@ -35,7 +35,7 @@ export const useFollowRequestNotifications = ({
 	options,
 }: {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Account[]>>
+		InfiniteData<PagedResponse<Patchwork.Account[]>>
 	>;
 }) => {
 	const queryKey: FollowRequestQueryKey = ['follow-request-query-key'];

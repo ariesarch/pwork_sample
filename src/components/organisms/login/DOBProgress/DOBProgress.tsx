@@ -74,7 +74,7 @@ const DOBPRogress = () => {
 				isOpen={isModalOpen}
 				onCloseThemeModal={() => setModalOpen(false)}
 				selectedCountry={selectedCountry}
-				onSelectCountry={(country: Pathchwork.Country) =>
+				onSelectCountry={(country: Patchwork.Country) =>
 					setSelectedCountry(country)
 				}
 			/>

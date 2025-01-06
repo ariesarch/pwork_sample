@@ -3,7 +3,7 @@ import Image from '@/components/atoms/common/Image/Image';
 import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 
 type Props = {
-	account: Pathchwork.Account;
+	account: Patchwork.Account;
 } & ViewProps;
 const ContributorProfile = ({ account, ...props }: Props) => {
 	return (

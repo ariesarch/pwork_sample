@@ -107,7 +107,7 @@ const ConversationList = ({
 		) : null;
 
 	const renderHiddenItem = (
-		rowData: ListRenderItemInfo<Pathchwork.Conversations>,
+		rowData: ListRenderItemInfo<Patchwork.Conversations>,
 		rowMap: RowMap<any>,
 	) => (
 		<TouchableOpacity

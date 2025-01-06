@@ -28,7 +28,7 @@ import { useSelectedDomain } from '@/store/feed/activeDomain';
 
 type ChannelProps = {
 	type: 'Channel';
-	channel: Pathchwork.ChannelAbout;
+	channel: Patchwork.ChannelAbout;
 	channelInfo: {
 		avatar_image_url: string;
 		banner_image_url: string;
@@ -38,11 +38,11 @@ type ChannelProps = {
 
 type ProfileProps = {
 	type: 'Profile';
-	profile: Pathchwork.Account;
+	profile: Patchwork.Account;
 	onPressPlusIcon?: () => void;
 	onPressEditIcon?: () => void;
 	is_my_account?: boolean;
-	relationships?: Pathchwork.RelationShip[];
+	relationships?: Patchwork.RelationShip[];
 	myAcctId?: string;
 	specifyServerAccId?: string;
 	otherUserId?: string;
@@ -101,7 +101,7 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 				accountId,
 			]);
 
-			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+			queryClient.setQueryData<Patchwork.RelationShip[]>(
 				relationshipQueryKey,
 				old => {
 					if (!old) return [newRelationship];

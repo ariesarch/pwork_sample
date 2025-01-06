@@ -16,11 +16,11 @@ import { useAuthStore } from '@/store/auth/authStore';
 dayjs.extend(relativeTime);
 
 type Props = {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	showAvatarIcon?: boolean;
 	showFollowIcon?: boolean;
 	imageSize?: string;
-	relationships?: Pathchwork.RelationShip[];
+	relationships?: Patchwork.RelationShip[];
 	isFromNoti?: boolean;
 } & ViewProps;
 
@@ -51,7 +51,7 @@ const StatusHeader = ({
 				accountId,
 			]);
 
-			queryClient.setQueryData<Pathchwork.RelationShip[]>(
+			queryClient.setQueryData<Patchwork.RelationShip[]>(
 				relationshipQueryKey,
 				old => {
 					if (!old) return [newRelationship];

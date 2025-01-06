@@ -17,7 +17,7 @@ import { EmptyMsgReqItem } from '@/components/molecules/conversations/EmptyMsgRe
 import { queryClient } from '@/App';
 
 const NofificationRequests = () => {
-	const data: Pathchwork.NotiReq[] | undefined = queryClient.getQueryData([
+	const data: Patchwork.NotiReq[] | undefined = queryClient.getQueryData([
 		'all-noti-req',
 	]);
 	const notiReqList = useMemo(() => data?.flat() || [], [data]);
@@ -42,7 +42,7 @@ const NofificationRequests = () => {
 			<FlatList
 				data={notiReqList}
 				keyExtractor={item => item.id}
-				renderItem={({ item }: { item: Pathchwork.NotiReq }) => (
+				renderItem={({ item }: { item: Patchwork.NotiReq }) => (
 					<NotiReqItem
 						item={item}
 						onPressCancel={id => dismissNotiReq({ id })}

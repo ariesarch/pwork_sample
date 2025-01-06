@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 type SubChannelStatus = {
-	status: Pathchwork.Status | undefined;
+	status: Patchwork.Status | undefined;
 	savedPayload: Record<string, any> | undefined;
 	specificPayloadMapping?: Record<string, any>; // Key: payload param to replace, Value: search result value
 	specificResponseMapping?: Record<string, any>;

@@ -65,7 +65,7 @@ const FollowingAccounts = ({
 	}, [relationships, refetchRelationships]);
 
 	const renderItem = useCallback(
-		({ item }: { item: Pathchwork.Account }) => (
+		({ item }: { item: Patchwork.Account }) => (
 			<FFAccountListItem
 				item={item}
 				relationship={relationshipsMap.get(item.id)}

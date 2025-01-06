@@ -17,7 +17,7 @@ type ReplyInputProps = {
 	username: string;
 	progress: SharedValue<number>;
 	autoFocus: boolean;
-	feedDetailStatus: Pathchwork.Status;
+	feedDetailStatus: Patchwork.Status;
 };
 
 const FeedReplyTextInput = ({

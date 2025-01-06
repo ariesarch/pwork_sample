@@ -30,8 +30,8 @@ export type RootStackParamList = {
 	ChannelCreate: undefined;
 	WebViewer: { url: string };
 	ImageViewer: {
-		imageUrls: Pathchwork.ImageUrl[];
-		id: Pathchwork.Attachment['id'];
+		imageUrls: Patchwork.ImageUrl[];
+		id: Patchwork.Attachment['id'];
 	};
 	EditProfile: undefined;
 	LocalImageViewer: {
@@ -48,7 +48,7 @@ export type RootStackParamList = {
 		isFromProfile?: boolean;
 	};
 	InitiateNewConversation: {
-		account: Pathchwork.Account;
+		account: Patchwork.Account;
 	};
 };
 
@@ -62,7 +62,7 @@ export type BottomStackParamList = {
 		  }
 		| {
 				type: 'repost' | 'edit';
-				incomingStatus: Pathchwork.Status;
+				incomingStatus: Patchwork.Status;
 				statusCurrentPage?: StatusCurrentPage;
 				extraPayload?: Record<string, any>;
 		  };
@@ -186,7 +186,7 @@ export type ConversationsStackParamList = {
 		isFromProfile?: boolean;
 	};
 	InitiateNewConversation: {
-		account: Pathchwork.Account;
+		account: Patchwork.Account;
 	};
 	NotificationRequests: undefined;
 	Profile: { id: string };
@@ -219,6 +219,7 @@ export type SettingStackParamList = {
 	UpdatePassword: undefined;
 	MuteAndBlockList: undefined;
 	MyInformation: undefined;
+	WebViewer: { url: string };
 	BookmarkList: undefined;
 };
 

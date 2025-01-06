@@ -14,7 +14,7 @@ const RebloggedStatus = ({
 	status,
 	isFromNoti,
 }: {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 	isFromNoti?: boolean;
 }) => {
 	const { userInfo } = useAuthStore();
@@ -22,7 +22,7 @@ const RebloggedStatus = ({
 	const { setActiveFeed } = useActiveFeedAction();
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 
-	const handleOnPressStatus = (status: Pathchwork.Status) => {
+	const handleOnPressStatus = (status: Patchwork.Status) => {
 		setActiveFeed(status.reblog ? status.reblog : status);
 		navigation.navigate('FeedDetail', {
 			id: status.reblog ? status.reblog.id : status.id,

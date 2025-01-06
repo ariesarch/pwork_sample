@@ -38,7 +38,7 @@ export const useCheckRelationships = ({
 	options,
 	...queryParam
 }: CheckRelationshipQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.RelationShip[]>;
+	options?: QueryOptionHelper<Patchwork.RelationShip[]>;
 }) => {
 	const queryKey: CheckRelationshipQueryKey = [
 		'check-relationship-to-other-accounts',
@@ -56,7 +56,7 @@ export const useSpecificServerProfile = ({
 	options,
 	...queryParam
 }: SpecificServerProfileQueryKey[1] & {
-	options?: QueryOptionHelper<Pathchwork.SearchResult>;
+	options?: QueryOptionHelper<Patchwork.SearchResult>;
 }) => {
 	const queryKey: SpecificServerProfileQueryKey = [
 		'specify-server-profile',
@@ -75,7 +75,7 @@ export const useFollowingAccountsQuery = ({
 	...queryParam
 }: FollowingAccountsQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Account[]>>
+		InfiniteData<PagedResponse<Patchwork.Account[]>>
 	>;
 }) => {
 	const queryKey: FollowingAccountsQueryKey = [
@@ -96,7 +96,7 @@ export const useFollowerAccountsQuery = ({
 	...queryParam
 }: FollowerAccountsQueryKey[1] & {
 	options?: InfiniteQueryOptionHelper<
-		InfiniteData<PagedResponse<Pathchwork.Account[]>>
+		InfiniteData<PagedResponse<Patchwork.Account[]>>
 	>;
 }) => {
 	const queryKey: FollowerAccountsQueryKey = ['follower-accounts', queryParam];

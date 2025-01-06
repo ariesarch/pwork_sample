@@ -5,12 +5,12 @@ import { FeedRepliesQueryKey } from '@/types/queries/feed.type';
 import { DEFAULT_API_URL } from '@/util/constant';
 
 type DeleteStatusCacheParams = {
-	status_id: Pathchwork.Status['id'];
+	status_id: Patchwork.Status['id'];
 	queryKeys: StatusCacheQueryKeys[];
 };
 
 type DeleteFeedReplyCacheParams = {
-	feedDetailId: Pathchwork.Status['id'];
+	feedDetailId: Patchwork.Status['id'];
 	queryKey: FeedRepliesQueryKey;
 };
 
@@ -57,7 +57,7 @@ const deleteDescendentReply = (
 	];
 
 	const previousData =
-		queryClient.getQueryData<Pathchwork.TimelineReplies>(feedDetailQueryKey);
+		queryClient.getQueryData<Patchwork.TimelineReplies>(feedDetailQueryKey);
 	if (!previousData) return;
 
 	const updatedData = previousData.descendants.filter(item => {

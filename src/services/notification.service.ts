@@ -19,8 +19,8 @@ export interface NotificationItem {
 		| 'admin.report'
 		| 'status';
 	latest_page_notification_at: string;
-	account: Pathchwork.Account;
-	status?: Pathchwork.Status | null;
+	account: Patchwork.Account;
+	status?: Patchwork.Status | null;
 }
 
 export interface INotificationResponse {
@@ -35,13 +35,13 @@ export interface INotificationResponse {
 		| 'admin.report'
 		| 'status';
 	group_key: string;
-	status: Pathchwork.Status;
-	account: Pathchwork.Account;
+	status: Patchwork.Status;
+	account: Patchwork.Account;
 	created_at: string;
 	report: {
 		id: number;
 		comment: string;
-		target_account: Pathchwork.Account;
+		target_account: Patchwork.Account;
 	};
 }
 
@@ -106,7 +106,7 @@ export const getFollowRequests = async (
 	try {
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion('follow_requests'),
 			{
 				params: {

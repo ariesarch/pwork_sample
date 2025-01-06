@@ -11,8 +11,8 @@ import { cn } from '@/util/helper/twutil';
 import { Pressable, View } from 'react-native';
 
 type Prop = {
-	message: Pathchwork.Status;
-	previousMsg: Pathchwork.Status | undefined;
+	message: Patchwork.Status;
+	previousMsg: Patchwork.Status | undefined;
 	currentMessageId: string | null;
 	handlePress: (id: string | null) => void;
 };

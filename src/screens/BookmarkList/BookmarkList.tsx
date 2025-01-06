@@ -71,7 +71,7 @@ const BookmarkList = () => {
 					width: Dimensions.get('screen').width,
 				}}
 				ListEmptyComponent={() => {
-					return <ListEmptyComponent />;
+					return <ListEmptyComponent title="No Bookmark found" />;
 				}}
 				onEndReachedThreshold={0.15}
 				onEndReached={handleOnEndReached}

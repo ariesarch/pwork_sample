@@ -14,7 +14,7 @@ import instance from './instance';
 
 export const getMyChannelList = async () => {
 	try {
-		const resp: AxiosResponse<Pathchwork.MyChannel> = await instance.get(
+		const resp: AxiosResponse<Patchwork.MyChannel> = await instance.get(
 			appendApiVersion('channels/my_channel'),
 			{
 				params: {
@@ -36,7 +36,7 @@ export const getChannelFeed = async (
 		const { domain_name, remote, only_media } = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
 
-		const resp: AxiosResponse<Pathchwork.Status[]> = await instance.get(
+		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion('timelines/public'),
 			{
 				params: {
@@ -71,7 +71,7 @@ export const getChannelAbout = async (
 	qfContext: QueryFunctionContext<GetChannelAboutQueryKey>,
 ) => {
 	const { domain_name } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.ChannelAbout> = await instance.get(
+	const resp: AxiosResponse<Patchwork.ChannelAbout> = await instance.get(
 		appendApiVersion('instance', 'v2'),
 		{
 			params: { domain_name, isDynamicDomain: true },
@@ -84,7 +84,7 @@ export const getChannelAdditionalInfo = async (
 	qfContext: QueryFunctionContext<GetChannelAdditionalInfoQueryKey>,
 ) => {
 	const { domain_name } = qfContext.queryKey[1];
-	const resp: AxiosResponse<Pathchwork.ChannelAdditionalInfo> =
+	const resp: AxiosResponse<Patchwork.ChannelAdditionalInfo> =
 		await instance.get(
 			appendApiVersion('instance/extended_description', 'v1'),
 			{
@@ -97,7 +97,7 @@ export const getChannelAdditionalInfo = async (
 export const getRecommendedChannel = async (
 	qfContext: QueryFunctionContext<GetRecommendedChannelsQueryKey>,
 ) => {
-	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+	const resp: AxiosResponse<{ data: Patchwork.ChannelList[] }> =
 		await instance.get(appendApiVersion('channels/recommend_channels', 'v1'), {
 			params: {
 				domain_name: 'https://dashboard.channel.org',
@@ -111,7 +111,7 @@ export const getSearchChannelResult = async (
 	qfContext: QueryFunctionContext<GetChannelSearchQueryKey>,
 ) => {
 	const { searchKeyword } = qfContext.queryKey[1];
-	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+	const resp: AxiosResponse<{ data: Patchwork.ChannelList[] }> =
 		await instance.get(appendApiVersion('channels/search', 'v1'), {
 			params: {
 				domain_name: 'https://dashboard.channel.org',
@@ -125,7 +125,7 @@ export const getSearchChannelResult = async (
 export const getCollectionChannelList = async (
 	qfContext: QueryFunctionContext<GetCollectionChannelListQueryKey>,
 ) => {
-	const resp: AxiosResponse<{ data: Pathchwork.CollectionList[] }> =
+	const resp: AxiosResponse<{ data: Patchwork.CollectionList[] }> =
 		await instance.get(appendApiVersion('collections', 'v1'), {
 			params: {
 				domain_name: 'https://dashboard.channel.org',
@@ -139,7 +139,7 @@ export const getDetailChannelList = async (
 	qfContext: QueryFunctionContext<GetDetailChannelListQueryKey>,
 ) => {
 	const slug = qfContext.queryKey[1].slug;
-	const resp: AxiosResponse<{ data: Pathchwork.ChannelList[] }> =
+	const resp: AxiosResponse<{ data: Patchwork.ChannelList[] }> =
 		await instance.get(appendApiVersion('collections/fetch_channels', 'v1'), {
 			params: {
 				domain_name: 'https://dashboard.channel.org',

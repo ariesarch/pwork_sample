@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/types/navigation';
 
 type Props = {
-	message: Pathchwork.Status;
+	message: Patchwork.Status;
 	isOwnMessage: boolean;
 } & ViewProps;
 

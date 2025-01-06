@@ -9,7 +9,7 @@ import { Pressable, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 interface ListItemProps {
-	item: Pathchwork.Conversations;
+	item: Patchwork.Conversations;
 	userInfoId: string;
 	onPress: (id: string) => void;
 }

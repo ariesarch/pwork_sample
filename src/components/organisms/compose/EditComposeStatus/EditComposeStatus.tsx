@@ -15,7 +15,7 @@ const findClosestDuration = (expiresIn: number) => {
 			: prev,
 	);
 };
-const EditComposeStatus = ({ status }: { status: Pathchwork.Status }) => {
+const EditComposeStatus = ({ status }: { status: Patchwork.Status }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
 	const { onSelectMedia, resetAttachmentStore } = useManageAttachmentActions();
 

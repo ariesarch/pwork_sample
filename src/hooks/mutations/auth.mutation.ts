@@ -16,7 +16,7 @@ import { AxiosError } from 'axios';
 
 export const useLoginEmailMutation = (
 	options: UseMutationOptions<
-		Pathchwork.LoginRespone,
+		Patchwork.LoginRespone,
 		AxiosError,
 		LoginMutationPayload
 	>,

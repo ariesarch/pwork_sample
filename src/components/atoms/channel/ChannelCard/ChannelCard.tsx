@@ -6,7 +6,7 @@ import { useActiveDomainAction } from '@/store/feed/activeDomain';
 import { useNavigation } from '@react-navigation/native';
 
 type Props = {
-	channel: Pathchwork.ChannelAttributes;
+	channel: Patchwork.ChannelAttributes;
 	handlePress: () => void;
 };
 export const ChannelCard = ({ channel, handlePress }: Props) => {

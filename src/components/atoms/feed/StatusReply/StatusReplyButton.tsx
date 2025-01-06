@@ -19,7 +19,7 @@ import { Pressable, ViewProps } from 'react-native';
 
 type Props = {
 	count: number;
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 } & ViewProps;
 
 const StatusReplyButton = ({ count, status, ...props }: Props) => {

@@ -10,7 +10,7 @@ import { useFollowRequestsMutation } from '@/hooks/mutations/profile.mutation';
 import { FollowRequestQueryKey } from '@/services/notification.service';
 import { queryClient } from '@/App';
 
-const NotiFollowRequestTabItem = ({ item }: { item: Pathchwork.Account }) => {
+const NotiFollowRequestTabItem = ({ item }: { item: Patchwork.Account }) => {
 	const navigation = useNavigation<NotificationScreenNavigationProp>();
 	const displayAcct = item.url.includes('https://channel.org')
 		? `${item.acct}@channel.org`

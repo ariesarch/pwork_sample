@@ -2,9 +2,9 @@ import { queryClient } from '@/App';
 import { PagedResponse } from '@/util/helper/timeline';
 import { InfiniteData } from '@tanstack/react-query';
 
-export const updateMuteState = (response: Pathchwork.RelationShip) => {
+export const updateMuteState = (response: Patchwork.RelationShip) => {
 	queryClient.setQueryData<
-		InfiniteData<PagedResponse<Pathchwork.MuteBlockUserAccount[]>>
+		InfiniteData<PagedResponse<Patchwork.MuteBlockUserAccount[]>>
 	>(['muted-user-list'], oldData => {
 		if (!oldData) return;
 		return {
@@ -22,9 +22,9 @@ export const updateMuteState = (response: Pathchwork.RelationShip) => {
 	});
 };
 
-export const updateBlockState = (response: Pathchwork.RelationShip) => {
+export const updateBlockState = (response: Patchwork.RelationShip) => {
 	queryClient.setQueryData<
-		InfiniteData<PagedResponse<Pathchwork.MuteBlockUserAccount[]>>
+		InfiniteData<PagedResponse<Patchwork.MuteBlockUserAccount[]>>
 	>(['blocked-user-list'], oldData => {
 		if (!oldData) return;
 		return {

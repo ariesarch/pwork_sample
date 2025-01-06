@@ -4,7 +4,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 interface RepostingStatusItemProps {
-	status: Pathchwork.Status;
+	status: Patchwork.Status;
 }
 
 const RepostingStatusItem: React.FC<RepostingStatusItemProps> = ({
