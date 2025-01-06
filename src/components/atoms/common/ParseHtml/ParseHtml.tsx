@@ -210,7 +210,6 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		}
 		return null;
 	};
-	// console.log('type of total lines => ', typeof totalLines);
 
 	return (
 		<View style={{ overflow: 'hidden' }}>
@@ -218,16 +217,13 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 				children={document.children.map(renderNode)}
 				variant="textOrange"
 				onTextLayout={({ nativeEvent }) => {
-					if (
-						numberOfLines === 1 ||
-						nativeEvent.lines.length >= numberOfLines + 8
-					) {
-						// console.log('***setting total lines');
+					if (nativeEvent.lines.length >= numberOfLines + 8) {
 						setTotalLines(nativeEvent.lines.length);
+					} else {
+						setTotalLines(undefined);
 					}
 				}}
 				style={{
-					height: numberOfLines === 1 ? 0 : undefined,
 					lineHeight: adaptedLineheight,
 				}}
 				numberOfLines={
@@ -238,8 +234,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						: Math.max(MAX_ALLOWED_LINES, numberOfLines)
 				}
 			/>
-			{!isFeedDetail &&
-			(typeof totalLines === 'number' || numberOfLines === 1) ? (
+			{!isFeedDetail && typeof totalLines === 'number' ? (
 				<Pressable
 					onPress={() => {
 						layoutAnimation();
