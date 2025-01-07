@@ -16,7 +16,6 @@ import { useActiveFeedStore } from '@/store/feed/activeFeed';
 import { uniqueId } from 'lodash';
 
 export const handleError = (error: any) => {
-	console.error('API Request Failed::', error.response);
 	return Promise.reject({
 		status: error?.response.status,
 		message:

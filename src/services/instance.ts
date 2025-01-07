@@ -17,7 +17,6 @@ const instance = axios.create({
 
 instance.interceptors.request.use(async config => {
 	const { access_token: token, domain: userDomain } = await getAuthState();
-	console.log('userDomain::', userDomain, config.params);
 	if (token && token.length > 0) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
