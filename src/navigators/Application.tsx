@@ -29,6 +29,7 @@ import notifee, { EventType } from '@notifee/react-native';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
+import { useTranslationLanguagesQueries } from '@/hooks/queries/feed.queries';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -43,6 +44,11 @@ const CustomTheme = {
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
+
+	// ********** We don't need it for now ********** //
+	// const { data } = useTranslationLanguagesQueries();
+	// console.log('🚀 ~ ApplicationNavigator ~ data:', data);
+	// ********** We don't need it for now ********** //
 
 	const { onRemoveNotifcationCount, onSetNotifcationCount } =
 		usePushNoticationActions();

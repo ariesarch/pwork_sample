@@ -8,6 +8,7 @@ import StatusMenu from '@/components/atoms/feed/StatusMenu/StatusMenu';
 import { cn } from '@/util/helper/twutil';
 import { useMemo } from 'react';
 import { useAuthStore } from '@/store/auth/authStore';
+import StatusTranslate from '@/components/atoms/feed/StatusTranslate/StatusTranslate';
 
 type Props = {
 	status: Pathchwork.Status;
@@ -76,6 +77,8 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 				{/* <Tranlsate className="mr-3" />
 				<ShareTo className="mr-3" /> */}
 				{/* {isAuthor && <StatusMenu {...{ status, isFeedDetail }} />} */}
+
+				{status.translated_text && <StatusTranslate {...{ status }} />}
 				<StatusMenu {...{ status, isFeedDetail }} />
 			</View>
 		</View>

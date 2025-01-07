@@ -30,8 +30,11 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
 	const document = useMemo(() => {
-		return parseDocument(status.content);
-	}, [status.content]);
+		return status.translated_text
+			? parseDocument(status.translated_text)
+			: parseDocument(status.content);
+	}, [status.content, status.translated_text]);
+
 	const isImageMissing = useMemo(() => {
 		return status?.media_attachments?.length !== 0;
 	}, [status?.image_url]);

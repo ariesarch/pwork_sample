@@ -5,6 +5,7 @@ import {
 	muteUnMuteUserMutationFn,
 	reportMutationFn,
 	repostStatus,
+	translateMutationFn,
 	uploadComposeImage,
 } from '@/services/feed.service';
 import {
@@ -80,4 +81,14 @@ export const useReportMutation = (
 	options: UseMutationOptions<any, AxiosError, ReportMutationPayload>,
 ) => {
 	return useMutation({ mutationFn: reportMutationFn, ...options });
+};
+
+export const useTranslateMutation = (
+	options: UseMutationOptions<
+		{ content: string },
+		AxiosError,
+		{ statusId: string }
+	>,
+) => {
+	return useMutation({ mutationFn: translateMutationFn, ...options });
 };

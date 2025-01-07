@@ -4,6 +4,7 @@ import {
 	getFeedDetail,
 	getFeedReplies,
 	getHashtagDetailFeed,
+	translationLanguatesFn,
 } from '@/services/feed.service';
 import {
 	AccountDetailFeedQueryKey,
@@ -11,6 +12,7 @@ import {
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
 	LinkPreviewQueryKey,
+	TranslationLanguagesQueryKey,
 } from '@/types/queries/feed.type';
 import {
 	InfiniteQueryOptionHelper,
@@ -107,4 +109,9 @@ export const useLinkPreviewQueries = ({
 }) => {
 	const queryKey: LinkPreviewQueryKey = ['link-preview', { url }];
 	return useQuery({ queryKey, queryFn: fetchLinkPreview, enabled, retry: 0 });
+};
+
+export const useTranslationLanguagesQueries = () => {
+	const queryKey: TranslationLanguagesQueryKey = ['translation-languages'];
+	return useQuery({ queryKey, queryFn: translationLanguatesFn });
 };

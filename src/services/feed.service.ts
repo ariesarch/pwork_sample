@@ -254,3 +254,29 @@ export const reportMutationFn = async (params: ReportMutationPayload) => {
 		return handleError(error);
 	}
 };
+
+export const translationLanguatesFn = async () => {
+	try {
+		const resp: AxiosResponse<Pathchwork.Status> = await instance.get(
+			appendApiVersion('instance/translation_languages', 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const translateMutationFn = async ({
+	statusId,
+}: {
+	statusId: string;
+}) => {
+	try {
+		const resp: AxiosResponse<{ content: string }> = await instance.post(
+			appendApiVersion(`statuses/${statusId}/translate`, 'v1'),
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
