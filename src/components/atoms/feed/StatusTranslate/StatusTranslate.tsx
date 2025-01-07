@@ -6,16 +6,26 @@ import {
 	getCacheQueryKeys,
 } from '@/util/cache/queryCacheHelper';
 import { DEFAULT_API_URL } from '@/util/constant';
-import { translateStatusCacheData } from '@/util/cache/statusActions/translateCache';
+import {
+	translateStatusCacheData,
+	updatedTranslateStatus,
+} from '@/util/cache/statusActions/translateCache';
 import customColor from '@/util/constant/color';
 import { useLanguageSelectionActions } from '@/store/compose/languageSelection/languageSelection';
+import {
+	useActiveFeedAction,
+	useCurrentActiveFeed,
+} from '@/store/feed/activeFeed';
 
 type StatusTranslateProps = {
 	status: Pathchwork.Status;
 	isFeedDetail?: boolean;
 	isFromNoti?: boolean;
 };
-const StatusTranslate = ({ status }: StatusTranslateProps) => {
+const StatusTranslate = ({ status, isFeedDetail }: StatusTranslateProps) => {
+	const currentFeed = useCurrentActiveFeed();
+	const { setActiveFeed } = useActiveFeedAction();
+
 	const { onToggleTranslated } = useLanguageSelectionActions();
 
 	const onToggleTranslateStatus = () => {
@@ -27,6 +37,21 @@ const StatusTranslate = ({ status }: StatusTranslateProps) => {
 			process.env.API_URL ?? DEFAULT_API_URL,
 		);
 		if (status.translated_text) {
+			if (isFeedDetail && currentFeed?.id === status.id) {
+				// Use updatedTranslateStatus to update the current feed data
+				const updateFeedDetailData = updatedTranslateStatus(
+					currentFeed,
+					{
+						content: status.content,
+						statusId: status.id, // Ensure statusId is included here
+					},
+					false,
+				);
+				// Ensure the status matches before updating the active feed
+				if (status.id === currentFeed.id) {
+					setActiveFeed(updateFeedDetailData); // Update the feed with the translated content
+				}
+			}
 			onToggleTranslated();
 			translateStatusCacheData({
 				response: { content: status.content, statusId: status.id },

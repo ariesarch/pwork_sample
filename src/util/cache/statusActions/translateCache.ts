@@ -7,6 +7,28 @@ type TranslateStatusCacheParams = {
 	showTranslatedText: boolean;
 };
 
+const updatedTranslateStatus = (
+	status: Pathchwork.Status,
+	response: { content: string; statusId: string },
+	showTranslatedText: boolean,
+): Pathchwork.Status => {
+	if (status.id === response.statusId) {
+		if (showTranslatedText) {
+			return {
+				...status,
+				translated_text: response.content,
+			};
+		} else {
+			return {
+				...status,
+				content: status.content,
+				translated_text: '',
+			};
+		}
+	}
+	return status;
+};
+
 const translateStatusFromFeed = (
 	data: IFeedQueryFnData,
 	response: { content: string; statusId: string },
@@ -15,30 +37,9 @@ const translateStatusFromFeed = (
 	...data,
 	pages: data.pages.map(page => ({
 		...page,
-		data: page.data.map(status => {
-			if (status.id === response.statusId) {
-				if (showTranslatedText) {
-					return {
-						...status,
-						translated_text: response.content,
-					};
-				} else {
-					return {
-						...status,
-						content: status.content,
-						translated_text: '',
-					};
-				}
-			}
-			// else {
-			// 	return {
-			// 		...status,
-			// 		content: status.content,
-			// 		translated_text: '',
-			// 	};
-			// }
-			return status;
-		}),
+		data: page.data.map(status =>
+			updatedTranslateStatus(status, response, showTranslatedText),
+		),
 	})),
 });
 
@@ -68,4 +69,8 @@ const translateStatusCacheData = ({
 	});
 };
 
-export { translateStatusFromFeed, translateStatusCacheData };
+export {
+	translateStatusFromFeed,
+	translateStatusCacheData,
+	updatedTranslateStatus,
+};
