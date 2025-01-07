@@ -6,6 +6,7 @@ import {
 	getFeedReplies,
 	getHashtagDetailFeed,
 	muteUnMuteUserMutationFn,
+	translationLanguatesFn,
 } from '@/services/feed.service';
 import {
 	AccountDetailFeedQueryKey,
@@ -13,6 +14,7 @@ import {
 	FeedRepliesQueryKey,
 	HashtagDetailFeedQueryKey,
 	LinkPreviewQueryKey,
+	TranslationLanguagesQueryKey,
 } from '@/types/queries/feed.type';
 import {
 	InfiniteQueryOptionHelper,
@@ -131,4 +133,9 @@ export const useBlockUnBlockUserMutation = (
 	>,
 ) => {
 	return useMutation({ mutationFn: blockUnBlockUserMutationFn, ...options });
+};
+
+export const useTranslationLanguagesQueries = () => {
+	const queryKey: TranslationLanguagesQueryKey = ['translation-languages'];
+	return useQuery({ queryKey, queryFn: translationLanguatesFn });
 };

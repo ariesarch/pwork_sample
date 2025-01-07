@@ -52,7 +52,7 @@ type CPPayloadCreatorType = (state: ComposeState) => ComposeMutationPayload;
 export const prepareComposePayload: CPPayloadCreatorType = state => {
 	return {
 		in_reply_to_id: state.in_reply_to_id,
-		language: 'en',
+		language: state.language,
 		sensitive: false,
 		spoiler_text: '',
 		status: state.text.raw,

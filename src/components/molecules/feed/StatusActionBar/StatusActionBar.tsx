@@ -11,6 +11,7 @@ import { useStatusContext } from '@/context/statusItemContext/statusItemContext'
 import CustomAlert from '@/components/atoms/common/CustomAlert/CustomAlert';
 import StatusShareMenu from '@/components/atoms/feed/StatusShareMenu/StatusShareMenu';
 import { moderateScale } from 'react-native-size-matters';
+import StatusTranslate from '@/components/atoms/feed/StatusTranslate/StatusTranslate';
 
 type Props = {
 	status: Patchwork.Status;
@@ -75,9 +76,8 @@ const StatusActionBar = ({ status, isFromNoti }: Props) => {
 				<StatusFavourtieButton className="mr-3" {...{ status, isFromNoti }} />
 			</View>
 			<View className="flex flex-row">
-				{/* <Tranlsate className="mr-3" />
-				<ShareTo className="mr-3" /> */}
-				<View style={{ marginRight: moderateScale(12) }}>
+				{status.translated_text && <StatusTranslate {...{ status }} />}
+				<View className="mr-3">
 					<StatusShareMenu {...{ status, isFromNoti }} />
 				</View>
 				<StatusMenu status={status} />

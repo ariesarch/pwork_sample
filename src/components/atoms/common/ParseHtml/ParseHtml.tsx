@@ -29,10 +29,16 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
-	const document = useMemo(
-		() => parseDocument(status.content),
-		[status.content],
-	);
+	const document = useMemo(() => {
+		return status.translated_text
+			? parseDocument(status.translated_text)
+			: parseDocument(status.content);
+	}, [status.content, status.translated_text]);
+
+	const isImageMissing = useMemo(() => {
+		return status?.media_attachments?.length !== 0;
+	}, [status?.image_url]);
+
 	const adaptedLineheight = Platform.OS === 'ios' ? 18 : undefined;
 	const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
 	const { userInfo } = useAuthStore();
@@ -43,10 +49,6 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 			hashtagDomain: domain_name,
 		});
 	};
-	const isImageMissing = useMemo(
-		() => status?.media_attachments?.length !== 0,
-		[status?.image_url],
-	);
 	const { currentPage } = useStatusContext();
 	const { setActiveFeed } = useActiveFeedAction();
 	const isFeedDetail = currentPage === 'FeedDetail';

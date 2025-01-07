@@ -34,6 +34,12 @@ import { cn } from '@/util/helper/twutil';
 import { useComposeStatus } from '@/context/composeStatusContext/composeStatus.context';
 import { POLL_INITIAL } from '@/util/constant/pollOption';
 import LongPostAction from '@/components/atoms/compose/LongPostAction/LongPostAction';
+import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
+import {
+	useLanguageSelectionActions,
+	useLanguageSelectionStore,
+} from '@/store/compose/languageSelection/languageSelection';
+import LanguageSelectionModal from '@/components/organisms/compose/modal/LanguageSelection/LanguageSelectionModal';
 
 const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 	const { composeState, composeDispatch } = useComposeStatus();
@@ -67,6 +73,16 @@ const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 	);
 	const { onToggleVisibilityModal } = useVisibilitySettingsActions();
 	// ****** Visibility Store ****** //
+
+	// ****** Language Selection Store ****** //
+	const languageSelectionModalVisible = useLanguageSelectionStore(
+		state => state.languageSelectionModalVisible,
+	);
+	const selectedLanguage = useLanguageSelectionStore(
+		state => state.selectedLanguage,
+	);
+	const { onToggleLanguageSelectionModal } = useLanguageSelectionActions();
+	// ****** Language Selection Store ****** //
 
 	// ****** CTA Store ****** //
 	const ctaModalVisible = useCallToActionStore(state => state.ctaModalVisible);
@@ -143,6 +159,14 @@ const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 				/>
 				{/****** Visibility Settings Action ******/}
 
+				{/****** Language Dropdown Action ******/}
+				<Pressable onPress={onToggleLanguageSelectionModal} className={'mr-3'}>
+					<View className="border border-white py-0 px-1 rounded-md">
+						<ThemeText>{selectedLanguage.toUpperCase()}</ThemeText>
+					</View>
+				</Pressable>
+				{/****** Language Dropdown Action ******/}
+
 				{/****** CTA Action ******/}
 				<Pressable
 					disabled={true}
@@ -184,6 +208,13 @@ const ComposeActionsBar = ({ isRepost }: { isRepost: boolean }) => {
 			<VisibilitySettingsModal
 				visible={visibilityModalVisible}
 				onClose={onToggleVisibilityModal}
+			/>
+			{/****** Visibility Settings Modal ******/}
+
+			{/****** Visibility Settings Modal ******/}
+			<LanguageSelectionModal
+				openThemeModal={languageSelectionModalVisible}
+				onCloseThemeModal={onToggleLanguageSelectionModal}
 			/>
 			{/****** Visibility Settings Modal ******/}
 

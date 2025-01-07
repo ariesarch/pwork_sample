@@ -13,6 +13,7 @@ import {
 	StatusEditIcon,
 	StatusBlockIcon,
 	StatusReportIcon,
+	StatusTranslateIcon,
 } from '@/util/svg/icon.status_actions';
 import customColor from '@/util/constant/color';
 import { useAuthStore } from '@/store/auth/authStore';
@@ -47,6 +48,10 @@ import {
 } from '@/util/cache/reply/replyCache';
 import MenuOptionsForOtherUser from './MenuOptionsForOtherUser/MenuOptionsForOtherUser';
 import { queryClient } from '@/App';
+import { useTranslateMutation } from '@/hooks/mutations/feed.mutation';
+import { translateStatusCacheData } from '@/util/cache/statusActions/translateCache';
+import { useLanguageSelectionActions } from '@/store/compose/languageSelection/languageSelection';
+import { Flow } from 'react-native-animated-spinkit';
 
 const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 	const navigation = useNavigation();
@@ -63,6 +68,8 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 		currentPage == 'FeedDetail' && currentFeed?.id == status.id;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { saveStatus } = useSubchannelStatusActions();
+
+	const { onToggleTranslated } = useLanguageSelectionActions();
 
 	const { userInfo } = useAuthStore();
 
@@ -187,6 +194,30 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 	};
 	//********** Edit Status **********//
 
+	const { mutate: translationMutate, isPending } = useTranslateMutation({
+		onSuccess(data, variables, context) {
+			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
+				status.account.id,
+				status.in_reply_to_id,
+				status.in_reply_to_account_id,
+				status.reblog ? true : false,
+				process.env.API_URL ?? DEFAULT_API_URL,
+			);
+			translateStatusCacheData({
+				response: { content: data.content, statusId: variables.statusId }, // Include statusId
+				queryKeys,
+				showTranslatedText: true,
+			});
+
+			onToggleTranslated();
+			hideMenu();
+		},
+	});
+
+	const onTranslateStatus = () => {
+		translationMutate({ statusId: status.id });
+	};
+
 	return (
 		<>
 			<Menu opened={menuVisible} onBackdropPress={hideMenu}>
@@ -212,7 +243,7 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 									<MenuOption onSelect={onPressEditStatus}>
 										<MenuOptionIcon icon={<StatusEditIcon />} name="Edit" />
 									</MenuOption>
-									<Underline className="border-patchwork-grey-400" />
+									{/* <Underline className="border-patchwork-grey-400" /> */}
 								</>
 							)}
 							<MenuOption onSelect={onPressShowDeleteModal}>
@@ -225,6 +256,24 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 							{/* <FollowMenuOption url={status.account.url} />
 							<MuteMenuOption url={status.account.url} /> */}
 						</>
+					)}
+					{status.language !== 'en' && status.language !== null && (
+						<MenuOption onSelect={onTranslateStatus}>
+							<MenuOptionIcon
+								icon={
+									isPending ? (
+										<Flow
+											size={25}
+											color={customColor['patchwork-light-900']}
+											className="ml-1"
+										/>
+									) : (
+										<StatusTranslateIcon />
+									)
+								}
+								name="Translate"
+							/>
+						</MenuOption>
 					)}
 				</MenuOptions>
 			</Menu>

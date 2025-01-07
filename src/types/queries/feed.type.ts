@@ -28,6 +28,8 @@ export type HashtagDetailFeedQueryKey = [
 
 export type LinkPreviewQueryKey = ['link-preview', { url: string }];
 
+export type TranslationLanguagesQueryKey = ['translation-languages'];
+
 export type Poll = {
 	options: string[];
 	expires_in: number;
