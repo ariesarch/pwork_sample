@@ -7,7 +7,6 @@ import type { ChildNode } from 'domhandler';
 import { Platform, Pressable, View } from 'react-native';
 import ParseEmojis from '../ParseEmojis/ParnseEmojis';
 import { ThemeText } from '../ThemeText/ThemeText';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { HomeStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -24,11 +23,9 @@ type Props = {
 };
 
 const MAX_ALLOWED_LINES = 35;
-const MAX_CHAR_COUNT = 150;
 
 const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 	const [totalLines, setTotalLines] = useState<number>();
-	const [expanded, setExpanded] = useState(false);
 
 	const isFirstLink = useRef(true);
 	const domain_name = useSelectedDomain();
@@ -73,11 +70,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		navigation.navigate('FeedDetail', { id: status.id });
 	};
 
-	const renderNode = (
-		node: ChildNode,
-		index: number,
-		isTruncated: boolean = false,
-	) => {
+	const renderNode = (node: ChildNode, index: number) => {
 		let classes, href: string;
 		switch (node?.type) {
 			case ElementType.Text:
@@ -88,9 +81,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 				} else {
 					content = node.data.trim();
 				}
-				if (isTruncated && content.length > MAX_CHAR_COUNT) {
-					content = content.slice(0, MAX_CHAR_COUNT) + '...';
-				}
+
 				return <ParseEmojis content={content} key={index} />;
 
 			case ElementType.Tag:
@@ -187,7 +178,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						if (index < document.children.length - 1) {
 							return (
 								<ThemeText key={index}>
-									{node.children.map((c, i) => renderNode(c, i, isTruncated))}
+									{node.children.map((c, i) => renderNode(c, i))}
 									<ThemeText
 										style={{
 											lineHeight: adaptedLineheight
@@ -203,9 +194,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) =>
-									renderNode(c, i, isTruncated),
-								)}
+								children={node.children.map((c, i) => renderNode(c, i))}
 							/>
 						);
 
@@ -213,9 +202,7 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 						return (
 							<ThemeText
 								key={index}
-								children={node.children.map((c, i) =>
-									renderNode(c, i, isTruncated),
-								)}
+								children={node.children.map((c, i) => renderNode(c, i))}
 								variant="textOrange"
 							/>
 						);
@@ -224,34 +211,45 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 		return null;
 	};
 
-	const renderContentWithSeeMore = () => {
-		const fullTextContent = document.children
-			.map(node => unwrapNode(node))
-			.join('');
-		if (fullTextContent.length > MAX_CHAR_COUNT && !isFeedDetail) {
-			return (
-				<ThemeText>
-					{document.children.map((node, index) =>
-						renderNode(node, index, true),
-					)}
+	return (
+		<View style={{ overflow: 'hidden' }}>
+			<ThemeText
+				children={document.children.map(renderNode)}
+				variant="textOrange"
+				onTextLayout={({ nativeEvent }) => {
+					if (nativeEvent.lines.length >= numberOfLines + 8) {
+						setTotalLines(nativeEvent.lines.length);
+					} else {
+						setTotalLines(undefined);
+					}
+				}}
+				style={{
+					lineHeight: adaptedLineheight,
+				}}
+				numberOfLines={
+					typeof totalLines === 'number'
+						? isFeedDetail
+							? 999
+							: numberOfLines
+						: Math.max(MAX_ALLOWED_LINES, numberOfLines)
+				}
+			/>
+			{!isFeedDetail && typeof totalLines === 'number' ? (
+				<Pressable
+					onPress={() => {
+						layoutAnimation();
+						handleSeeMorePress();
+					}}
+				>
 					<ThemeText
-						onPress={handleSeeMorePress}
-						variant="textOrange"
-						size="fs_13"
-					>
-						{' '}
-						See More
-					</ThemeText>
-				</ThemeText>
-			);
-		}
-
-		return (
-			<>{document.children.map((node, index) => renderNode(node, index))}</>
-		);
-	};
-
-	return <>{renderContentWithSeeMore()}</>;
+						className="underline"
+						variant={'textOrange'}
+						children={'See More'}
+					/>
+				</Pressable>
+			) : null}
+		</View>
+	);
 };
 
 export default HTMLParser;

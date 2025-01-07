@@ -10,8 +10,13 @@ import { flattenPages } from '@/util/helper/timeline';
 import { FlashList } from '@shopify/flash-list';
 import { useColorScheme } from 'nativewind';
 import { useMemo } from 'react';
-import { Dimensions, RefreshControl, View } from 'react-native';
-import { CircleFade } from 'react-native-animated-spinkit';
+import {
+	ActivityIndicator,
+	Dimensions,
+	RefreshControl,
+	View,
+} from 'react-native';
+import { Flow } from 'react-native-animated-spinkit';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BookmarkList = () => {
@@ -31,6 +36,8 @@ const BookmarkList = () => {
 		fetchNextPage,
 		isFetching,
 		refetch: refetchBookmarks,
+		isRefetching,
+		isFetchingNextPage,
 	} = useGetBookmarkList(queryParams);
 
 	const feed = useMemo(() => flattenPages(bookmarks), [bookmarks]);
@@ -44,48 +51,58 @@ const BookmarkList = () => {
 	return (
 		<SafeScreen>
 			<Header title="Bookmarks" leftCustomComponent={<BackButton />} />
-			<FlashList
-				data={feed}
-				contentContainerStyle={{
-					paddingBottom: bottom,
-					backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
-				}}
-				keyExtractor={item => item.id.toString()}
-				renderItem={({ item }) => (
-					<StatusWrapper
-						status={item}
-						currentPage="BookmarkList"
-						statusType={item.reblog ? 'reblog' : 'normal'}
-					/>
-				)}
-				refreshControl={
-					<RefreshControl
-						refreshing={isFetching}
-						tintColor={customColor['patchwork-light-900']}
-						onRefresh={refetchBookmarks}
-					/>
-				}
-				estimatedItemSize={500}
-				estimatedListSize={{
-					height: Dimensions.get('screen').height,
-					width: Dimensions.get('screen').width,
-				}}
-				ListEmptyComponent={() => {
-					return <ListEmptyComponent title="No Bookmark found" />;
-				}}
-				onEndReachedThreshold={0.15}
-				onEndReached={handleOnEndReached}
-				showsVerticalScrollIndicator={false}
-				ListFooterComponent={
-					isFetching ? (
-						<View className="my-3 items-center">
-							<CircleFade size={25} color="white" />
-						</View>
-					) : (
-						<></>
-					)
-				}
-			/>
+			{isFetching && !isRefetching && !isFetchingNextPage ? (
+				<View className="flex-1 justify-center items-center">
+					<Flow size={50} color={customColor['patchwork-red-50']} />
+				</View>
+			) : (
+				<FlashList
+					data={feed}
+					contentContainerStyle={{
+						paddingBottom: bottom,
+						backgroundColor: colorScheme === 'dark' ? '#2E363B' : '#ffffff',
+					}}
+					keyExtractor={item => item.id.toString()}
+					renderItem={({ item }) => (
+						<StatusWrapper
+							status={item}
+							currentPage="BookmarkList"
+							statusType={item.reblog ? 'reblog' : 'normal'}
+						/>
+					)}
+					refreshControl={
+						<RefreshControl
+							refreshing={isRefetching}
+							tintColor={customColor['patchwork-light-900']}
+							onRefresh={refetchBookmarks}
+						/>
+					}
+					estimatedItemSize={500}
+					estimatedListSize={{
+						height: Dimensions.get('screen').height,
+						width: Dimensions.get('screen').width,
+					}}
+					ListEmptyComponent={() => {
+						return <ListEmptyComponent title="No Bookmark found" />;
+					}}
+					onEndReachedThreshold={0.15}
+					onEndReached={handleOnEndReached}
+					showsVerticalScrollIndicator={false}
+					ListFooterComponent={
+						isFetchingNextPage ? (
+							<View className="my-3 items-center">
+								<ActivityIndicator
+									color={customColor['patchwork-red-50']}
+									size={'large'}
+									className="my-5"
+								/>
+							</View>
+						) : (
+							<></>
+						)
+					}
+				/>
+			)}
 		</SafeScreen>
 	);
 };
