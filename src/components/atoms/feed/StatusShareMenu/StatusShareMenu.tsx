@@ -65,7 +65,7 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 	const { saveStatus } = useSubchannelStatusActions();
 
 	const baseURL = `${process.env.API_URL ?? DEFAULT_API_URL}`;
-	const SHARE_LINK_URL = status.url.includes('channel.org')
+	const SHARE_LINK_URL = status?.url?.includes('channel.org')
 		? `${baseURL}/@${status?.account?.username}/${status?.id}`
 		: status.url;
 
