@@ -16,15 +16,16 @@ import {
 	useActiveFeedAction,
 	useCurrentActiveFeed,
 } from '@/store/feed/activeFeed';
+import { useStatusContext } from '@/context/statusItemContext/statusItemContext';
 
 type StatusTranslateProps = {
-	status: Pathchwork.Status;
-	isFeedDetail?: boolean;
+	status: Patchwork.Status;
 	isFromNoti?: boolean;
 };
-const StatusTranslate = ({ status, isFeedDetail }: StatusTranslateProps) => {
+const StatusTranslate = ({ status }: StatusTranslateProps) => {
 	const currentFeed = useCurrentActiveFeed();
 	const { setActiveFeed } = useActiveFeedAction();
+	const { currentPage } = useStatusContext();
 
 	const { onToggleTranslated } = useLanguageSelectionActions();
 
@@ -37,7 +38,7 @@ const StatusTranslate = ({ status, isFeedDetail }: StatusTranslateProps) => {
 			process.env.API_URL ?? DEFAULT_API_URL,
 		);
 		if (status.translated_text) {
-			if (isFeedDetail && currentFeed?.id === status.id) {
+			if (currentPage == 'FeedDetail' && currentFeed?.id === status.id) {
 				// Use updatedTranslateStatus to update the current feed data
 				const updateFeedDetailData = updatedTranslateStatus(
 					currentFeed,

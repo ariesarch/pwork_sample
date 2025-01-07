@@ -8,10 +8,10 @@ type TranslateStatusCacheParams = {
 };
 
 const updatedTranslateStatus = (
-	status: Pathchwork.Status,
+	status: Patchwork.Status,
 	response: { content: string; statusId: string },
 	showTranslatedText: boolean,
-): Pathchwork.Status => {
+): Patchwork.Status => {
 	if (status.id === response.statusId) {
 		if (showTranslatedText) {
 			return {
