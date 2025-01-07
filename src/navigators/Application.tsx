@@ -29,11 +29,7 @@ import notifee, { EventType } from '@notifee/react-native';
 import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
-<<<<<<< HEAD
 import SettingStack from './SettingsStackNavigator';
-=======
-import { useTranslationLanguagesQueries } from '@/hooks/queries/feed.queries';
->>>>>>> 673cf3924796d6ea5e17a31143977b0ad85ac268
 
 const Stack = createStackNavigator<RootStackParamList>();
 
