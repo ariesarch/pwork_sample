@@ -7,12 +7,12 @@ import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import { useTokenRevokeMutation } from '@/hooks/mutations/auth.mutation';
 import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
 import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
+import { useActiveDomainStore } from '@/store/feed/activeDomain';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import { SettingStackScreenProps } from '@/types/navigation';
 import { handleError, removeAppToken } from '@/util/helper/helper';
 import { AccountIcon, ChevronRightIcon, Logout } from '@/util/svg/icon.common';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import VersionInfo from 'react-native-version-info';
 
@@ -25,6 +25,10 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 	const fcmToken = usePushNoticationStore(state => state.fcmToken);
 	const { mutateAsync: mutateRevokeToken } = useTokenRevokeMutation({});
 	const { access_token } = useAuthStore();
+	const { actions } = useActiveDomainStore();
+
+	useEffect(() => actions.setDomain(process.env.API_URL!), []);
+
 	const handleLogout = async () => {
 		setAlert(false);
 		try {
