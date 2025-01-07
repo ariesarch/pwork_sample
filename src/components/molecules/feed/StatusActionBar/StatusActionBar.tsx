@@ -78,7 +78,9 @@ const StatusActionBar = ({ status, isFeedDetail, isFromNoti }: Props) => {
 				<ShareTo className="mr-3" /> */}
 				{/* {isAuthor && <StatusMenu {...{ status, isFeedDetail }} />} */}
 
-				{status.translated_text && <StatusTranslate {...{ status }} />}
+				{status.translated_text && (
+					<StatusTranslate {...{ status, isFeedDetail }} />
+				)}
 				<StatusMenu {...{ status, isFeedDetail }} />
 			</View>
 		</View>

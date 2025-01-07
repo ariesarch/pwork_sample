@@ -41,7 +41,10 @@ import { DEFAULT_API_URL } from '@/util/constant';
 import { uniqueId } from 'lodash';
 import MenuOptionsForOtherUser from './MenuOptionsForOtherUser/MenuOptionsForOtherUser';
 import { useTranslateMutation } from '@/hooks/mutations/feed.mutation';
-import { translateStatusCacheData } from '@/util/cache/statusActions/translateCache';
+import {
+	translateStatusCacheData,
+	updatedTranslateStatus,
+} from '@/util/cache/statusActions/translateCache';
 import { useLanguageSelectionActions } from '@/store/compose/languageSelection/languageSelection';
 import { Flow } from 'react-native-animated-spinkit';
 
@@ -55,6 +58,7 @@ const StatusMenu = ({
 	const navigation = useNavigation();
 	const { domain_name } = useActiveDomainStore();
 	const currentFeed = useCurrentActiveFeed();
+	const { setActiveFeed } = useActiveFeedAction();
 
 	const [menuVisible, setMenuVisible] = useState(false);
 	const hideMenu = () => setMenuVisible(false);
@@ -224,6 +228,23 @@ const StatusMenu = ({
 
 	const { mutate: translationMutate, isPending } = useTranslateMutation({
 		onSuccess(data, variables, context) {
+			// Check if the feed detail is the one being translated
+			if (isFeedDetail && currentFeed?.id === status.id) {
+				// Use updatedTranslateStatus to update the current feed data
+				const updateFeedDetailData = updatedTranslateStatus(
+					currentFeed,
+					{
+						content: data.content,
+						statusId: variables.statusId, // Ensure statusId is included here
+					},
+					true,
+				);
+				// Ensure the status matches before updating the active feed
+				if (status.id === currentFeed.id) {
+					setActiveFeed(updateFeedDetailData); // Update the feed with the translated content
+				}
+			}
+
 			const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
 				status.account.id,
 				status.in_reply_to_id,
@@ -285,24 +306,26 @@ const StatusMenu = ({
 							<MuteMenuOption url={status.account.url} /> */}
 						</>
 					)}
-					{status.language !== 'en' && status.language !== null && (
-						<MenuOption onSelect={onTranslateStatus}>
-							<MenuOptionIcon
-								icon={
-									isPending ? (
-										<Flow
-											size={25}
-											color={customColor['patchwork-light-900']}
-											className="ml-1"
-										/>
-									) : (
-										<StatusTranslateIcon />
-									)
-								}
-								name="Translate"
-							/>
-						</MenuOption>
-					)}
+					{status.reblog === null &&
+						status.language !== 'en' &&
+						status.language !== null && (
+							<MenuOption onSelect={onTranslateStatus}>
+								<MenuOptionIcon
+									icon={
+										isPending ? (
+											<Flow
+												size={25}
+												color={customColor['patchwork-light-900']}
+												className="ml-1"
+											/>
+										) : (
+											<StatusTranslateIcon />
+										)
+									}
+									name="Translate"
+								/>
+							</MenuOption>
+						)}
 				</MenuOptions>
 			</Menu>
 

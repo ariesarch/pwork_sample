@@ -82,7 +82,9 @@ const NotificationTabItem = ({ item }: { item: INotificationResponse }) => {
 						<ThemeText size={'md_16'} className="opacity-80 my-1">
 							{type === 'admin.report'
 								? `@${account.username}`
-								: account.display_name}{' '}
+								: account.display_name
+								? account.display_name
+								: account.username}{' '}
 							{notificationMessages[type]}
 						</ThemeText>
 					</View>

@@ -74,7 +74,7 @@ const LanguageSelectionModal = ({
 						>
 							<View className="flex-row items-center justify-between">
 								<ThemeText size={'md_16'}>
-									{language} ({native})
+									{native} ({language})
 								</ThemeText>
 								{key === selectedLanguage && <ComposeCircleCheckIcon />}
 							</View>
