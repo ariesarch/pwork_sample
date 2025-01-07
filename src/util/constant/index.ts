@@ -5,3 +5,5 @@ export const HTTP_ERROR_MESSAGE = {
 };
 
 export const DEFAULT_API_URL = 'https://channel.org';
+
+export const DEFAULT_INSTANCE = process.env.API_URL ?? DEFAULT_API_URL;

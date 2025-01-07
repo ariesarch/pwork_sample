@@ -10,17 +10,26 @@ import {
 import { appendApiVersion, handleError } from '@/util/helper/helper';
 import axios, { AxiosResponse } from 'axios';
 import instance from './instance';
+import { useAuthStore } from '@/store/auth/authStore';
+import { DEFAULT_INSTANCE } from '@/util/constant';
 
 export const accountInfoQueryFn = async ({
 	queryKey,
 }: QueryFunctionContext<AccountInfoQueryKey>) => {
 	try {
 		const { id, domain_name } = queryKey[1];
+		const state = useAuthStore.getState();
+		const isUserFormDifferentInstance =
+			domain_name == DEFAULT_INSTANCE &&
+			state.userOriginInstance !== DEFAULT_INSTANCE;
+
 		const resp: AxiosResponse<Patchwork.Account> = await instance.get(
 			appendApiVersion(`accounts/${id}`, 'v1'),
 			{
 				params: {
-					domain_name,
+					domain_name: isUserFormDifferentInstance
+						? state.userOriginInstance
+						: domain_name,
 					isDynamicDomain: true,
 				},
 			},

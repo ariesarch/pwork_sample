@@ -27,18 +27,21 @@ import { delay } from 'lodash';
 import { usePushNotiTokenMutation } from '@/hooks/mutations/pushNoti.mutation';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import ProfileCard from '@/components/atoms/channel/ProfileCard/ProfileCard';
-import { DEFAULT_API_URL } from '@/util/constant';
+import { DEFAULT_API_URL, DEFAULT_INSTANCE } from '@/util/constant';
 
 const HomeFeed = ({ navigation }: HomeStackScreenProps<'HomeFeed'>) => {
 	const { colorScheme } = useColorScheme();
 	const { setDomain } = useActiveDomainAction();
+	const { userOriginInstance } = useAuthStore();
 	const {
 		data: recommendedChannels,
 		isFetching,
 		refetch: refetchChannels,
 	} = useRecommendedChannels();
 
-	const { data: myChannels, refetch: refetchMyChannel } = useGetMyChannels();
+	const { data: myChannels, refetch: refetchMyChannel } = useGetMyChannels({
+		enabled: userOriginInstance === DEFAULT_INSTANCE,
+	});
 	const { userInfo } = useAuthStore();
 	const [isRefreshing, setIsRefreshing] = useState(false);
 

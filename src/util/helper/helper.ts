@@ -130,7 +130,7 @@ export type InfiniteQueryOptionHelper<
 	'queryKey' | 'queryFn' | 'getNextPageParam' | 'initialPageParam'
 >;
 
-export const saveAppToken = async (key: string, value: string) => {
+export const saveAuthState = async (key: string, value: string) => {
 	try {
 		await EncryptedStorage.setItem(key, value);
 	} catch (err) {
@@ -138,20 +138,33 @@ export const saveAppToken = async (key: string, value: string) => {
 	}
 };
 
-export const getAppToken = async () => {
+type AuthState = {
+	access_token: string;
+	domain: string;
+};
+
+const defaultAuthState = {
+	access_token: '',
+	domain: process.env.API_URL ?? DEFAULT_API_URL,
+};
+
+export const getAuthState = async () => {
 	try {
-		const token = await EncryptedStorage.getItem('AUTH_TOKEN');
-		return token;
+		const authState = await EncryptedStorage.getItem('AUTH_STATE');
+		if (authState) {
+			return JSON.parse(authState) as AuthState;
+		}
+		return defaultAuthState;
 	} catch (err) {
-		console.log(`Failed To Retrieve Auth Token`, err);
+		return defaultAuthState;
 	}
 };
 
-export const removeAppToken = async () => {
+export const clearEncStorage = async () => {
 	return await EncryptedStorage.clear();
 };
 
-export const formatUserStatsNumber = (num: number) => {
+export const formatNumber = (num: number) => {
 	if (num >= 1000 && num < 1000000) {
 		return (num / 1000).toFixed(1) + 'K';
 	} else if (num >= 1000000) {

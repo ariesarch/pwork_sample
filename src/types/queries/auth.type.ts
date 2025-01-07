@@ -10,3 +10,8 @@ export type LoginMutationPayload = {
 export type VerifyAuthTokenQueryKey = ['verify-token'];
 
 export type GetUserQueryKey = ['user', GetUserQueryParam];
+
+export type SearchServerInstanceQueryKey = [
+	'search-server-instance',
+	{ domain: string },
+];

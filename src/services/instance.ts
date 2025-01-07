@@ -2,7 +2,7 @@ import { useSubChannelStatusStore } from '@/store/feed/subChannelStatusStore';
 import { DEFAULT_API_URL } from '@/util/constant';
 import {
 	ensureHttp,
-	getAppToken,
+	getAuthState,
 	getSpecificServerStatus,
 	replaceIdInUrl,
 } from '@/util/helper/helper';
@@ -16,12 +16,19 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use(async config => {
-	const token = await getAppToken();
+	const { access_token: token, domain: userDomain } = await getAuthState();
+	console.log('userDomain::', userDomain, config.params);
 	if (token && token.length > 0) {
 		config.headers.Authorization = `Bearer ${token}`;
 	}
-	if (config.params && 'isDynamicDomain' in config.params) {
+	if (config.params && config.params.hasOwnProperty('isDynamicDomain')) {
 		config.baseURL = ensureHttp(config.params?.domain_name);
+	}
+	if (
+		!config.params?.hasOwnProperty('isDynamicDomain') &&
+		userDomain !== baseURL
+	) {
+		config.baseURL = ensureHttp(userDomain);
 	}
 	if (['post', 'delete'].includes(config.method ?? '') && token && config.url) {
 		const uniqId = config.data?.crossChannelRequestIdentifier;

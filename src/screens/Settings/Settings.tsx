@@ -9,7 +9,7 @@ import { usePushNotiRevokeTokenMutation } from '@/hooks/mutations/pushNoti.mutat
 import { useAuthStore, useAuthStoreAction } from '@/store/auth/authStore';
 import { usePushNoticationStore } from '@/store/pushNoti/pushNotiStore';
 import { SettingStackScreenProps } from '@/types/navigation';
-import { handleError, removeAppToken } from '@/util/helper/helper';
+import { handleError, clearEncStorage } from '@/util/helper/helper';
 import { AccountIcon, ChevronRightIcon, Logout } from '@/util/svg/icon.common';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
@@ -37,12 +37,12 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 			handleError(error);
 		} finally {
 			if (access_token) {
-				await mutateRevokeToken({
-					token: access_token,
-				});
-				await removeAppToken();
 				clearAuthState();
 				queryClient.clear();
+				await clearEncStorage();
+				// await mutateRevokeToken({
+				// 	token: access_token,
+				// });
 			}
 		}
 	};

@@ -2,6 +2,7 @@ import { QueryFunctionContext } from '@tanstack/react-query';
 import {
 	GetUserQueryKey,
 	LoginMutationPayload,
+	SearchServerInstanceQueryKey,
 	VerifyAuthTokenQueryKey,
 } from '@/types/queries/auth.type';
 import instance from '@/services/instance';
@@ -124,6 +125,61 @@ export const revokeToken = async (params: { token: string }) => {
 			client_secret: process.env.CLIENT_SECRET_TOKEN,
 		};
 		const resp: AxiosResponse<{}> = await instance.post('/oauth/revoke', body);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const searchServerInstance = async (
+	qfContext: QueryFunctionContext<SearchServerInstanceQueryKey>,
+) => {
+	try {
+		const { domain } = qfContext.queryKey[1];
+		const resp: AxiosResponse<Patchwork.Instance_V2> = await instance.get(
+			appendApiVersion('instance', 'v2'),
+			{
+				params: {
+					domain_name: domain,
+					isDynamicDomain: true,
+				},
+			},
+		);
+		return resp.data;
+	} catch (e) {
+		return '';
+	}
+};
+
+export const requestInstance = async ({ domain }: { domain: string }) => {
+	try {
+		const body = {
+			client_name: domain,
+			website: 'https://channel.org',
+			redirect_uris: 'patchwork://',
+			scopes: 'write read follow push',
+		};
+		const resp: AxiosResponse<Patchwork.InstanceResponse> = await instance.post(
+			`https://${domain}/api/v1/apps`,
+			body,
+		);
+		return resp.data;
+	} catch (error) {
+		return handleError(error);
+	}
+};
+
+export const authorizeInstance = async (payload: {
+	code: string;
+	grant_type: string;
+	client_id: string;
+	client_secret: string;
+	redirect_uri: string;
+	domain: string;
+}) => {
+	try {
+		const resp: AxiosResponse<Patchwork.InstanceAuthroizationResponse> =
+			await instance.post(`https://${payload.domain}/oauth/token`, payload);
 		return resp.data;
 	} catch (error) {
 		return handleError(error);

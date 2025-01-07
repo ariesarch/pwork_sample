@@ -570,4 +570,119 @@ declare namespace Patchwork {
 		account: Patchwork.Account;
 		last_status: Patchwork.Status;
 	};
+
+	type Instance<T extends 'v1' | 'v2'> = T extends 'v2'
+		? Instance_V2
+		: Instance_V1;
+
+	type Instance_V2 = {
+		domain: string;
+		title: string;
+		version: string;
+		source_url: string;
+		description: string;
+		usage: { users: { active_month: number } };
+		thumbnail: {
+			url: string;
+			blurhash?: string;
+			versions?: { '@1x'?: string; '@2x'?: string };
+		};
+		languages: string[];
+		configuration: {
+			urls: { streaming_api: string };
+			accounts: { max_featured_tags: number };
+			statuses: {
+				max_characters: number;
+				max_media_attachments: number;
+				characters_reserved_per_url: number;
+			};
+			media_attachments: {
+				supported_mime_types: string[];
+				image_size_limit: number;
+				image_matrix_limit: number;
+				video_size_limit: number;
+				video_frame_rate_limit: number;
+				video_matrix_limit: number;
+			};
+			poll: {
+				max_options: number;
+				max_characters_per_option: number;
+				min_expiration: number;
+				max_expiration: number;
+			};
+			translation: { enabled: boolean };
+			registrations: {
+				enabled: boolean;
+				approval_required: boolean;
+				message?: string;
+			};
+		};
+		contact: { email: string; account: Account };
+		rules: Rule[];
+		account_domain?: string;
+	};
+	type Instance_V1 = {
+		uri: string;
+		title: string;
+		description: string;
+		short_description: string;
+		email: string;
+		version: string;
+		languages: string[];
+		registrations: boolean;
+		approval_required: boolean;
+		invites_enabled: boolean;
+		urls: {
+			streaming_api: string;
+		};
+		stats: {
+			user_count: number;
+			status_count: number;
+			domain_count: number;
+		};
+		thumbnail?: string;
+		contact_account?: Account;
+		configuration?: {
+			statuses: {
+				max_characters: number;
+				max_media_attachments: number;
+				characters_reserved_per_url: number;
+			};
+			media_attachments: {
+				supported_mime_types: string[];
+				image_size_limit: number;
+				image_matrix_limit: number;
+				video_size_limit: number;
+				video_frame_rate_limit: number;
+				video_matrix_limit: number;
+			};
+			poll: {
+				max_options: number;
+				max_characters_per_option: number;
+				min_expiration: number;
+				max_expiration: number;
+			};
+		};
+		account_domain?: string;
+	};
+
+	type InstanceResponse = {
+		vapid_key: string;
+		redirect_uri: string;
+		client_id: string;
+		client_secret: string;
+		client_secret_expires_at: string;
+		id: string;
+		name: string;
+		website: string;
+		scopes: Array<string>;
+		redirect_uris: Array<string>;
+	};
+
+	type InstanceAuthroizationResponse = {
+		access_token: string;
+		token_type: string;
+		scope: string;
+		created_at: string;
+	};
 }

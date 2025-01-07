@@ -1,7 +1,12 @@
-import { getUserById, verifyAuthToken } from '@/services/auth.service';
+import {
+	getUserById,
+	searchServerInstance,
+	verifyAuthToken,
+} from '@/services/auth.service';
 import {
 	GetUserQueryKey,
 	GetUserQueryParam,
+	SearchServerInstanceQueryKey,
 	VerifyAuthTokenQueryKey,
 } from '@/types/queries/auth.type';
 import { GetChannelSearchQueryKey } from '@/types/queries/channel.type';
@@ -22,5 +27,24 @@ export const useVerifyAuthToken = ({
 		queryKey,
 		queryFn: verifyAuthToken,
 		enabled,
+	});
+};
+
+export const useSearchServerInstance = ({
+	domain,
+	enabled,
+}: {
+	domain: string;
+	enabled: boolean;
+}) => {
+	const queryKey: SearchServerInstanceQueryKey = [
+		'search-server-instance',
+		{ domain },
+	];
+	return useQuery({
+		queryKey,
+		queryFn: searchServerInstance,
+		enabled,
+		retry: false,
 	});
 };

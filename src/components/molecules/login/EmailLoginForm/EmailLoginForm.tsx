@@ -11,9 +11,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginSchema } from '@/util/schema/loginSchema';
 import { useLoginEmailMutation } from '@/hooks/mutations/auth.mutation';
 import { Flow } from 'react-native-animated-spinkit';
-import { HTTP_ERROR_MESSAGE } from '@/util/constant';
+import { DEFAULT_API_URL, HTTP_ERROR_MESSAGE } from '@/util/constant';
 import { useAuthStoreAction } from '@/store/auth/authStore';
-import { saveAppToken } from '@/util/helper/helper';
+import { saveAuthState } from '@/util/helper/helper';
 import { verifyAuthToken } from '@/services/auth.service';
 import { GuestStackParamList } from '@/types/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -33,7 +33,13 @@ const EmailLoginForm = () => {
 
 	const { mutateAsync, isPending } = useLoginEmailMutation({
 		onSuccess: async response => {
-			await saveAppToken('AUTH_TOKEN', response.access_token);
+			await saveAuthState(
+				'AUTH_STATE',
+				JSON.stringify({
+					access_token: response.access_token,
+					domain: process.env.API_URL ?? DEFAULT_API_URL,
+				}),
+			);
 			const userInfo = await verifyAuthToken();
 			setUserInfo(userInfo);
 			setAuthToken(response.access_token);

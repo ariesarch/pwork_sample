@@ -13,6 +13,8 @@ import { appendApiVersion, getMaxId, handleError } from '@/util/helper/helper';
 import { QueryFunctionContext } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 import instance from './instance';
+import { useAuthStore } from '@/store/auth/authStore';
+import { DEFAULT_INSTANCE } from '@/util/constant';
 
 export const getFeedDetail = async (
 	qfContext: QueryFunctionContext<FeedDetailQueryKey>,
@@ -52,12 +54,18 @@ export const getAccountDetailFeed = async (
 			exclude_original_statuses,
 		} = qfContext.queryKey[1];
 		const max_id = qfContext.pageParam as string;
+		const state = useAuthStore.getState();
+		const isUserFormDifferentInstance =
+			domain_name == DEFAULT_INSTANCE &&
+			state.userOriginInstance !== DEFAULT_INSTANCE;
 
 		const resp: AxiosResponse<Patchwork.Status[]> = await instance.get(
 			appendApiVersion(`accounts/${account_id}/statuses`),
 			{
 				params: {
-					domain_name,
+					domain_name: isUserFormDifferentInstance
+						? state.userOriginInstance
+						: domain_name,
 					isDynamicDomain: true,
 					max_id,
 					exclude_reblogs,

@@ -27,7 +27,9 @@ const Welcome: React.FC<GuestStackScreenProps<'Welcome'>> = ({
 					<Button
 						variant="outline"
 						className="w-full rounded-3xl h-12 mt-10"
-						onPress={() => {}}
+						onPress={() => {
+							navigation.navigate('ServerInstance');
+						}}
 					>
 						<View className="flex-row justify-center items-center">
 							<MastodonIcon />

@@ -5,6 +5,8 @@ import {
 	resetPassword,
 	updatePassword,
 	revokeToken,
+	requestInstance,
+	authorizeInstance,
 } from '@/services/auth.service';
 import { LoginMutationPayload } from '@/types/queries/auth.type';
 import {
@@ -83,4 +85,33 @@ export const useTokenRevokeMutation = (
 	options: UseMutationOptions<{}, AxiosError, { token: string }>,
 ) => {
 	return useMutation({ mutationFn: revokeToken, ...options });
+};
+
+export const useRequestPermissionToInstanceMutation = (
+	options: UseMutationOptions<
+		Patchwork.InstanceResponse,
+		AxiosError,
+		{
+			domain: string;
+		}
+	>,
+) => {
+	return useMutation({ mutationFn: requestInstance, ...options });
+};
+
+export const useAuthorizeInstanceMutation = (
+	options: UseMutationOptions<
+		Patchwork.InstanceAuthroizationResponse,
+		AxiosError,
+		{
+			code: string;
+			grant_type: string;
+			client_id: string;
+			client_secret: string;
+			redirect_uri: string;
+			domain: string;
+		}
+	>,
+) => {
+	return useMutation({ mutationFn: authorizeInstance, ...options });
 };

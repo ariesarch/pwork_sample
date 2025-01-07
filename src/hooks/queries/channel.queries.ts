@@ -29,9 +29,9 @@ import {
 	useQuery,
 } from '@tanstack/react-query';
 
-export const useGetMyChannels = () => {
+export const useGetMyChannels = ({ enabled }: { enabled: boolean }) => {
 	const queryKey: GetMyChannelListQueryKey = ['my-channel'];
-	return useQuery({ queryKey, queryFn: getMyChannelList });
+	return useQuery({ queryKey, queryFn: getMyChannelList, enabled });
 };
 
 export const useRecommendedChannels = () => {

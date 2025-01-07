@@ -210,8 +210,15 @@ export type GuestStackParamList = {
 	Register: undefined;
 	Welcome: undefined;
 	ForgotPassword: undefined;
+	ServerInstance: undefined;
 	ForgotPasswordOTP: { email: string; reset_password_token: string };
 	ChangePassword: { reset_password_token: string };
+	MastodonSignInWebView: {
+		url: string;
+		domain: string;
+		client_id: string;
+		client_secret: string;
+	};
 };
 
 export type SettingStackParamList = {

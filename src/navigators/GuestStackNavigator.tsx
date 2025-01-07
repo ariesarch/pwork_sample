@@ -1,6 +1,12 @@
 import { GuestStackParamList } from '@/types/navigation';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Welcome, Register, Login } from '@/screens';
+import {
+	Welcome,
+	Register,
+	Login,
+	ServerInstance,
+	MastodonSignInWebView,
+} from '@/screens';
 import ForgotPassword from '@/screens/ForgotPassword/ForgotPassword';
 import ForgotPasswordOTP from '@/screens/ForgotPasswordOTP/ForgotPasswordOTP';
 import ChangePassword from '@/screens/ChangePassword/ChangePassword';
@@ -19,6 +25,11 @@ const Guest = () => {
 			<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
 			<Stack.Screen name="ForgotPasswordOTP" component={ForgotPasswordOTP} />
 			<Stack.Screen name="ChangePassword" component={ChangePassword} />
+			<Stack.Screen name="ServerInstance" component={ServerInstance} />
+			<Stack.Screen
+				name="MastodonSignInWebView"
+				component={MastodonSignInWebView}
+			/>
 		</Stack.Navigator>
 	);
 };

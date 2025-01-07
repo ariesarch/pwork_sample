@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useColorScheme } from 'nativewind';
 import ApplicationNavigator from './navigators/Application';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
-import { getAppToken } from './util/helper/helper';
+import { getAuthState } from './util/helper/helper';
 import { useAuthStoreAction } from './store/auth/authStore';
 import { View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
@@ -44,7 +44,8 @@ const toastConfig = {
 
 function App() {
 	const { setColorScheme } = useColorScheme();
-	const { setAuthToken, setUserInfo } = useAuthStoreAction();
+	const { setAuthToken, setUserInfo, setUserOriginInstance } =
+		useAuthStoreAction();
 	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
@@ -56,14 +57,14 @@ function App() {
 	}, []);
 
 	const retrieveToken = async () => {
-		//refactor_later
-		const token = await getAppToken();
+		const { access_token, domain } = await getAuthState();
 
-		if (token) {
+		if (access_token && domain) {
 			await verifyAuthToken()
 				.then(userInfo => {
 					setUserInfo(userInfo);
-					return setAuthToken(userInfo ? token : '');
+					setUserOriginInstance(domain);
+					return setAuthToken(userInfo ? access_token : '');
 				})
 				.catch(() => {
 					return setAuthToken('');
