@@ -20,7 +20,7 @@ const SearchEverything = () => {
 		return (
 			<View>
 				<Trending />
-				<ThemeText className="font-bold my-2" size="lg_18">
+				<ThemeText className="font-SourceSans3_Bold my-2" size="lg_18">
 					Start browsing
 				</ThemeText>
 			</View>

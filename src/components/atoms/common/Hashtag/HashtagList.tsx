@@ -8,7 +8,7 @@ const HashtagLists = () => {
 		<View>
 			<View className="flex-row mb-2">
 				<View className="flex-1">
-					<ThemeText className="font-bold" size="md_16">
+					<ThemeText className="font-SourceSans3_Bold" size="md_16">
 						#BreakingNews
 					</ThemeText>
 					<ThemeText>1,278 posts</ThemeText>
@@ -22,8 +22,8 @@ const HashtagLists = () => {
 			<Underline className="mt-1 mr-5 mb-1" />
 			<View className="flex-row mb-2">
 				<View className="flex-1">
-					<ThemeText className="font-bold" size="md_16">
-					#IsraelGaza
+					<ThemeText className="font-SourceSans3_Bold" size="md_16">
+						#IsraelGaza
 					</ThemeText>
 					<ThemeText>1,278 posts</ThemeText>
 				</View>
@@ -36,8 +36,8 @@ const HashtagLists = () => {
 			<Underline className="mt-1 mr-5 mb-1" />
 			<View className="flex-row mb-2">
 				<View className="flex-1">
-					<ThemeText className="font-bold" size="md_16">
-					#GeneralElection
+					<ThemeText className="font-SourceSans3_Bold" size="md_16">
+						#GeneralElection
 					</ThemeText>
 					<ThemeText>1,278 posts</ThemeText>
 				</View>
@@ -50,8 +50,8 @@ const HashtagLists = () => {
 			<Underline className="mt-1 mr-5 mb-1" />
 			<View className="flex-row mb-2">
 				<View className="flex-1">
-					<ThemeText className="font-bold" size="md_16">
-					#Ukraine
+					<ThemeText className="font-SourceSans3_Bold" size="md_16">
+						#Ukraine
 					</ThemeText>
 					<ThemeText>423 posts</ThemeText>
 				</View>
@@ -61,7 +61,6 @@ const HashtagLists = () => {
 					</TouchableOpacity>
 				</View>
 			</View>
-			
 		</View>
 	);
 };

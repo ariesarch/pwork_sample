@@ -23,7 +23,10 @@ const SensitiveMedia: React.FC<Props> = ({
 			{/* <View>
 				<MediaSensitiveDisbaleIcon />
 			</View> */}
-			<ThemeText size={'xs_12'} className="font-bold text-white text-center">
+			<ThemeText
+				size={'xs_12'}
+				className="font-SourceSans3_Bold text-white text-center"
+			>
 				This {mediaType === 'photo' ? 'photo' : 'video'} may include sensitive
 				content
 			</ThemeText>
@@ -35,7 +38,7 @@ const SensitiveMedia: React.FC<Props> = ({
 				}
 				style={[styles.forceViewSensitiveButton]}
 			>
-				<ThemeText size={'xs_12'} className="font-bold text-white">
+				<ThemeText size={'xs_12'} className="font-SourceSans3_Bold text-white">
 					View anyway
 				</ThemeText>
 			</Pressable>

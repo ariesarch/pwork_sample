@@ -11,7 +11,7 @@ const CallToAction = ({ onClose }: { onClose: () => void }) => {
 	return (
 		<View className="flex-1 p-1">
 			<View className="justify-center mb-2">
-				<ThemeText size={'md_16'} className="text-center font-bold">
+				<ThemeText size={'md_16'} className="text-center font-SourceSans3_Bold">
 					Add call to action
 				</ThemeText>
 				<TouchableOpacity

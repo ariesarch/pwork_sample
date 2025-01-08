@@ -11,7 +11,7 @@ const ChannelInformationForm = () => {
 	const { colorScheme } = useColorScheme();
 	return (
 		<View>
-			<ThemeText size="md_16" className="mb-1 font-bold">
+			<ThemeText size="md_16" className="mb-1 font-SourceSans3_Bold">
 				Channel Information
 			</ThemeText>
 			<ThemeText variant="textGrey">
@@ -19,7 +19,7 @@ const ChannelInformationForm = () => {
 			</ThemeText>
 			<View className="flex-row items-center">
 				<View className="flex-1">
-					<ThemeText className="mt-7 font-bold">Avatar</ThemeText>
+					<ThemeText className="mt-7 font-SourceSans3_Bold">Avatar</ThemeText>
 					<ThemeText size="xs_12" variant="textGrey" className="mt-1">
 						SVG, PNG, JPG (max:800x800px)
 					</ThemeText>

@@ -42,7 +42,7 @@ const CountryModel = ({
 						<ThemeText>Save</ThemeText>
 					</Pressable>
 				</View>
-				<ThemeText className="font-bold" size="md_16">
+				<ThemeText className="font-SourceSans3_Bold" size="md_16">
 					Please select your country
 				</ThemeText>
 				<TextInput

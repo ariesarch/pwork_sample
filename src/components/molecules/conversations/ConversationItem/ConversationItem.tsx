@@ -48,7 +48,9 @@ const ConversationItem: React.FC<ListItemProps> = ({
 						{item.last_status?.account?.id === userInfoId ? 'You: ' : ''}
 					</ThemeText>
 					<ThemeText
-						className={`w-full ${item.unread ? 'font-bold' : 'font-normal'}`}
+						className={`w-full ${
+							item.unread ? 'font-SourceSans3_Bold' : 'font-normal'
+						}`}
 						numberOfLines={1}
 						ellipsizeMode="tail"
 					>

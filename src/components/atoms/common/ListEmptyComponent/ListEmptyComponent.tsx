@@ -11,7 +11,7 @@ const ListEmptyComponent = ({ title, subtitle, ...props }: Props) => {
 	return (
 		<View className="flex items-center justify-center mt-20" {...props}>
 			<AccountListIcon />
-			<ThemeText className="font-bold mt-2">
+			<ThemeText className="font-SourceSans3_Bold mt-2">
 				{title ?? 'No Status Found'}
 			</ThemeText>
 			{subtitle && (

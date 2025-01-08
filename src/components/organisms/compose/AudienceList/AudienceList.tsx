@@ -54,7 +54,7 @@ const AudienceList = ({
 	return (
 		<View className="flex-1 p-1">
 			<View className="justify-center">
-				<ThemeText size={'md_16'} className="text-center font-bold">
+				<ThemeText size={'md_16'} className="text-center font-SourceSans3_Bold">
 					Choose audience
 				</ThemeText>
 				<TouchableOpacity
