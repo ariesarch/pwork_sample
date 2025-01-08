@@ -6,16 +6,22 @@ import { ThemeText } from '@/components/atoms/common/ThemeText/ThemeText';
 import { ServerInstanceLoading } from '@/components/atoms/loading/ServerInstanceLoading';
 import SafeScreen from '@/components/template/SafeScreen/SafeScreen';
 import useDebounce from '@/hooks/custom/useDebounce';
-import { useRequestPermissionToInstanceMutation } from '@/hooks/mutations/auth.mutation';
+import {
+	useAuthorizeInstanceMutation,
+	useRequestPermissionToInstanceMutation,
+} from '@/hooks/mutations/auth.mutation';
 import { useSearchServerInstance } from '@/hooks/queries/auth.queries';
 import { GuestStackScreenProps } from '@/types/navigation';
-import { formatNumber } from '@/util/helper/helper';
+import { ensureHttp, formatNumber, saveAuthState } from '@/util/helper/helper';
 import { SearchIcon } from '@/util/svg/icon.common';
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Flow } from 'react-native-animated-spinkit';
 import FastImage from 'react-native-fast-image';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+import { verifyAuthToken } from '@/services/auth.service';
+import { useAuthStoreAction } from '@/store/auth/authStore';
 
 export const ServerInstance: React.FC<
 	GuestStackScreenProps<'ServerInstance'>
@@ -23,6 +29,8 @@ export const ServerInstance: React.FC<
 	const [typedDomainName, setTypedDomainName] = useState('');
 	const [finalKeyword, setFinalKeyword] = useState('');
 	const startDebounce = useDebounce();
+	const { setAuthToken, setUserInfo, setUserOriginInstance } =
+		useAuthStoreAction();
 	const { data: searchInstanceRes, isFetching: isSearching } =
 		useSearchServerInstance({
 			domain: finalKeyword,
@@ -39,14 +47,66 @@ export const ServerInstance: React.FC<
 				scope: 'write read follow push',
 			});
 			const url = `https://${finalKeyword}/oauth/authorize?${queryParams.toString()}`;
-			navigation.navigate('MastodonSignInWebView', {
-				url,
-				domain: finalKeyword,
-				client_id: res.client_id,
-				client_secret: res.client_secret,
-			});
+			if (Platform.OS == 'android') {
+				return navigation.navigate('MastodonSignInWebView', {
+					url,
+					domain: finalKeyword,
+					client_id: res.client_id,
+					client_secret: res.client_secret,
+				});
+			}
+			handleAuthForIos(url, res.client_id, res.client_secret);
 		},
 	});
+
+	const { mutate: authorizeUser } = useAuthorizeInstanceMutation({
+		onSuccess: async resp => {
+			await saveAuthState(
+				'AUTH_STATE',
+				JSON.stringify({
+					access_token: resp.access_token,
+					domain: ensureHttp(finalKeyword),
+				}),
+			);
+			const userInfo = await verifyAuthToken();
+			setUserInfo(userInfo);
+			setUserOriginInstance(finalKeyword);
+			setAuthToken(resp.access_token);
+		},
+	});
+
+	const handleAuthForIos = async (
+		url: string,
+		client_id: string,
+		client_secret: string,
+	) => {
+		InAppBrowser.close();
+		const result = await InAppBrowser.openAuth(url, 'patchwork://', {
+			ephemeralWebSession: false,
+			showTitle: false,
+			enableUrlBarHiding: true,
+			enableDefaultShare: false,
+			showInRecents: true,
+			forceCloseOnRedirection: false,
+		});
+
+		if (result.type === 'success') {
+			const REGEX_FOR_CODE = /[?&]code=([^&]+)/;
+
+			const authorizationCode = result.url.match(REGEX_FOR_CODE);
+
+			if (authorizationCode && authorizationCode[1]) {
+				authorizeUser({
+					code: authorizationCode[1],
+					domain: finalKeyword,
+					client_id,
+					client_secret,
+					redirect_uri: 'patchwork://',
+					grant_type: 'authorization_code',
+				});
+			}
+		}
+	};
 
 	useEffect(() => {
 		startDebounce(() => {
