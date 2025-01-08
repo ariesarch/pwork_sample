@@ -1,10 +1,10 @@
 import { View } from 'react-native';
-import HTMLParser from '../../common/ParseHtml/ParseHtml';
 import { cn } from '@/util/helper/twutil';
 import { ThemeText } from '../../common/ThemeText/ThemeText';
 import { extractMessage } from '@/util/helper/extractMessage';
 import { cleanText } from '@/util/helper/cleanText';
 import { removePrivateConvoHashtag } from '@/util/helper/handlePrivateConvoHashtag';
+import { useNavigation } from '@react-navigation/native';
 
 const MessageContent = ({
 	item,
@@ -13,6 +13,16 @@ const MessageContent = ({
 	item: Patchwork.Status;
 	isOwnMessage: boolean;
 }) => {
+	const navigation = useNavigation();
+	const message = removePrivateConvoHashtag(
+		extractMessage(cleanText(item.content)),
+	);
+	const { parts, links } = extractLinks(message);
+
+	const navigateToWebView = (url: string) => {
+		console.log(url);
+		navigation.navigate('WebViewer', { url });
+	};
 	return (
 		<View
 			className={cn(
@@ -23,10 +33,30 @@ const MessageContent = ({
 			)}
 		>
 			<ThemeText>
-				{removePrivateConvoHashtag(extractMessage(cleanText(item.content)))}
+				{parts.map((part, index) => {
+					const isLink = links.includes(part);
+					return isLink ? (
+						<ThemeText
+							key={index}
+							className={cn('text-blue-500 underline')}
+							onPress={() => navigateToWebView(part)}
+						>
+							{part}
+						</ThemeText>
+					) : (
+						<ThemeText key={index}>{part}</ThemeText>
+					);
+				})}
 			</ThemeText>
-			{/* <HTMLParser status={item} /> */}
 		</View>
 	);
 };
 export default MessageContent;
+
+// A utility function to find links in the text
+const extractLinks = (text: string): { parts: string[]; links: string[] } => {
+	const linkRegex = /(https?:\/\/[^\s]+)/g;
+	const parts = text.split(linkRegex);
+	const links = text.match(linkRegex) || [];
+	return { parts, links };
+};
