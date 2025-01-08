@@ -65,7 +65,13 @@ const BlockMenuOption = ({
 			onSelect={onMakeBlockUnBlockUser}
 			disableTouchable={blockMenuDisabled}
 		>
-			<MenuOptionIcon icon={<StatusBlockIcon />} name="Block" />
+			<MenuOptionIcon
+				icon={
+					<StatusBlockIcon stroke={blockMenuDisabled ? '#9299A3' : '#FFFFFF'} />
+				}
+				name="Block"
+				disabled={blockMenuDisabled}
+			/>
 		</MenuOption>
 	);
 };

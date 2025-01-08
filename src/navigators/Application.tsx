@@ -30,6 +30,8 @@ import { usePushNoticationActions } from '@/store/pushNoti/pushNotiStore';
 import navigationRef from '@/util/navigation/navigationRef';
 import messaging from '@react-native-firebase/messaging';
 import SettingStack from './SettingsStackNavigator';
+import { useTranslationLanguagesQueries } from '@/hooks/queries/feed.queries';
+import { useTranslationLanguageStore } from '@/store/compose/translationLanguage/translationLanguage';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -43,12 +45,19 @@ const CustomTheme = {
 
 function ApplicationNavigator() {
 	const { access_token } = useAuthStore();
+	const { setTranslationLanguageData } = useTranslationLanguageStore();
+
 	const ENTRY_ROUTE = access_token ? 'Index' : 'Guest';
 
-	// ********** We don't need it for now ********** //
-	// const { data } = useTranslationLanguagesQueries();
-	// console.log('🚀 ~ ApplicationNavigator ~ data:', data);
-	// ********** We don't need it for now ********** //
+	// ********** TranslationLanguages API ********** //
+	const { data } = useTranslationLanguagesQueries();
+
+	useEffect(() => {
+		if (data) {
+			setTranslationLanguageData(data);
+		}
+	}, [data, setTranslationLanguageData]);
+	// ********** TranslationLanguages API ********** //
 
 	const { onRemoveNotifcationCount, onSetNotifcationCount } =
 		usePushNoticationActions();

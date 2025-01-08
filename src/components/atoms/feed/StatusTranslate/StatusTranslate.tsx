@@ -27,8 +27,6 @@ const StatusTranslate = ({ status }: StatusTranslateProps) => {
 	const { setActiveFeed } = useActiveFeedAction();
 	const { currentPage } = useStatusContext();
 
-	const { onToggleTranslated } = useLanguageSelectionActions();
-
 	const onToggleTranslateStatus = () => {
 		const queryKeys = getCacheQueryKeys<StatusCacheQueryKeys>(
 			status.account.id,
@@ -53,7 +51,6 @@ const StatusTranslate = ({ status }: StatusTranslateProps) => {
 					setActiveFeed(updateFeedDetailData); // Update the feed with the translated content
 				}
 			}
-			onToggleTranslated();
 			translateStatusCacheData({
 				response: { content: status.content, statusId: status.id },
 				queryKeys,

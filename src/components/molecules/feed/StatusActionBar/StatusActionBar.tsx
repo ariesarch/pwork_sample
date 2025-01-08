@@ -75,7 +75,7 @@ const StatusActionBar = ({ status, isFromNoti }: Props) => {
 				/>
 				<StatusFavourtieButton className="mr-3" {...{ status, isFromNoti }} />
 			</View>
-			<View className="flex flex-row">
+			<View className="flex flex-row items-center">
 				{status.translated_text && <StatusTranslate {...{ status }} />}
 				<View className="mr-3">
 					<StatusShareMenu {...{ status, isFromNoti }} />
