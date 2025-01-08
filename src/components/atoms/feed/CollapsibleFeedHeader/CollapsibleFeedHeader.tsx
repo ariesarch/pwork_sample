@@ -27,6 +27,7 @@ import { profile } from 'console';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
 import { useBlockUnBlockUserMutation } from '@/hooks/queries/feed.queries';
 import { updateBlockState } from '@/util/cache/statusActions/muteblockCache';
+import AccountShield from '@/components/organisms/profile/AccountShield/AccountShield';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -222,6 +223,9 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 								</ThemeText>
 							)}
 						</Button>
+						<View className="w-8 h-8 rounded-full items-center justify-center border-[1px] border-gray-600 ml-2 active:opacity-80 mt-5">
+							<AccountShield account={props.profile} />
+						</View>
 					</View>
 				)}
 			</View>

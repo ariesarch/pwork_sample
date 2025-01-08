@@ -61,7 +61,9 @@ const Settings: React.FC<SettingStackScreenProps<'Settings'>> = ({
 			<View className="flex-1 mx-5">
 				<View className="flex-row items-center">
 					<AccountIcon width={30} height={30} className="mr-2" />
-					<ThemeText className="font-bold">Account Settings</ThemeText>
+					<ThemeText className="font-SourceSans3_Bold">
+						Account Settings
+					</ThemeText>
 				</View>
 				<Pressable
 					className="ml-10 mr-2 mt-4 flex-row items-center justify-between active:opacity-80"

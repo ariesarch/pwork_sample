@@ -68,17 +68,29 @@ const HashtagHeader: React.FC<HashtagHeaderProps> = ({
 	return (
 		<View className="flex-row m-4">
 			<View className="flex-1">
-				<ThemeText size="md_16" className="font-bold">
+				<ThemeText size="md_16" className="font-SourceSans3_Bold">
 					{`#${hashtagDetail.name}`}
 				</ThemeText>
 				<View className="flex-row">
-					<ThemeText variant="textGrey" size="xs_12" className="font-bold mr-2">
+					<ThemeText
+						variant="textGrey"
+						size="xs_12"
+						className="font-SourceSans3_Bold mr-2"
+					>
 						{`${totalPosts} posts`}
 					</ThemeText>
-					<ThemeText variant="textGrey" size="xs_12" className="font-bold mr-2">
+					<ThemeText
+						variant="textGrey"
+						size="xs_12"
+						className="font-SourceSans3_Bold mr-2"
+					>
 						{`${totalParticipant} participants`}
 					</ThemeText>
-					<ThemeText variant="textGrey" size="xs_12" className="font-bold">
+					<ThemeText
+						variant="textGrey"
+						size="xs_12"
+						className="font-SourceSans3_Bold"
+					>
 						{`${getTodayPostCount(hashtagDetail.history[0])} posts today`}
 					</ThemeText>
 				</View>

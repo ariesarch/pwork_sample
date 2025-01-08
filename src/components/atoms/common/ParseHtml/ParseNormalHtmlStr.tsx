@@ -89,7 +89,7 @@ const ParseNormalHtmlStr: React.FC<Props> = ({
 									<ThemeText
 										key={index}
 										variant={'textOrange'}
-										className="font-bold"
+										className="font-SourceSans3_Bold"
 										onPress={() => {}}
 										children={`${children} `}
 									/>

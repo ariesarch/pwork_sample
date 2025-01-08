@@ -9,7 +9,7 @@ type Props = {
 const InputFieldName = ({ isRequired, title, ...props }: Props) => {
 	return (
 		<View className="flex-row" {...props}>
-			<ThemeText className="font-bold mb-3" size="md_16">
+			<ThemeText className="font-SourceSans3_Bold mb-3" size="md_16">
 				{title}
 			</ThemeText>
 			{isRequired && (

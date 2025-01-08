@@ -45,7 +45,7 @@ const ConversationsHeader = ({ onPressBackButton, chatParticipant }: Props) => {
 					<ThemeText
 						numberOfLines={1}
 						ellipsizeMode="tail"
-						className="font-bold mr-2"
+						className="font-SourceSans3_Bold mr-2"
 					>
 						{chatParticipant?.display_name}
 					</ThemeText>

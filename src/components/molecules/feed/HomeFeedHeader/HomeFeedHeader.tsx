@@ -41,7 +41,7 @@ const HomeFeedHeader = ({ account, showUnderLine = true }: Props) => {
 						resizeMode={FastImage.resizeMode.cover}
 					/>
 					<View className="flex flex-1 mx-3">
-						<ThemeText className="font-bold" size="md_16">
+						<ThemeText className="font-SourceSans3_Bold" size="md_16">
 							Welcome Back
 						</ThemeText>
 						<ThemeText variant="textGrey" size="xs_12">

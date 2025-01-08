@@ -36,7 +36,7 @@ const PeopleFolllowing = () => {
 						renderLabel={({ route, focused }) => (
 							<ThemeText
 								size="md_16"
-								className={`font-bold ${
+								className={`font-SourceSans3_Bold ${
 									focused
 										? 'text-black dark:text-white'
 										: 'text-slate-400 dark:text-patchwork-grey-100'

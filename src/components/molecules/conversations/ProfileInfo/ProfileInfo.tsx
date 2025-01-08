@@ -32,7 +32,7 @@ const ProfileInfo = ({ userInfo }: Props) => {
 			/>
 			<View className="mx-auto items-center px-5">
 				<View className="flex-row my-3 items-center mb-0">
-					<ThemeText className="font-bold text-lg mr-3">
+					<ThemeText className="font-SourceSans3_Bold text-lg mr-3">
 						{userInfo?.display_name}
 					</ThemeText>
 					<VerifyIcon colorScheme={colorScheme} />

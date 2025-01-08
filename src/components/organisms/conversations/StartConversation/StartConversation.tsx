@@ -7,7 +7,7 @@ const StartConversation = ({ onPress }: { onPress: () => void }) => {
 	return (
 		<View className="container mx-auto p-10 mt-8">
 			<AtSignIcon className="self-center" />
-			<ThemeText className="text-md font-bold text-center mt-3">
+			<ThemeText className="text-md font-SourceSans3_Bold text-center mt-3">
 				No Conversations
 			</ThemeText>
 			<ThemeText className="text-center mt-3 font-normal">

@@ -16,7 +16,7 @@ const InterestProgress = () => {
 				<View className="">
 					{mockCommunityCollection.map((item, idx) => (
 						<View key={idx} className="my-3">
-							<ThemeText size="md_16" className="font-bold">
+							<ThemeText size="md_16" className="font-SourceSans3_Bold">
 								{item}
 							</ThemeText>
 							<View className="flex flex-row flex-wrap mt-3">

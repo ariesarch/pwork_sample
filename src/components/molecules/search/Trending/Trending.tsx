@@ -12,7 +12,10 @@ const Trending = () => {
 					<TouchableOpacity>
 						<FireIcon className="h-5 w-5" />
 					</TouchableOpacity>
-					<ThemeText className="font-bold my-2 flex-1 ml-3" size="lg_18">
+					<ThemeText
+						className="font-SourceSans3_Bold my-2 flex-1 ml-3"
+						size="lg_18"
+					>
 						Trending
 					</ThemeText>
 				</View>

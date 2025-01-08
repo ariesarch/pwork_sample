@@ -56,7 +56,7 @@ const VisibilitySettingsModal = ({
 			}}
 		>
 			<View>
-				<ThemeText size={'md_16'} className="font-bold px-4">
+				<ThemeText size={'md_16'} className="font-SourceSans3_Bold px-4">
 					Who can see your post:
 				</ThemeText>
 				<FlatList

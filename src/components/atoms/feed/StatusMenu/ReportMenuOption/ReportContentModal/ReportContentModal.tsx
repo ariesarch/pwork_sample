@@ -10,9 +10,12 @@ import { useForm } from 'react-hook-form';
 import ReportViolationData from '../ReportViolationData/ReportViolationData';
 import ReportContentWithComment from '../ReportContentWithComment/ReportContentWithComment';
 import { useReportMutation } from '@/hooks/mutations/feed.mutation';
+import { Flow } from 'react-native-animated-spinkit';
+import customColor from '@/util/constant/color';
 
 interface ReportContentModalProps {
-	status: Patchwork.Status;
+	status?: Patchwork.Status;
+	account?: Patchwork.Account;
 	visible: boolean;
 	onClose: () => void;
 }
@@ -20,6 +23,7 @@ const ReportContentModal = ({
 	visible,
 	onClose,
 	status,
+	account,
 }: ReportContentModalProps) => {
 	const {
 		control,
@@ -28,8 +32,12 @@ const ReportContentModal = ({
 		formState: { errors },
 	} = useForm<{ comment: string; forward?: boolean }>();
 
-	const isOtherServerUser = status.account.acct.includes('@');
-	const otherServerUserDomain = status.account.acct.split('@')[1];
+	const isOtherServerUser = status
+		? status.account.acct.includes('@')
+		: account?.acct.includes('@');
+	const otherServerUserDomain = status
+		? status.account.acct.split('@')[1]
+		: account?.acct.split('@')[1];
 
 	const [page, setPage] = useState(1);
 	const [selectedCategory, setSelectedCategory] =
@@ -74,7 +82,7 @@ const ReportContentModal = ({
 		return false;
 	}, [page, selectedCategory]);
 
-	const mutation = useReportMutation({
+	const { mutate, isPending } = useReportMutation({
 		onSuccess: () => {
 			reset();
 			onClose();
@@ -88,14 +96,13 @@ const ReportContentModal = ({
 			const payload = {
 				category: selectedCategory,
 				comment: data.comment ?? '',
-				account_id: status.account.id, // isProfile report use account.id
+				account_id: status ? status.account.id : account?.id,
 				status_ids: [],
 				forward: data.forward ?? false,
-				forward_to_domains: data.forward ? [otherServerUserDomain] : [],
+				forward_to_domains: data.forward ? [otherServerUserDomain!] : [],
 				rule_ids: selectedViolationItem ?? [],
 			};
-			console.log('🚀 ~ onSubmit ~ payload:', payload);
-			mutation.mutate(payload);
+			mutate(payload);
 		}
 	};
 
@@ -108,11 +115,11 @@ const ReportContentModal = ({
 		>
 			<View className="flex-1 items-center justify-center bg-modal-bg">
 				<View className="bg-patchwork-dark-400 w-11/12 rounded-md">
-					<View className="py-3 px-6 items-center">
+					<View className="py-3 px-7 items-center">
 						<ThemeText size={'lg_18'}>
-							Reporting {status.account.acct}
+							Reporting {status ? status.account.acct : account?.acct}
 						</ThemeText>
-						<Pressable className=" absolute top-3 right-2" onPress={onClose}>
+						<Pressable className="absolute top-3 right-2" onPress={onClose}>
 							<RemoveCrossIcon />
 						</Pressable>
 					</View>
@@ -136,8 +143,8 @@ const ReportContentModal = ({
 						{showAdditionalCommentTextarea && (
 							<ReportContentWithComment
 								control={control}
-								isOtherServerUser={isOtherServerUser}
-								otherServerUserDomain={otherServerUserDomain}
+								isOtherServerUser={isOtherServerUser!}
+								otherServerUserDomain={otherServerUserDomain!}
 							/>
 						)}
 						<Button
@@ -150,11 +157,19 @@ const ReportContentModal = ({
 							onPress={handleSubmit(onSubmit)}
 							className="mt-7 mb-2"
 						>
-							<ThemeText>
-								{page == 1 || (page == 2 && selectedCategory == 'violation')
-									? 'Next'
-									: 'Submit'}
-							</ThemeText>
+							{isPending ? (
+								<Flow
+									size={25}
+									color={customColor['patchwork-light-900']}
+									className="ml-1"
+								/>
+							) : (
+								<ThemeText>
+									{page == 1 || (page == 2 && selectedCategory == 'violation')
+										? 'Next'
+										: 'Submit'}
+								</ThemeText>
+							)}
 						</Button>
 					</View>
 				</View>

@@ -11,7 +11,7 @@ const SeggestedPeopleList = ({ ...props }: ViewProps) => {
 		<View>
 			<View className="my-2">
 				<View className="flex flex-row items-center">
-					<ThemeText className="font-bold my-2 flex-1" size="lg_18">
+					<ThemeText className="font-SourceSans3_Bold my-2 flex-1" size="lg_18">
 						Suggested people
 					</ThemeText>
 				</View>

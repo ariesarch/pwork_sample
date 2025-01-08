@@ -129,7 +129,9 @@ export const ServerInstance: React.FC<
 				className="mx-6"
 				contentContainerStyle={{ flex: 1 }}
 			>
-				<ThemeText className="font-bold text-2xl mb-2">Welcome Back</ThemeText>
+				<ThemeText className="font-SourceSans3_Bold text-2xl mb-2">
+					Welcome Back
+				</ThemeText>
 				<ThemeText className="mb-4 text-md">
 					Login with the server where you created your account
 				</ThemeText>
