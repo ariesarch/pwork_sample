@@ -71,29 +71,29 @@ export const handleIncommingMessage = async (
 				{ id: activeConvState.activeConversation?.last_status.id },
 			],
 		});
-		// return playSound('receive');
+		return playSound('receive');
 	}
 
 	await queryClient.invalidateQueries({ queryKey: ['conversations'] });
-	// playSound();
+	playSound();
 };
 
 type SoundType = 'noti' | 'send' | 'receive';
-// export const playSound = (soundType: SoundType = 'noti') => {
-// 	const soundMap = {
-// 		noti: require('../../../assets/sound/notisound.wav'),
-// 		send: require('../../../assets/sound/message_send.wav'),
-// 		receive: require('../../../assets/sound/message_receive.wav'),
-// 	};
-// 	const soundPath = soundMap[soundType];
-// 	const sound = new Sound(soundPath, error => {
-// 		if (error) {
-// 			console.log('Failed to load the sound', error);
-// 			return;
-// 		}
-// 		sound.play(() => sound.release());
-// 	});
-// };
+export const playSound = (soundType: SoundType = 'noti') => {
+	const soundMap = {
+		noti: require('../../../assets/sound/notisound.wav'),
+		send: require('../../../assets/sound/message_send.wav'),
+		receive: require('../../../assets/sound/message_receive.wav'),
+	};
+	const soundPath = soundMap[soundType];
+	const sound = new Sound(soundPath, error => {
+		if (error) {
+			console.log('Failed to load the sound', error);
+			return;
+		}
+		sound.play(() => sound.release());
+	});
+};
 
 export const checkIsConversationNoti = (
 	notiResp: FirebaseMessagingTypes.RemoteMessage,
