@@ -221,8 +221,6 @@ const HTMLParser = ({ status, numberOfLines = 10, isMainStatus }: Props) => {
 				onTextLayout={({ nativeEvent }) => {
 					if (nativeEvent.lines.length >= numberOfLines + 8) {
 						setTotalLines(nativeEvent.lines.length);
-					} else {
-						setTotalLines(undefined);
 					}
 				}}
 				style={{

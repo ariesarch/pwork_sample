@@ -22,6 +22,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 import { verifyAuthToken } from '@/services/auth.service';
 import { useAuthStoreAction } from '@/store/auth/authStore';
+import customColor from '@/util/constant/color';
 
 export const ServerInstance: React.FC<
 	GuestStackScreenProps<'ServerInstance'>
@@ -59,21 +60,22 @@ export const ServerInstance: React.FC<
 		},
 	});
 
-	const { mutate: authorizeUser } = useAuthorizeInstanceMutation({
-		onSuccess: async resp => {
-			await saveAuthState(
-				'AUTH_STATE',
-				JSON.stringify({
-					access_token: resp.access_token,
-					domain: ensureHttp(finalKeyword),
-				}),
-			);
-			const userInfo = await verifyAuthToken();
-			setUserInfo(userInfo);
-			setUserOriginInstance(finalKeyword);
-			setAuthToken(resp.access_token);
-		},
-	});
+	const { mutate: authorizeUser, isPending: isAuthroizing } =
+		useAuthorizeInstanceMutation({
+			onSuccess: async resp => {
+				await saveAuthState(
+					'AUTH_STATE',
+					JSON.stringify({
+						access_token: resp.access_token,
+						domain: ensureHttp(finalKeyword),
+					}),
+				);
+				const userInfo = await verifyAuthToken();
+				setUserInfo(userInfo);
+				setUserOriginInstance(finalKeyword);
+				setAuthToken(resp.access_token);
+			},
+		});
 
 	const handleAuthForIos = async (
 		url: string,
@@ -123,7 +125,10 @@ export const ServerInstance: React.FC<
 	return (
 		<SafeScreen>
 			<Header hideUnderline title="" leftCustomComponent={<BackButton />} />
-			<KeyboardAwareScrollView className="mx-6">
+			<KeyboardAwareScrollView
+				className="mx-6"
+				contentContainerStyle={{ flex: 1 }}
+			>
 				<ThemeText className="font-bold text-2xl mb-2">Welcome Back</ThemeText>
 				<ThemeText className="mb-4 text-md">
 					Login with the server where you created your account
@@ -182,6 +187,14 @@ export const ServerInstance: React.FC<
 					</>
 				)}
 			</KeyboardAwareScrollView>
+			{isAuthroizing && (
+				<>
+					<View className="flex-1 items-center justify-center absolute top-0 right-0 bottom-0 left-0 bg-black opacity-70"></View>
+					<View className="items-center justify-center absolute top-0 right-0 bottom-0 left-0">
+						<Flow size={35} color={customColor['patchwork-red-50']} />
+					</View>
+				</>
+			)}
 		</SafeScreen>
 	);
 };
