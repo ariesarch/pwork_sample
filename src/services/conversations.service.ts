@@ -5,9 +5,15 @@ import {
 	MessageListQueryKey,
 	SearchUsersQueryKey,
 } from '@/types/queries/conversations.type';
-import { appendApiVersion, handleError } from '@/util/helper/helper';
+import {
+	appendApiVersion,
+	handleError,
+	reverseSortStatusList,
+} from '@/util/helper/helper';
 import { AxiosResponse } from 'axios';
 import instance from './instance';
+import { useAuthStore } from '@/store/auth/authStore';
+import { DEFAULT_INSTANCE } from '@/util/constant';
 
 export const searchUsers = async ({
 	queryKey,
@@ -57,13 +63,16 @@ export const getMessageList = async (
 	qfContext: QueryFunctionContext<MessageListQueryKey>,
 ) => {
 	const { id } = qfContext.queryKey[1];
+	const { userOriginInstance } = useAuthStore.getState();
+	const isFormDifferentInstance = userOriginInstance !== DEFAULT_INSTANCE;
+
 	const resp: AxiosResponse<Patchwork.TimelineReplies> = await instance.get(
 		appendApiVersion(`statuses/${id}/context`),
 		{
 			params: { reverse_sort: true },
 		},
 	);
-	return resp.data;
+	return isFormDifferentInstance ? reverseSortStatusList(resp.data) : resp.data;
 };
 
 export const deleteMesssage = async ({ id }: { id: string }) => {

@@ -11,9 +11,10 @@ import {
 	UseQueryOptions,
 } from '@tanstack/react-query';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import { DEFAULT_API_URL } from '../constant';
+import { DEFAULT_API_URL, DEFAULT_INSTANCE } from '../constant';
 import { useActiveFeedStore } from '@/store/feed/activeFeed';
 import { uniqueId } from 'lodash';
+import { useAuthStore } from '@/store/auth/authStore';
 
 export const handleError = (error: any) => {
 	return Promise.reject({
@@ -175,7 +176,11 @@ export const formatNumber = (num: number) => {
 
 export const getSpecificServerStatus = async (q: string, authToken: string) => {
 	try {
-		const baseURl = process.env.API_URL ?? DEFAULT_API_URL;
+		const { userOriginInstance } = useAuthStore.getState();
+		const isFormDifferentInstance = userOriginInstance !== DEFAULT_INSTANCE;
+		const baseURl = isFormDifferentInstance
+			? userOriginInstance
+			: DEFAULT_INSTANCE;
 		const payload = { q, resolve: true, type: 'statuses' };
 		const resp: AxiosResponse<Patchwork.SearchResult> = await axios.get(
 			`${baseURl}/api/v2/search`,
@@ -214,4 +219,11 @@ export const replaceIdInUrl = (
 	}
 	return url;
 };
+
+export const reverseSortStatusList = (data: Patchwork.TimelineReplies) => {
+	if (data.ancestors?.length) data.ancestors.reverse();
+	if (data.descendants?.length) data.descendants.reverse();
+	return data;
+};
+
 export { scale, keyExtractor };
