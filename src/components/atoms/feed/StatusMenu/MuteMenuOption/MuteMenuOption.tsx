@@ -65,7 +65,13 @@ const MuteMenuOption = ({
 			onSelect={onMakeMuteUnmuteUser}
 			disableTouchable={muteMenuDisabled}
 		>
-			<MenuOptionIcon icon={<StatusMuteIcon />} name="Mute" />
+			<MenuOptionIcon
+				icon={
+					<StatusMuteIcon stroke={muteMenuDisabled ? '#9299A3' : '#FFFFFF'} />
+				}
+				name="Mute"
+				disabled={muteMenuDisabled}
+			/>
 		</MenuOption>
 	);
 };

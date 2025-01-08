@@ -45,7 +45,7 @@ export const StatusEditIcon = (props: SvgProps) => (
 export const StatusBlockIcon = (props: SvgProps) => (
 	<Svg width="24" height="24" viewBox="0 0 24 24" fill="none" {...props}>
 		<Path
-			stroke="#FFFFFF"
+			stroke={props.stroke || '#FFFFFF'}
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth={2}
