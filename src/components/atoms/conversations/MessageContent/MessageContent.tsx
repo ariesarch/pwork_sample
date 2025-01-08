@@ -20,7 +20,6 @@ const MessageContent = ({
 	const { parts, links } = extractLinks(message);
 
 	const navigateToWebView = (url: string) => {
-		console.log(url);
 		navigation.navigate('WebViewer', { url });
 	};
 	return (

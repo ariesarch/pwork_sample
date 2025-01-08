@@ -1,6 +1,4 @@
 // export function removeOtherMentions(input: string): string {
-// 	console.log('input', input);
-
 // 	const defaultInstance = '@channel.org';
 
 // 	const mentionPattern = /@(\w+)(@[\w.-]+)?/g;
@@ -21,8 +19,6 @@
 // 	if (!firstMention) {
 // 		return input;
 // 	}
-// 	console.log('return', modifiedText.trim());
-
 // 	return `${modifiedText.trim()}`;
 // }
 
