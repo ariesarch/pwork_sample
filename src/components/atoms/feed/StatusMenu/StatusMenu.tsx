@@ -53,8 +53,8 @@ import {
 	translateStatusCacheData,
 	updatedTranslateStatus,
 } from '@/util/cache/statusActions/translateCache';
-import { useLanguageSelectionActions } from '@/store/compose/languageSelection/languageSelection';
 import { Flow } from 'react-native-animated-spinkit';
+import { useTranslationLanguageStore } from '@/store/compose/translationLanguage/translationLanguage';
 
 const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 	const navigation = useNavigation();
@@ -62,6 +62,7 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 	const { activeFeed: currentFeed } = useActiveFeedStore();
 	const { currentPage, extraPayload, comeFrom } = useStatusContext();
 	const { setActiveFeed } = useActiveFeedAction();
+	const { translationLanguageData } = useTranslationLanguageStore();
 
 	const [menuVisible, setMenuVisible] = useState(false);
 	const hideMenu = () => setMenuVisible(false);
@@ -72,8 +73,6 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 		currentPage == 'FeedDetail' && currentFeed?.id == status.id;
 	const { changeActiveFeedReplyCount } = useActiveFeedAction();
 	const { saveStatus } = useSubchannelStatusActions();
-
-	const { onToggleTranslated } = useLanguageSelectionActions();
 
 	const { userInfo } = useAuthStore();
 
@@ -229,15 +228,30 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 				queryKeys,
 				showTranslatedText: true,
 			});
-
-			onToggleTranslated();
 			hideMenu();
+		},
+		onError(error) {
+			Toast.show({
+				type: 'error',
+				text1: error.message,
+				position: 'top',
+				topOffset: 50,
+			});
 		},
 	});
 
 	const onTranslateStatus = () => {
 		translationMutate({ statusId: status.id });
 	};
+
+	const shouldShowTranslateButton = useMemo(() => {
+		return (
+			status.reblog === null &&
+			status.language !== 'en' &&
+			status.language !== null &&
+			translationLanguageData[status.language]?.length > 0
+		);
+	}, [status, translationLanguageData]);
 
 	return (
 		<>
@@ -278,26 +292,24 @@ const StatusMenu = ({ status }: { status: Patchwork.Status }) => {
 							<MuteMenuOption url={status.account.url} /> */}
 						</>
 					)}
-					{status.reblog === null &&
-						status.language !== 'en' &&
-						status.language !== null && (
-							<MenuOption onSelect={onTranslateStatus}>
-								<MenuOptionIcon
-									icon={
-										isPending ? (
-											<Flow
-												size={25}
-												color={customColor['patchwork-light-900']}
-												className="ml-1"
-											/>
-										) : (
-											<StatusTranslateIcon />
-										)
-									}
-									name="Translate"
-								/>
-							</MenuOption>
-						)}
+					{shouldShowTranslateButton && (
+						<MenuOption onSelect={onTranslateStatus}>
+							<MenuOptionIcon
+								icon={
+									isPending ? (
+										<Flow
+											size={25}
+											color={customColor['patchwork-light-900']}
+											className="ml-1"
+										/>
+									) : (
+										<StatusTranslateIcon />
+									)
+								}
+								name="Translate"
+							/>
+						</MenuOption>
+					)}
 				</MenuOptions>
 			</Menu>
 

@@ -59,8 +59,12 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 	const { currentPage, extraPayload } = useStatusContext();
 
 	const isAuthor = useMemo(() => {
-		return userInfo?.id === status.account.id;
-	}, [userInfo, status.account.id]);
+		const currentUserAccHandle = userInfo?.acct + '@channel.org';
+		return (
+			userInfo?.id == status.account.id ||
+			status.account.acct == currentUserAccHandle
+		);
+	}, [status, userInfo?.id]);
 
 	const { saveStatus } = useSubchannelStatusActions();
 
@@ -176,19 +180,7 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 		: status.bookmarked;
 
 	return (
-		<Menu
-			renderer={renderers.Popover}
-			rendererProps={{
-				placement: 'left',
-				anchorStyle: {
-					width: 0,
-					height: 0,
-				},
-			}}
-			opened={isShareVisible}
-			style={{ zIndex: 1000 }}
-			onBackdropPress={toggleMenu}
-		>
+		<Menu opened={isShareVisible} onBackdropPress={toggleMenu}>
 			<MenuTrigger>
 				<Pressable onPress={toggleMenu}>
 					<StatusShareIcon />
@@ -197,17 +189,15 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 			<MenuOptions
 				customStyles={{
 					optionsContainer: {
-						borderRadius: 3,
-						paddingHorizontal: 10,
 						backgroundColor: customColor['patchwork-dark-400'],
+						borderRadius: 10,
+						shadowOpacity: 0.1,
+						elevation: 2,
 					},
 				}}
 			>
 				<>
 					<MenuOption
-						customStyles={{
-							optionText: { color: 'red' },
-						}}
 						onSelect={() => onBookmarkStatus(status)}
 						disabled={toggleBookmarkStatus.isPending}
 					>

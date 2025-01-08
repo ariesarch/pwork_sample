@@ -281,9 +281,9 @@ export const reportMutationFn = async (params: ReportMutationPayload) => {
 	}
 };
 
-export const translationLanguatesFn = async () => {
+export const translationLanguagesFn = async () => {
 	try {
-		const resp: AxiosResponse<Patchwork.Status> = await instance.get(
+		const resp = await instance.get(
 			appendApiVersion('instance/translation_languages', 'v1'),
 		);
 		return resp.data;

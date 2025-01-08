@@ -6,7 +6,7 @@ import {
 	getFeedReplies,
 	getHashtagDetailFeed,
 	muteUnMuteUserMutationFn,
-	translationLanguatesFn,
+	translationLanguagesFn,
 } from '@/services/feed.service';
 import {
 	AccountDetailFeedQueryKey,
@@ -137,5 +137,5 @@ export const useBlockUnBlockUserMutation = (
 
 export const useTranslationLanguagesQueries = () => {
 	const queryKey: TranslationLanguagesQueryKey = ['translation-languages'];
-	return useQuery({ queryKey, queryFn: translationLanguatesFn });
+	return useQuery({ queryKey, queryFn: translationLanguagesFn });
 };
