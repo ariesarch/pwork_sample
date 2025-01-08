@@ -7,7 +7,8 @@ import { useAuthStoreAction } from '@/store/auth/authStore';
 import { GuestStackScreenProps } from '@/types/navigation';
 import { ensureHttp, saveAuthState } from '@/util/helper/helper';
 import React from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import type { WebViewNavigation } from 'react-native-webview';
 import { WebView } from 'react-native-webview';
 
@@ -56,10 +57,16 @@ const MastodonLoginWebView = ({
 				leftCustomComponent={<BackButton extraClass="border-0" />}
 				hideUnderline
 			/>
-			<WebView
-				source={{ uri: url }}
-				onNavigationStateChange={onNavigationStateChange}
-			/>
+			<KeyboardAvoidingView
+				style={{ flex: 1 }}
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+				keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+			>
+				<WebView
+					source={{ uri: url }}
+					onNavigationStateChange={onNavigationStateChange}
+				/>
+			</KeyboardAvoidingView>
 		</SafeScreen>
 	);
 };

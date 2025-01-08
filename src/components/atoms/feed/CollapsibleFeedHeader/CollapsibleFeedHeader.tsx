@@ -25,6 +25,8 @@ import { useColorScheme } from 'nativewind';
 import { useGetConversationByUserId } from '@/hooks/queries/conversations.queries';
 import { profile } from 'console';
 import { useSelectedDomain } from '@/store/feed/activeDomain';
+import { useBlockUnBlockUserMutation } from '@/hooks/queries/feed.queries';
+import { updateBlockState } from '@/util/cache/statusActions/muteblockCache';
 
 type ChannelProps = {
 	type: 'Channel';
@@ -113,6 +115,27 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		},
 	});
 
+	const { mutate: toggleBlock, isPending: isBlockInProgress } =
+		useBlockUnBlockUserMutation({
+			onSuccess: (response, { accountId }) => {
+				updateBlockState(response);
+				const relationshipQueryKey = createRelationshipQueryKey([
+					accountId,
+					accountId,
+				]);
+
+				queryClient.setQueryData<Patchwork.RelationShip[]>(
+					relationshipQueryKey,
+					old => {
+						if (!old) return [response];
+						return old.map(rel =>
+							rel.id === accountId ? { ...rel, ...response } : rel,
+						);
+					},
+				);
+			},
+		});
+
 	const onMakeRelationship = () => {
 		if (isProfile && props.specifyServerAccId) {
 			mutate({
@@ -125,9 +148,22 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 		}
 	};
 
+	const onToggleBlock = () => {
+		if (isProfile && props.specifyServerAccId) {
+			toggleBlock({
+				accountId: props.specifyServerAccId,
+				toBlock: props.relationships
+					? !props.relationships[0]?.blocking
+					: false,
+			});
+		}
+	};
+
 	const displayFollowActionText = () => {
 		if (isProfile) {
-			if (props.relationships && props.relationships[0]?.following) {
+			if (props.relationships && props.relationships[0]?.blocking) {
+				return 'UnBlock';
+			} else if (props.relationships && props.relationships[0]?.following) {
 				return 'Following';
 			} else if (props.relationships && props.relationships[0]?.requested) {
 				return 'Requested';
@@ -171,9 +207,14 @@ const CollapsibleFeedHeader = (props: ChannelProps | ProfileProps) => {
 							variant="default"
 							size="sm"
 							className="bg-slate-100 dark:bg-white rounded-3xl px-6 mt-5"
-							onPress={onMakeRelationship}
+							onPress={() => {
+								if (props.relationships && props.relationships[0]?.blocking) {
+									return onToggleBlock();
+								}
+								return onMakeRelationship();
+							}}
 						>
-							{isPending ? (
+							{isPending || isBlockInProgress ? (
 								<Flow size={25} color={customColor['patchwork-dark-900']} />
 							) : (
 								<ThemeText className="text-black" size={'fs_13'}>

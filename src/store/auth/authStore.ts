@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>()(set => ({
 			set(state => ({
 				...state,
 				access_token: undefined,
-				userOrigin: default_instance,
+				userOriginInstance: default_instance,
 			})),
 		setUserInfo: (user: Patchwork.Account) =>
 			set(state => ({ ...state, userInfo: user })),

@@ -21,7 +21,7 @@ export const ServerInstanceLoading = () => {
 						overflow="hidden"
 					/>
 					<SkeletonPlaceholder.Item
-						width={60}
+						width={150}
 						height={10}
 						borderRadius={5}
 						marginLeft={11}
@@ -29,7 +29,7 @@ export const ServerInstanceLoading = () => {
 						overflow="hidden"
 					/>
 					<SkeletonPlaceholder.Item
-						width={120}
+						width={200}
 						height={10}
 						borderRadius={5}
 						marginLeft={11}
@@ -37,7 +37,7 @@ export const ServerInstanceLoading = () => {
 						overflow="hidden"
 					/>
 					<SkeletonPlaceholder.Item
-						width={60}
+						width={180}
 						height={10}
 						borderRadius={5}
 						marginLeft={11}
