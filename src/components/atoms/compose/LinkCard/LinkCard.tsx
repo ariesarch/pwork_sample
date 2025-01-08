@@ -136,7 +136,7 @@ export const LinkCard = ({ composeType }: Props) => {
 					) : (
 						<View className="mt-8 pb-2 rounded-xl border-slate-600 border">
 							<FastImage
-								source={{ uri: previewData.images[0].src }}
+								source={{ uri: previewData.images[0]?.src }}
 								resizeMode={'cover'}
 								className="w-full h-[200] bg-patchwork-dark-50 rounded-tl-xl rounded-tr-xl"
 							/>

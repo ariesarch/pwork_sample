@@ -224,7 +224,10 @@ const StatusShareMenu: React.FC<Props> = ({ status, isFromNoti }: Props) => {
 					</MenuOption>
 					<Underline />
 					<MenuOption onSelect={onSocialShare}>
-						<MenuOptionIcon name="Share via ..." icon={<StatusShareIcon />} />
+						<MenuOptionIcon
+							name="Share via ..."
+							icon={<StatusShareIcon stroke={'#fff'} />}
+						/>
 					</MenuOption>
 				</>
 			</MenuOptions>
